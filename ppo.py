@@ -23,7 +23,7 @@ parser.add_argument("--threads", default=8, type=int, help="Maximum number of th
 # For these and any other arguments you add, ReCodEx will keep your default value.
 parser.add_argument("--batch_size", default=128, type=int, help="Batch size.")
 parser.add_argument("--clip_epsilon", default=0.15, type=float, help="Clipping epsilon.")
-parser.add_argument("--entropy_regularization", default=0.15, type=float, help="Entropy regularization weight.")
+parser.add_argument("--entropy_regularization", default=0.10, type=float, help="Entropy regularization weight.")
 parser.add_argument("--epochs", default=8, type=int, help="Epochs to train each iteration.")
 parser.add_argument("--evaluate_each", default=10, type=int, help="Evaluate each given number of iterations.")
 parser.add_argument("--evaluate_for", default=10, type=int, help="Evaluate the given number of episodes.")
@@ -282,29 +282,8 @@ def main(env: wrappers.EvaluationEnv, args: argparse.Namespace):
             states,
             targets,
             batch_size=args.batch_size,
-            epochs=args.epochs, verbose=1,
+            epochs=args.epochs, verbose=0,
         )
-
-
-
-        current_action_prob, current_value = network.predict(temp_state)
-
-        # print(current_action_prob)
-        # print(np.min(current_action_prob))
-        # print("value:")
-        # print(np.min(current_value))
-        # print(np.mean(current_value))
-        # print(np.max(current_value))
-        #
-        # print("policy:")
-        # print(np.min(current_action_prob))
-        # print(np.mean(current_action_prob))
-        # print(np.max(current_action_prob))
-        # # print(np.max(current_action_prob))
-        # # print(np.min(temp_action_prob))
-        # # print(np.min(current_action_prob))
-        # print("---")
-        # exit()
 
         returns = []
         # Periodic evaluation

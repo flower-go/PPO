@@ -16,102 +16,168 @@ import wrappers
 
 parser = argparse.ArgumentParser()
 # These arguments will be set appropriately by ReCodEx, even if you change them.
-parser.add_argument("--agents", default=2, type=int, help="Agents to use.")
-parser.add_argument("--recodex", default=False, action="store_true", help="Running in ReCodEx")
-parser.add_argument("--render_each", default=0, type=int, help="Render some episodes.")
+parser.add_argument("--agents", default=5, type=int, help="Agents to use.")
+# parser.add_argument("--render_each", default=0, type=int, help="Render some episodes.")
 parser.add_argument("--seed", default=46, type=int, help="Random seed.")
 parser.add_argument("--threads", default=8, type=int, help="Maximum number of threads to use.")
+parser.add_argument("--exp_name", default="Multi_collect_shared_network", help="Experiment name")
 # For these and any other arguments you add, ReCodEx will keep your default value.
-parser.add_argument("--batch_size", default=64, type=int, help="Batch size.")
+# parser.add_argument("--batch_size", default=64, type=int, help="Batch size.")
+parser.add_argument("--mini_batch_size", default=400, type=int, help="Mini batch size.")
 parser.add_argument("--clip_epsilon", default=0.15, type=float, help="Clipping epsilon.")
-parser.add_argument("--entropy_regularization", default=0.2, type=float, help="Entropy regularization weight.")
-parser.add_argument("--epochs", default=15, type=int, help="Epochs to train each iteration.")
+parser.add_argument("--entropy_regularization", default=0.02, type=float, help="Entropy regularization weight.")
+parser.add_argument("--epochs", default=4, type=int, help="Epochs to train each iteration.")
 parser.add_argument("--evaluate_each", default=10, type=int, help="Evaluate each given number of iterations.")
-parser.add_argument("--evaluate_for", default=10, type=int, help="Evaluate the given number of episodes.")
-parser.add_argument("--gamma", default=0.99, type=float, help="Discounting factor.")
-parser.add_argument("--hidden_layer_size", default=64, type=int, help="Size of hidden layer.")
-parser.add_argument("--learning_rate", default=5e-3, type=float, help="Learning rate.")
+parser.add_argument("--evaluate_for", default=3, type=int, help="Evaluate the given number of episodes.")
+parser.add_argument("--gamma", default=0.985, type=float, help="Discounting factor.")
+parser.add_argument("--hidden_layer_size", default=128, type=int, help="Size of hidden layer.")
+parser.add_argument("--activation", default="relu", help="Size of hidden layer.")
+parser.add_argument("--std", default=0.1, help="std of init")
+parser.add_argument("--actor_learning_rate", default=0.0002, type=float, help="Learning rate.")
+parser.add_argument("--critic_learning_rate", default=0.0021, type=float, help="Learning rate.")
 parser.add_argument("--trace_lambda", default=0.95, type=float, help="Traces factor lambda.")
-parser.add_argument("--workers", default=32, type=int, help="Workers during experience collection.")
-parser.add_argument("--worker_steps", default=200, type=int, help="Steps for each worker to perform.")
+parser.add_argument("--workers", default=8, type=int, help="Workers during experience collection.")
+parser.add_argument("--worker_steps", default=100, type=int, help="Steps for each worker to perform.")
+parser.add_argument("--total_timesteps", default=6000000, type=int, help="Total timesteps of experiments")
+parser.add_argument("--learning_variation_steps", default=None, help="agent variation learning")
+parser.add_argument("--single_learner", default=False, help="Single agent is being learned")
 
 # TODO(ppo): We use the exactly same Network as in the `ppo` assignment.
 class Network(tf.keras.Model):
     def __init__(self, observation_space: gym.Space, action_space: gym.Space, args: argparse.Namespace) -> None:
+        super(Network, self).__init__()
         self.args = args
 
-        # Create a suitable model for the given observation and action spaces.
-        inputs = tf.keras.layers.Input(observation_space.shape)
+        inputs = tf.keras.layers.Input((env.observation_space.shape[0] + args.agents, ))
+        # inputs = tf.keras.layers.Input(observation_space.shape)
 
-        # TODO(ppo): Using a single hidden layer with args.hidden_layer_size and ReLU activation,
-        # produce a policy with `action_space.n` discrete actions.
-        hidden_policy = tf.keras.layers.Dense(args.hidden_layer_size, activation='relu')(inputs)
-        hidden_policy = tf.keras.layers.Dense(args.hidden_layer_size, activation='relu')(hidden_policy)
-        policy = tf.keras.layers.Dense(action_space.n, activation="softmax")(hidden_policy)
+        hidden_policy = tf.keras.layers.Dense(args.hidden_layer_size, activation=args.activation, kernel_initializer=tf.keras.initializers.RandomNormal(stddev=args.std))(inputs)
+        hidden_policy = tf.keras.layers.Dense(args.hidden_layer_size, activation=args.activation, kernel_initializer=tf.keras.initializers.RandomNormal(stddev=args.std))(hidden_policy)
+        policy = tf.keras.layers.Dense(action_space.n, kernel_initializer=tf.keras.initializers.RandomNormal(stddev=args.std))(hidden_policy)
 
-        # TODO(ppo): Using an independent single hidden layer with args.hidden_layer_size and ReLU activation,
-        # produce a value function estimate. It is best to generate it as a scalar, not
-        # a vector of length one, to avoid broadcasting errors later.
-        hidden_value = tf.keras.layers.Dense(args.hidden_layer_size, activation='relu')(inputs)
-        hidden_value = tf.keras.layers.Dense(args.hidden_layer_size, activation='relu')(hidden_value)
-        value = tf.keras.layers.Dense(1)(hidden_value)
+        self._actor_model = tf.keras.Model(inputs=inputs, outputs=policy)
+        self._actor_optimizer = tf.optimizers.Adam(args.actor_learning_rate)
+        self._actor_model.compile(optimizer=self._actor_optimizer)
 
-        # Construct the model
-        super().__init__(inputs=inputs, outputs=[policy, value])
+        hidden_value = tf.keras.layers.Dense(args.hidden_layer_size, activation=args.activation, kernel_initializer=tf.keras.initializers.RandomNormal(stddev=args.std))(inputs)
+        hidden_value = tf.keras.layers.Dense(args.hidden_layer_size, activation=args.activation, kernel_initializer=tf.keras.initializers.RandomNormal(stddev=args.std))(hidden_value)
+        value = tf.keras.layers.Dense(1, kernel_initializer=tf.keras.initializers.RandomNormal(stddev=args.std))(hidden_value)
 
-        # Compile using Adam optimizer with the given learning rate.
-        self.compile(optimizer=tf.optimizers.Adam(args.learning_rate))
+        self._critic_model = tf.keras.Model(inputs=inputs, outputs=value)
+        self._critic_optimizer = tf.optimizers.Adam(args.critic_learning_rate)
+        self._critic_model.compile(optimizer=self._critic_optimizer)
 
-    # TODO(ppo): Define a training method `train_step`, which is automatically used by Keras.
+    @tf.function
     def train_step(self, data):
-        # Unwrap the data. The targets is a dictionary of several tensors, containing keys
-        # - "actions"
-        # - "action_probs"
-        # - "advantages"
-        # - "returns"
         states, targets = data
         old_probs = targets["action_probs"]
 
-        with tf.GradientTape() as tape:
-            probs, critic_value = self(states, training=True)
-            dist = tfp.distributions.Categorical(probs=probs, dtype=tf.int64)
+        with tf.GradientTape() as actor_tape:
+            # probs, critic_value = self(states, training=True)
+            probs_logits = self._actor_model(states, training=True)
+            dist = tfp.distributions.Categorical(logits=probs_logits, dtype=tf.int64)
+
+            probs = tf.nn.softmax(probs_logits)
 
             ind_pairs = tf.stack([tf.range(tf.shape(targets["actions"])[0]), targets["actions"]],axis=1)
             ind_pairs = tf.reshape(ind_pairs, (-1, 2))
 
             action_prob = tf.gather_nd(indices=ind_pairs, params=probs)
 
-
-            critic_value = tf.squeeze(critic_value)
-
             entropy = tf.reduce_mean(dist.entropy())
 
+            # log_ratio = tf.math.log(action_prob) - tf.math.log(old_probs)
+            # r_theta = tf.math.exp(log_ratio)
             r_theta = action_prob / old_probs
+
             policy_obj = r_theta * targets["advantages"]
             clipped_r_theta = tf.clip_by_value(
                 r_theta, 1 - self.args.clip_epsilon, 1 + self.args.clip_epsilon
             ) * targets["advantages"]
 
-            actor_loss = -tf.reduce_mean(
+            act_loss = -tf.reduce_mean(
                 tf.minimum(policy_obj, clipped_r_theta)
             )
 
+            actor_loss = act_loss - self.args.entropy_regularization * entropy
+
+        self._actor_optimizer.minimize(actor_loss, self._actor_model.trainable_variables, tape=actor_tape)
+
+        with tf.GradientTape() as critic_tape:
+            critic_value = self._critic_model(states, training=True)
+
+            critic_value = tf.squeeze(critic_value)
             critic_loss = tf.reduce_mean(
-                tf.square(targets["returns"] - critic_value)
+                tf.square(tf.cast(targets["returns"], dtype=tf.float32) - critic_value)
             )
 
-            loss = actor_loss + critic_loss - self.args.entropy_regularization * entropy
-            tf.summary.scalar("actor_loss", data = actor_loss, step=1)
+        self._critic_optimizer.minimize(critic_loss, self._critic_model.trainable_variables, tape=critic_tape)
 
-        # Perform an optimizer step and return the loss for reporting and visualization.
-        self.optimizer.minimize(loss, self.trainable_variables, tape=tape)
-        return {"loss": loss}
+        return {"actor_loss": actor_loss, "critic_loss": critic_loss, "entropy": entropy}
 
-    # Predict method, with manual @tf.function for efficiency.
+    @tf.function
+    def train_actor_step(self, data):
+        states, targets = data
+        old_probs = targets["action_probs"]
+
+        with tf.GradientTape() as actor_tape:
+            # probs, critic_value = self(states, training=True)
+            probs_logits = self._actor_model(states, training=True)
+            dist = tfp.distributions.Categorical(logits=probs_logits, dtype=tf.int64)
+
+            probs = tf.nn.softmax(probs_logits)
+
+            ind_pairs = tf.stack([tf.range(tf.shape(targets["actions"])[0]), targets["actions"]],axis=1)
+            ind_pairs = tf.reshape(ind_pairs, (-1, 2))
+
+            action_prob = tf.gather_nd(indices=ind_pairs, params=probs)
+
+            entropy = tf.reduce_mean(dist.entropy())
+
+            # log_ratio = tf.math.log(action_prob) - tf.math.log(old_probs)
+            # r_theta = tf.math.exp(log_ratio)
+            r_theta = action_prob / old_probs
+
+            policy_obj = r_theta * targets["advantages"]
+            clipped_r_theta = tf.clip_by_value(
+                r_theta, 1 - self.args.clip_epsilon, 1 + self.args.clip_epsilon
+            ) * targets["advantages"]
+
+            act_loss = -tf.reduce_mean(
+                tf.minimum(policy_obj, clipped_r_theta)
+            )
+
+            actor_loss = act_loss - self.args.entropy_regularization * entropy
+
+        self._actor_optimizer.minimize(actor_loss, self._actor_model.trainable_variables, tape=actor_tape)
+
+        return {"actor_loss": actor_loss, "entropy": entropy}
+
+    @tf.function
+    def train_critic_step(self, data):
+        states, targets = data
+
+        with tf.GradientTape() as critic_tape:
+            critic_value = self._critic_model(states, training=True)
+
+            critic_value = tf.squeeze(critic_value)
+            critic_loss = tf.reduce_mean(
+                tf.square(tf.cast(targets["returns"], dtype=tf.float32) - critic_value)
+            )
+
+        self._critic_optimizer.minimize(critic_loss, self._critic_model.trainable_variables, tape=critic_tape)
+
+        return {"critic_loss": critic_loss}
+
     @wrappers.typed_np_function(np.float32)
     @tf.function
-    def predict(self, states: np.ndarray):
-        return self(states)
+    def predict_action_prob_logits(self, states):
+        return self._actor_model(states)
+
+    @wrappers.typed_np_function(np.float32)
+    @tf.function
+    def predict_values(self, states):
+        return self._critic_model(states)
 
 
 def main(env: wrappers.EvaluationEnv, args: argparse.Namespace):
@@ -121,73 +187,92 @@ def main(env: wrappers.EvaluationEnv, args: argparse.Namespace):
     tf.config.threading.set_inter_op_parallelism_threads(args.threads)
     tf.config.threading.set_intra_op_parallelism_threads(args.threads)
 
-    logdir = "logs/scalars/" + datetime.now().strftime("%Y%m%d-%H%M%S")
-    file_writer = tf.summary.create_file_writer(logdir + "/metrics")
-    file_writer.set_as_default()
-
     # Construct the networks, each for the same observation space and corresponding action space.
     networks = [Network(env.observation_space, env.action_space[i], args) for i in range(args.agents)]
 
     def evaluate_episode(start_evaluation:bool = False) -> float:
         rewards, state, done = 0, env.reset(start_evaluation), False
         while not done:
-            if args.render_each and (env.episode + 1) % args.render_each == 0:
-                env.render()
+            # if args.render_each and (env.episode + 1) % args.render_each == 0:
+            #     env.render()
 
             action = []
             # TODO: Predict the vector of actions using the greedy policy
             for agent in range(args.agents):
-                action_prob, value = networks[agent].predict([state])
+                id = np.zeros(args.agents)
+                id[agent] = 1
+
+                id_st = np.concatenate((id, state))
+                action_prob = networks[0].predict_action_prob_logits([id_st])
                 act = np.argmax(action_prob)
                 action.append(act)
 
             state, reward, done, _ = env.step(action)
             rewards += reward
+        # print(rewards)
         return rewards
 
     # Create the vectorized environment
     venv = gym.vector.AsyncVectorEnv([lambda: gym.make(env.spec.id)] * args.workers)
     venv.seed(args.seed)
 
-    # Training
-    state = venv.reset()
-    training = True
-    iteration = 0
-    while training:
-        # Collect experience. Notably, we collect the following quantities
-        # as tensors with the first two dimensions `[self.worker_steps, self.workers]`,
-        # and the third dimension being `self.agents` for `action*`, `rewards`, `values`.
-        states, actions, action_probs, rewards, dones, values = [], [], [], [], [], []
-        for _ in range(args.worker_steps):
-            # TODO: Choose `action`, which is a vector of `args.agents` actions for each worker,
-            # each action sampled from the corresponding policy generated by the `predict` of the
-            # networks executed on the vector `state`.
 
+    exp_name = f"exp_name:{args.exp_name};hid_size:{args.hidden_layer_size};clip_eps:{args.clip_epsilon};entr_reg:{args.entropy_regularization};act_lr:{args.actor_learning_rate};crit_lr:{args.critic_learning_rate};mini_b_size:{args.mini_batch_size};workers:{args.workers};worker_steps:{args.worker_steps};activation:{args.activation};epochs:{args.epochs};agents:{args.agents}"
+    hyperparameters = [tf.convert_to_tensor([k, str(v)]) for k, v in vars(args).items()]
+    writer = tf.summary.create_file_writer(f"runs/{exp_name}")
+    with writer.as_default():
+        tf.summary.text("hyperparameters", tf.stack(hyperparameters),0)
+
+    # Training
+    st = venv.reset()
+    training = True
+    update_num = 0
+    num_updates = args.total_timesteps // args.batch_size
+    print(num_updates)
+    while training:
+        print(f"update_num: {update_num}")
+        if update_num > num_updates:
+            break
+
+        states, actions, action_probs, rewards, global_rewards, dones, values = [], [], [], [], [], [], []
+        for _ in range(args.worker_steps):
             action = []
             action_prob = []
             value = []
+            state = []
             for a in range(args.agents):
+                id = np.zeros(args.agents)
+                id[a] = 1
+                id = np.vstack([id]*args.workers)
 
-                act_prob, val = networks[a].predict(state)
+                id_st = np.concatenate((id, st),axis=1)
 
-                # print(act_prob)
-                dist = tfp.distributions.Categorical(probs=act_prob, dtype=tf.int32)
+                action_prob_logits = networks[0].predict_action_prob_logits(id_st)
+
+                probs = tf.nn.softmax(action_prob_logits).numpy()
+
+                dist = tfp.distributions.Categorical(logits=action_prob_logits, dtype=tf.int32)
                 act = dist.sample()
-                act_prob = np.take_along_axis(act_prob, act.numpy().reshape((-1,1)), axis=1).reshape((-1))
+                act_prob = np.take_along_axis(probs, act.numpy().reshape((-1,1)), axis=1).reshape((-1))
+
+                val = networks[0].predict_values(id_st)
+
+                state.append(id_st)
 
                 action.append(act)
                 action_prob.append(act_prob)
                 value.append(val)
 
-
-
-            # Perform the step, extracting the per-agent rewards for training
+            state = np.array(state).transpose((1,0,2))
+            action = np.array(action).transpose((1, 0))
+            action_prob = np.array(action_prob).transpose((1, 0))
+            value = np.array(value).transpose((1,0,2))
 
             action = np.array(action).reshape((-1,args.agents))
             action_prob = np.array(action_prob).reshape((-1, args.agents))
             value = np.array(value).reshape((-1, args.agents))
 
-            next_state, _, done, info = venv.step(action)
+            next_state, global_reward, done, info = venv.step(action)
             reward = np.array([i["agent_rewards"] for i in info])
 
 
@@ -196,12 +281,12 @@ def main(env: wrappers.EvaluationEnv, args: argparse.Namespace):
             actions.append(action)
             values.append(value)
             rewards.append(reward)
+            global_rewards.append(global_reward)
             states.append(state)
             dones.append(done)
             action_probs.append(action_prob)
 
-            state = next_state
-
+            st = next_state
 
         values.append(value)
 
@@ -209,11 +294,10 @@ def main(env: wrappers.EvaluationEnv, args: argparse.Namespace):
         deltas = np.zeros((len(rewards), args.workers))
 
         for a in range(args.agents):
-            # TODO: For the given agent, estimate `advantages` and `returns` (they differ only by the value
-            # function estimate) using lambda-return with coefficients `args.trace_lambda` and `args.gamma`.
-            # You need to process episodes of individual workers independently, and note that
-            # each worker might have generated multiple episodes, the last one probably unfinished.
-
+            if args.learning_variation_steps and (update_num // args.learning_variation_steps) % args.agents != a:
+                continue
+            if args.single_learner and a == 1:
+                continue
             for i in range(args.worker_steps):
                 for worker in range(args.workers):
                     deltas[i][worker] = rewards[i][worker][a] + args.gamma * (1 - dones[i][worker]) * values[i + 1][
@@ -229,57 +313,71 @@ def main(env: wrappers.EvaluationEnv, args: argparse.Namespace):
 
             advantages = advantages.reshape((-1, args.workers))
             agent_values = np.array(values[:-1,:,a]).reshape((-1, args.workers))
-
             returns = advantages + agent_values
 
-            mean_advantages = np.nanmean(advantages)
-            std_advantages = np.nanstd(advantages)
-            advantages = (advantages - mean_advantages) / (std_advantages + 1e-8)
-            # advantages -= tf.reduce_mean(advantages)
-            # advantages /= tf.math.reduce_std(advantages) + 1e-8
-            # advantages = tf.cast(advantages, dtype=tf.float32)
+            advantages -= tf.reduce_mean(advantages)
+            advantages /= tf.math.reduce_std(advantages) + 1e-8
+            advantages = tf.cast(advantages, dtype=tf.float32)
+
+            agent_states = np.concatenate(states)[:, a]
+            agent_actions = np.concatenate(actions)[:, a]
+            agent_action_probs = np.concatenate(action_probs)[:, a]
+            advantages = np.concatenate(advantages)
+            returns = np.concatenate(returns)
+
+            b_inds = np.arange(args.batch_size)
+            actor_losses = []
+            critic_losses = []
+            entropy_losses = []
+            for epoch in range(args.epochs):
+                np.random.shuffle(b_inds)
+                for start in range(0, args.batch_size, args.mini_batch_size):
+                    end = start + args.mini_batch_size
+                    mb_inds = b_inds[start:end]
+
+                    mb_states = agent_states[mb_inds]
+                    mb_targets = {"actions": agent_actions[mb_inds],
+                                  "action_probs": agent_action_probs[mb_inds],
+                                  "advantages": advantages[mb_inds],
+                                  "returns": returns[mb_inds]}
+
+                    losses = networks[0].train_step((mb_states, mb_targets))
+                    actor_losses.append(losses["actor_loss"])
+                    critic_losses.append(losses["critic_loss"])
+                    entropy_losses.append(losses["entropy"])
 
 
+            with writer.as_default():
+                tf.summary.scalar(f"actor loss agent {a}", np.mean(actor_losses), step=update_num)
+                tf.summary.scalar(f"critic loss agent {a}", np.mean(critic_losses), step=update_num)
+                tf.summary.scalar(f"entropy agent {a}", np.mean(entropy_losses), step=update_num)
+                tf.summary.scalar(f"average rewards agent {a}", np.mean(np.array(rewards)[:,:,a]), step=update_num)
+                tf.summary.scalar(f"average global rewards", np.mean(global_rewards), step=update_num)
+                # tf.summary.scalar(f"actor loss", losses["actor_loss"], step=update_num)
+                # tf.summary.scalar(f"critic loss", losses["critic_loss"], step=update_num)
+                # tf.summary.scalar(f"entropy", losses["entropy"], step=update_num)
+                # tf.summary.scalar(f"average rewards", np.mean(global_rewards), step=update_num)
 
-            # Train the agent `a` using the Keras API.
-            # - The below code assumes that the first two dimensions of the used quantities are
-            #   `[self.worker_steps, self.workers]` and concatenates them together.
-            # - The code further assumes `actions` and `action_probs` have shape
-            #   `[self.worker_steps, self.workers, self.agents]`, and uses only values of agent `a`.
-            #   If you use a different shape, please update the code accordingly.
-            # - We do not log the training by passing `verbose=0`; feel free to change it.
-            # print(np.array(states).shape)
-            # print(np.array(actions)[:,a].shape)
-            # print(np.array(action_probs)[:,a].shape)
-            # print(np.array(advantages).shape)
-            # print(np.array(returns).shape)
+        update_num += 1
 
-
-            networks[a].fit(
-                np.concatenate(states),
-                {"actions": np.concatenate(actions)[:, a],
-                 "action_probs": np.concatenate(action_probs)[:, a],
-                 "advantages": np.concatenate(advantages),
-                 "returns": np.concatenate(returns)},
-                batch_size=args.batch_size, epochs=args.epochs, verbose=0,
-            )
-
-
-
-        # Periodic evaluation
-        iteration += 1
-        if iteration % args.evaluate_each == 0:
+        if update_num % args.evaluate_each == 0:
+            returns = []
             for _ in range(args.evaluate_for):
-                evaluate_episode()
+                returns.append(evaluate_episode())
+            with writer.as_default():
+                tf.summary.scalar(f"evaluation rewards", np.mean(returns), step=update_num)
 
-    # Final evaluation
-    while True:
-        evaluate_episode(start_evaluation=True)
+    evaluate_episode(start_evaluation=True)
 
 
 if __name__ == "__main__":
-    args = parser.parse_args([] if "__file__" not in globals() else None)
+    tf.config.set_visible_devices([], 'GPU')
+    visible_devices = tf.config.get_visible_devices()
+    for device in visible_devices:
+        assert device.device_type != 'GPU'
 
+    args = parser.parse_args([] if "__file__" not in globals() else None)
+    args.batch_size = int(args.workers * args.worker_steps)
     # Create the environment
     env = wrappers.EvaluationEnv(gym.make("MultiCollect{}-v0".format(args.agents)), args.seed)
 
