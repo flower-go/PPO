@@ -1,0 +1,124 @@
+\documentclass{report}
+\usepackage{hyperref}
+\begin{document}
+
+\chapter{General MARL/PPO}
+
+\section{The Surprising Effectiveness of MAPPO in Cooperative, Multi-Agent Games}
+\url{https://www.researchgate.net/publication/349727671_The_Surprising_Effectiveness_of_MAPPO_in_Cooperative_Multi-Agent_Games}
+
+\begin{list}{}{}
+    \item PPO sample efficiency
+    \item 1 GPU desktop, 1 Multicore CPU for training
+    \item centralized value function - global state s insted of local o
+    \item environments: Particle world environment
+    \item PPO used be seen as sample less efficient, hence for academic purposes MADDPG anv value-decomposed Q-learning
+    \item Minimal hyperparameter tuning and no domain specification
+    \item Decentralized learning each agent its own policy, suffer from non-stationary transitions
+    \item two lines of research - CTDE (this) and value decomposition
+    \item in single agent PG advantage normalization is crucial
+    \item considered implementation details - input norm, value clipping, orthogonal init, gradient clip - all helpful and included
+    \item another - discretization action space for PPO to avoid bad local minima in continuous, layer normalization
+    \item MLP vs Recurrent
+    \item 5 implementation details: \newline
+        Value norm: running average over value estimates, value network regress to normalized target values (Pop art technique) \newline
+        Agent-specific global state: concate of all o\_i as input to critic  \newline
+        (agent specific global cannot be used in QMix, which uses single mixer network common to all agents) \newline
+        Training Data Usage: importance sampling to perform off-policy correction ?? \newline
+            multiple epochs may suffer from non stationarity -> 15 to 5 epochs (easy to hard) \newline
+            No mini-batches -> more data to estimate gradients -> imporved practical performance \newline
+        Action masking: unavailable actions when computing action probabilities - both forward and backward \newline
+        Death masking: zero states with agent ID as value input for dead agents        
+
+\end{list}
+
+\chapter{Overcooked related}
+\url{https://github.com/HumanCompatibleAI/overcooked_ai}
+
+\section{On the Utility of Learning about Humans
+for Human-AI Coordination}
+\url{https://arxiv.org/abs/1910.05789}
+\begin{list}{}{}
+    \item agents assume their partner to be optimal or similar fail to be understood by humans
+    \item gains come from having agent adapt to human's gameplay
+    \item effective way to tackle two-player games is train agent with set of other AI agents, often past versions
+    \item collaboration is fundamentally different from competition (we need to go beyond self-play to account for human behavior)
+    \item incorporating human data or models into training leads to significant improvements (behavior cloning model)
+    \item Population Based Training is online evolutionary alg, adapts training hyperparameters and perform model selection
+    agents, whose policies are parametrized by NN and trained with DRL alg. each PBT iteration pair of agents are drawn, trained for number of steps and have performance recorded
+    at end of PBT iteration, worst performing agents are replaced with copies of best and parameters mutated
+    \item human behavior cloning peformed better than with Generative Aversarial Imitation Learning (GAIL)
+    \item PBT better than PPO self-play because they are trained to be good with population coordination
+    \item Agents designed for humans. Start with one learned human BC as part of environment dynamic and train single agent PPO.
+    \item start with ppo self-play and continue with training with human model
+    \item planning alg A*
+    \item two human behavior cloning models Hproxy used for evaluation and PPOBC learned against learned human models
+    \item best result self-play with self-play
+    \item for human interaction was best PPOBC with HProxy...PPOBC is overall preferable
+    \item PPOBC outperformes human-human performance
+    \item SP agents became very specialized and so suffered from distributional shift when paired with human models
+    \item future work - better human models, biasing population based training towards humans
+    \item READ AGAIN if interested
+\end{list}
+
+\section{PantheonRL:
+A MARL Library for Dynamic Training Interactions}
+\url{https://iliad.stanford.edu/pdfs/publications/sarkar2022pantheonrl.pdf}
+\begin{list}{}{}
+    \item PantheonRL new software package for marl dynamic
+    \item Combination of PettingZoo and RLLIB - customziation of agents
+    \item prioritizes modularity of agent objects - each has separate replay buffer, own learning alg, role
+    \item (other powerfull DRL library - StableBaselines3)
+    \item The modularity of the agent policies com-
+    bined with the inheritance of StableBaselines3 capabilities
+    together give users a flexible and powerful library for ex-
+    perimenting with complex multiagent interactions
+    \item 
+\end{list}
+
+
+
+
+
+\section{Investigating Partner Diversification
+Methods in Cooperative Multi-agent
+Deep Reinforcement Learning}
+\url{https://www.rujikorn.com/files/papers/diversity_ICONIP2020.pdf}
+\begin{list}{}{}
+    \item PBT have diversity problem -> PBT agents are not more robust than self-play agents and aren't better with humans
+    \item creating diversity by generating pre-trained partners is simple but effective
+    \item (partner sampling - playing with uniformly sampled past versions of partner - lacks diversity, past versions have similar behavior)
+    \item (population-base training, pre-trained partners)
+    \item testing self-play and cross-play with these agent types (SP, SPpast, PBT, PTseeds, PTdiverse)
+    \item PTdiverse(hyperparameters) and PTseeds come from self-play
+    \item LOVED THIS ARTICLE for it's simplicity
+    
+    
+\end{list}
+
+
+\section{Evaluating the Robustness of Collaborative Agents}
+\url{https://arxiv.org/abs/2101.05507}
+\begin{list}{}{}
+    \item how test robustnes if cannot rely on validation reward metric
+    \item unit testing (from software engineering) - edge cases, eg. where soup was cooked but not delivered
+    \item incorporating Theory of mind to human model 
+    \item human modal diversity by using population of human models
+    \item state diversity - init from states visited in human-human gameplay
+    \item test suite provides significant insight into robustness that is not correlated with average validation reward
+    \item "improved robustness as measured by test suite, but decrease in average validation reward"
+    \item simple ML metrics are insufficient to capture performance and we must evaluate results base on human judgement
+\end{list}
+
+\section{}
+\url{}
+\begin{list}{}{}
+    \item
+\end{list}
+
+
+
+
+
+
+\end{document}
