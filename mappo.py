@@ -16,7 +16,7 @@ import wrappers
 
 parser = argparse.ArgumentParser()
 # These arguments will be set appropriately by ReCodEx, even if you change them.
-parser.add_argument("--agents", default=2, type=int, help="Agents to use.")
+parser.add_argument("--agents", default=3, type=int, help="Agents to use.")
 # parser.add_argument("--render_each", default=0, type=int, help="Render some episodes.")
 parser.add_argument("--seed", default=46, type=int, help="Random seed.")
 parser.add_argument("--threads", default=8, type=int, help="Maximum number of threads to use.")
@@ -38,8 +38,8 @@ parser.add_argument("--critic_learning_rate", default=0.0021, type=float, help="
 parser.add_argument("--trace_lambda", default=0.95, type=float, help="Traces factor lambda.")
 parser.add_argument("--workers", default=32, type=int, help="Workers during experience collection.")
 parser.add_argument("--worker_steps", default=100, type=int, help="Steps for each worker to perform.")
-parser.add_argument("--total_timesteps", default=6000000, type=int, help="Total timesteps of experiments")
-parser.add_argument("--learning_variation_steps", default=None, help="agent variation learning")
+parser.add_argument("--total_timesteps", default=60000000, type=int, help="Total timesteps of experiments")
+parser.add_argument("--learning_variation_steps", default=3, help="agent variation learning")
 parser.add_argument("--single_learner", default=False, help="Single agent is being learned")
 
 # TODO(ppo): We use the exactly same Network as in the `ppo` assignment.
@@ -228,6 +228,7 @@ def main(env: wrappers.EvaluationEnv, args: argparse.Namespace):
     training = True
     update_num = 0
     num_updates = args.total_timesteps // args.batch_size
+    learned_agent = 0
     print(num_updates)
     while training:
         print(f"update_num: {update_num}")
@@ -294,7 +295,7 @@ def main(env: wrappers.EvaluationEnv, args: argparse.Namespace):
         deltas = np.zeros((len(rewards), args.workers))
 
         for a in range(args.agents):
-            if args.learning_variation_steps and (update_num // args.learning_variation_steps) % args.agents != a:
+            if args.learning_variation_steps and learned_agent != a:
                 continue
             if args.single_learner and a == 1:
                 continue
@@ -359,6 +360,8 @@ def main(env: wrappers.EvaluationEnv, args: argparse.Namespace):
                 # tf.summary.scalar(f"average rewards", np.mean(global_rewards), step=update_num)
 
         update_num += 1
+        if args.learning_variation_steps and (update_num % args.learning_variation_steps) == 0:
+            learned_agent = (learned_agent + 1) % args.agents
 
         if update_num % args.evaluate_each == 0:
             returns = []

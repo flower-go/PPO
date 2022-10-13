@@ -91,6 +91,10 @@ Deep Reinforcement Learning}
     \item (population-base training, pre-trained partners)
     \item testing self-play and cross-play with these agent types (SP, SPpast, PBT, PTseeds, PTdiverse)
     \item PTdiverse(hyperparameters) and PTseeds come from self-play
+    \item ref: ustesen, N., Torrado, R.R., Bontrager, P., Khalifa, A., Togelius, J., Risi, S.: Illu-
+    minating generalization in deep reinforcement learning through procedural level
+    generation. arXiv preprint arXiv:1806.10729 (2018)
+    \item IDEA to do: combine pretrained agents with maximum cross entropy? Encorporate maxium cross entropy into ppo??
     \item LOVED THIS ARTICLE for it's simplicity
     
     
@@ -108,14 +112,78 @@ Deep Reinforcement Learning}
     \item test suite provides significant insight into robustness that is not correlated with average validation reward
     \item "improved robustness as measured by test suite, but decrease in average validation reward"
     \item simple ML metrics are insufficient to capture performance and we must evaluate results base on human judgement
+    \item domain randomization - some aspects of env are randomized - behavior can vary significantly based on small randomization of "irrelevant" factors
+    \item Theory of mind??? - each step agent decides what task/strategy to do (eg. deliver soup), then choose low-lever action (motion) to persue this goal.
+    \item Population of BC models, ToM models, or mixture of two
+    \item recurrent networks for all deep rl training procedures
+    \item "once the trained policy has
+    found a good strategy for getting reward, it is not incentivized to explore other areas of the state space"
+    \item sampling initial state from human-human data (diverse starts)
+    \item Future work - how evaluate robustness in cases of ambiguous behavior
+    \item Or evaluating of proposals that populations with BC had positive effect, but negative for ToM
+    \item Meta learning for any kind of game layout, not just those prefabricated (online learning)
 \end{list}
 
+\section{Interaction Flexibility in Artificial Agents Teaming with Humans}
+\url{https://www.researchgate.net/publication/351533529_Interaction_Flexibility_in_Artificial_Agents_Teaming_with_Humans}
+\begin{list}{}{}
+    \item too psychological, empirical studies of real people experience when playing with self-play / human BC agents
+\end{list}
+
+\section{Maximum Entropy Population-Based Training for Zero-Shot Human-AI Coordination}
+\url{https://arxiv.org/abs/2112.11701}
+\begin{list}{}{}
+    \item "problem of training a Reinforcement Learning (RL) agent that is
+    collaborative with humans without using any human data"
+    \item "To mitigate this distributional shift, we propose Maximum Entropy Population-
+    based training (MEP). In MEP, agents in the population are trained with our
+    derived Population Entropy bonus to promote both pairwise diversity between
+    agents and individual diversity of agents themselves, and a common best agent is"
+    \item Comparing MEP with PPO self-play, PBT, Trajectory diversity and DIctitious CO-play
+    \item diverse and distringuishable behaviors between all agent pairs utilizes average KL divergence between all agent poairs
+    \item each agent in population is rewarded to maximize centralized population entropy.
+    \item we train best response agent by pairing it with with agent sampled by difficulty to collaborate with (prioritizing)
+    \item each agent has maximum entropy bonus (to reward) to encourage policy itself to be exploratory
+    \item Popuplation diversity = average entropy of each agent + average KL divergence of pairs
+    \item Populatino entropy = bounded and efficient surrogate for optimization = entropy of mean policies of population
+    \item PE is lower bound for PD
+    \item Not using PPO, but custom Entropy loss functions
+    \item Population entropy (effective linear pairwise kl divergence) as part of objective
+    \item MEP shares intuition with domain randomization... (MEP can be seen as domain randomization technique over partners policies)
+    \item (TrajeDi = encourages trajectories diffference between agents - Jensen-SHannon divergence between policies)
+    \item (Diversity-Inducing POlicy Gradient = formulated for single agent setting)
+    \item Bridges maximum entropy RL and PBT... entropy maximization for achieving robustness
+    \item Combining MEP with other MARL algorithms could be Future work
+    \item Idea: apply r=r+alpha * population entropy?
+    \item Idea: ("Maximum entropy approach adds the dense entropy to the reward for each time step, while entropy regularization adds the mean entropy to the surrogate objective") 
+        "Note that
+        Entropy regularization is not, in general, equivalent to the maximum entropy objective, which not only optimizes for
+        a policy with maximum entropy, but also optimizes the policy itself to visit states where it has high
+        entropy. Put another way, the maximum entropy objective optimizes the expectation of the entropy
+        with respect to the policy’s state distribution, while entropy regularization only optimizes the policy
+        entropy at the states that are visited, without actually trying to modify the policy itself to visit high-
+        entropy state"
+        \url{https://garage.readthedocs.io/en/latest/user/algo_ppo.html}
+    \item 
+    \item INTERESTING article
+\end{list}
+
+\section{Assisting Unknown Teammates in Unknown Tasks: Ad Hoc Teamwork under Partial Observability}
+\url{https://arxiv.org/abs/2201.03538}
+\begin{list}{}{}
+    \item Ad hoc teamwork under partial observability (ATPO)
+    \item unknown teammates performing unknown task withou pre-coordination protocol
+    \item ad hoc teamwork has three parts - task identification, teammate identification and planning
+    \item 
+\end{list}
+
+
+What is Zero-shot coordination?? - studies how independently trained agents may interact with another on first-attempt
 \section{}
 \url{}
 \begin{list}{}{}
     \item
 \end{list}
-
 
 
 
