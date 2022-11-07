@@ -295,7 +295,7 @@ class OvercookedEnv(object):
         """
         if regen_mdp:
             self.mdp = self.mdp_generator_fn(outside_info)
-            self._mlam = None
+            # self._mlam = None
             self._mp = None
         if self.start_state_fn is None:
             self.state = self.mdp.get_standard_start_state()
@@ -782,7 +782,7 @@ class Overcooked(gym.Env):
         """
         self.base_env.reset()
         self.mdp = self.base_env.mdp
-        self.agent_idx = np.random.choice([0, 1])
+        # self.agent_idx = np.random.choice([0, 1])
         ob_p0, ob_p1 = self.featurize_fn(self.mdp, self.base_env.state)
 
         if self.agent_idx == 0:

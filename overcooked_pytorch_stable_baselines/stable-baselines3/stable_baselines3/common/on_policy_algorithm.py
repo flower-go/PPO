@@ -167,9 +167,9 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 obs_tensor = obs_as_tensor(obs, self.device)
                 actions, values, log_probs = self.policy(obs_tensor)
 
-                obs = np.array([entry["both_agent_obs"][1] for entry in self._last_obs])
-                obs_tensor = obs_as_tensor(obs, self.device)
-                other_agent_actions, _, _ = self.policy(obs_tensor)
+                other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self._last_obs])
+                other_agent_obs_tensor = obs_as_tensor(other_agent_obs, self.device)
+                other_agent_actions, _, _ = env.other_agent_model.policy(other_agent_obs_tensor)
             actions = actions.cpu().numpy()
             other_agent_actions = other_agent_actions.cpu().numpy()
 
@@ -183,6 +183,12 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 clipped_actions = np.clip(actions, self.action_space.low, self.action_space.high)
 
             new_obs, rewards, dones, infos = env.step(joint_action)
+
+            # rewards = rewards +
+
+            agent_sparse_r = [info["shaped_r_by_agent"][info["policy_agent_idx"]] for info in infos]
+
+            rewards = rewards + np.array(agent_sparse_r)
 
             self.num_timesteps += env.num_envs
 
@@ -272,8 +278,8 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 self.logger.record("time/iterations", iteration, exclude="tensorboard")
                 if len(self.ep_info_buffer) > 0 and len(self.ep_info_buffer[0]) > 0:
                     self.logger.record("rollout/ep_rew_mean", safe_mean([ep_info["ep_shaped_r"] for ep_info in self.ep_info_buffer]))
-                    self.logger.record("rollout/ep_len_mean", safe_mean([ep_info["ep_length"] for ep_info in self.ep_info_buffer]))
-                self.logger.record("time/fps", fps)
+                    self.logger.record("rollout/ep_len_mean", safe_mean([ep_info["ep_length"] for ep_info in self.ep_info_buffer]), exclude="tensorboard")
+                self.logger.record("time/fps", fps, exclude="tensorboard")
                 self.logger.record("time/time_elapsed", int(time_elapsed), exclude="tensorboard")
                 self.logger.record("time/total_timesteps", self.num_timesteps, exclude="tensorboard")
                 self.logger.dump(step=self.num_timesteps)

@@ -54,6 +54,10 @@ def _worker(
                 remote.send(setattr(env, data[0], data[1]))
             elif cmd == "is_wrapped":
                 remote.send(is_wrapped(env, data))
+            elif cmd == 'set_agent_idx':
+                env.set_agent_idx(data)
+            elif cmd == 'get_agent_idx':
+                remote.send(env.get_agent_idx())
             else:
                 raise NotImplementedError(f"`{cmd}` is not implemented in the worker")
         except EOFError:
@@ -134,6 +138,19 @@ class SubprocVecEnv(VecEnv):
             remote.send(("reset", None))
         obs = [remote.recv() for remote in self.remotes]
         return _flatten_obs(obs, self.observation_space)
+
+    def remote_set_agent_idx(self, agent_idxs):
+        for remote, agent_idx in zip(self.remotes, agent_idxs):
+            remote.send(('set_agent_idx', agent_idx))
+
+    def remote_get_agent_idx(self):
+        self._assert_not_closed()
+        for remote in self.remotes:
+            remote.send(('get_agent_idx', None))
+        return [remote.recv() for remote in self.remotes]
+
+    def _assert_not_closed(self):
+        assert not self.closed, "Trying to operate on a SubprocVecEnv after calling close()"
 
     def close(self) -> None:
         if self.closed:

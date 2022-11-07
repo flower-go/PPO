@@ -277,7 +277,7 @@ class BaseAlgorithm(ABC):
             An optimizer or a list of optimizers.
         """
         # Log the current learning rate
-        self.logger.record("train/learning_rate", self.lr_schedule(self._current_progress_remaining))
+        self.logger.record("train/learning_rate", self.lr_schedule(self._current_progress_remaining), exclude="tensorboard")
 
         if not isinstance(optimizers, list):
             optimizers = [optimizers]
