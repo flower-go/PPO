@@ -214,7 +214,7 @@ def main(env: wrappers.EvaluationEnv, args: argparse.Namespace):
 
     # Create the vectorized environment
     venv = gym.vector.AsyncVectorEnv([lambda: gym.make(env.spec.id)] * args.workers)
-    venv.seed(args.seed)
+    # venv.seed(args.seed)
 
 
     exp_name = f"exp_name:{args.exp_name};hid_size:{args.hidden_layer_size};clip_eps:{args.clip_epsilon};entr_reg:{args.entropy_regularization};act_lr:{args.actor_learning_rate};crit_lr:{args.critic_learning_rate};mini_b_size:{args.mini_batch_size};workers:{args.workers};worker_steps:{args.worker_steps};activation:{args.activation};epochs:{args.epochs};agents:{args.agents}"
@@ -272,6 +272,7 @@ def main(env: wrappers.EvaluationEnv, args: argparse.Namespace):
             action = np.array(action).reshape((-1,args.agents))
             action_prob = np.array(action_prob).reshape((-1, args.agents))
             value = np.array(value).reshape((-1, args.agents))
+            print(action)
 
             next_state, global_reward, done, info = venv.step(action)
             reward = np.array([i["agent_rewards"] for i in info])
@@ -384,6 +385,7 @@ if __name__ == "__main__":
     # Create the environment
     env = wrappers.EvaluationEnv(gym.make("MultiCollect{}-v0".format(args.agents)), args.seed)
 
-
+    print(env.observation_space)
+    print(env.action_space)
 
     main(env, args)

@@ -280,5 +280,7 @@ if __name__ == "__main__":
 
     # Create the environment
     env = wrappers.EvaluationEnv(gym.make("SingleCollect-v0"), args.seed)
+    print(env.observation_space)
+    print(env.action_space)
 
     main(env, args)
