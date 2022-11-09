@@ -187,6 +187,26 @@ class NNPolicy(object):
         raise NotImplementedError()
 
 
+class AgentFromStableBaselinesPolicy(Agent):
+
+    def __init__(self, policy):
+        self.policy = policy
+
+    def action(self, state):
+        return self.actions([state], [self.agent_index])[0]
+
+    def actions(self, states, agent_indices):
+        # x = self.policy.predict(obs_tensor, deterministic=True)
+        action_probs_n = self.policy.multi_state_policy(states, agent_indices)
+        actions_and_infos_n = []
+        for action_probs in action_probs_n:
+            action = Action.sample(action_probs)
+            actions_and_infos_n.append(
+                (action, {"action_probs": action_probs})
+            )
+        return actions_and_infos_n
+
+
 class AgentFromPolicy(Agent):
     """
     This is a useful Agent class backbone from which to subclass from NN-based agents.

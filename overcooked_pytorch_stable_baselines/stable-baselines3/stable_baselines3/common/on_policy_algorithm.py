@@ -129,7 +129,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
         env: VecEnv,
         callback: BaseCallback,
         rollout_buffer: RolloutBuffer,
-        n_rollout_steps: int,
+        n_rollout_steps: int
     ) -> bool:
         """
         Collect experiences using the current policy and fill a ``RolloutBuffer``.
@@ -167,6 +167,9 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 obs_tensor = obs_as_tensor(obs, self.device)
                 actions, values, log_probs = self.policy(obs_tensor)
 
+
+                population_sampled_response = env.population[0].policy(obs_tensor)
+
                 other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self._last_obs])
                 other_agent_obs_tensor = obs_as_tensor(other_agent_obs, self.device)
                 other_agent_actions, _, _ = env.other_agent_model.policy(other_agent_obs_tensor)
@@ -184,11 +187,9 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
             new_obs, rewards, dones, infos = env.step(joint_action)
 
-            # rewards = rewards +
-
             agent_sparse_r = [info["shaped_r_by_agent"][info["policy_agent_idx"]] for info in infos]
 
-            rewards = rewards + np.array(agent_sparse_r)
+            rewards = rewards + self.sparse_r_coef_horizon * np.array(agent_sparse_r)
 
             self.num_timesteps += env.num_envs
 
@@ -222,6 +223,8 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             self._last_obs = new_obs
             self._last_episode_starts = dones
 
+        assert dones[0] == True, "env is not done after 400 steps"
+
         with th.no_grad():
             # Compute value for the last timestep
             new_obs = np.array([entry["both_agent_obs"][0] for entry in new_obs])
@@ -248,6 +251,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
         tb_log_name: str = "OnPolicyAlgorithm",
         reset_num_timesteps: bool = True,
         progress_bar: bool = False,
+            args = None
     ) -> OnPolicyAlgorithmSelf:
         iteration = 0
 
@@ -259,17 +263,32 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             progress_bar,
         )
 
+        self.args = args
+
         callback.on_training_start(locals(), globals())
+
+        self.sparse_r_coef_horizon = 1
+        self.action_prob_diff_reward_coef = args["action_prob_diff_reward_coef"]
 
         while self.num_timesteps < total_timesteps:
 
             continue_training = self.collect_rollouts(self.env, callback, self.rollout_buffer, n_rollout_steps=self.n_steps)
+
+            if self.args:
+                self.anneal_learning_parameters()
+
+            # self.ent_coef = max(0.001,0.1 - (self.num_timesteps // 150000) * 0.005)
+            #
+            # self.augmented_rewards_coef = max(0, 1 - (self.num_timesteps // 100000) * 0.05)
+
 
             if continue_training is False:
                 break
 
             iteration += 1
             self._update_current_progress_remaining(self.num_timesteps, total_timesteps)
+
+            # self.rollout_buffer.on_rollout_start() # TODO: did i modify this?
 
             # Display training infos
             if log_interval is not None and iteration % log_interval == 0:
@@ -278,6 +297,11 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 self.logger.record("time/iterations", iteration, exclude="tensorboard")
                 if len(self.ep_info_buffer) > 0 and len(self.ep_info_buffer[0]) > 0:
                     self.logger.record("rollout/ep_rew_mean", safe_mean([ep_info["ep_shaped_r"] for ep_info in self.ep_info_buffer]))
+                    self.logger.record("rollout/cumulative_shaped_rewards_by_agent", safe_mean([ep_info["ep_game_stats"]["cumulative_shaped_rewards_by_agent"][ep_info["policy_agent_idx"]] for ep_info in self.ep_info_buffer]))
+                    self.logger.record("rollout/cumulative_sparse_rewards_by_agent", safe_mean([ep_info["ep_game_stats"]["cumulative_sparse_rewards_by_agent"][ep_info["policy_agent_idx"]] for ep_info in self.ep_info_buffer]))
+
+                    self.logger.record("rollout/cumulative_shaped_rewards_by_other_agent", safe_mean([ep_info["ep_game_stats"]["cumulative_shaped_rewards_by_agent"][1 - ep_info["policy_agent_idx"]] for ep_info in self.ep_info_buffer]))
+                    self.logger.record("rollout/cumulative_sparse_rewards_by_other_agent", safe_mean([ep_info["ep_game_stats"]["cumulative_sparse_rewards_by_agent"][1 - ep_info["policy_agent_idx"]] for ep_info in self.ep_info_buffer]))
                     self.logger.record("rollout/ep_len_mean", safe_mean([ep_info["ep_length"] for ep_info in self.ep_info_buffer]), exclude="tensorboard")
                 self.logger.record("time/fps", fps, exclude="tensorboard")
                 self.logger.record("time/time_elapsed", int(time_elapsed), exclude="tensorboard")
@@ -285,6 +309,10 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 self.logger.dump(step=self.num_timesteps)
 
             self.train()
+
+            if log_interval is not None and iteration % log_interval == 0:
+                evaluation_avg_rewards_per_episode = self.evaluate_env()
+                self.logger.record("evaluation_rollout/avg_ep_rew_sum", evaluation_avg_rewards_per_episode)
 
         callback.on_training_end()
 
@@ -294,3 +322,38 @@ class OnPolicyAlgorithm(BaseAlgorithm):
         state_dicts = ["policy", "policy.optimizer"]
 
         return state_dicts, []
+
+    def anneal_learning_parameters(self):
+        if self.args:
+            self.ent_coef = max(self.args["ent_coef_end"],self.args["ent_coef_start"] - (self.num_timesteps / self.args["ent_coef_horizon"]) * (self.args["ent_coef_start"] - self.args["ent_coef_end"]))
+            self.sparse_r_coef_horizon = max(0, 1 - (self.num_timesteps / self.args["sparse_r_coef_horizon"]))
+
+    def evaluate_env(self):
+        evaluation_rewards = []
+
+        self._last_obs = self.env.reset()
+        for _ in range(400):
+            with th.no_grad():
+                # Convert to pytorch tensor or to TensorDict
+                obs = np.array([entry["both_agent_obs"][0] for entry in self._last_obs])
+                obs_tensor = obs_as_tensor(obs, self.device)
+                actions, _= self.policy.predict(obs_tensor, deterministic=True)
+
+                other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self._last_obs])
+                other_agent_obs_tensor = obs_as_tensor(other_agent_obs, self.device)
+                other_agent_actions, _ = self.env.other_agent_model.policy.predict(other_agent_obs_tensor, deterministic=True)
+
+            joint_action = [(actions[i], other_agent_actions[i]) for i in range(len(actions))]
+            new_obs, rewards, dones, infos = self.env.step(joint_action)
+
+            evaluation_rewards.append(rewards)
+
+            self._last_obs = new_obs
+
+        evaluation_rewards = np.concatenate(evaluation_rewards)
+
+        assert dones[0] == True, "after 400 steps env is not done"
+
+        evaluation_avg_rewards_per_episode = np.sum(evaluation_rewards) / self.env.num_envs
+        return evaluation_avg_rewards_per_episode
+

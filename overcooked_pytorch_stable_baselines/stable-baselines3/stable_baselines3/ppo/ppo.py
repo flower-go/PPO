@@ -272,6 +272,7 @@ class PPO(OnPolicyAlgorithm):
                 th.nn.utils.clip_grad_norm_(self.policy.parameters(), self.max_grad_norm)
                 self.policy.optimizer.step()
 
+
             if not continue_training:
                 break
 
@@ -282,6 +283,7 @@ class PPO(OnPolicyAlgorithm):
         self.logger.record("train/entropy_loss", np.mean(entropy_losses))
         self.logger.record("train/policy_gradient_loss", np.mean(pg_losses))
         self.logger.record("train/value_loss", np.mean(value_losses))
+        self.logger.record("train/ent_coef", self.ent_coef)
         self.logger.record("train/approx_kl", np.mean(approx_kl_divs))
         self.logger.record("train/clip_fraction", np.mean(clip_fractions), exclude="tensorboard")
         self.logger.record("train/loss", loss.item())
@@ -302,6 +304,7 @@ class PPO(OnPolicyAlgorithm):
         tb_log_name: str = "PPO",
         reset_num_timesteps: bool = True,
         progress_bar: bool = False,
+            args = None
     ) -> PPOSelf:
 
         return super().learn(
@@ -311,4 +314,5 @@ class PPO(OnPolicyAlgorithm):
             tb_log_name=tb_log_name,
             reset_num_timesteps=reset_num_timesteps,
             progress_bar=progress_bar,
+            args=args
         )
