@@ -2,6 +2,7 @@ import warnings
 from typing import Any, Dict, Optional, Type, TypeVar, Union
 
 import numpy as np
+import torch
 import torch as th
 from gym import spaces
 from torch.nn import functional as F
@@ -245,6 +246,11 @@ class PPO(OnPolicyAlgorithm):
                     entropy_loss = -th.mean(-log_prob)
                 else:
                     entropy_loss = -th.mean(entropy)
+
+                if self.env.population:
+                    with torch.no_grad():
+                        temp = self.env.population[0].policy(rollout_data.observations)
+
 
                 entropy_losses.append(entropy_loss.item())
 

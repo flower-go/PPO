@@ -337,11 +337,11 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 # Convert to pytorch tensor or to TensorDict
                 obs = np.array([entry["both_agent_obs"][0] for entry in self._last_obs])
                 obs_tensor = obs_as_tensor(obs, self.device)
-                actions, _= self.policy.predict(obs_tensor, deterministic=True)
+                actions, _= self.policy.predict(obs_tensor, deterministic=False)
 
                 other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self._last_obs])
                 other_agent_obs_tensor = obs_as_tensor(other_agent_obs, self.device)
-                other_agent_actions, _ = self.env.other_agent_model.policy.predict(other_agent_obs_tensor, deterministic=True)
+                other_agent_actions, _ = self.env.other_agent_model.policy.predict(other_agent_obs_tensor, deterministic=False)
 
             joint_action = [(actions[i], other_agent_actions[i]) for i in range(len(actions))]
             new_obs, rewards, dones, infos = self.env.step(joint_action)

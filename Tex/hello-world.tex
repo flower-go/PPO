@@ -186,7 +186,47 @@ What is Zero-shot coordination?? - studies how independently trained agents may 
 \end{list}
 
 
+\section{Work progress}
+\subsection*{7.11.2022}
+\begin{list}{}{}
+    \item manipulace set agent id pro jednotliva env, jakym zpusobem se zpracovavaji odesilane obs a prijimane actions
+        je potreba toto pak jakkoliv resit na urovni stable baselines strev?
+        vypada to, ze ne ... Na strane RUNNER: v $obs[0]$ je vzdy obs pro self.model a v $obs[1]$ je vzdy obs pro self.other agent model
+        Runner vzdy vytvori joint actions jako (self actions, other agent actions) a posle je do env
+        Env je zpracuje, podle agent id budto necha, nebo spravne prohodi do joint actions
+        Env s joint actions provede step, ziska obs a opet spravne dle agent idx budto necha nebo prohodi a vraci (obs0, obs1),
+            A opet jsme na zacatku ...  Runner se muze spolehnout ze v $obs[0]$ ma obs toho trenovaneho modelu self.policy a v $obs[1]$ ma obs pro other agent model (de facto embedded into environment)
 
+    \item kolik env steps provadi Runner? nelze nastavit pevne jedna epizoda == 400? => parametr v PPO()
+    \item proc overcooked env reset musi resetovat mlam? Zatim zakomentovano, TODO: proverit
+    \item learning rate zatim neni annealovany
+    \item zakomentovany nektere metriky, kterym zatim nerozumim nebo se mi nemeni (clip fraction, clip range, learning rate)
+\end{list}
+
+\subsection*{15.11.2022}
+\begin{list}{}{}
+    \item Struktura inspiravana projektem max population entropy, take pouzito stable baselines
+    \item stable baselines posledni oficialni podpora TF1, neoficialni podpora TF2
+    \item nove doporucene Stable baselines3 ktere pouziva pytorch
+    \item S pytorch moc neumim, ale pozmenit reward a pridat do loss rozdil oproti populaci asi neni problem, takze zalezi jak moc velke zmeny ocekavam
+    \item Adaptace na SB3 docela jednoducha, vektorizovane prostredi
+    \item Other agent jako soucast "single agent" prostredi
+    
+    Technicke problemy:
+    \item Prostredi se vzdy resetuje do stejneho stavu
+    \item Struktura CNN, MLP vs reprezentace stavu lossless, featurize state mdp
+    \item RNN, Frame stacking, nebo staci reakcni agent?
+    \item Jak vyhodnocovat agenty deterministicky arg max dopadne kazda epizoda naprosto stejne, nedeterministicky teoreticky nedostavam nejlepsi vysledek, nebo vyhodnocovany agent deterministicky a other agent nedeterministicky? Zatim nevim jak to resi v ostatnich projektech
+    \item Annealing entropy coeficient?, annealing sparse r coef
+    \item Napevno 5M env steps staci? Da se o tom rict "with little loss of generality"? Nebo tohle muze byt zkreslujici pro vysledek mych experimentu?
+    \item 5 zajimavych map
+    \item diff bonus: k dispozici $log_prob$ pro danou akci, $e^log_prob = prob, diff =? min_pop(p(a) - a(a))^2 =? (mean(pop(a) - a(a)))^2$
+    \item Konkretni plan: Zacit s jednou mapou, natrenovat si 10 self-play agentu (pripadne dalsich 10 s ruznymi hyper-parameters), ktere si necham pro nezavisle testovani,
+        Pak zacit trenovat tim pridavacim zpusobem populaci a kazdeho noveho jedince otestovat vuci vsem 10 testovacim. Teorie je takova ze s kazdym pozdeji pridanym agentem ma byt vysledek lepsi vuci test agentum.
+        Zacit s diff bonusem = 0 pro porovnani a pak zkouset bonus zvysovat (0.1).
+        To same pro dalsi mapu a zkusit najit nejakou zajimavou hodnotu pro diff 
+
+\end{list}
 
 
 \end{document}

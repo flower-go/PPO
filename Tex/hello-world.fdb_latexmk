@@ -1,14 +1,18 @@
 # Fdb version 3
-["pdflatex"] 1665675333 "/home/premek/DP/PPO/Tex/hello-world.tex" "hello-world.pdf" "hello-world" 1665675333
+["pdflatex"] 1668500734 "/home/premek/DP/PPO/Tex/hello-world.tex" "hello-world.pdf" "hello-world" 1668500734
   "/etc/texmf/web2c/texmf.cnf" 1663774648 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/premek/DP/PPO/Tex/hello-world.tex" 1665675333 12038 00f89b785e8be5c319bd452577501383 ""
+  "/home/premek/DP/PPO/Tex/hello-world.tex" 1668500733 15356 e67eee8df1cf351711886c04164d32c0 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm" 1136768653 1324 c910af8c371558dc20f2d7822f66fe64 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr12.tfm" 1136768653 1288 655e228510b4c2a1abe905c368440826 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr17.tfm" 1136768653 1292 296a67155bdbfc32aa9c636f21e91433 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmtt10.tfm" 1136768653 768 1321e9409b4137d6fb428ac9dc956269 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb" 1248133631 32080 340ef9bf63678554ee606688e7b5339d ""
+  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1248133631 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
+  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb" 1248133631 36281 c355509802a035cadc5f15869451dcee ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1248133631 35752 024fb6c41858982481f6968b5fc26508 ""
+  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb" 1248133631 32762 224316ccc9ad3ca0423a14971cfa7fc1 ""
+  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1248133631 32569 5e5ddc8df908dea60932f3c484a54c0d ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb" 1248133631 31099 c85edf1dd5b9e826d67c9c7293b6786c ""
   "/usr/share/texlive/texmf-dist/tex/generic/atbegshi/atbegshi.sty" 1575674566 24708 5584a51a7101caf7e6bbf1fc27d8f7b1 ""
   "/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty" 1576625341 40635 c40361e206be584d448876bba8a64a3b ""
@@ -48,9 +52,9 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1644012257 39432 7155514e09a3d69036fac785183a21c2 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1663775754 165012 f177baa1c39a3ebd62c3096a43521a0d ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1663775757 1435854 02c99c63a09a447356815c4d8fcd2847 ""
-  "hello-world.aux" 1665675333 2550 ef99fe7138c843a12fea17c74db0211c "pdflatex"
-  "hello-world.out" 1665675333 3806 dcc0f2a14e4c7472492b2aa7bc1ea2a8 "pdflatex"
-  "hello-world.tex" 1665675333 12038 00f89b785e8be5c319bd452577501383 ""
+  "hello-world.aux" 1668500734 2665 2abcd4cf1e75bc84e41fea59922cba3e "pdflatex"
+  "hello-world.out" 1668500734 3929 9eaf5b14f969d49d95c15c696b11d02a "pdflatex"
+  "hello-world.tex" 1668500733 15356 e67eee8df1cf351711886c04164d32c0 ""
   (generated)
   "hello-world.aux"
   "hello-world.log"

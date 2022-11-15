@@ -9,9 +9,9 @@ params["RUN_TYPE"] = "joint_ppo"
 params["sim_threads"] = 8
 
 args = {}
-args["ent_coef_start"] = 0.1
+args["ent_coef_start"] = 0.0
 args["ent_coef_horizon"] = 2e6
-args["ent_coef_end"] = 0.001
+args["ent_coef_end"] = 0.000
 
 args["sparse_r_coef_horizon"] = 1e6
 
