@@ -247,14 +247,51 @@ class PPO(OnPolicyAlgorithm):
                 else:
                     entropy_loss = -th.mean(entropy)
 
-                if self.env.population:
-                    with torch.no_grad():
-                        temp = self.env.population[0].policy(rollout_data.observations)
+                loss = policy_loss + self.ent_coef * entropy_loss + self.vf_coef * value_loss
+                # loss = 0
 
+                # pop_probs = torch.from_numpy(np.array([[[0.34,0.05,0.02,0.01,0.15,0.43] for _ in range(400)], [[0.61,0.2,0.01,0.02,0.01,0.15] for _ in range(400)]]))
+                # probs = torch.from_numpy(np.array([[0.05,0.08,0.24,0.15,0.33,0.15] for _ in range(400)]))
+                #
+                # E = probs - pop_probs
+                # S = np.square(E)
+                # M = np.mean(S, axis=0)
+                # M_total = np.mean(M)
+                #
+                # E = torch.sub(probs, pop_probs)
+                # S = torch.square(E)
+                # M = torch.mean(S, dim=0)
+                # M_total = torch.mean(M)
+                #
+                # M = F.mse_loss(probs, pop_probs)
+                # loss = F.mse_loss(probs, pop_probs, reduction="mean")
+
+                # A = torch.from_numpy(np.array([0., 0., 0., 0., 0.01, 0.99]))
+                # B = torch.from_numpy(np.array([0., 0., 0., 0., 0.99, 0.01]))
+                #
+                # KLN = F.kl_div(A, B)
+                # KLN = F.kl_div(B, A)
+
+
+                if self.env.population and self.args["action_prob_diff_loss_coef"]:
+                    with th.no_grad():
+                        population_action_distributions = torch.from_numpy(np.array(
+                            [ind.policy.get_distribution(rollout_data.observations).distribution.probs.detach().numpy() for ind in self.env.population]))
+                            # [[np.array([0.5,0.15,0.0,0.2,0.1,0.05], dtype=np.single) for _ in range(len(rollout_data.observations))]  for ind in self.env.population]))
+
+                    actions_prob_dist = self.policy.get_distribution(rollout_data.observations)
+                    # diff = torch.sub(actions_prob_dist.distribution.probs, population_action_distributions)
+                    # diff_square = torch.square(diff)
+                    # x = torch.mean(diff_square)
+                    pop_diff_loss = -F.mse_loss(actions_prob_dist.distribution.probs, population_action_distributions, reduction="mean")
+
+                    loss = loss + self.args["action_prob_diff_loss_coef"] * pop_diff_loss
 
                 entropy_losses.append(entropy_loss.item())
 
-                loss = policy_loss + self.ent_coef * entropy_loss + self.vf_coef * value_loss
+
+
+
 
                 # Calculate approximate form of reverse KL Divergence for early stopping
                 # see issue #417: https://github.com/DLR-RM/stable-baselines3/issues/417

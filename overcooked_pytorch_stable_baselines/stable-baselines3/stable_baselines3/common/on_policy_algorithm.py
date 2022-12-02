@@ -6,6 +6,8 @@ import gym
 import numpy as np
 import torch as th
 
+import random
+
 import overcooked_ai_py.mdp.actions
 from stable_baselines3.common.base_class import BaseAlgorithm
 from stable_baselines3.common.buffers import DictRolloutBuffer, RolloutBuffer
@@ -150,6 +152,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
         n_steps = 0
         rollout_buffer.reset()
+        pop_diff_reward = np.array([0 for _ in range(env.num_envs)])
         # Sample new weights for the state dependent exploration
         if self.use_sde:
             self.policy.reset_noise(env.num_envs)
@@ -166,13 +169,12 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 obs = np.array([entry["both_agent_obs"][0] for entry in self._last_obs])
                 obs_tensor = obs_as_tensor(obs, self.device)
                 actions, values, log_probs = self.policy(obs_tensor)
-
-
-                population_sampled_response = env.population[0].policy(obs_tensor)
+                # actions, _ = self.policy.predict(obs_tensor,deterministic=True)
 
                 other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self._last_obs])
                 other_agent_obs_tensor = obs_as_tensor(other_agent_obs, self.device)
-                other_agent_actions, _, _ = env.other_agent_model.policy(other_agent_obs_tensor)
+                other_agent_actions, _, other_agent_log_probs = env.other_agent_model.policy(other_agent_obs_tensor)
+                # other_agent_actions, _ = env.other_agent_model.policy.predict(other_agent_obs_tensor, deterministic=True)
             actions = actions.cpu().numpy()
             other_agent_actions = other_agent_actions.cpu().numpy()
 
@@ -189,7 +191,28 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
             agent_sparse_r = [info["shaped_r_by_agent"][info["policy_agent_idx"]] for info in infos]
 
-            rewards = rewards + self.sparse_r_coef_horizon * np.array(agent_sparse_r)
+            if self.env.population_mode:
+                rewards = (1 - self.sparse_r_coef_horizon) * rewards + self.sparse_r_coef_horizon * np.array(agent_sparse_r)
+            else:
+                rewards = rewards + self.sparse_r_coef_horizon * np.array(agent_sparse_r)
+
+            if self.env.population_mode and self.args["action_prob_diff_reward_coef"]:
+                with th.no_grad():
+                    population_action_distributions = np.array([ind.policy.get_distribution(obs_tensor).distribution.probs.detach().numpy() for ind in self.env.population])
+
+                    actions_prob_dist = self.policy.get_distribution(obs_tensor)
+                    diff = actions_prob_dist.distribution.probs.detach().numpy() - population_action_distributions
+
+                    square_diff = np.square(diff)
+                    x = np.mean(square_diff, axis=2)
+                    pop_diff_reward = np.mean(x, axis=0)
+
+
+                # rewards = rewards + self.args["action_prob_diff_reward_coef"] * pop_diff_reward
+
+
+
+
 
             self.num_timesteps += env.num_envs
 
@@ -219,7 +242,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                     rewards[idx] += self.gamma * terminal_value
 
             self._last_obs = np.array([entry["both_agent_obs"][0] for entry in self._last_obs])
-            rollout_buffer.add(self._last_obs, actions, rewards, self._last_episode_starts, values, log_probs)
+            rollout_buffer.add(self._last_obs, actions, rewards, self._last_episode_starts, values, log_probs, pop_diff_reward)
             self._last_obs = new_obs
             self._last_episode_starts = dones
 
@@ -270,12 +293,19 @@ class OnPolicyAlgorithm(BaseAlgorithm):
         self.sparse_r_coef_horizon = 1
         self.action_prob_diff_reward_coef = args["action_prob_diff_reward_coef"]
 
+        population_present = len(self.env.population) > 0
+
         while self.num_timesteps < total_timesteps:
 
-            continue_training = self.collect_rollouts(self.env, callback, self.rollout_buffer, n_rollout_steps=self.n_steps)
+            if population_present:
+                self.env.other_agent_model = random.choice(self.env.population) if len(self.env.population) > 0 else self.model
 
             if self.args:
                 self.anneal_learning_parameters()
+
+            continue_training = self.collect_rollouts(self.env, callback, self.rollout_buffer, n_rollout_steps=self.n_steps)
+
+
 
             # self.ent_coef = max(0.001,0.1 - (self.num_timesteps // 150000) * 0.005)
             #
@@ -297,6 +327,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 self.logger.record("time/iterations", iteration, exclude="tensorboard")
                 if len(self.ep_info_buffer) > 0 and len(self.ep_info_buffer[0]) > 0:
                     self.logger.record("rollout/ep_rew_mean", safe_mean([ep_info["ep_shaped_r"] for ep_info in self.ep_info_buffer]))
+                    self.logger.record("rollout/pop_diff_reward", np.mean(self.rollout_buffer.pop_diff_reward))
                     self.logger.record("rollout/cumulative_shaped_rewards_by_agent", safe_mean([ep_info["ep_game_stats"]["cumulative_shaped_rewards_by_agent"][ep_info["policy_agent_idx"]] for ep_info in self.ep_info_buffer]))
                     self.logger.record("rollout/cumulative_sparse_rewards_by_agent", safe_mean([ep_info["ep_game_stats"]["cumulative_sparse_rewards_by_agent"][ep_info["policy_agent_idx"]] for ep_info in self.ep_info_buffer]))
 
@@ -308,11 +339,16 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 self.logger.record("time/total_timesteps", self.num_timesteps, exclude="tensorboard")
                 self.logger.dump(step=self.num_timesteps)
 
+            # obs = np.array([entry["both_agent_obs"][0] for entry in self._last_obs])
+            # obs_tensor = obs_as_tensor(obs, self.device)
+            # population_probs = self.env.population[0].policy.get_distribution(obs_tensor).distribution.probs
+            # old_probs = self.policy.get_distribution(obs_tensor).distribution.probs
             self.train()
+            # new_probs = self.policy.get_distribution(obs_tensor).distribution.probs
 
-            if log_interval is not None and iteration % log_interval == 0:
-                evaluation_avg_rewards_per_episode = self.evaluate_env()
-                self.logger.record("evaluation_rollout/avg_ep_rew_sum", evaluation_avg_rewards_per_episode)
+            # if log_interval is not None and iteration % log_interval == 0:
+            #     evaluation_avg_rewards_per_episode = self.evaluate_env()
+            #     self.logger.record("evaluation_rollout/avg_ep_rew_sum", evaluation_avg_rewards_per_episode)
 
         callback.on_training_end()
 

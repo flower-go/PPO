@@ -695,7 +695,7 @@ class Overcooked(gym.Env):
         self.action_space = gym.spaces.Box(low, high, dtype=np.float32)
 
     def custom_init(
-        self, base_env, featurize_fn, agent_idx, baselines_reproducible=False
+        self, base_env, featurize_fn, start_state_fn, agent_idx, baselines_reproducible=False
     ):
         """
         base_env: OvercookedEnv
@@ -715,6 +715,7 @@ class Overcooked(gym.Env):
 
         self.base_env = base_env
         self.featurize_fn = featurize_fn
+        self.base_env.start_state_fn = start_state_fn
         self.observation_space = self._setup_observation_space()
         self.action_space = gym.spaces.Discrete(len(Action.ALL_ACTIONS))
         self.set_agent_idx(agent_idx)
@@ -804,6 +805,9 @@ class Overcooked(gym.Env):
     def get_agent_idx(self):
         return self.agent_idx
 
+    def get_rollouts(self, pair, num_games):
+        return self.base_env.get_rollouts(pair, num_games)
+
 from stable_baselines3.common.vec_env import SubprocVecEnv
 class RewardShapingEnv(SubprocVecEnv):
     """
@@ -859,13 +863,11 @@ class RewardShapingEnv(SubprocVecEnv):
 
 
 
-def get_vectorized_gym_env(base_env, gym_env_name, agent_idx, featurize_fn=None, **kwargs):
+def get_vectorized_gym_env(base_env, gym_env_name, agent_idx, featurize_fn=None, start_state_fn=None, **kwargs):
     """
     Create a one-player overcooked gym environment in which the other player is fixed (embedded in the environment)
 
     base_env: A OvercookedEnv instance (fixed or variable map)
-    sim_threads: number of threads used during simulation, that corresponds to the number of parallel
-                 environments used
     """
 
     def gym_env_fn():
@@ -875,8 +877,8 @@ def get_vectorized_gym_env(base_env, gym_env_name, agent_idx, featurize_fn=None,
         #     gym_env.custom_init(base_env, joint_actions=True, featurize_fn=featurize_fn, baselines=True,
         #                         agent_idx=agent_idx)
         # else:
-        gym_env.custom_init(base_env, featurize_fn=featurize_fn, baselines_reproducible=True, agent_idx=agent_idx)
+        gym_env.custom_init(base_env, featurize_fn=featurize_fn, start_state_fn=start_state_fn, baselines_reproducible=True, agent_idx=agent_idx)
         return gym_env
 
-    vectorized_gym_env = SubprocVecEnv([gym_env_fn] * kwargs["sim_threads"])
+    vectorized_gym_env = SubprocVecEnv([gym_env_fn] * kwargs["num_workers"])
     return vectorized_gym_env

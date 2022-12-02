@@ -58,6 +58,8 @@ def _worker(
                 env.set_agent_idx(data)
             elif cmd == 'get_agent_idx':
                 remote.send(env.get_agent_idx())
+            elif cmd == 'get_rollouts':
+                remote.send(env.get_rollouts(data[0], data[1]))
             else:
                 raise NotImplementedError(f"`{cmd}` is not implemented in the worker")
         except EOFError:
@@ -147,6 +149,12 @@ class SubprocVecEnv(VecEnv):
         self._assert_not_closed()
         for remote in self.remotes:
             remote.send(('get_agent_idx', None))
+        return [remote.recv() for remote in self.remotes]
+
+    def remote_get_rollouts(self, pair, num_games):
+        self._assert_not_closed()
+        for remote in self.remotes:
+            remote.send(('get_rollouts', (pair, num_games)))
         return [remote.recv() for remote in self.remotes]
 
     def _assert_not_closed(self):

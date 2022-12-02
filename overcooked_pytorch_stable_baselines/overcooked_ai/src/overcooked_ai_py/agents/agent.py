@@ -10,6 +10,8 @@ from overcooked_ai_py.mdp.actions import Action
 from overcooked_ai_py.mdp.overcooked_mdp import Recipe
 from overcooked_ai_py.utils import OvercookedException
 
+from stable_baselines3.common.utils import obs_as_tensor
+
 
 class Agent(object):
 
@@ -118,7 +120,10 @@ class AgentGroup(object):
             ), "All agents should be separate instances, unless allow_duplicate_agents is set to true"
 
     def joint_action(self, state):
-        actions_and_probs_n = tuple(a.action(state) for a in self.agents)
+        if self.agents[0].agent_index == 0:
+            actions_and_probs_n = tuple(a.action(state) for a in self.agents)
+        else:
+            actions_and_probs_n = tuple(a.action(state) for a in reversed(self.agents))
         return actions_and_probs_n
 
     def set_mdp(self, mdp):
@@ -132,7 +137,7 @@ class AgentGroup(object):
         """
         for i, agent in enumerate(self.agents):
             agent.reset()
-            agent.set_agent_index(i)
+            # agent.set_agent_index(i)
 
 
 class AgentPair(AgentGroup):
@@ -155,9 +160,9 @@ class AgentPair(AgentGroup):
         if self.a0 is self.a1:
             # When using the same instance of an agent for self-play,
             # reset agent index at each turn to prevent overwriting it
-            self.a0.set_agent_index(0)
+            # self.a0.set_agent_index(0)
             action_and_infos_0 = self.a0.action(state)
-            self.a1.set_agent_index(1)
+            # self.a1.set_agent_index(1)
             action_and_infos_1 = self.a1.action(state)
             joint_action_and_infos = (action_and_infos_0, action_and_infos_1)
             return joint_action_and_infos
@@ -189,22 +194,43 @@ class NNPolicy(object):
 
 class AgentFromStableBaselinesPolicy(Agent):
 
-    def __init__(self, policy):
+    def __init__(self, policy, feature_fn, device = "cpu", deterministic = False):
         self.policy = policy
+        self.feature_fn = feature_fn
+        self.device = device
+        self.deterministic = deterministic
 
     def action(self, state):
-        return self.actions([state], [self.agent_index])[0]
+        res = self.actions([state], [self.agent_index])
+        return res
 
     def actions(self, states, agent_indices):
         # x = self.policy.predict(obs_tensor, deterministic=True)
-        action_probs_n = self.policy.multi_state_policy(states, agent_indices)
-        actions_and_infos_n = []
-        for action_probs in action_probs_n:
-            action = Action.sample(action_probs)
-            actions_and_infos_n.append(
-                (action, {"action_probs": action_probs})
-            )
-        return actions_and_infos_n
+        # obs = np.array([entry["both_agent_obs"][0] for entry in self._last_obs])
+
+        obs = self.feature_fn(None, states[0])
+
+        obs_tensor = obs_as_tensor(obs[self.agent_index], self.device)
+        action, _ = self.policy.predict(obs_tensor, deterministic=self.deterministic)
+        action = Action.INDEX_TO_ACTION[action]
+
+        return action, {}
+
+        # action_probs_n = self.policy.multi_state_policy(states, agent_indices)
+        # actions_and_infos_n = []
+        # for action_probs in action_probs_n:
+        #     action = Action.sample(action_probs)
+        #     actions_and_infos_n.append(
+        #         (action, {"action_probs": action_probs})
+        #     )
+        # return actions_and_infos_n
+
+    def reset(self):
+        """
+        One should always reset agents in between trajectory rollouts, as resetting
+        usually clears history or other trajectory-specific attributes.
+        """
+        self.mdp = None
 
 
 class AgentFromPolicy(Agent):

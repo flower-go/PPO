@@ -365,6 +365,7 @@ class RolloutBuffer(BaseBuffer):
         self.values = np.zeros((self.buffer_size, self.n_envs), dtype=np.float32)
         self.log_probs = np.zeros((self.buffer_size, self.n_envs), dtype=np.float32)
         self.advantages = np.zeros((self.buffer_size, self.n_envs), dtype=np.float32)
+        self.pop_diff_reward = np.zeros((self.buffer_size, self.n_envs), dtype=np.float32)
         self.generator_ready = False
         super().reset()
 
@@ -413,6 +414,7 @@ class RolloutBuffer(BaseBuffer):
         episode_start: np.ndarray,
         value: th.Tensor,
         log_prob: th.Tensor,
+        pop_diff_reward : np.ndarray
     ) -> None:
         """
         :param obs: Observation
@@ -442,6 +444,7 @@ class RolloutBuffer(BaseBuffer):
         self.episode_starts[self.pos] = np.array(episode_start).copy()
         self.values[self.pos] = value.clone().cpu().numpy().flatten()
         self.log_probs[self.pos] = log_prob.clone().cpu().numpy()
+        self.pop_diff_reward[self.pos] = pop_diff_reward.copy()
         self.pos += 1
         if self.pos == self.buffer_size:
             self.full = True
@@ -458,7 +461,8 @@ class RolloutBuffer(BaseBuffer):
                 "values",
                 "log_probs",
                 "advantages",
-                "returns"
+                "returns",
+                "pop_diff_reward"
             ]
 
             for tensor in _tensor_names:
@@ -481,7 +485,9 @@ class RolloutBuffer(BaseBuffer):
             self.values[batch_inds].flatten(),
             self.log_probs[batch_inds].flatten(),
             self.advantages[batch_inds].flatten(),
-            self.returns[batch_inds].flatten()
+            self.returns[batch_inds].flatten(),
+            self.pop_diff_reward[batch_inds].flatten(),
+
         )
         return RolloutBufferSamples(*tuple(map(self.to_torch, data)))
 

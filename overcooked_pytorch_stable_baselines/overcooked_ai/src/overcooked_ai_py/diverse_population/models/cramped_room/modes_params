@@ -1,0 +1,21 @@
+default_SP:
+    args["ent_coef_start"] = 0.0
+    args["ent_coef_horizon"] = 2e6
+    args["ent_coef_end"] = 0.0
+
+
+
+start_entropy_SP:
+    args["ent_coef_start"] = 0.1
+    args["ent_coef_horizon"] = 2e6
+    args["ent_coef_end"] = 0.0
+
+entropy_SP:
+    args["ent_coef_start"] = 0.1
+    args["ent_coef_horizon"] = 2e6
+    args["ent_coef_end"] = 0.01
+
+pretrained_entropy_SP:
+    args["ent_coef_start"] = 0.1
+    args["ent_coef_horizon"] = 2e6
+    args["ent_coef_end"] = 0.01

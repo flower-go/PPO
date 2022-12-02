@@ -34,6 +34,7 @@ class RolloutBufferSamples(NamedTuple):
     old_log_prob: th.Tensor
     advantages: th.Tensor
     returns: th.Tensor
+    pop_diff_reward: th.Tensor
 
 
 class DictRolloutBufferSamples(RolloutBufferSamples):
