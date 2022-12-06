@@ -37,6 +37,8 @@ def _worker(
             elif cmd == "reset":
                 observation = env.reset()
                 remote.send(observation)
+            elif cmd == "reset_times":
+                env.reset_times(data)
             elif cmd == "render":
                 remote.send(env.render(data))
             elif cmd == "close":
@@ -140,6 +142,13 @@ class SubprocVecEnv(VecEnv):
             remote.send(("reset", None))
         obs = [remote.recv() for remote in self.remotes]
         return _flatten_obs(obs, self.observation_space)
+
+    def reset_times(self,ns) -> VecEnvObs:
+        for remote, n in zip(self.remotes, ns):
+            remote.send(("reset_times", n))
+        # obs = [remote.recv() for remote in self.remotes]
+        # return _flatten_obs(obs, self.observation_space)
+
 
     def remote_set_agent_idx(self, agent_idxs):
         for remote, agent_idx in zip(self.remotes, agent_idxs):

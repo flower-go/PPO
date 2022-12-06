@@ -228,5 +228,41 @@ What is Zero-shot coordination?? - studies how independently trained agents may 
 
 \end{list}
 
+\subsection*{2.12.2022}
+\begin{list}{}{}
+    \item Zatim se nedari dosahnout SP off-diagonal failure
+    \item Zkousim vymyslet stejnou hodnotu entropy coef napric vsemi expermienty. Pro 0.01 parkrat nezkonvergovalo.
+        Zkousim, jestli nepomuze prodlouzit dobu ziskavani castecnych odmen.
+    \item Zkousim jak moc by slo snizit celkovy pocet kroku trenovani, aby to bylo jeste stabilni a zaroven aby to netrvalo tak dlouho  
+    \item Chce to zrefaktorovat a rozmyslet strukturu evaluace/treninkovych zpusobu a mnozin/ vizualizace, aby vse fungovalo obecne
+    \item Z dnesni spolecne konzultace s Martinem a Petou -> Peta se planuje zabyvat komplexnejsimi mapami nebo komplexnejsim prostredim (pr. vice receptu)
+        Zatim se mi nedari moc nasimulovat ten problem s robustnosti, velka cast agentu se mi zatim jevi jako relativne kompatibilni.
+        Komplexnejsi prostredi by to treba mohlo pomoct rozbit.
+        Zaroven by tam pak chybelo porovnani vuci jinym jiz existujicim pracim, protoze vsechny prace docela shodne pracuji jen s pevnou mnozinou 5 pevnych map 
+    \item TODO: Potreba rozmyslet metriku pro rozdil vuci populaci, MSE se mi zda ze je stejne jako rozdil vuci prumerne distribuce populace, coz mi Martin rozmlouval
+        Mozna nejakou prob dist. metriku, KLL divergenci?  
+
+\end{list}
+
+\subsection*{4.12.2022}
+\begin{list}{}{}
+    \item Mozna souvislost mezi off-diagonal faileru a entropy coeficient
+        Za pozornost stoji SP\_RS\_E0\_IMPORTANT\_Entropy.png,  kde prvni polovina agentu je natrenovana s ent coef $==$ 0
+        zatimco druha polovina s ent coef == 0.02
+        Provnanim leveho horniho ctverce a praveho dolniho ctverce vidime velky rozdil ve vysledcich
+    \item Zkousim ted rychly experiment (1M stepů) s coef 0, 0.01, 0.02 a uvidime
+    \item Pro nizke ent coef se casto stava ze chovani nezkonverguje k necemu rozumnemu - 
+        pridal jsem early stopping kdyz agent nezvladne v prvnich N krocich uvarit jedinou polevku
+    \item prechozi verze evaluatoru vyuzivajici MDP evaluator se mi zdala ze fungovala zvlastne (pr. SP agenti obcas dopadli se sebou samymi katastrofalne)
+        Implementoval jsem evaluator, ktery se chova co nejvic podobne simulacim pri trenovani, jen vzdy preferuji deterministicke akce
+        Pripada mi, ze vypada lepe - diagonala neselhava pro SP
+        TODO: zjistit proc se lisi od originalniho evaluatoru... Neni tam chyba?
+    \item TODO: refaktoring struktury a nazvu porovnani dvou mnozin
+    \item TODO: device cuda funguje daleko pomaleji nez cpu
+        Nedari se mi pouzivat cpu pro predikce pro training samples a cuda pro samotny learn
+
+
+\end{list}
+
 
 \end{document}

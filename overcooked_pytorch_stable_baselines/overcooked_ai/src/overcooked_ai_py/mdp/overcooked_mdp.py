@@ -1323,7 +1323,8 @@ class OvercookedGridworld(object):
                 p = np.random.rand()
                 if p < rnd_obj_prob_thresh:
                     n = int(np.random.randint(low=1, high=4))
-                    m = int(np.random.randint(low=0, high=4 - n))
+                    # m = int(np.random.randint(low=0, high=4 - n)) #PBa comment
+                    m = 0
                     q = np.random.rand()
                     cooking_tick = 0 if q < rnd_obj_prob_thresh else -1
                     start_state.objects[pot_loc] = SoupState.get_soup(
@@ -1342,7 +1343,8 @@ class OvercookedGridworld(object):
                         ["dish", "onion", "soup"], p=[0.2, 0.6, 0.2]
                     )
                     n = int(np.random.randint(low=1, high=4))
-                    m = int(np.random.randint(low=0, high=4 - n))
+                    # m = int(np.random.randint(low=0, high=4 - n)) #PBa comment
+                    m = 0
                     if obj == "soup":
                         player.set_object(
                             SoupState.get_soup(

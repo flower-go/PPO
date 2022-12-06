@@ -695,7 +695,7 @@ class Overcooked(gym.Env):
         self.action_space = gym.spaces.Box(low, high, dtype=np.float32)
 
     def custom_init(
-        self, base_env, featurize_fn, start_state_fn, agent_idx, baselines_reproducible=False
+        self, base_env, featurize_fn, start_state_fn, agent_idx, baselines_reproducible=False, seed=0
     ):
         """
         base_env: OvercookedEnv
@@ -712,6 +712,7 @@ class Overcooked(gym.Env):
             # The effect of this should be negligible, as all other randomness is
             # controlled by the actual run seeds
             np.random.seed(0)
+
 
         self.base_env = base_env
         self.featurize_fn = featurize_fn
@@ -795,6 +796,16 @@ class Overcooked(gym.Env):
             "overcooked_state": self.base_env.state,
             "other_agent_env_idx": 1 - self.agent_idx,
         }
+
+    # Used for venv evaluation, where each sub env is reseted different number of times
+    # this does pseudo different seed for evaluation since every reset state is randomized
+    # maybe would be better to solve sub env seeding
+    def reset_times(self, n):
+        state = None
+        for _ in range(n):
+            state = self.reset()
+
+        return state
 
     def render(self, mode="human", close=False):
         pass
@@ -880,5 +891,37 @@ def get_vectorized_gym_env(base_env, gym_env_name, agent_idx, featurize_fn=None,
         gym_env.custom_init(base_env, featurize_fn=featurize_fn, start_state_fn=start_state_fn, baselines_reproducible=True, agent_idx=agent_idx)
         return gym_env
 
+    def evaluate(self_agent_model, other_agent_model, num_games_per_worker = 1, device = "cpu"):
+        evaluation_rewards = []
+        vectorized_gym_env.reset_times([i for i in range(kwargs["num_workers"])])
+
+        for _ in range(num_games_per_worker):
+            vectorized_gym_env._last_obs = vectorized_gym_env.reset()
+            for _ in range(400):
+                with th.no_grad():
+                    # Convert to pytorch tensor or to TensorDict
+                    obs = np.array([entry["both_agent_obs"][0] for entry in vectorized_gym_env._last_obs])
+                    obs_tensor = obs_as_tensor(obs, device)
+                    actions, _= self_agent_model.policy.predict(obs_tensor, deterministic=True)
+
+                    other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in vectorized_gym_env._last_obs])
+                    other_agent_obs_tensor = obs_as_tensor(other_agent_obs, device)
+                    other_agent_actions, _ = other_agent_model.policy.predict(other_agent_obs_tensor, deterministic=True)
+
+                joint_action = [(actions[i], other_agent_actions[i]) for i in range(len(actions))]
+                new_obs, rewards, dones, infos = vectorized_gym_env.step(joint_action)
+
+                evaluation_rewards.append(rewards)
+
+                vectorized_gym_env._last_obs = new_obs
+
+            assert dones[0] == True, "after 400 steps env is not done"
+
+        evaluation_rewards = np.concatenate(evaluation_rewards)
+        evaluation_avg_rewards_per_episode = np.sum(evaluation_rewards) / num_games_per_worker / vectorized_gym_env.num_envs
+
+        return evaluation_avg_rewards_per_episode
+
     vectorized_gym_env = SubprocVecEnv([gym_env_fn] * kwargs["num_workers"])
+    vectorized_gym_env.evaluate = evaluate
     return vectorized_gym_env

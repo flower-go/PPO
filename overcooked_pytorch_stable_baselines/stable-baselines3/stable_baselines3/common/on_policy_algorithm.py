@@ -169,12 +169,10 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 obs = np.array([entry["both_agent_obs"][0] for entry in self._last_obs])
                 obs_tensor = obs_as_tensor(obs, self.device)
                 actions, values, log_probs = self.policy(obs_tensor)
-                # actions, _ = self.policy.predict(obs_tensor,deterministic=True)
 
                 other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self._last_obs])
                 other_agent_obs_tensor = obs_as_tensor(other_agent_obs, self.device)
                 other_agent_actions, _, other_agent_log_probs = env.other_agent_model.policy(other_agent_obs_tensor)
-                # other_agent_actions, _ = env.other_agent_model.policy.predict(other_agent_obs_tensor, deterministic=True)
             actions = actions.cpu().numpy()
             other_agent_actions = other_agent_actions.cpu().numpy()
 
@@ -297,6 +295,10 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
         while self.num_timesteps < total_timesteps:
 
+
+
+
+
             if population_present:
                 self.env.other_agent_model = random.choice(self.env.population) if len(self.env.population) > 0 else self.model
 
@@ -304,6 +306,14 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 self.anneal_learning_parameters()
 
             continue_training = self.collect_rollouts(self.env, callback, self.rollout_buffer, n_rollout_steps=self.n_steps)
+
+            # Divergent solution check
+            if args["divergent_check_timestep"] is not None and self.num_timesteps > args["divergent_check_timestep"] and self.num_timesteps < args["divergent_check_timestep"] + 3e4:
+                sparse_r = safe_mean([ep_info["ep_game_stats"]["cumulative_sparse_rewards_by_agent"][1 - ep_info["policy_agent_idx"]] for ep_info in self.ep_info_buffer])
+                sparse_r_other_agent = safe_mean([ep_info["ep_game_stats"]["cumulative_sparse_rewards_by_agent"][ep_info["policy_agent_idx"]] for ep_info in self.ep_info_buffer])
+                # Neither of agents have managed to serve single plate of soup within first args["divergent_check_timestep"], models have likely converged to some bad local optima
+                if sparse_r < 5 or sparse_r_other_agent < 5:
+                    raise Exception("Divergent solution")
 
 
 
@@ -346,9 +356,9 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             self.train()
             # new_probs = self.policy.get_distribution(obs_tensor).distribution.probs
 
-            # if log_interval is not None and iteration % log_interval == 0:
-            #     evaluation_avg_rewards_per_episode = self.evaluate_env()
-            #     self.logger.record("evaluation_rollout/avg_ep_rew_sum", evaluation_avg_rewards_per_episode)
+            if args["eval_interval"] is not None and iteration % args["eval_interval"] == 0:
+                evaluation_avg_rewards_per_episode = self.evaluate_env()
+                self.logger.record("evaluation_rollout/avg_ep_rew_sum", evaluation_avg_rewards_per_episode)
 
         callback.on_training_end()
 
@@ -373,11 +383,11 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 # Convert to pytorch tensor or to TensorDict
                 obs = np.array([entry["both_agent_obs"][0] for entry in self._last_obs])
                 obs_tensor = obs_as_tensor(obs, self.device)
-                actions, _= self.policy.predict(obs_tensor, deterministic=False)
+                actions, _= self.policy.predict(obs_tensor, deterministic=True)
 
                 other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self._last_obs])
                 other_agent_obs_tensor = obs_as_tensor(other_agent_obs, self.device)
-                other_agent_actions, _ = self.env.other_agent_model.policy.predict(other_agent_obs_tensor, deterministic=False)
+                other_agent_actions, _ = self.env.other_agent_model.policy.predict(other_agent_obs_tensor, deterministic=True)
 
             joint_action = [(actions[i], other_agent_actions[i]) for i in range(len(actions))]
             new_obs, rewards, dones, infos = self.env.step(joint_action)
