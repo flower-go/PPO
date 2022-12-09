@@ -5,6 +5,7 @@ import numpy as np
 
 def heat_map(table, title, file_name, args, deterministic=True):
     table = np.around(table, decimals=2)
+    # table[table <= 179] = 0
 
 
     fig, ax = plt.subplots()

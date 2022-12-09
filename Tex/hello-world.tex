@@ -264,5 +264,42 @@ What is Zero-shot coordination?? - studies how independently trained agents may 
 
 \end{list}
 
+\subsection*{6.12.2022}
+\begin{list}{}{}
+    \item Implementoval jsem early stopping evaluaci, kdy koncim SP trenink, kdyz evaluace konci nad threshold hodnotou
+        Tim padem minimalizuju riziko ze na diagonale budu mit spatne hodnoty
+    \item Pripada mi, ze s early stopping nemusim nutne resit nejakou pevnou hodnotu entropy coeficientu.
+        Snad by mohlo stacit zacit s vysokou entropii, annealovat ji k nule a hledat early stopping reseni
+    \item Kdyz jsem pouzil pri treninku vic random stavy (p\_rnd v start\_state\_fn), nez pak pri evaluaci, tak to vypadalo ze se zlepsila situace na diagonale
+        Tim padem se by se snad mohla "zhorsit" off diagonal
+    \item Naopak pri mene random trenink stavu nez pri evaluaci, tak to vedlo k vic random vysledkum
+    \item TODO: Zrejme ma smysl pri treninku vzit co nejvic random stavy. Ma smysl pri evaluaci random snizit?
+    \item TODO: Stale neni vyresene jak vyhodnocovat. 
+        Napady pro SP vyhodnoceni: 
+            Pevny threshold > True or False a spocitat pocet
+            Jako threshold pouzit na kazde pozici hodnotu z diagonaly  
+            Jak se postavit k porovnani mych vysledku vs vysledkum v clanku?
+
+        Napady pro vyhodnoceni populace (VS SP mnozina):
+            Prumer jedince z populace vuci vsem SP agentum
+            Zkouset zase pocet nad nejaky threshold?
+
+    \item TODO: Nejake napady, jak prostredi ztizit? Jestli se tim nedosahne vetsi off-diagonal SP failure.
+        Co pak s porovnatelnosti vuci jinym clankum?
+
+\end{list}
+
+\subsection*{Konzultace 6.12.2022}
+\begin{list}{}{}
+    \item Mozna se ten off-diagonal problem neprojevuje kvuli tomu, ze pracuji s jednodussim prostredim
+        Tj. nevyuzivam loss\_less state a tim padem ani konvolucni site
+    \item Martin si mysli jestli kvuli tomu jinemu nastaveni prostredi nekonverguji vsechny agenti ke stejnemu/podobnemu chovani
+    \item Mozne dalsi kroky: Vyzkouset, jestli bude situace stejna na ostatnich mapach. Mozna jsou ostatni tezsi.
+    \item Vyzkouset zmenit na loss\_less a pridat konvolucni vrstvy viz (https://arxiv.org/abs/1910.05789v2)
+
+
+
+\end{list}
+
 
 \end{document}

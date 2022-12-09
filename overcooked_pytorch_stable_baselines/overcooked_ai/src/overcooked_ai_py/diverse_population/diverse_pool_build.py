@@ -6,7 +6,7 @@ from overcooked_ai.src.overcooked_ai_py.agents.agent import AgentPair, AgentFrom
 from overcooked_ai.src.overcooked_ai_py.mdp.actions import Action
 from overcooked_ai.src.overcooked_ai_py.agents.benchmarking import AgentEvaluator
 from datetime import datetime
-from experiments_params import ExperimentsParamsManager
+from experiments_params import ExperimentsParamsManager, ALL_LAYOUTS
 import numpy as np
 from visualisation.visualisation import heat_map
 from evaluation.evaluation import Evaluator
@@ -34,7 +34,7 @@ def init_gym_env(args):
 def load_or_train_models(args, env, checkpoints = [4,7,10]):
     # TODO: assert
 
-    directory = "diverse_population/models/" + args["layout_name"] + "/" + args["mode"] + "/"
+    directory = "diverse_population/models/" + args["layout_name"] + "/" + args["exp"] + "/"
     models = {} if checkpoints is not None else []
     env.population_mode = False
     for n in range(args["trained_models"]):
@@ -49,7 +49,7 @@ def load_or_train_models(args, env, checkpoints = [4,7,10]):
                     now = datetime.now()
                     if model is None:
                         model = PPO("MlpPolicy", env, device="cpu", verbose=0,
-                                    tensorboard_log=f"./diverse_population/logs/{args['mode']}/{str(checkpoint) + 'M_' + str(n).zfill(2)}", n_steps=400,
+                                    tensorboard_log=f"./diverse_population/logs/{args['layout_name']}/{args['exp']}/{str(checkpoint) + 'M_' + str(n).zfill(2)}", n_steps=400,
                                     batch_size=400, seed=now.microsecond + now.hour)
                     env.other_agent_model = model
                     if checkpoint == 4:
@@ -84,7 +84,7 @@ def load_or_train_population_models(args, env, checkpoints = [4,8]):
     assert_set = []
     # TODO: assert
 
-    directory = "diverse_population/models/" + args["map"] + "/" + args["mode"] + "/"
+    directory = "diverse_population/models/" + args["map"] + "/" + args["exp"] + "/"
     models = {}
     env.population_mode = True
     for n in range(args["trained_models"]):
@@ -100,7 +100,7 @@ def load_or_train_population_models(args, env, checkpoints = [4,8]):
                     env.population = models
                     if model is None:
                         model = PPO("MlpPolicy", env, device="cpu", verbose=0,
-                                    tensorboard_log=f"./diverse_population/logs/{args['mode']}/{str(n).zfill(2)}", n_steps=400,
+                                    tensorboard_log=f"./diverse_population/logs/{args['exp']}/{str(n).zfill(2)}", n_steps=400,
                                     batch_size=400, seed=now.microsecond + now.hour)
 
                     env.other_agent_model = model # this will be changed every episode if population is present
@@ -122,7 +122,7 @@ def load_or_train_population_models(args, env, checkpoints = [4,8]):
                 now = datetime.now()
                 if model is None:
                     model = PPO("MlpPolicy", env, device="cpu", verbose=0,
-                                tensorboard_log=f"./diverse_population/logs/{args['mode']}/{str(n).zfill(2)}",
+                                tensorboard_log=f"./diverse_population/logs/{args['exp']}/{str(n).zfill(2)}",
                                 n_steps=400,
                                 batch_size=400, seed=now.microsecond + now.hour)
                 env.other_agent_model = model
@@ -141,15 +141,17 @@ def train_model(n, env, args, checkpoint=None):
     found = False
     while not found:
         try:
-            model = PPO("MlpPolicy", env, device=args["device"], verbose=0,
-                        tensorboard_log=f"./diverse_population/logs/{args['mode']}/{str(n).zfill(2)}",
+            model = PPO("CnnPolicy", env, device=args["device"], verbose=0,
+                        tensorboard_log=f"./diverse_population/logs/{args['layout_name']}/{args['exp']}/{str(n).zfill(2)}",
                         n_steps=400,
-                        batch_size=400, seed=now.microsecond + now.hour)
+                        batch_size=400, seed=now.microsecond + now.hour,
+                        # learning_rate=1e-3, gae_lambda=0.98, clip_range=0.05, max_grad_norm = 0.1
+                        )
             env.other_agent_model = model
             num_steps = args["total_timesteps"]
             model.learn(num_steps, args=args, reset_num_timesteps=False)
             found = True
-        except:
+        finally:
             print("found divergent solution")
             found = False
 
@@ -162,10 +164,10 @@ overcooked_env = OvercookedEnv.from_mdp(mdp, horizon=400)
 
 
 if __name__ == "__main__":
-    params_manager.set_SP_RS_E0()
 
 
-    feature_fn = lambda _, state: overcooked_env.featurize_state_mdp(state)
+    # feature_fn = lambda _, state: overcooked_env.featurize_state_mdp(state)
+    feature_fn = lambda _, state: overcooked_env.lossless_state_encoding_mdp(state, debug=False)
 
     start_state_fn = mdp.get_random_start_state_fn(random_start_pos=True, rnd_obj_prob_thresh = args["rnd_obj_prob_thresh"]) if args["random_start"] == True else None
     gym_env = get_vectorized_gym_env(
@@ -182,18 +184,25 @@ if __name__ == "__main__":
 
 
 
-    modes = [params_manager.set_SP_RS_E0, params_manager.set_SP_RS_E0_01, params_manager.set_SP_RS_E0_02, params_manager.set_SP_RS_E0_05, params_manager.set_SP_RS_E0_05_Drop]
-    modes = [params_manager.set_SP_RS_E0_01_Drop]
 
-    for mode_fn in modes:
-        mode_fn()
+    exp = "CNN_SP_E0_01"
+    layouts = ALL_LAYOUTS
+    layouts = ["cramped_room"]
+
+
+    for layout in layouts:
+        params_manager.args["layout_name"] = layout
+        params_manager.init_base_args_for_layout(layout)
+        params_manager.init_exp_specific_args(exp)
         models = load_or_train_models(args, gym_env, None)
 
-    for mode_fn in modes:
-        mode_fn()
+    for layout in layouts:
+        params_manager.args["layout_name"] = layout
+        params_manager.init_base_args_for_layout(layout)
+        params_manager.init_exp_specific_args(exp)
         models = load_or_train_models(args, gym_env, None)
-        eval_table = evaluator.evaluate(models, models, 8, args["mode"])
-        heat_map(eval_table, args["mode"], args["mode"], args)
+        eval_table = evaluator.evaluate(models, models, 10, args["exp"])
+        heat_map(eval_table, args["exp"], args["exp"], args)
 
 
 

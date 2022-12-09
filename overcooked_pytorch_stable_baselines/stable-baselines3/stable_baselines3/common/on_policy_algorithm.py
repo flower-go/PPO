@@ -295,10 +295,6 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
         while self.num_timesteps < total_timesteps:
 
-
-
-
-
             if population_present:
                 self.env.other_agent_model = random.choice(self.env.population) if len(self.env.population) > 0 else self.model
 
@@ -312,15 +308,8 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 sparse_r = safe_mean([ep_info["ep_game_stats"]["cumulative_sparse_rewards_by_agent"][1 - ep_info["policy_agent_idx"]] for ep_info in self.ep_info_buffer])
                 sparse_r_other_agent = safe_mean([ep_info["ep_game_stats"]["cumulative_sparse_rewards_by_agent"][ep_info["policy_agent_idx"]] for ep_info in self.ep_info_buffer])
                 # Neither of agents have managed to serve single plate of soup within first args["divergent_check_timestep"], models have likely converged to some bad local optima
-                if sparse_r < 5 or sparse_r_other_agent < 5:
+                if sparse_r < 1 and sparse_r_other_agent < 1:
                     raise Exception("Divergent solution")
-
-
-
-            # self.ent_coef = max(0.001,0.1 - (self.num_timesteps // 150000) * 0.005)
-            #
-            # self.augmented_rewards_coef = max(0, 1 - (self.num_timesteps // 100000) * 0.05)
-
 
             if continue_training is False:
                 break
@@ -336,7 +325,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 fps = int((self.num_timesteps - self._num_timesteps_at_start) / time_elapsed)
                 self.logger.record("time/iterations", iteration, exclude="tensorboard")
                 if len(self.ep_info_buffer) > 0 and len(self.ep_info_buffer[0]) > 0:
-                    self.logger.record("rollout/ep_rew_mean", safe_mean([ep_info["ep_shaped_r"] for ep_info in self.ep_info_buffer]))
+                    self.logger.record("rollout/ep_rew_mean", safe_mean([ep_info["ep_sparse_r"] for ep_info in self.ep_info_buffer]))
                     self.logger.record("rollout/pop_diff_reward", np.mean(self.rollout_buffer.pop_diff_reward))
                     self.logger.record("rollout/cumulative_shaped_rewards_by_agent", safe_mean([ep_info["ep_game_stats"]["cumulative_shaped_rewards_by_agent"][ep_info["policy_agent_idx"]] for ep_info in self.ep_info_buffer]))
                     self.logger.record("rollout/cumulative_sparse_rewards_by_agent", safe_mean([ep_info["ep_game_stats"]["cumulative_sparse_rewards_by_agent"][ep_info["policy_agent_idx"]] for ep_info in self.ep_info_buffer]))
@@ -349,16 +338,26 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 self.logger.record("time/total_timesteps", self.num_timesteps, exclude="tensorboard")
                 self.logger.dump(step=self.num_timesteps)
 
-            # obs = np.array([entry["both_agent_obs"][0] for entry in self._last_obs])
-            # obs_tensor = obs_as_tensor(obs, self.device)
-            # population_probs = self.env.population[0].policy.get_distribution(obs_tensor).distribution.probs
-            # old_probs = self.policy.get_distribution(obs_tensor).distribution.probs
             self.train()
-            # new_probs = self.policy.get_distribution(obs_tensor).distribution.probs
 
-            if args["eval_interval"] is not None and iteration % args["eval_interval"] == 0:
+
+            evaluate = self.num_timesteps > args["training_percent_start_eval"] * args["total_timesteps"]
+
+            if evaluate and args["eval_interval"] is not None and iteration % args["eval_interval"] == 0:
                 evaluation_avg_rewards_per_episode = self.evaluate_env()
-                self.logger.record("evaluation_rollout/avg_ep_rew_sum", evaluation_avg_rewards_per_episode)
+                if evaluation_avg_rewards_per_episode > args["eval_stop_threshold"]:
+                    print(f"evaluation result over {args['eval_stop_threshold']} detected, continuing with further evaluation")
+                    eval_values = [evaluation_avg_rewards_per_episode]
+                    for _ in range(args["evals_num_to_threshold"]):
+                        eval_values.append(self.evaluate_env())
+
+                    print(f"evaluation result after re-evaluation: {np.mean(eval_values)}")
+                    if np.mean(eval_values) > args["eval_stop_threshold"]:
+                        print("found good solution, terminating training")
+                        self.logger.record("evaluation_rollout/avg_ep_rew_sum", np.mean(eval_values))
+                        break
+                else:
+                    self.logger.record("evaluation_rollout/avg_ep_rew_sum", evaluation_avg_rewards_per_episode)
 
         callback.on_training_end()
 
@@ -382,12 +381,12 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             with th.no_grad():
                 # Convert to pytorch tensor or to TensorDict
                 obs = np.array([entry["both_agent_obs"][0] for entry in self._last_obs])
-                obs_tensor = obs_as_tensor(obs, self.device)
-                actions, _= self.policy.predict(obs_tensor, deterministic=True)
+                # obs_tensor = obs_as_tensor(obs, self.device)
+                actions, _= self.policy.predict(obs, deterministic=True)
 
                 other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self._last_obs])
-                other_agent_obs_tensor = obs_as_tensor(other_agent_obs, self.device)
-                other_agent_actions, _ = self.env.other_agent_model.policy.predict(other_agent_obs_tensor, deterministic=True)
+                # other_agent_obs_tensor = obs_as_tensor(other_agent_obs, self.device)
+                other_agent_actions, _ = self.env.other_agent_model.policy.predict(other_agent_obs, deterministic=True)
 
             joint_action = [(actions[i], other_agent_actions[i]) for i in range(len(actions))]
             new_obs, rewards, dones, infos = self.env.step(joint_action)

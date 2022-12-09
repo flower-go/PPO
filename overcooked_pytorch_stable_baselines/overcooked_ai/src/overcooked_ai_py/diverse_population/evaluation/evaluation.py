@@ -13,21 +13,26 @@ class Evaluator(object):
         self.venv.reset_times([i for i in range(args["num_workers"])])
 
     def evaluate(self, agent_set_0, agent_set_1, num_games_per_worker = 2, file_name=None, deterministic=True):
-        total = len(agent_set_0) * len(agent_set_1)
-        completed = 0
-        result_matrix = np.zeros((len(agent_set_0), len(agent_set_1)))
-        agent_idxs = [0 for x in range(self.venv.num_envs)]
-        self.venv.remote_set_agent_idx(agent_idxs)
+        file_full_name = f"diverse_population/evaluation/{self.args['layout_name']}/" + file_name + '' if deterministic else '_STOCH'
+        try:
+            result_matrix = np.loadtxt(file_full_name)
+        except:
+            total = len(agent_set_0) * len(agent_set_1)
+            completed = 0
+            result_matrix = np.zeros((len(agent_set_0), len(agent_set_1)))
+            agent_idxs = [0 for x in range(self.venv.num_envs)]
+            self.venv.remote_set_agent_idx(agent_idxs)
 
-        for i in range(len(agent_set_0)):
-            for j in range(len(agent_set_1)):
-                result_matrix[i,j] = self.eval_episodes(agent_set_0[i], agent_set_1[j], num_games_per_worker, deterministic=deterministic)
-                completed = completed + 1
+            for i in range(len(agent_set_0)):
+                for j in range(len(agent_set_1)):
+                    result_matrix[i,j] = self.eval_episodes(agent_set_0[i], agent_set_1[j], num_games_per_worker, deterministic=deterministic)
+                    completed = completed + 1
 
-            print(f"completed {completed} out of {total}")
+                print(f"completed {completed} out of {total}")
 
-        if file_name is not None:
-            np.savetxt(f"diverse_population/evaluation/{self.args['layout_name']}/" + file_name + '' if deterministic else '_STOCH', np.round(np.array(result_matrix)))
+            if file_name is not None:
+                np.savetxt(file_full_name, np.round(np.array(result_matrix)))
+
         return np.array(result_matrix)
 
 

@@ -270,11 +270,11 @@ class OvercookedEnv(object):
         timestep_sparse_reward = sum(mdp_infos["sparse_reward_by_agent"])
         return (next_state, timestep_sparse_reward, done, env_info)
 
-    def lossless_state_encoding_mdp(self, state):
+    def lossless_state_encoding_mdp(self, state, debug=False):
         """
         Wrapper of the mdp's lossless_encoding
         """
-        return self.mdp.lossless_state_encoding(state, self.horizon)
+        return self.mdp.lossless_state_encoding(state, self.horizon, debug=debug)
 
     def featurize_state_mdp(self, state, num_pots=2):
         """
@@ -295,8 +295,8 @@ class OvercookedEnv(object):
         """
         if regen_mdp:
             self.mdp = self.mdp_generator_fn(outside_info)
-            # self._mlam = None
-            self._mp = None
+            # self._mlam = None #PBa
+            # self._mp = None #PBa
         if self.start_state_fn is None:
             self.state = self.mdp.get_standard_start_state()
         else:
@@ -726,9 +726,14 @@ class Overcooked(gym.Env):
         dummy_mdp = self.base_env.mdp
         dummy_state = dummy_mdp.get_standard_start_state()
         obs_shape = self.featurize_fn(dummy_mdp, dummy_state)[0].shape
-        high = np.ones(obs_shape) * float("inf")
+
         low = np.zeros(obs_shape)
-        return gym.spaces.Box(low, high, dtype=np.float32)
+        # high = np.ones(obs_shape) * float("inf") #For MLP
+        # return gym.spaces.Box(low, high, dtype=np.float32) # for MLP
+
+        high = np.ones(obs_shape) * 255  # For CNN
+        return gym.spaces.Box(low, high, dtype=np.uint8) # for CNN
+
 
     def step(self, action):
         """
@@ -883,45 +888,8 @@ def get_vectorized_gym_env(base_env, gym_env_name, agent_idx, featurize_fn=None,
 
     def gym_env_fn():
         gym_env = gym.make(gym_env_name)
-        # if kwargs["RUN_TYPE"] == "joint_ppo":
-        #     # If doing joint training, action space will be different (^2 compared to single agent training)
-        #     gym_env.custom_init(base_env, joint_actions=True, featurize_fn=featurize_fn, baselines=True,
-        #                         agent_idx=agent_idx)
-        # else:
         gym_env.custom_init(base_env, featurize_fn=featurize_fn, start_state_fn=start_state_fn, baselines_reproducible=True, agent_idx=agent_idx)
         return gym_env
 
-    def evaluate(self_agent_model, other_agent_model, num_games_per_worker = 1, device = "cpu"):
-        evaluation_rewards = []
-        vectorized_gym_env.reset_times([i for i in range(kwargs["num_workers"])])
-
-        for _ in range(num_games_per_worker):
-            vectorized_gym_env._last_obs = vectorized_gym_env.reset()
-            for _ in range(400):
-                with th.no_grad():
-                    # Convert to pytorch tensor or to TensorDict
-                    obs = np.array([entry["both_agent_obs"][0] for entry in vectorized_gym_env._last_obs])
-                    obs_tensor = obs_as_tensor(obs, device)
-                    actions, _= self_agent_model.policy.predict(obs_tensor, deterministic=True)
-
-                    other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in vectorized_gym_env._last_obs])
-                    other_agent_obs_tensor = obs_as_tensor(other_agent_obs, device)
-                    other_agent_actions, _ = other_agent_model.policy.predict(other_agent_obs_tensor, deterministic=True)
-
-                joint_action = [(actions[i], other_agent_actions[i]) for i in range(len(actions))]
-                new_obs, rewards, dones, infos = vectorized_gym_env.step(joint_action)
-
-                evaluation_rewards.append(rewards)
-
-                vectorized_gym_env._last_obs = new_obs
-
-            assert dones[0] == True, "after 400 steps env is not done"
-
-        evaluation_rewards = np.concatenate(evaluation_rewards)
-        evaluation_avg_rewards_per_episode = np.sum(evaluation_rewards) / num_games_per_worker / vectorized_gym_env.num_envs
-
-        return evaluation_avg_rewards_per_episode
-
     vectorized_gym_env = SubprocVecEnv([gym_env_fn] * kwargs["num_workers"])
-    vectorized_gym_env.evaluate = evaluate
     return vectorized_gym_env

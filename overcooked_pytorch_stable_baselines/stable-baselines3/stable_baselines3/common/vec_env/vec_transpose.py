@@ -60,15 +60,32 @@ class VecTransposeImage(VecEnvWrapper):
         return spaces.Box(low=0, high=255, shape=new_shape, dtype=observation_space.dtype)
 
     @staticmethod
+    def _transpose_single_image_item(item):
+        item["both_agent_obs"] = (
+            np.transpose(item["both_agent_obs"][0], (2, 0, 1)), np.transpose(item["both_agent_obs"][1], (2, 0, 1)))
+        return item
+
+    @staticmethod
     def transpose_image(image: np.ndarray) -> np.ndarray:
         """
         Transpose an image or batch of images (re-order channels).
+        PBa: in my case single image is dict {both_agent_obs: img[2], overcooked_state: overcooked_state, agent_id: agent_id}
 
         :param image:
         :return:
         """
+        if isinstance(image,dict):
+            image["both_agent_obs"] = (np.transpose(image["both_agent_obs"][0], (2, 0, 1)), np.transpose(image["both_agent_obs"][1], (2, 0, 1)))
+            return image
+
         if len(image.shape) == 3:
             return np.transpose(image, (2, 0, 1))
+
+        #PBa: working with observartion being in format of [batch, {both_agents_observation(2): image [26,5,4]}
+        # original_images = [item["both_agent_observation"]]
+        for item in image:
+            item["both_agent_obs"] = (np.transpose(item["both_agent_obs"][0], (2,0,1)), np.transpose(item["both_agent_obs"][1], (2,0,1)))
+        return image
         return np.transpose(image, (0, 3, 1, 2))
 
     def transpose_observations(self, observations: Union[np.ndarray, Dict]) -> Union[np.ndarray, Dict]:
@@ -85,8 +102,9 @@ class VecTransposeImage(VecEnvWrapper):
         if isinstance(observations, dict):
             # Avoid modifying the original object in place
             observations = deepcopy(observations)
-            for k in self.image_space_keys:
-                observations[k] = self.transpose_image(observations[k])
+            observations = self.transpose_image(observations)
+            # for k in self.image_space_keys:
+            #     observations[k] = self.transpose_image(observations[k])
         else:
             observations = self.transpose_image(observations)
         return observations
