@@ -120,7 +120,7 @@ class AgentGroup(object):
             ), "All agents should be separate instances, unless allow_duplicate_agents is set to true"
 
     def joint_action(self, state):
-        if self.agents[0].agent_index == 0:
+        if self.agents[0].agent_index == 0: #original verze
             actions_and_probs_n = tuple(a.action(state) for a in self.agents)
         else:
             actions_and_probs_n = tuple(a.action(state) for a in reversed(self.agents))
@@ -137,7 +137,7 @@ class AgentGroup(object):
         """
         for i, agent in enumerate(self.agents):
             agent.reset()
-            # agent.set_agent_index(i)
+            #agent.set_agent_index(i) #TODO tohle pro premka ma byt zakomentovane, pro testy ne
 
 
 class AgentPair(AgentGroup):
@@ -541,7 +541,7 @@ class GreedyHumanModel(Agent):
         Effectively, will return a list of all possible locations Y in which the selected
         medium level action X can be performed.
         """
-        player = state.players[self.agent_index]
+        player = state.players[self.agent_index] #TODO problem je ze tu neni self.agent_index
         other_player = state.players[1 - self.agent_index]
         am = self.mlam
 

@@ -12,7 +12,6 @@ from visualisation.visualisation import heat_map
 from evaluation.evaluation import Evaluator
 
 
-
 args = {}
 
 # TODO: should i study effect of annealing of entropy_coef, sparse_r_coef, learning_rate???, ...
