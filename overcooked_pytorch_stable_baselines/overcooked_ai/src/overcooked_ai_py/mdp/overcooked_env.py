@@ -759,7 +759,7 @@ class Overcooked(gym.Env):
         else:
             joint_action = (other_agent_action, agent_action)
 
-        next_state, reward, done, env_info = self.base_env.step(joint_action)
+        next_state, reward, done, env_info = self.base_env.step(joint_action, display_phi=True)
         ob_p0, ob_p1 = self.featurize_fn(self.mdp, next_state)
         if self.agent_idx == 0:
             both_agents_ob = (ob_p0, ob_p1)

@@ -45,12 +45,12 @@ class Evaluator(object):
                 with th.no_grad():
                     # Convert to pytorch tensor or to TensorDict
                     obs = np.array([entry["both_agent_obs"][0] for entry in self.venv._last_obs])
-                    obs_tensor = obs_as_tensor(obs, self.device)
-                    actions, _= self_agent_model.policy.predict(obs_tensor, deterministic=deterministic)
+                    # obs_tensor = obs_as_tensor(obs, self.device)
+                    actions, _= self_agent_model.policy.predict(obs, deterministic=deterministic)
 
                     other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self.venv._last_obs])
-                    other_agent_obs_tensor = obs_as_tensor(other_agent_obs, self.device)
-                    other_agent_actions, _ = other_agent_model.policy.predict(other_agent_obs_tensor, deterministic=deterministic)
+                    # other_agent_obs_tensor = obs_as_tensor(other_agent_obs, self.device)
+                    other_agent_actions, _ = other_agent_model.policy.predict(other_agent_obs, deterministic=deterministic)
 
                 joint_action = [(actions[i], other_agent_actions[i]) for i in range(len(actions))]
                 new_obs, rewards, dones, infos = self.venv.step(joint_action)

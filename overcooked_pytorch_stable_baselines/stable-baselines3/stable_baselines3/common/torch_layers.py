@@ -82,11 +82,11 @@ class NatureCNN(BaseFeaturesExtractor):
             # nn.ReLU(),
             # PBa
             nn.Conv2d(n_input_channels, 25, kernel_size=5, stride=1, padding=2),
-            nn.ReLU(),
+            nn.LeakyReLU(),
             nn.Conv2d(25, 25, kernel_size=3, stride=1, padding=1), # PBa propably wrong
-            nn.ReLU(),
+            nn.LeakyReLU(),
             nn.Conv2d(25, 25, kernel_size=3, stride=1, padding=0),
-            nn.ReLU(),
+            nn.LeakyReLU(),
             # PBa
             nn.Flatten(),
         )
@@ -98,9 +98,11 @@ class NatureCNN(BaseFeaturesExtractor):
         # self.linear = nn.Sequential(nn.Linear(n_flatten, features_dim), nn.ReLU())  #PBa TODO: probably make smaller than
         self.linear = nn.Sequential(
             nn.Linear(n_flatten, 32),
-            nn.ReLU(),
+            nn.LeakyReLU(),
             nn.Linear(32, 32),
-            nn.ReLU(),
+            nn.LeakyReLU(),
+            nn.Linear(32, 32),
+            nn.LeakyReLU(),
         )
 
     def forward(self, observations: th.Tensor) -> th.Tensor:

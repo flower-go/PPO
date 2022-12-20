@@ -191,6 +191,18 @@ class PPO(OnPolicyAlgorithm):
         clip_fractions = []
 
         continue_training = True
+        # if self.other_agent_rollout_buffer is not None:
+        #     self.rollout_buffer.actions = np.concatenate([self.rollout_buffer.actions, self.other_agent_rollout_buffer.actions])
+        #     self.rollout_buffer.observations = np.concatenate(
+        #         [self.rollout_buffer.observations, self.other_agent_rollout_buffer.observations])
+        #     self.rollout_buffer.advantages = np.concatenate(
+        #         [self.rollout_buffer.advantages, self.other_agent_rollout_buffer.advantages])
+        #     self.rollout_buffer.log_probs = np.concatenate(
+        #         [self.rollout_buffer.log_probs, self.other_agent_rollout_buffer.log_probs])
+        #     self.rollout_buffer.values = np.concatenate(
+        #         [self.rollout_buffer.values, self.other_agent_rollout_buffer.values])
+        #     self.rollout_buffer.returns = np.concatenate(
+        #         [self.rollout_buffer.returns, self.other_agent_rollout_buffer.returns])
 
         # train for n_epochs epochs
         for epoch in range(self.n_epochs):
@@ -301,6 +313,7 @@ class PPO(OnPolicyAlgorithm):
                     log_ratio = log_prob - rollout_data.old_log_prob
                     approx_kl_div = th.mean((th.exp(log_ratio) - 1) - log_ratio).cpu().numpy()
                     approx_kl_divs.append(approx_kl_div)
+
 
                 if self.target_kl is not None and approx_kl_div > 1.5 * self.target_kl:
                     continue_training = False

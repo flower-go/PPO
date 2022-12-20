@@ -141,11 +141,19 @@ def train_model(n, env, args, checkpoint=None):
     found = False
     while not found:
         try:
+            print(f"Learning {args['layout_name']}/{args['exp']}")
             model = PPO("CnnPolicy", env, device=args["device"], verbose=0,
                         tensorboard_log=f"./diverse_population/logs/{args['layout_name']}/{args['exp']}/{str(n).zfill(2)}",
-                        n_steps=400,
-                        batch_size=400, seed=now.microsecond + now.hour,
-                        # learning_rate=1e-3, gae_lambda=0.98, clip_range=0.05, max_grad_norm = 0.1
+                        n_steps=args["n_steps"],
+                        seed=now.microsecond + now.hour,
+                        batch_size=args["batch_size"],
+                        n_epochs=args["n_epochs"],
+                        learning_rate=args["learning_rate"],
+                        gae_lambda=0.98,
+                        clip_range=args["clip_range"],
+                        max_grad_norm = args["max_grad_norm"],
+                        vf_coef=args["vf_coef"],
+                        target_kl=0.006
                         )
             env.other_agent_model = model
             num_steps = args["total_timesteps"]
@@ -169,7 +177,9 @@ if __name__ == "__main__":
     # feature_fn = lambda _, state: overcooked_env.featurize_state_mdp(state)
     feature_fn = lambda _, state: overcooked_env.lossless_state_encoding_mdp(state, debug=False)
 
-    start_state_fn = mdp.get_random_start_state_fn(random_start_pos=True, rnd_obj_prob_thresh = args["rnd_obj_prob_thresh"]) if args["random_start"] == True else None
+    start_state_fn = mdp.get_random_start_state_fn(random_start_pos=True, rnd_obj_prob_thresh = args["rnd_obj_prob_thresh"]) if args["random_start"] == True else mdp.get_standard_start_state
+    # start_state_fn = mdp.get_standard_start_state
+
     gym_env = get_vectorized_gym_env(
         overcooked_env, 'Overcooked-v0', agent_idx=0, featurize_fn=feature_fn, start_state_fn=start_state_fn, **args
     )
@@ -185,24 +195,102 @@ if __name__ == "__main__":
 
 
 
-    exp = "CNN_SP_E0_01"
+    exp = "CNN_CUDA_RS"
+    # exp = "CNN_HARL"
+
     layouts = ALL_LAYOUTS
-    layouts = ["cramped_room"]
+    layout = "cramped_room"
 
 
-    for layout in layouts:
+    def vf_coef(val):
+        args["vf_coef"] = val
+
+    def max_grad_norm(val):
+        args["max_grad_norm"] = val
+
+    def clip_range(val):
+        args["clip_range"] = val
+
+    def learning_rate(val):
+        args["learning_rate"] = val
+
+    def batch_size(val):
+        args["batch_size"] = val
+
+    def entropy(val):
+        args["ent_coef_start"] = val
+
+    modifications = {"VF0_0001": (vf_coef, 0.0001),
+                     "VF0_001": (vf_coef, 0.001),
+                     # "VF0_01" : (vf_coef, 0.01),
+                     "VF0_1"  : (vf_coef, 0.1),
+                     "MGN_0_3": (max_grad_norm, 0.3),
+                     "MGN_0_1": (max_grad_norm, 0.1),
+                     "CR_0_1" : (clip_range, 0.1),
+                     "CR_0_05": (clip_range, 0.05),
+                     "LR_6_04": (learning_rate, 6e-4),
+                     "LR_1_04": (learning_rate, 1e-4),
+                     # "BS_100": (batch_size, 100),
+                     "BS_400": (batch_size, 400),
+                     "BS_800": (batch_size, 800),
+                     "E_0_05": (entropy, 0.05),
+                     "E_0_2": (entropy, 0.2),
+
+                     }
+
+    def set_random_params():
+        args["vf_coef"] = np.round(np.random.uniform(0.0001, 0.5),5)
+        args["max_grad_norm"] = np.round(np.random.uniform(0.1,0.5),5)
+        args["clip_range"] = np.round(np.random.uniform(0.05,0.2),5)
+        args["learning_rate"] = np.round(np.random.uniform(0.00001,0.003),5)
+        args["batch_size"] = np.random.choice([800,1600,6400,9600])
+        args["ent_coef_start"] = np.round(np.random.uniform(0.01,0.2),5)
+        args["ent_coef_end"] = np.random.uniform(0.00, np.max([args["ent_coef_start"], 0.1]))
+        # args["ent_coef_start"] = 0.2
+        # args["ent_coef_horizon"] = np.random.choice([0.5e6, 1e6, 2e6, 3e6])
+        args["ent_coef_horizon"] = np.random.randint(0.5e6,2e6)
+        # args["ent_coef_horizon"] = 1.5e5
+        args["n_steps"] =  np.random.choice([400,800,1200])
+        args["n_epochs"] = np.random.choice([8,10,12])
+        args["sparse_r_coef_horizon"] = np.random.randint(2.5e6,5e6)
+
+    def get_name():
+        full_name = exp + "_VF" + str(args["vf_coef"])
+        full_name = full_name + "_MGN" + str(args["max_grad_norm"])
+        full_name = full_name + "_CR" + str(args["clip_range"])
+        full_name = full_name + "_LR" + str(args["learning_rate"])
+        full_name = full_name + "_ES" + str(args["ent_coef_start"])
+        full_name = full_name + "_SRC" + str(args["sparse_r_coef_horizon"])
+        full_name = full_name + "_EP" + str(int(args["n_epochs"]))
+        full_name = full_name + "_EH" + str(int(args["ent_coef_horizon"]))
+        full_name = full_name + "_BS" + str(int(args["batch_size"]))
+        full_name = full_name + "_NS" + str(int(args["n_steps"]))
+        full_name = full_name + "_NW" + str(args["num_workers"])
+        full_name = full_name + "_TS" + str(int(args["total_timesteps"]))
+
+        args["exp"] = full_name
+
+
+    for _ in range(1):
         params_manager.args["layout_name"] = layout
         params_manager.init_base_args_for_layout(layout)
         params_manager.init_exp_specific_args(exp)
+        # set_random_params()
+        get_name()
         models = load_or_train_models(args, gym_env, None)
+        # exit()
 
-    for layout in layouts:
-        params_manager.args["layout_name"] = layout
-        params_manager.init_base_args_for_layout(layout)
-        params_manager.init_exp_specific_args(exp)
-        models = load_or_train_models(args, gym_env, None)
-        eval_table = evaluator.evaluate(models, models, 10, args["exp"])
-        heat_map(eval_table, args["exp"], args["exp"], args)
+    # for modification_key in modifications.keys():
+    #     params_manager.args["layout_name"] = layout
+    #     params_manager.init_base_args_for_layout(layout)
+    #     params_manager.init_exp_specific_args(exp)
+    #     args["exp"] = exp + "_" + modification_key
+    #     modifications[modification_key][0](modifications[modification_key][1])
+    #     models = load_or_train_models(args, gym_env, None)
+
+
+    eval_table = evaluator.evaluate(models, models, 2, args["exp"])
+    heat_map(eval_table, args["exp"], args["exp"], args)
 
 
 
