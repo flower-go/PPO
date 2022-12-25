@@ -120,7 +120,7 @@ class AgentGroup(object):
             ), "All agents should be separate instances, unless allow_duplicate_agents is set to true"
 
     def joint_action(self, state):
-        if self.agents[0].agent_index == 0: #original verze
+        if self.agents[0].agent_index == 0: #original verze/ucici agent je prvni nebo druhy?
             actions_and_probs_n = tuple(a.action(state) for a in self.agents)
         else:
             actions_and_probs_n = tuple(a.action(state) for a in reversed(self.agents))
@@ -192,6 +192,7 @@ class NNPolicy(object):
         raise NotImplementedError()
 
 
+#This class is new (not in original overcooked_ai) and is used for population experiments.
 class AgentFromStableBaselinesPolicy(Agent):
 
     def __init__(self, policy, feature_fn, device = "cpu", deterministic = False):
@@ -306,6 +307,7 @@ class RandomAgent(Agent):
 
     def direct_action(self, obs):
         return [np.random.randint(4) for _ in range(self.sim_threads)]
+
 
 
 class StayAgent(Agent):

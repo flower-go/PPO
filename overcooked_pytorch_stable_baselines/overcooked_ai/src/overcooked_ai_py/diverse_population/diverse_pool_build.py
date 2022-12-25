@@ -82,7 +82,6 @@ def load_or_train_population_models(args, env, checkpoints = [4,8]):
     test_state = env.reset()
     assert_set = []
     # TODO: assert
-
     directory = "diverse_population/models/" + args["map"] + "/" + args["mode"] + "/"
     models = {}
     env.population_mode = True
@@ -134,7 +133,6 @@ def load_or_train_population_models(args, env, checkpoints = [4,8]):
 
     return models
 
-
 def train_model(n, env, args, checkpoint=None):
     now = datetime.now()
     found = False
@@ -163,31 +161,31 @@ overcooked_env = OvercookedEnv.from_mdp(mdp, horizon=400)
 if __name__ == "__main__":
     params_manager.set_SP_RS_E0()
 
-
+    #state functions for env and env
     feature_fn = lambda _, state: overcooked_env.featurize_state_mdp(state)
-
     start_state_fn = mdp.get_random_start_state_fn(random_start_pos=True, rnd_obj_prob_thresh = args["rnd_obj_prob_thresh"]) if args["random_start"] == True else None
     gym_env = get_vectorized_gym_env(
         overcooked_env, 'Overcooked-v0', agent_idx=0, featurize_fn=feature_fn, start_state_fn=start_state_fn, **args
     )
+
     agent_idxs = [ int(x < args["num_workers"] / 2) for x in range(args["num_workers"])]
     gym_env.remote_set_agent_idx(agent_idxs)
-    gym_env.population = []
 
+
+    gym_env.population = []
 
     evaluator = Evaluator(gym_env, args, deterministic=True, device="cpu")
 
-
-
-
-
-    modes = [params_manager.set_SP_RS_E0, params_manager.set_SP_RS_E0_01, params_manager.set_SP_RS_E0_02, params_manager.set_SP_RS_E0_05, params_manager.set_SP_RS_E0_05_Drop]
+    #TODO neco z toho se asi nepouziva
+    #modes = [params_manager.set_SP_RS_E0, params_manager.set_SP_RS_E0_01, params_manager.set_SP_RS_E0_02, params_manager.set_SP_RS_E0_05, params_manager.set_SP_RS_E0_05_Drop]
     modes = [params_manager.set_SP_RS_E0_01_Drop]
 
+    #creation of models if they do not existed
     for mode_fn in modes:
         mode_fn()
         models = load_or_train_models(args, gym_env, None)
 
+    #evaluation of previously created models
     for mode_fn in modes:
         mode_fn()
         models = load_or_train_models(args, gym_env, None)

@@ -2577,7 +2577,7 @@ class OvercookedGridworld(object):
 
             The encoding for player i is as follows:
 
-                [player_i_features, other_player_features player_i_dist_to_other_players, player_i_position]
+                [player_i_features, other_player_features, player_i_dist_to_other_players, player_i_position]
 
                 player_{i}_features (length num_pots*10 + 24):
                     pi_orientation: length 4 one-hot-encoding of direction currently facing
