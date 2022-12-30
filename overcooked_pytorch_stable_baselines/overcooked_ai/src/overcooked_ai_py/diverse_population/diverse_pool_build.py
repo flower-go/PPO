@@ -1,16 +1,16 @@
 import random
-
 from stable_baselines3.ppo.ppo import PPO
-from overcooked_ai.src.overcooked_ai_py.mdp.overcooked_env import OvercookedGridworld, OvercookedEnv, get_vectorized_gym_env
-from overcooked_ai.src.overcooked_ai_py.agents.agent import AgentPair, AgentFromStableBaselinesPolicy
-from overcooked_ai.src.overcooked_ai_py.mdp.actions import Action
-from overcooked_ai.src.overcooked_ai_py.agents.benchmarking import AgentEvaluator
+import overcooked_ai_py as oai
+from overcooked_ai_py.mdp.overcooked_env import OvercookedGridworld, OvercookedEnv, get_vectorized_gym_env
+from overcooked_ai_py.agents.agent import AgentPair, AgentFromStableBaselinesPolicy
+from overcooked_ai_py.mdp.actions import Action
+from overcooked_ai_py.agents.benchmarking import AgentEvaluator
 from datetime import datetime
 from experiments_params import ExperimentsParamsManager
 import numpy as np
 from visualisation.visualisation import heat_map
 from evaluation.evaluation import Evaluator
-
+import sys
 
 args = {}
 
@@ -147,7 +147,9 @@ def train_model(n, env, args, checkpoint=None):
             model.learn(num_steps, args=args, reset_num_timesteps=False)
             found = True
         except:
-            print("found divergent solution")
+            print("found divergent solution",file=sys.stderr)
+            exit(1)
+            sys.stdout.flush()
             found = False
 
     return model
@@ -159,6 +161,9 @@ overcooked_env = OvercookedEnv.from_mdp(mdp, horizon=400)
 
 
 if __name__ == "__main__":
+    print("metoda main")
+    sys.stdout.flush()
+    print("metoda main e", file=sys.stderr)
     params_manager.set_SP_RS_E0()
 
     #state functions for env and env
@@ -179,7 +184,10 @@ if __name__ == "__main__":
     #TODO neco z toho se asi nepouziva
     #modes = [params_manager.set_SP_RS_E0, params_manager.set_SP_RS_E0_01, params_manager.set_SP_RS_E0_02, params_manager.set_SP_RS_E0_05, params_manager.set_SP_RS_E0_05_Drop]
     modes = [params_manager.set_SP_RS_E0_01_Drop]
-
+   
+    print("jdeme trenovat")
+    print("jdeme ttrenovat (e)",file=sys.stderr)
+    sys.stdout.flush()
     #creation of models if they do not existed
     for mode_fn in modes:
         mode_fn()

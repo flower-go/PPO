@@ -137,7 +137,7 @@ class AgentGroup(object):
         """
         for i, agent in enumerate(self.agents):
             agent.reset()
-            #agent.set_agent_index(i) #TODO tohle pro premka ma byt zakomentovane, pro testy ne
+            agent.set_agent_index(i) #TODO tohle pro premka ma byt zakomentovane, pro testy ne
 
 
 class AgentPair(AgentGroup):
