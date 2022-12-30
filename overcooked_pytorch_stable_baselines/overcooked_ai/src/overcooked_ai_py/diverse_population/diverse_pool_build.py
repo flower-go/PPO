@@ -136,6 +136,7 @@ def load_or_train_population_models(args, env, checkpoints = [4,8]):
 def train_model(n, env, args, checkpoint=None):
     now = datetime.now()
     found = False
+    print("~~~train model metoda", file=sys.stderr)
     while not found:
         try:
             model = PPO("MlpPolicy", env, device=args["device"], verbose=0,
@@ -144,10 +145,12 @@ def train_model(n, env, args, checkpoint=None):
                         batch_size=400, seed=now.microsecond + now.hour)
             env.other_agent_model = model
             num_steps = args["total_timesteps"]
+            print("~~~jdem hledat model", file=sys.stderr)
             model.learn(num_steps, args=args, reset_num_timesteps=False)
             found = True
+            print("~~~nalezen model", file=sys.stderr)
         except:
-            print("found divergent solution",file=sys.stderr)
+            print("~~~found divergent solution",file=sys.stderr)
             exit(1)
             sys.stdout.flush()
             found = False
@@ -161,9 +164,9 @@ overcooked_env = OvercookedEnv.from_mdp(mdp, horizon=400)
 
 
 if __name__ == "__main__":
-    print("metoda main")
+    print("~~~metoda main")
     sys.stdout.flush()
-    print("metoda main e", file=sys.stderr)
+    print("~~~metoda main e", file=sys.stderr)
     params_manager.set_SP_RS_E0()
 
     #state functions for env and env
@@ -173,6 +176,7 @@ if __name__ == "__main__":
         overcooked_env, 'Overcooked-v0', agent_idx=0, featurize_fn=feature_fn, start_state_fn=start_state_fn, **args
     )
 
+    print("~~~vytvoreno rpostredi e", file=sys.stderr)
     agent_idxs = [ int(x < args["num_workers"] / 2) for x in range(args["num_workers"])]
     gym_env.remote_set_agent_idx(agent_idxs)
 
@@ -192,7 +196,7 @@ if __name__ == "__main__":
     for mode_fn in modes:
         mode_fn()
         models = load_or_train_models(args, gym_env, None)
-
+    print("~~~jdem na evaluaci", file=sys.stderr)
     #evaluation of previously created models
     for mode_fn in modes:
         mode_fn()
