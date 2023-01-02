@@ -149,12 +149,14 @@ def train_model(n, env, args, checkpoint=None):
             model.learn(num_steps, args=args, reset_num_timesteps=False)
             found = True
             print("~~~nalezen model", file=sys.stderr)
+            print("nalezeno = " + str(found), file=sys.stderr)
         except:
-            print("~~~found divergent solution",file=sys.stderr)
+            print("~~~found divergent solution", file=sys.stderr)
             exit(1)
             sys.stdout.flush()
             found = False
 
+    print("koncime",file=sys.stderr)
     return model
 
 params_manager = ExperimentsParamsManager(args)
