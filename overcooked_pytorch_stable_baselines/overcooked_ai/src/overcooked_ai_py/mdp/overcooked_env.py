@@ -727,6 +727,9 @@ class Overcooked(gym.Env):
         dummy_state = dummy_mdp.get_standard_start_state()
         obs_shape = self.featurize_fn(dummy_mdp, dummy_state)[0].shape
 
+        #pytorch works with channels first CxWxH
+        # obs_shape = (obs_shape[2], obs_shape[0], obs_shape[1])
+
         low = np.zeros(obs_shape)
         # high = np.ones(obs_shape) * float("inf") #For MLP
         # return gym.spaces.Box(low, high, dtype=np.float32) # for MLP
@@ -760,6 +763,10 @@ class Overcooked(gym.Env):
             joint_action = (other_agent_action, agent_action)
 
         next_state, reward, done, env_info = self.base_env.step(joint_action, display_phi=True)
+        # print(self.mdp.state_string(next_state))
+        #
+        # if np.sum(env_info["shaped_r_by_agent"]) > 0:
+        #     x = 5
         ob_p0, ob_p1 = self.featurize_fn(self.mdp, next_state)
         if self.agent_idx == 0:
             both_agents_ob = (ob_p0, ob_p1)
@@ -791,6 +798,9 @@ class Overcooked(gym.Env):
         self.mdp = self.base_env.mdp
         # self.agent_idx = np.random.choice([0, 1])
         ob_p0, ob_p1 = self.featurize_fn(self.mdp, self.base_env.state)
+        # print(self.mdp.state_string(self.base_env.state))
+        # self.reset()
+        # print(self.mdp.state_string(self.base_env.state))
 
         if self.agent_idx == 0:
             both_agents_ob = (ob_p0, ob_p1)

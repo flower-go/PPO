@@ -172,13 +172,15 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 obs = np.array([entry["both_agent_obs"][0] for entry in self._last_obs])
                 obs_tensor = obs_as_tensor(obs, self.device)
                 actions, values, log_probs = self.policy(obs_tensor)
+                # from pytorch_model_summary import summary
+                # summary(self.policy, obs_tensor, print_summary=True, show_hierarchical=True, max_depth=10, )
 
                 other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self._last_obs])
                 other_agent_obs_tensor = obs_as_tensor(other_agent_obs, self.device)
                 other_agent_actions, other_agent_values, other_agent_log_probs = env.other_agent_model.policy(other_agent_obs_tensor)
             actions = actions.cpu().numpy()
             other_agent_actions = other_agent_actions.cpu().numpy()
-
+            # other_agent_actions = np.random.randint(0,6,actions.shape)
             joint_action = [(actions[i], other_agent_actions[i]) for i in range(len(actions))]
 
             # actions = np.array([overcooked_ai_py.mdp.actions.Action.ACTION_TO_INDEX[a] for a in actions])

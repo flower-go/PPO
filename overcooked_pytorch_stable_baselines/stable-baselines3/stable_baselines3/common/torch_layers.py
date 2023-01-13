@@ -2,6 +2,7 @@ from itertools import zip_longest
 from typing import Dict, List, Tuple, Type, Union
 
 import gym
+import torch
 import torch as th
 from torch import nn
 
@@ -72,7 +73,9 @@ class NatureCNN(BaseFeaturesExtractor):
             "please check it using our env checker:\n"
             "https://stable-baselines3.readthedocs.io/en/master/common/env_checker.html"
         )
-        n_input_channels = observation_space.shape[0]
+
+        out_channels = 25
+        n_input_channels = observation_space.shape[0] #PBa, they used 0 here, TODO: try to figure out how to set observation space correctly globally with transposition
         self.cnn = nn.Sequential(
             # nn.Conv2d(n_input_channels, 32, kernel_size=8, stride=4, padding=0),
             # nn.ReLU(),
@@ -81,15 +84,19 @@ class NatureCNN(BaseFeaturesExtractor):
             # nn.Conv2d(64, 64, kernel_size=3, stride=1, padding=0),
             # nn.ReLU(),
             # PBa
-            nn.Conv2d(n_input_channels, 25, kernel_size=5, stride=1, padding=2),
+            nn.Conv2d(n_input_channels, out_channels, kernel_size=5, stride=1, padding="same"), # PBa padding 2
             nn.LeakyReLU(),
-            nn.Conv2d(25, 25, kernel_size=3, stride=1, padding=1), # PBa propably wrong
+            nn.Conv2d(out_channels, out_channels, kernel_size=3, stride=1, padding="same"), # PBa padding 1
             nn.LeakyReLU(),
-            nn.Conv2d(25, 25, kernel_size=3, stride=1, padding=0),
+            nn.Conv2d(out_channels, out_channels, kernel_size=3, stride=1, padding="valid"),
             nn.LeakyReLU(),
             # PBa
             nn.Flatten(),
         )
+
+        # self.cnn = self.cnn.to(device="cuda", memory_model=torch.channels_last)
+
+
 
         # Compute shape by doing one forward pass
         with th.no_grad():
@@ -104,6 +111,32 @@ class NatureCNN(BaseFeaturesExtractor):
             nn.Linear(32, 32),
             nn.LeakyReLU(),
         )
+
+        import numpy as np
+        # gain = 1.
+        # for sub_net in self.cnn:
+        #     if sub_net.__class__.__name__ == "Conv2d":
+        #         # narr = sub_net.weight.detach().numpy()
+        #         # print(narr)
+        #         #
+        #         # print(np.mean(narr))
+        #         # print(np.std(narr))
+        #         # print(np.min(narr))
+        #         # print(np.max(narr))
+        #
+        #
+        #
+        #
+        #         nn.init.xavier_normal_(sub_net.weight, gain=gain)
+        #
+        #         nn.init.zeros_(sub_net.bias)
+        #     pass
+        #
+        # for sub_net in self.linear:
+        #     if sub_net.__class__.__name__ == "Linear":
+        #         nn.init.xavier_normal_(sub_net.weight, gain=gain)
+        #         nn.init.zeros_(sub_net.bias)
+        #     pass
 
     def forward(self, observations: th.Tensor) -> th.Tensor:
         return self.linear(self.cnn(observations))

@@ -52,17 +52,17 @@ class VecTransposeImage(VecEnvWrapper):
         """
         # Sanity checks
         assert is_image_space(observation_space), "The observation space must be an image"
-        assert not is_image_space_channels_first(
-            observation_space
-        ), f"The observation space {key} must follow the channel last convention"
-        height, width, channels = observation_space.shape
-        new_shape = (channels, height, width)
+        # assert not is_image_space_channels_first(                                         #PBa commented assert
+        #     observation_space
+        # ), f"The observation space {key} must follow the channel last convention"
+        # height, width, channels = observation_space.shape #PBa
+        width, height, channels = observation_space.shape
+        new_shape = (channels, width, height)
         return spaces.Box(low=0, high=255, shape=new_shape, dtype=observation_space.dtype)
 
     @staticmethod
     def _transpose_single_image_item(item):
-        item["both_agent_obs"] = (
-            np.transpose(item["both_agent_obs"][0], (2, 0, 1)), np.transpose(item["both_agent_obs"][1], (2, 0, 1)))
+        item["both_agent_obs"] = (np.transpose(item["both_agent_obs"][0], (2, 0, 1)), np.transpose(item["both_agent_obs"][1], (2, 0, 1)))
         return item
 
     @staticmethod
@@ -75,18 +75,25 @@ class VecTransposeImage(VecEnvWrapper):
         :return:
         """
         if isinstance(image,dict):
-            image["both_agent_obs"] = (np.transpose(image["both_agent_obs"][0], (2, 0, 1)), np.transpose(image["both_agent_obs"][1], (2, 0, 1)))
+            image["both_agent_obs"] = (np.transpose(image["both_agent_obs"][0], (2, 0, 1)), np.transpose(image["both_agent_obs"][1], (2, 0,1)))
+
             return image
 
         if len(image.shape) == 3:
-            return np.transpose(image, (2, 0, 1))
+            # return np.transpose(image, (2, 0, 1))
+            return np.transpose(image, (2, 1, 0))
 
+        if not isinstance(image[0], dict):
+            return np.transpose(image, (0, 3, 1, 2))
         #PBa: working with observartion being in format of [batch, {both_agents_observation(2): image [26,5,4]}
         # original_images = [item["both_agent_observation"]]
         for item in image:
             item["both_agent_obs"] = (np.transpose(item["both_agent_obs"][0], (2,0,1)), np.transpose(item["both_agent_obs"][1], (2,0,1)))
+            # temp = item["both_agent_obs"][0]
+            # temp2 = temp
+
         return image
-        return np.transpose(image, (0, 3, 1, 2))
+
 
     def transpose_observations(self, observations: Union[np.ndarray, Dict]) -> Union[np.ndarray, Dict]:
         """

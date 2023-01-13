@@ -225,6 +225,7 @@ class BaseAlgorithm(ABC):
                     env.observation_space
                 )
 
+            wrap_with_vectranspose = True #PBa, this was not here
             if wrap_with_vectranspose:
                 if verbose >= 1:
                     print("Wrapping the env in a VecTransposeImage.")

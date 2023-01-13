@@ -152,14 +152,13 @@ def train_model(n, env, args, checkpoint=None):
                         gae_lambda=0.98,
                         clip_range=args["clip_range"],
                         max_grad_norm = args["max_grad_norm"],
-                        vf_coef=args["vf_coef"],
-                        target_kl=0.006
+                        vf_coef=args["vf_coef"]
                         )
             env.other_agent_model = model
             num_steps = args["total_timesteps"]
             model.learn(num_steps, args=args, reset_num_timesteps=False)
             found = True
-        finally:
+        except:
             print("found divergent solution")
             found = False
 
@@ -183,7 +182,8 @@ if __name__ == "__main__":
     gym_env = get_vectorized_gym_env(
         overcooked_env, 'Overcooked-v0', agent_idx=0, featurize_fn=feature_fn, start_state_fn=start_state_fn, **args
     )
-    agent_idxs = [ int(x < args["num_workers"] / 2) for x in range(args["num_workers"])]
+    # agent_idxs = [ int(x < args["num_workers"] / 2) for x in range(args["num_workers"])]
+    agent_idxs = [0 for _ in range(args["num_workers"])]
     gym_env.remote_set_agent_idx(agent_idxs)
     gym_env.population = []
 
@@ -199,7 +199,7 @@ if __name__ == "__main__":
     # exp = "CNN_HARL"
 
     layouts = ALL_LAYOUTS
-    layout = "cramped_room"
+    layout = "coordination_ring"
 
 
     def vf_coef(val):
@@ -242,16 +242,16 @@ if __name__ == "__main__":
         args["vf_coef"] = np.round(np.random.uniform(0.0001, 0.5),5)
         args["max_grad_norm"] = np.round(np.random.uniform(0.1,0.5),5)
         args["clip_range"] = np.round(np.random.uniform(0.05,0.2),5)
-        args["learning_rate"] = np.round(np.random.uniform(0.00001,0.003),5)
-        args["batch_size"] = np.random.choice([800,1600,6400,9600])
+        args["learning_rate"] = np.round(np.random.uniform(0.0001,0.001),5)
+        # args["batch_size"] = np.random.choice([800,1600,6400,9600])
         args["ent_coef_start"] = np.round(np.random.uniform(0.01,0.2),5)
         args["ent_coef_end"] = np.random.uniform(0.00, np.max([args["ent_coef_start"], 0.1]))
         # args["ent_coef_start"] = 0.2
         # args["ent_coef_horizon"] = np.random.choice([0.5e6, 1e6, 2e6, 3e6])
         args["ent_coef_horizon"] = np.random.randint(0.5e6,2e6)
         # args["ent_coef_horizon"] = 1.5e5
-        args["n_steps"] =  np.random.choice([400,800,1200])
-        args["n_epochs"] = np.random.choice([8,10,12])
+        # args["n_steps"] =  np.random.choice([400,800,1200])
+        # args["n_epochs"] = np.random.choice([8,10,12])
         args["sparse_r_coef_horizon"] = np.random.randint(2.5e6,5e6)
 
     def get_name():
@@ -260,6 +260,7 @@ if __name__ == "__main__":
         full_name = full_name + "_CR" + str(args["clip_range"])
         full_name = full_name + "_LR" + str(args["learning_rate"])
         full_name = full_name + "_ES" + str(args["ent_coef_start"])
+        full_name = full_name + "_EE" + str(args["ent_coef_end"])
         full_name = full_name + "_SRC" + str(args["sparse_r_coef_horizon"])
         full_name = full_name + "_EP" + str(int(args["n_epochs"]))
         full_name = full_name + "_EH" + str(int(args["ent_coef_horizon"]))
@@ -267,6 +268,9 @@ if __name__ == "__main__":
         full_name = full_name + "_NS" + str(int(args["n_steps"]))
         full_name = full_name + "_NW" + str(args["num_workers"])
         full_name = full_name + "_TS" + str(int(args["total_timesteps"]))
+        full_name = full_name + "_ROP" + str(args["rnd_obj_prob_thresh"])
+        if "glorot_gain" in args:
+            full_name = full_name + "_GG" + str(args["glorot_gain"])
 
         args["exp"] = full_name
 

@@ -1681,6 +1681,14 @@ class OvercookedGridworld(object):
             for pos0, pos1 in itertools.combinations(joint_position, 2)
         )
 
+    #PBa
+    def is_same_region_position_collision(self, joint_position):
+        for pos0, pos1 in itertools.combinations(joint_position, 2):
+            middle_coordinate = int(self.shape[0] / 2)
+            collision = (pos0[0] > middle_coordinate and pos1[0] > middle_coordinate) or (pos0[0] < middle_coordinate and pos1[0] < middle_coordinate)
+
+        return collision
+
     def step_environment_effects(self, state):
         state.timestep += 1
         for obj in state.objects.values():
@@ -1729,6 +1737,13 @@ class OvercookedGridworld(object):
             for j_pos in all_joint_positions
             if not self.is_joint_position_collision(j_pos)
         ]
+        if self.layout_name == "forced_coordination" or self.layout_name == "asymmetric_advantages": #PBa
+            valid_joint_positions = [
+                j_pos
+                for j_pos in all_joint_positions
+                if not self.is_same_region_position_collision(j_pos)
+            ]
+
         return valid_joint_positions
 
     def get_valid_player_positions_and_orientations(self):
@@ -2379,20 +2394,20 @@ class OvercookedGridworld(object):
             "pot_loc",
             "counter_loc",
             "onion_disp_loc",
-            "tomato_disp_loc",
+            # "tomato_disp_loc", #PBa
             "dish_disp_loc",
             "serve_loc",
         ]
         variable_map_features = [
             "onions_in_pot",
-            "tomatoes_in_pot",
+            # "tomatoes_in_pot", #PBa
             "onions_in_soup",
-            "tomatoes_in_soup",
+            # "tomatoes_in_soup", #PBa
             "soup_cook_time_remaining",
             "soup_done",
             "dishes",
             "onions",
-            "tomatoes",
+            # "tomatoes", #PBa
         ]
         urgency_features = ["urgency"]
         all_objects = overcooked_state.all_objects_list
@@ -2440,8 +2455,8 @@ class OvercookedGridworld(object):
             for loc in self.get_onion_dispenser_locations():
                 state_mask_dict["onion_disp_loc"][loc] = 1
 
-            for loc in self.get_tomato_dispenser_locations():
-                state_mask_dict["tomato_disp_loc"][loc] = 1
+            # for loc in self.get_tomato_dispenser_locations(): #PBa
+            #     state_mask_dict["tomato_disp_loc"][loc] = 1
 
             for loc in self.get_dish_dispenser_locations():
                 state_mask_dict["dish_disp_loc"][loc] = 1
@@ -2477,16 +2492,16 @@ class OvercookedGridworld(object):
                             state_mask_dict["onions_in_pot"] += make_layer(
                                 obj.position, ingredients_dict["onion"]
                             )
-                            state_mask_dict["tomatoes_in_pot"] += make_layer(
-                                obj.position, ingredients_dict["tomato"]
-                            )
+                            # state_mask_dict["tomatoes_in_pot"] += make_layer(
+                            #     obj.position, ingredients_dict["tomato"]
+                            # ) #PBa
                         else:
                             state_mask_dict["onions_in_soup"] += make_layer(
                                 obj.position, ingredients_dict["onion"]
                             )
-                            state_mask_dict["tomatoes_in_soup"] += make_layer(
-                                obj.position, ingredients_dict["tomato"]
-                            )
+                            # state_mask_dict["tomatoes_in_soup"] += make_layer(
+                            #     obj.position, ingredients_dict["tomato"]
+                            # ) #PBa
                             state_mask_dict[
                                 "soup_cook_time_remaining"
                             ] += make_layer(
@@ -2502,9 +2517,9 @@ class OvercookedGridworld(object):
                         state_mask_dict["onions_in_soup"] += make_layer(
                             obj.position, ingredients_dict["onion"]
                         )
-                        state_mask_dict["tomatoes_in_soup"] += make_layer(
-                            obj.position, ingredients_dict["tomato"]
-                        )
+                        # state_mask_dict["tomatoes_in_soup"] += make_layer(
+                        #     obj.position, ingredients_dict["tomato"]
+                        # ) #PBa
                         state_mask_dict["soup_done"] += make_layer(
                             obj.position, 1
                         )
@@ -2513,8 +2528,8 @@ class OvercookedGridworld(object):
                     state_mask_dict["dishes"] += make_layer(obj.position, 1)
                 elif obj.name == "onion":
                     state_mask_dict["onions"] += make_layer(obj.position, 1)
-                elif obj.name == "tomato":
-                    state_mask_dict["tomatoes"] += make_layer(obj.position, 1)
+                # elif obj.name == "tomato": #PBa
+                #    state_mask_dict["tomatoes"] += make_layer(obj.position, 1)
                 else:
                     raise ValueError("Unrecognized object")
 

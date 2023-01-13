@@ -122,7 +122,8 @@ class BaseModel(nn.Module):
         :return:
         """
         assert self.features_extractor is not None, "No features extractor was set"
-        preprocessed_obs = preprocess_obs(obs, self.observation_space, normalize_images=self.normalize_images)
+        # preprocessed_obs = preprocess_obs(obs, self.observation_space, normalize_images=self.normalize_images) #PBa
+        preprocessed_obs = preprocess_obs(obs, self.observation_space, normalize_images=False)
         return self.features_extractor(preprocessed_obs)
 
     def _get_constructor_parameters(self) -> Dict[str, Any]:
@@ -277,6 +278,16 @@ class BasePolicy(BaseModel, ABC):
         """
         if isinstance(module, (nn.Linear, nn.Conv2d)):
             nn.init.orthogonal_(module.weight, gain=gain)
+            if module.bias is not None:
+                module.bias.data.fill_(0.0)
+
+    @staticmethod
+    def init_weights_xavier_normal(module: nn.Module, gain: float = 1) -> None:
+        """
+        Glorot xavier normal
+        """
+        if isinstance(module, (nn.Linear, nn.Conv2d)):
+            nn.init.xavier_normal_(module.weight, gain=gain)
             if module.bias is not None:
                 module.bias.data.fill_(0.0)
 
@@ -438,6 +449,7 @@ class ActorCriticPolicy(BasePolicy):
                 net_arch = []
             else:
                 net_arch = [dict(pi=[64, 64], vf=[64, 64])]
+                # net_arch = [dict(pi=[32, 32], vf=[32, 32])]
 
         self.net_arch = net_arch
         self.activation_fn = activation_fn
@@ -554,6 +566,18 @@ class ActorCriticPolicy(BasePolicy):
             }
             for module, gain in module_gains.items():
                 module.apply(partial(self.init_weights, gain=gain))
+
+            # module_gains = {
+            #     self.features_extractor: np.sqrt(1),
+            #     self.mlp_extractor: np.sqrt(1),
+            #     self.action_net: 1,
+            #     self.value_net: 1,
+            # }
+            # for module, gain in module_gains.items():
+            #     module.apply(partial(self.init_weights_xavier_normal, gain=gain))
+
+
+
 
         # Setup optimizer with initial learning rate
         self.optimizer = self.optimizer_class(self.parameters(), lr=lr_schedule(1), **self.optimizer_kwargs)
