@@ -558,23 +558,23 @@ class ActorCriticPolicy(BasePolicy):
             # Values from stable-baselines.
             # features_extractor/mlp values are
             # originally from openai/baselines (default gains/init_scales).
-            module_gains = {
-                self.features_extractor: np.sqrt(2),
-                self.mlp_extractor: np.sqrt(2),
-                self.action_net: 0.01,
-                self.value_net: 1,
-            }
-            for module, gain in module_gains.items():
-                module.apply(partial(self.init_weights, gain=gain))
-
             # module_gains = {
-            #     self.features_extractor: np.sqrt(1),
-            #     self.mlp_extractor: np.sqrt(1),
-            #     self.action_net: 1,
+            #     self.features_extractor: np.sqrt(2),
+            #     self.mlp_extractor: np.sqrt(2),
+            #     self.action_net: 0.01,
             #     self.value_net: 1,
             # }
             # for module, gain in module_gains.items():
-            #     module.apply(partial(self.init_weights_xavier_normal, gain=gain))
+            #     module.apply(partial(self.init_weights, gain=gain))
+
+            module_gains = {
+                self.features_extractor: np.sqrt(1),
+                self.mlp_extractor: np.sqrt(1),
+                self.action_net: 1,
+                self.value_net: 1,
+            }
+            for module, gain in module_gains.items():
+                module.apply(partial(self.init_weights_xavier_normal, gain=gain))
 
 
 

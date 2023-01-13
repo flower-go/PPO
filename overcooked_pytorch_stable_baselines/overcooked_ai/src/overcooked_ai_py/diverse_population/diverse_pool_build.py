@@ -199,7 +199,7 @@ if __name__ == "__main__":
     # exp = "CNN_HARL"
 
     layouts = ALL_LAYOUTS
-    layout = "coordination_ring"
+    layout = "counter_circuit_o_1order"
 
 
     def vf_coef(val):

@@ -3,7 +3,7 @@ ALL_LAYOUTS = ["forced_coordination", "cramped_room", "coordination_ring", "asym
 class ExperimentsParamsManager(object):
     def __init__(self,args):
         self.args = args
-        self.args["layout_name"] = "coordination_ring"
+        self.args["layout_name"] = "counter_circuit_o_1order"
         self.args["num_workers"] = 30
         self.args["action_prob_diff_reward_coef"] = 0
         self.args["eval_interval"] = 10
@@ -36,14 +36,14 @@ class ExperimentsParamsManager(object):
 
         if layout == "forced_coordination":
             # self.args["divergent_check_timestep"] = 3e18
-            self.args["eval_stop_threshold"] = 120 #150
+            self.args["eval_stop_threshold"] = 150
             self.args["sparse_r_coef_horizon"] = 5.5e6
 
         if layout == "counter_circuit_o_1order":
             # self.args["divergent_check_timestep"] = 3e18
             self.args["eval_stop_threshold"] = 123
             self.args["sparse_r_coef_horizon"] = 3.5e6
-            self.args["divergent_check_timestep"] = 5.5e6
+            self.args["divergent_check_timestep"] = 2.6e6
 
         if layout == "counter_circuit":
             # self.args["divergent_check_timestep"] = 3e18
@@ -138,19 +138,19 @@ class ExperimentsParamsManager(object):
         self.args["exp"] = "CNN_CUDA_RS"
         self.args["random_start"] = True
         self.args["ent_coef_start"] = 0.1
-        self.args["ent_coef_end"] = 0.02
+        self.args["ent_coef_end"] = 0.03
         self.args["trained_models"] = 10
-        self.args["ent_coef_horizon"] = 0.9e6
-        self.args["total_timesteps"] = 10e6
-        self.args["vf_coef"] = 0.15
+        self.args["ent_coef_horizon"] = 1.5e6
+        self.args["total_timesteps"] = 6e6
+        self.args["vf_coef"] = 0.1
         self.args["batch_size"] = 2000
         self.args["device"] = "cuda"
-        self.args["max_grad_norm"] = 0.35
-        self.args["clip_range"] = 0.14
+        self.args["max_grad_norm"] = 0.3
+        self.args["clip_range"] = 0.1
         self.args["learning_rate"] = 0.0004
         self.args["n_steps"] = 400
         self.args["n_epochs"] = 8
-        self.args["sparse_r_coef_horizon"] = 3e6
+        self.args["sparse_r_coef_horizon"] = 2.5e6
         self.args["divergent_check_timestep"] = 3e6
 
 
@@ -178,15 +178,15 @@ class ExperimentsParamsManager(object):
         self.args["exp"] = "CNN_CUDA_RS"
         self.args["random_start"] = True
         self.args["ent_coef_start"] = 0.1
-        self.args["ent_coef_end"] = 0.02
+        self.args["ent_coef_end"] = 0.03# 0.02
         self.args["trained_models"] = 10
-        self.args["ent_coef_horizon"] = 0.95e6
-        self.args["total_timesteps"] = 10e6
-        self.args["vf_coef"] = 0.15
+        self.args["ent_coef_horizon"] = 1.5e6#0.95e6
+        self.args["total_timesteps"] = 6e6
+        self.args["vf_coef"] = 0.1#0.15
         self.args["batch_size"] = 2000
         self.args["device"] = "cuda"
-        self.args["max_grad_norm"] = 0.35
-        self.args["clip_range"] = 0.14
+        self.args["max_grad_norm"] = 0.3 #0.35
+        self.args["clip_range"] = 0.1# 0.14
         self.args["learning_rate"] = 0.0004
         self.args["n_steps"] = 400
         self.args["n_epochs"] = 8
@@ -231,19 +231,19 @@ class ExperimentsParamsManager(object):
     def set_counter_circuit_o_1order_CNN_CUDA_RS(self):
         self.args["exp"] = "CNN_CUDA_RS"
         self.args["random_start"] = True
-        self.args["ent_coef_start"] = 0.0861
-        self.args["ent_coef_end"] = 0.036332574200906256
-        self.args["trained_models"] = 10
-        self.args["ent_coef_horizon"] = 1698966
-        self.args["total_timesteps"] = 6e6
-        self.args["vf_coef"] = 0.04025
+        self.args["ent_coef_start"] = 0.1
+        self.args["ent_coef_end"] = 0.03
+        self.args["trained_models"] = 5
+        self.args["ent_coef_horizon"] = 1.5e6
+        self.args["total_timesteps"] = 5.5e6
+        self.args["vf_coef"] = 0.1
         self.args["batch_size"] = 2000
         self.args["device"] = "cuda"
-        self.args["max_grad_norm"] = 0.31453
-        self.args["clip_range"] = 0.11932
-        self.args["learning_rate"] = 0.00026
+        self.args["max_grad_norm"] = 0.3
+        self.args["clip_range"] = 0.1
+        self.args["learning_rate"] = 0.0003
         self.args["n_steps"] = 400
         self.args["n_epochs"] = 8
-        self.args["sparse_r_coef_horizon"] = 2594356
+        self.args["sparse_r_coef_horizon"] = 2.5e6
 
 

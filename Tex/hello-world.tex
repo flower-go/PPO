@@ -297,8 +297,21 @@ What is Zero-shot coordination?? - studies how independently trained agents may 
     \item Mozne dalsi kroky: Vyzkouset, jestli bude situace stejna na ostatnich mapach. Mozna jsou ostatni tezsi.
     \item Vyzkouset zmenit na loss\_less a pridat konvolucni vrstvy viz (https://arxiv.org/abs/1910.05789v2)
 
+\end{list}
 
-
+\subsection*{Konzultace 13.1.2023}
+\begin{list}{}{}
+    \item Loss\_less funguje, chyba v normalizaci
+    \item hyperparametry dle clanku moc nefunguje
+    \item nalezl jsem parametry s vahou critic aspon 0.1 ktere mi funguji pro vsechny mapy
+    \item Obcas selze vypada ze pouze pro posledni mapu - mam predcasne ukonceni po 2.5M (cca 12 minut), mozna by mohla byt situace jina s "chytrymi pomocniky"
+    \item cramped rooom a asynchronous advantages moc nemaji off-diagonal problem, plus vetsi randomizace prostredi to jeste zhorsuje, nebo stezuje uceni
+    \item Pripada mi ze entropy coef 0.1 byl moc silny, ale pouze domnenka, nemam cas se tomu vic venovat
+    \item Plan pokracovat na trech mapach Pro kazdou predtrenovat 3x10 vyhodnocovaci skupiny
+    \item Zacit s populacnim trenovanim - dve myslenky, pridat inverse annealing spolecne reward
+    \item Obcas ma vysledny model na konci eval 0 prestoze v prubehu na tom nebyl spatne - tj. budu asi brat nejlepsi model z prubehu. 
+        V pripade populace rozmyslet eval, vuci vsem v populaci, aby to nebylo zkreslene
+    \item Zacit s pop diff rewardem, MSE na prop vectoru asi neni dobry napad, tak spis KL  
 \end{list}
 
 
