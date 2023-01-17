@@ -3,11 +3,11 @@ ALL_LAYOUTS = ["forced_coordination", "cramped_room", "coordination_ring", "asym
 class ExperimentsParamsManager(object):
     def __init__(self,args):
         self.args = args
-        self.args["layout_name"] = "counter_circuit_o_1order"
+        self.args["layout_name"] = "cramped_room"
         self.args["num_workers"] = 30
         self.args["action_prob_diff_reward_coef"] = 0
         self.args["eval_interval"] = 10
-        self.args["evals_num_to_threshold"] = 4
+        self.args["evals_num_to_threshold"] = 2
         self.args["training_percent_start_eval"] = 0.2
         self.args["device"] = "cuda"
         self.args["divergent_check_timestep"] = 3.5e6
@@ -36,7 +36,7 @@ class ExperimentsParamsManager(object):
 
         if layout == "forced_coordination":
             # self.args["divergent_check_timestep"] = 3e18
-            self.args["eval_stop_threshold"] = 150
+            self.args["eval_stop_threshold"] = 165 #150
             self.args["sparse_r_coef_horizon"] = 5.5e6
 
         if layout == "counter_circuit_o_1order":
@@ -101,17 +101,17 @@ class ExperimentsParamsManager(object):
     def set_cramped_room_CNN_CUDA_RS(self):
         self.args["exp"] = "CNN_CUDA_RS"
         self.args["random_start"] = True
-        self.args["ent_coef_start"] = 0.2
-        self.args["ent_coef_end"] = 0.01
-        self.args["trained_models"] = 10
-        self.args["ent_coef_horizon"] = 2e6
-        self.args["total_timesteps"] = 10e6
-        self.args["vf_coef"] = 0.01
+        self.args["ent_coef_start"] = 0.1
+        self.args["ent_coef_end"] = 0.03
+        self.args["trained_models"] = 30
+        self.args["ent_coef_horizon"] = 1.5e6
+        self.args["total_timesteps"] = 5.5e6
+        self.args["vf_coef"] = 0.1
         self.args["batch_size"] = 2000
         self.args["device"] = "cuda"
-        self.args["max_grad_norm"] = 0.1
-        self.args["clip_range"] = 0.05
-        self.args["learning_rate"] = 0.001
+        self.args["max_grad_norm"] = 0.3
+        self.args["clip_range"] = 0.1
+        self.args["learning_rate"] = 0.0004
         self.args["n_steps"] = 400
         self.args["n_epochs"] = 8
         self.args["sparse_r_coef_horizon"] = 2.5e6
@@ -139,9 +139,9 @@ class ExperimentsParamsManager(object):
         self.args["random_start"] = True
         self.args["ent_coef_start"] = 0.1
         self.args["ent_coef_end"] = 0.03
-        self.args["trained_models"] = 10
+        self.args["trained_models"] = 30
         self.args["ent_coef_horizon"] = 1.5e6
-        self.args["total_timesteps"] = 6e6
+        self.args["total_timesteps"] = 5.5e6
         self.args["vf_coef"] = 0.1
         self.args["batch_size"] = 2000
         self.args["device"] = "cuda"
@@ -179,9 +179,27 @@ class ExperimentsParamsManager(object):
         self.args["random_start"] = True
         self.args["ent_coef_start"] = 0.1
         self.args["ent_coef_end"] = 0.03# 0.02
-        self.args["trained_models"] = 10
+        self.args["trained_models"] = 30
         self.args["ent_coef_horizon"] = 1.5e6#0.95e6
-        self.args["total_timesteps"] = 6e6
+        self.args["total_timesteps"] = 5.5e6
+        self.args["vf_coef"] = 0.1#0.15
+        self.args["batch_size"] = 2000
+        self.args["device"] = "cuda"
+        self.args["max_grad_norm"] = 0.3 #0.35
+        self.args["clip_range"] = 0.1# 0.14
+        self.args["learning_rate"] = 0.0004
+        self.args["n_steps"] = 400
+        self.args["n_epochs"] = 8
+        self.args["sparse_r_coef_horizon"] = 2.5e6
+
+    def set_coordination_ring_CNN_CUDA_RS_TEST(self):
+        self.args["exp"] = "CNN_CUDA_RS_TEST"
+        self.args["random_start"] = True
+        self.args["ent_coef_start"] = 0.1
+        self.args["ent_coef_end"] = 0.03# 0.02
+        self.args["trained_models"] = 3
+        self.args["ent_coef_horizon"] = 1.5e6#0.95e6
+        self.args["total_timesteps"] = 4e6
         self.args["vf_coef"] = 0.1#0.15
         self.args["batch_size"] = 2000
         self.args["device"] = "cuda"
@@ -214,16 +232,16 @@ class ExperimentsParamsManager(object):
         self.args["exp"] = "CNN_CUDA_RS"
         self.args["random_start"] = True
         self.args["ent_coef_start"] = 0.1
-        self.args["ent_coef_end"] = 0.1
-        self.args["trained_models"] = 10
-        self.args["ent_coef_horizon"] = 2e6
-        self.args["total_timesteps"] = 10e6
-        self.args["vf_coef"] = 0.01
+        self.args["ent_coef_end"] = 0.03
+        self.args["trained_models"] = 30
+        self.args["ent_coef_horizon"] = 1.5e6
+        self.args["total_timesteps"] = 5.5e6
+        self.args["vf_coef"] = 0.1
         self.args["batch_size"] = 2000
         self.args["device"] = "cuda"
-        self.args["max_grad_norm"] = 0.1
-        self.args["clip_range"] = 0.05
-        self.args["learning_rate"] = 0.001
+        self.args["max_grad_norm"] = 0.3
+        self.args["clip_range"] = 0.1
+        self.args["learning_rate"] = 0.0004
         self.args["n_steps"] = 400
         self.args["n_epochs"] = 8
         self.args["sparse_r_coef_horizon"] = 2.5e6
@@ -233,7 +251,7 @@ class ExperimentsParamsManager(object):
         self.args["random_start"] = True
         self.args["ent_coef_start"] = 0.1
         self.args["ent_coef_end"] = 0.03
-        self.args["trained_models"] = 5
+        self.args["trained_models"] = 30
         self.args["ent_coef_horizon"] = 1.5e6
         self.args["total_timesteps"] = 5.5e6
         self.args["vf_coef"] = 0.1

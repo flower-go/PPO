@@ -311,7 +311,8 @@ class OnPolicyAlgorithm(BaseAlgorithm):
         self.other_agent_rollout_buffer = copy.deepcopy(self.rollout_buffer)
         self.sparse_r_coef_horizon = 1
         self.action_prob_diff_reward_coef = args["action_prob_diff_reward_coef"]
-
+        best_model = None
+        best_model_eval_val = -1
         population_present = len(self.env.population) > 0
 
         while self.num_timesteps < total_timesteps:
@@ -368,6 +369,15 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
             if evaluate and args["eval_interval"] is not None and iteration % args["eval_interval"] == 0:
                 evaluation_avg_rewards_per_episode = self.evaluate_env()
+                eval_values = [evaluation_avg_rewards_per_episode]
+                if evaluation_avg_rewards_per_episode > 0.98 * best_model_eval_val:
+                    for _ in range(args["evals_num_to_threshold"]):
+                        eval_values.append(self.evaluate_env())
+                    if np.mean(eval_values) > best_model_eval_val:
+                        print(f"found better model with value {np.mean(eval_values)}")
+                        best_model_eval_val = np.mean(eval_values)
+                        best_model = copy.deepcopy(self.policy)
+
                 if "eval_stop_threshold" in args and evaluation_avg_rewards_per_episode > args["eval_stop_threshold"]:
                     print(f"evaluation result over {args['eval_stop_threshold']} detected, continuing with further evaluation")
                     eval_values = [evaluation_avg_rewards_per_episode]
@@ -384,6 +394,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
         callback.on_training_end()
 
+        self.policy = best_model
         return self
 
     def _get_torch_save_params(self) -> Tuple[List[str], List[str]]:
