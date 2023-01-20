@@ -20,6 +20,8 @@ from stable_baselines3.common.vec_env import VecEnv
 
 OnPolicyAlgorithmSelf = TypeVar("OnPolicyAlgorithmSelf", bound="OnPolicyAlgorithm")
 
+class DivergentSolutionException(Exception):
+    pass
 
 class OnPolicyAlgorithm(BaseAlgorithm):
     """
@@ -132,7 +134,6 @@ class OnPolicyAlgorithm(BaseAlgorithm):
         env: VecEnv,
         callback: BaseCallback,
         rollout_buffer: RolloutBuffer,
-        other_agent_rollout_buffer: RolloutBuffer,
         n_rollout_steps: int
     ) -> bool:
         """
@@ -154,13 +155,13 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
         n_steps = 0
         rollout_buffer.reset()
-        # other_agent_rollout_buffer.reset()
         pop_diff_reward = np.array([0 for _ in range(env.num_envs)])
         # Sample new weights for the state dependent exploration
         if self.use_sde:
             self.policy.reset_noise(env.num_envs)
 
         callback.on_rollout_start()
+        kl_diff_reward_loss = th.nn.KLDivLoss(reduction="batchmean", log_target=True)
 
         while n_steps < n_rollout_steps:
             if self.use_sde and self.sde_sample_freq > 0 and n_steps % self.sde_sample_freq == 0:
@@ -176,14 +177,30 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 # summary(self.policy, obs_tensor, print_summary=True, show_hierarchical=True, max_depth=10, )
 
                 other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self._last_obs])
+                #TODO: map other_agents with corresponding other agent observations
                 other_agent_obs_tensor = obs_as_tensor(other_agent_obs, self.device)
                 other_agent_actions, other_agent_values, other_agent_log_probs = env.other_agent_model.policy(other_agent_obs_tensor)
+                if self.env.venv.population_mode:
+                    other_agent_actions = []
+
+                    ind_start = 0
+                    for (pop_chunk, other_agent_model) in zip(self.split_pop_indices(), self.env.population):
+                        other_obs = other_agent_obs[ind_start:ind_start+pop_chunk]
+                        ind_start+=pop_chunk
+                        other_agent_obs_tensor = obs_as_tensor(other_obs, self.device)
+                        other_agent_a, _, _ = other_agent_model.policy(other_agent_obs_tensor)
+                        other_agent_actions.append(other_agent_a.cpu().numpy())
+
+                    other_agent_actions = np.concatenate(other_agent_actions)
+                else:
+                    other_agent_obs_tensor = obs_as_tensor(other_agent_obs, self.device)
+                    other_agent_actions, other_agent_values, other_agent_log_probs = env.other_agent_model.policy(other_agent_obs_tensor)
+                    other_agent_actions = other_agent_actions.cpu().numpy()
+
             actions = actions.cpu().numpy()
-            other_agent_actions = other_agent_actions.cpu().numpy()
-            # other_agent_actions = np.random.randint(0,6,actions.shape)
+
             joint_action = [(actions[i], other_agent_actions[i]) for i in range(len(actions))]
 
-            # actions = np.array([overcooked_ai_py.mdp.actions.Action.ACTION_TO_INDEX[a] for a in actions])
             # Rescale and perform action
             clipped_actions = actions
             # Clip the actions to avoid out of bound error
@@ -193,7 +210,6 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             new_obs, rewards, dones, infos = env.step(joint_action)
 
             agent_sparse_r = [info["shaped_r_by_agent"][info["policy_agent_idx"]] for info in infos]
-            # other_agent_sparse_r = [info["shaped_r_by_agent"][1 - info["policy_agent_idx"]] for info in infos] #Other agent buffer
 
 
 
@@ -201,25 +217,21 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 rewards = (1 - self.sparse_r_coef_horizon) * rewards + self.sparse_r_coef_horizon * np.array(agent_sparse_r)
             else:
                 rewards = rewards + self.sparse_r_coef_horizon * np.array(agent_sparse_r)
-                # other_agent_rewards = rewards + self.sparse_r_coef_horizon * np.array(other_agent_sparse_r) #Other agent buffer
 
-            if self.env.population_mode and self.args["action_prob_diff_reward_coef"]:
+            if self.env.population_mode and self.args["kl_diff_reward_coef"] > 0:
                 with th.no_grad():
-                    population_action_distributions = np.array([ind.policy.get_distribution(obs_tensor).distribution.probs.detach().numpy() for ind in self.env.population])
+                    kl_divs = []
+                    # actions_dist_logits = self.policy.get_distribution(obs_tensor).distribution.logits.cpu()
+                    actions_dist_logits = self.policy.get_distribution(obs_tensor).distribution.logits
 
-                    actions_prob_dist = self.policy.get_distribution(obs_tensor)
-                    diff = actions_prob_dist.distribution.probs.detach().numpy() - population_action_distributions
+                    for ind in self.env.population:
+                        # pop_ind_actions_dist_logits = ind.policy.get_distribution(obs_tensor).distribution.logits.cpu()
+                        pop_ind_actions_dist_logits = ind.policy.get_distribution(obs_tensor).distribution.logits
+                        diff = kl_diff_reward_loss(actions_dist_logits, pop_ind_actions_dist_logits)
+                        kl_divs.append(diff.item())
+                    pop_diff_reward = self.args["kl_diff_reward_coef"] * np.min(kl_divs)
 
-                    square_diff = np.square(diff)
-                    x = np.mean(square_diff, axis=2)
-                    pop_diff_reward = np.mean(x, axis=0)
-
-
-                # rewards = rewards + self.args["action_prob_diff_reward_coef"] * pop_diff_reward
-
-
-
-
+                    rewards = rewards + pop_diff_reward
 
             self.num_timesteps += env.num_envs
 
@@ -248,31 +260,20 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                         terminal_value = self.policy.predict_values(terminal_obs)[0]
                     rewards[idx] += self.gamma * terminal_value
 
-                    # other_agent_terminal_obs = self.policy.obs_to_tensor(infos[idx]["terminal_observation"])[1]
-                    # with th.no_grad():
-                    #     terminal_value = self.policy.predict_values(other_agent_terminal_obs)[0]
-                    # other_agent_rewards[idx] += self.gamma * terminal_value
-
-            # other_agent_last_obs = np.array([entry["both_agent_obs"][1] for entry in self._last_obs]) #Other agent buffer
             self._last_obs = np.array([entry["both_agent_obs"][0] for entry in self._last_obs])
             rollout_buffer.add(self._last_obs, actions, rewards, self._last_episode_starts, values, log_probs, pop_diff_reward)
 
-            # other_agent_rollout_buffer.add(other_agent_last_obs, other_agent_actions, other_agent_rewards, self._last_episode_starts, other_agent_values, other_agent_log_probs, pop_diff_reward)
             self._last_obs = new_obs
             self._last_episode_starts = dones
 
-        # assert dones[0] == True, "env is not done after 400 steps"
 
         with th.no_grad():
             # Compute value for the last timestep
-            # other_agent_new_obs = np.array([entry["both_agent_obs"][1] for entry in new_obs])
-            # other_agent_values = self.policy.predict_values(obs_as_tensor(other_agent_new_obs, self.device))
 
             new_obs = np.array([entry["both_agent_obs"][0] for entry in new_obs])
             values = self.policy.predict_values(obs_as_tensor(new_obs, self.device))
 
         rollout_buffer.compute_returns_and_advantage(last_values=values, dones=dones)
-        # other_agent_rollout_buffer.compute_returns_and_advantage(last_values=other_agent_values, dones=dones)
 
         callback.on_rollout_end()
 
@@ -308,9 +309,8 @@ class OnPolicyAlgorithm(BaseAlgorithm):
         self.args = args
 
         callback.on_training_start(locals(), globals())
-        self.other_agent_rollout_buffer = copy.deepcopy(self.rollout_buffer)
         self.sparse_r_coef_horizon = 1
-        self.action_prob_diff_reward_coef = args["action_prob_diff_reward_coef"]
+        self.kl_diff_reward_coef = args["kl_diff_reward_coef"]
         best_model = None
         best_model_eval_val = -1
         population_present = len(self.env.population) > 0
@@ -318,21 +318,21 @@ class OnPolicyAlgorithm(BaseAlgorithm):
         while self.num_timesteps < total_timesteps:
 
             if population_present:
-                self.env.other_agent_model = random.choice(self.env.population) if len(self.env.population) > 0 else self.model
+                random.shuffle(self.env.population)
 
             if self.args:
                 self.anneal_learning_parameters()
 
-            continue_training = self.collect_rollouts(self.env, callback, self.rollout_buffer, self.other_agent_rollout_buffer, n_rollout_steps=self.n_steps)
+            continue_training = self.collect_rollouts(self.env, callback, self.rollout_buffer, n_rollout_steps=self.n_steps)
 
             # Divergent solution check
-            if args["divergent_check_timestep"] is not None and self.num_timesteps > args["divergent_check_timestep"] and self.num_timesteps < args["divergent_check_timestep"] + 1e5:
+            if not self.env.population_mode and args["divergent_check_timestep"] is not None and self.num_timesteps > args["divergent_check_timestep"] and self.num_timesteps < args["divergent_check_timestep"] + 1e5:
                 sparse_r = safe_mean([ep_info["ep_game_stats"]["cumulative_sparse_rewards_by_agent"][1 - ep_info["policy_agent_idx"]] for ep_info in self.ep_info_buffer])
                 sparse_r_other_agent = safe_mean([ep_info["ep_game_stats"]["cumulative_sparse_rewards_by_agent"][ep_info["policy_agent_idx"]] for ep_info in self.ep_info_buffer])
                 # Neither of agents have managed to serve single plate of soup within first args["divergent_check_timestep"], models have likely converged to some bad local optima
                 if sparse_r < 3 or sparse_r_other_agent < 3:
                     print(f"Divergent solution with sparse reward values for agents ({sparse_r}, {sparse_r_other_agent})")
-                    raise Exception(f"Divergent solution with sparse reward values for agents ({sparse_r}, {sparse_r_other_agent})")
+                    raise DivergentSolutionException(f"Divergent solution with sparse reward values for agents ({sparse_r}, {sparse_r_other_agent})")
 
             if continue_training is False:
                 break
@@ -418,9 +418,21 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 # obs_tensor = obs_as_tensor(obs, self.device)
                 actions, _= self.policy.predict(obs, deterministic=True)
 
+
                 other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self._last_obs])
-                # other_agent_obs_tensor = obs_as_tensor(other_agent_obs, self.device)
-                other_agent_actions, _ = self.env.other_agent_model.policy.predict(other_agent_obs, deterministic=True)
+                if self.env.venv.population_mode:
+                    other_agent_actions = []
+                    ind_start = 0
+                    for (pop_chunk, other_agent_model) in zip(self.split_pop_indices(), self.env.population):
+                        other_obs = other_agent_obs[ind_start:ind_start+pop_chunk]
+                        ind_start+=pop_chunk
+                        other_agent_obs_tensor = obs_as_tensor(other_obs, self.device)
+                        other_agent_a, _, _ = other_agent_model.policy(other_agent_obs_tensor)
+                        other_agent_actions.append(other_agent_a.cpu().numpy())
+
+                    other_agent_actions = np.concatenate(other_agent_actions)
+                else:
+                    other_agent_actions, _ = self.env.other_agent_model.policy.predict(other_agent_obs, deterministic=True)
 
             joint_action = [(actions[i], other_agent_actions[i]) for i in range(len(actions))]
             new_obs, rewards, dones, infos = self.env.step(joint_action)
@@ -435,4 +447,17 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
         evaluation_avg_rewards_per_episode = np.sum(evaluation_rewards) / self.env.num_envs
         return evaluation_avg_rewards_per_episode
+
+    def split_pop_indices(self):
+        indices = []
+        remaining_pop_size = len(self.env.population)
+        total = self.env.num_envs
+        remaining = total
+        while remaining > 0:
+            chunk = int(np.ceil(remaining / remaining_pop_size))
+            remaining_pop_size-=1
+            remaining-=chunk
+            indices.append(chunk)
+
+        return indices
 

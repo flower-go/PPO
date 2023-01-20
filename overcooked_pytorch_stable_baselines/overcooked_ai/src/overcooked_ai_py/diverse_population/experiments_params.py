@@ -3,16 +3,20 @@ ALL_LAYOUTS = ["forced_coordination", "cramped_room", "coordination_ring", "asym
 class ExperimentsParamsManager(object):
     def __init__(self,args):
         self.args = args
-        self.args["layout_name"] = "cramped_room"
+        self.args["layout_name"] = "forced_coordination"
         self.args["num_workers"] = 30
         self.args["action_prob_diff_reward_coef"] = 0
         self.args["eval_interval"] = 10
         self.args["evals_num_to_threshold"] = 2
-        self.args["training_percent_start_eval"] = 0.2
+        self.args["training_percent_start_eval"] = 0.4
         self.args["device"] = "cuda"
         self.args["divergent_check_timestep"] = 3.5e6
         self.args["rnd_obj_prob_thresh"] = 0.0
         self.args["random_start"] = True
+        self.args["mode"] = "POP" #"SP"
+        self.args["kl_diff_reward_coef"] = 0.
+        self.args["cross_entropy_loss_coef"] = 0.
+
 
         self.init_base_args_for_layout(args["layout_name"])
 
@@ -98,14 +102,33 @@ class ExperimentsParamsManager(object):
         self.args["n_epochs"] = 8
         self.args["sparse_r_coef_horizon"] = 2.5e6
 
+
     def set_cramped_room_CNN_CUDA_RS(self):
         self.args["exp"] = "CNN_CUDA_RS"
         self.args["random_start"] = True
         self.args["ent_coef_start"] = 0.1
         self.args["ent_coef_end"] = 0.03
-        self.args["trained_models"] = 30
+        self.args["trained_models"] = 11
         self.args["ent_coef_horizon"] = 1.5e6
         self.args["total_timesteps"] = 5.5e6
+        self.args["vf_coef"] = 0.1
+        self.args["batch_size"] = 2000
+        self.args["device"] = "cuda"
+        self.args["max_grad_norm"] = 0.3
+        self.args["clip_range"] = 0.1
+        self.args["learning_rate"] = 0.0004
+        self.args["n_steps"] = 400
+        self.args["n_epochs"] = 8
+        self.args["sparse_r_coef_horizon"] = 2.5e6
+
+    def set_cramped_room_CNN_CUDA_RS_POP_TEST(self):
+        self.args["exp"] = "CNN_CUDA_RS_POP_TEST"
+        self.args["random_start"] = True
+        self.args["ent_coef_start"] = 0.1
+        self.args["ent_coef_end"] = 0.03
+        self.args["trained_models"] = 30
+        self.args["ent_coef_horizon"] = 1.5e6
+        self.args["total_timesteps"] = 3e6
         self.args["vf_coef"] = 0.1
         self.args["batch_size"] = 2000
         self.args["device"] = "cuda"
@@ -139,7 +162,7 @@ class ExperimentsParamsManager(object):
         self.args["random_start"] = True
         self.args["ent_coef_start"] = 0.1
         self.args["ent_coef_end"] = 0.03
-        self.args["trained_models"] = 30
+        self.args["trained_models"] = 4
         self.args["ent_coef_horizon"] = 1.5e6
         self.args["total_timesteps"] = 5.5e6
         self.args["vf_coef"] = 0.1

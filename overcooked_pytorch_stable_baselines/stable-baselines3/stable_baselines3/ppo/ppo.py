@@ -191,18 +191,6 @@ class PPO(OnPolicyAlgorithm):
         clip_fractions = []
 
         continue_training = True
-        # if self.other_agent_rollout_buffer is not None:
-        #     self.rollout_buffer.actions = np.concatenate([self.rollout_buffer.actions, self.other_agent_rollout_buffer.actions])
-        #     self.rollout_buffer.observations = np.concatenate(
-        #         [self.rollout_buffer.observations, self.other_agent_rollout_buffer.observations])
-        #     self.rollout_buffer.advantages = np.concatenate(
-        #         [self.rollout_buffer.advantages, self.other_agent_rollout_buffer.advantages])
-        #     self.rollout_buffer.log_probs = np.concatenate(
-        #         [self.rollout_buffer.log_probs, self.other_agent_rollout_buffer.log_probs])
-        #     self.rollout_buffer.values = np.concatenate(
-        #         [self.rollout_buffer.values, self.other_agent_rollout_buffer.values])
-        #     self.rollout_buffer.returns = np.concatenate(
-        #         [self.rollout_buffer.returns, self.other_agent_rollout_buffer.returns])
 
         # train for n_epochs epochs
         for epoch in range(self.n_epochs):
@@ -258,6 +246,7 @@ class PPO(OnPolicyAlgorithm):
                     entropy_loss = -th.mean(-log_prob)
                 else:
                     entropy_loss = -th.mean(entropy)
+                entropy_losses.append(entropy_loss.item())
 
                 loss = policy_loss + self.ent_coef * entropy_loss + self.vf_coef * value_loss
                 # loss = 0
@@ -285,21 +274,20 @@ class PPO(OnPolicyAlgorithm):
                 # KLN = F.kl_div(B, A)
 
 
-                if self.env.population and self.args["action_prob_diff_loss_coef"]:
+                if self.env.population and self.args["cross_entropy_loss_coef"] > 0:
                     with th.no_grad():
-                        population_action_distributions = torch.from_numpy(np.array(
-                            [ind.policy.get_distribution(rollout_data.observations).distribution.probs.detach().numpy() for ind in self.env.population]))
-                            # [[np.array([0.5,0.15,0.0,0.2,0.1,0.05], dtype=np.single) for _ in range(len(rollout_data.observations))]  for ind in self.env.population]))
+                        population_action_distributions = torch.from_numpy([ind.policy.get_distribution(rollout_data.observations).distribution.logits for ind in self.env.population])
+                            # torch.from_numpy(np.array(
+
 
                     actions_prob_dist = self.policy.get_distribution(rollout_data.observations)
+                    cross_entropy_loss = F.cross_entropy(actions_prob_dist.distribution.logits, population_action_distributions, reduction="mean")
                     # diff = torch.sub(actions_prob_dist.distribution.probs, population_action_distributions)
                     # diff_square = torch.square(diff)
                     # x = torch.mean(diff_square)
                     pop_diff_loss = -F.mse_loss(actions_prob_dist.distribution.probs, population_action_distributions, reduction="mean")
 
-                    loss = loss + self.args["action_prob_diff_loss_coef"] * pop_diff_loss
-
-                entropy_losses.append(entropy_loss.item())
+                    loss = loss + self.args["cross_entropy_loss_coef"] * pop_diff_loss
 
 
 
