@@ -214,7 +214,9 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
 
             if self.env.population_mode:
-                rewards = (1 - self.sparse_r_coef_horizon) * rewards + self.sparse_r_coef_horizon * np.array(agent_sparse_r)
+                if self.args["delay_shared_reward"]:
+                    rewards = (1 - self.sparse_r_coef_horizon) * rewards
+                rewards = rewards + self.sparse_r_coef_horizon * np.array(agent_sparse_r)
             else:
                 rewards = rewards + self.sparse_r_coef_horizon * np.array(agent_sparse_r)
 
@@ -441,6 +443,20 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
             self._last_obs = new_obs
 
+        evaluation_rewards = np.array(evaluation_rewards)
+
+        if self.env.venv.population_mode:
+            ind_start = 0
+            ind_sum_rewards = []
+
+            for (pop_chunk, other_agent_model) in zip(self.split_pop_indices(), self.env.population):
+                rews = evaluation_rewards[:, ind_start:ind_start+pop_chunk]
+                sum_rewards = np.sum(rews) / pop_chunk
+                ind_sum_rewards.append((sum_rewards, other_agent_model.custom_id))
+                ind_start += pop_chunk
+
+            print(ind_sum_rewards)
+
         evaluation_rewards = np.concatenate(evaluation_rewards)
 
         assert dones[0] == True, "after 400 steps env is not done"
@@ -451,6 +467,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
     def split_pop_indices(self):
         indices = []
         remaining_pop_size = len(self.env.population)
+        remaining_pop_size = max(remaining_pop_size, 1)
         total = self.env.num_envs
         remaining = total
         while remaining > 0:

@@ -16,7 +16,8 @@ class ExperimentsParamsManager(object):
         self.args["mode"] = "POP" #"SP"
         self.args["kl_diff_reward_coef"] = 0.
         self.args["cross_entropy_loss_coef"] = 0.
-
+        self.args["delay_shared_reward"] = True
+        self.args["pop_bonus_ts"] = 1e5
 
         self.init_base_args_for_layout(args["layout_name"])
 
@@ -162,7 +163,7 @@ class ExperimentsParamsManager(object):
         self.args["random_start"] = True
         self.args["ent_coef_start"] = 0.1
         self.args["ent_coef_end"] = 0.03
-        self.args["trained_models"] = 4
+        self.args["trained_models"] = 11
         self.args["ent_coef_horizon"] = 1.5e6
         self.args["total_timesteps"] = 5.5e6
         self.args["vf_coef"] = 0.1
