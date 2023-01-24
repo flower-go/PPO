@@ -274,7 +274,7 @@ class PPO(OnPolicyAlgorithm):
                 # KLN = F.kl_div(B, A)
 
 
-                if self.env.population and self.args["cross_entropy_loss_coef"] > 0:
+                if self.env.population and self.args.cross_entropy_loss_coef > 0:
                     with th.no_grad():
                         population_action_distributions = torch.from_numpy([ind.policy.get_distribution(rollout_data.observations).distribution.logits for ind in self.env.population])
                             # torch.from_numpy(np.array(
@@ -287,7 +287,7 @@ class PPO(OnPolicyAlgorithm):
                     # x = torch.mean(diff_square)
                     pop_diff_loss = -F.mse_loss(actions_prob_dist.distribution.probs, population_action_distributions, reduction="mean")
 
-                    loss = loss + self.args["cross_entropy_loss_coef"] * pop_diff_loss
+                    loss = loss + self.args.cross_entropy_loss_coef * pop_diff_loss
 
 
 

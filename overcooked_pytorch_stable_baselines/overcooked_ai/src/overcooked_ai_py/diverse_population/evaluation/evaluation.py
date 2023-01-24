@@ -10,10 +10,10 @@ class Evaluator(object):
         self.device = device
         self.args = args
 
-        self.venv.reset_times([i for i in range(args["num_workers"])])
+        self.venv.reset_times([i for i in range(args.num_workers)])
 
     def evaluate(self, agent_set_0, agent_set_1, num_games_per_worker = 2, file_name=None, deterministic=True):
-        file_full_name = f"diverse_population/evaluation/{self.args['layout_name']}/" + file_name + '' if deterministic else '_STOCH'
+        file_full_name = f"diverse_population/evaluation/{self.args.layout_name}/" + file_name + '' if deterministic else '_STOCH'
         try:
             result_matrix = np.loadtxt(file_full_name)
         except:

@@ -889,7 +889,7 @@ class RewardShapingEnv(SubprocVecEnv):
 
 
 
-def get_vectorized_gym_env(base_env, gym_env_name, agent_idx, featurize_fn=None, start_state_fn=None, **kwargs):
+def get_vectorized_gym_env(base_env, gym_env_name, agent_idx, featurize_fn=None, start_state_fn=None, args=None):
     """
     Create a one-player overcooked gym environment in which the other player is fixed (embedded in the environment)
 
@@ -901,5 +901,5 @@ def get_vectorized_gym_env(base_env, gym_env_name, agent_idx, featurize_fn=None,
         gym_env.custom_init(base_env, featurize_fn=featurize_fn, start_state_fn=start_state_fn, baselines_reproducible=True, agent_idx=agent_idx)
         return gym_env
 
-    vectorized_gym_env = SubprocVecEnv([gym_env_fn] * kwargs["num_workers"])
+    vectorized_gym_env = SubprocVecEnv([gym_env_fn] * args.num_workers)
     return vectorized_gym_env

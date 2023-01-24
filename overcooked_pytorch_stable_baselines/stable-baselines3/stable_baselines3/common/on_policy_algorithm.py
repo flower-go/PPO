@@ -9,6 +9,7 @@ import torch as th
 
 import random
 
+from overcooked_ai_py.diverse_population.DivergentSolutionException import DivergentSolutionException
 import overcooked_ai_py.mdp.actions
 from stable_baselines3.common.base_class import BaseAlgorithm
 from stable_baselines3.common.buffers import DictRolloutBuffer, RolloutBuffer
@@ -20,8 +21,7 @@ from stable_baselines3.common.vec_env import VecEnv
 
 OnPolicyAlgorithmSelf = TypeVar("OnPolicyAlgorithmSelf", bound="OnPolicyAlgorithm")
 
-class DivergentSolutionException(Exception):
-    pass
+
 
 class OnPolicyAlgorithm(BaseAlgorithm):
     """
@@ -214,13 +214,13 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
 
             if self.env.population_mode:
-                if self.args["delay_shared_reward"]:
+                if self.args.delay_shared_reward:
                     rewards = (1 - self.sparse_r_coef_horizon) * rewards
                 rewards = rewards + self.sparse_r_coef_horizon * np.array(agent_sparse_r)
             else:
                 rewards = rewards + self.sparse_r_coef_horizon * np.array(agent_sparse_r)
 
-            if self.env.population_mode and self.args["kl_diff_reward_coef"] > 0:
+            if self.env.population_mode and self.args.kl_diff_reward_coef > 0:
                 with th.no_grad():
                     kl_divs = []
                     # actions_dist_logits = self.policy.get_distribution(obs_tensor).distribution.logits.cpu()
@@ -231,7 +231,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                         pop_ind_actions_dist_logits = ind.policy.get_distribution(obs_tensor).distribution.logits
                         diff = kl_diff_reward_loss(actions_dist_logits, pop_ind_actions_dist_logits)
                         kl_divs.append(diff.item())
-                    pop_diff_reward = self.args["kl_diff_reward_coef"] * np.min(kl_divs)
+                    pop_diff_reward = self.args.kl_diff_reward_coef * np.min(kl_divs)
 
                     rewards = rewards + pop_diff_reward
 
@@ -312,7 +312,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
         callback.on_training_start(locals(), globals())
         self.sparse_r_coef_horizon = 1
-        self.kl_diff_reward_coef = args["kl_diff_reward_coef"]
+        self.kl_diff_reward_coef = args.kl_diff_reward_coef
         best_model = None
         best_model_eval_val = -1
         population_present = len(self.env.population) > 0
@@ -328,7 +328,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             continue_training = self.collect_rollouts(self.env, callback, self.rollout_buffer, n_rollout_steps=self.n_steps)
 
             # Divergent solution check
-            if not self.env.population_mode and args["divergent_check_timestep"] is not None and self.num_timesteps > args["divergent_check_timestep"] and self.num_timesteps < args["divergent_check_timestep"] + 1e5:
+            if not self.env.population_mode and args.divergent_check_timestep is not None and self.num_timesteps > args.divergent_check_timestep and self.num_timesteps < args.divergent_check_timestep + 1e5:
                 sparse_r = safe_mean([ep_info["ep_game_stats"]["cumulative_sparse_rewards_by_agent"][1 - ep_info["policy_agent_idx"]] for ep_info in self.ep_info_buffer])
                 sparse_r_other_agent = safe_mean([ep_info["ep_game_stats"]["cumulative_sparse_rewards_by_agent"][ep_info["policy_agent_idx"]] for ep_info in self.ep_info_buffer])
                 # Neither of agents have managed to serve single plate of soup within first args["divergent_check_timestep"], models have likely converged to some bad local optima
@@ -367,27 +367,28 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             self.train()
 
 
-            evaluate = self.num_timesteps > args["training_percent_start_eval"] * args["total_timesteps"]
+            evaluate = self.num_timesteps > args.training_percent_start_eval * args.total_timesteps
 
-            if evaluate and args["eval_interval"] is not None and iteration % args["eval_interval"] == 0:
+            if evaluate and args.eval_interval is not None and iteration % args.eval_interval == 0:
                 evaluation_avg_rewards_per_episode = self.evaluate_env()
                 eval_values = [evaluation_avg_rewards_per_episode]
                 if evaluation_avg_rewards_per_episode > 0.98 * best_model_eval_val:
-                    for _ in range(args["evals_num_to_threshold"]):
+                    for _ in range(args.evals_num_to_threshold):
                         eval_values.append(self.evaluate_env())
                     if np.mean(eval_values) > best_model_eval_val:
                         print(f"found better model with value {np.mean(eval_values)}")
                         best_model_eval_val = np.mean(eval_values)
                         best_model = copy.deepcopy(self.policy)
 
-                if "eval_stop_threshold" in args and evaluation_avg_rewards_per_episode > args["eval_stop_threshold"]:
-                    print(f"evaluation result over {args['eval_stop_threshold']} detected, continuing with further evaluation")
+                # if "eval_stop_threshold" in args and evaluation_avg_rewards_per_episode > args.eval_stop_threshold:
+                if evaluation_avg_rewards_per_episode > args.eval_stop_threshold:
+                    print(f"evaluation result over {args.eval_stop_threshold} detected, continuing with further evaluation")
                     eval_values = [evaluation_avg_rewards_per_episode]
-                    for _ in range(args["evals_num_to_threshold"]):
+                    for _ in range(args.evals_num_to_threshold):
                         eval_values.append(self.evaluate_env())
 
                     print(f"evaluation result after re-evaluation: {np.mean(eval_values)}")
-                    if np.mean(eval_values) > args["eval_stop_threshold"]:
+                    if np.mean(eval_values) > args.eval_stop_threshold:
                         print("found good solution, terminating training")
                         self.logger.record("evaluation_rollout/avg_ep_rew_sum", np.mean(eval_values))
                         break
@@ -406,8 +407,8 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
     def anneal_learning_parameters(self):
         if self.args:
-            self.ent_coef = max(self.args["ent_coef_end"],self.args["ent_coef_start"] - (self.num_timesteps / self.args["ent_coef_horizon"]) * (self.args["ent_coef_start"] - self.args["ent_coef_end"]))
-            self.sparse_r_coef_horizon = max(0, 1 - (self.num_timesteps / self.args["sparse_r_coef_horizon"]))
+            self.ent_coef = max(self.args.ent_coef_end,self.args.ent_coef_start - (self.num_timesteps / self.args.ent_coef_horizon) * (self.args.ent_coef_start - self.args.ent_coef_end))
+            self.sparse_r_coef_horizon = max(0, 1 - (self.num_timesteps / self.args.sparse_r_coef_horizon))
 
     def evaluate_env(self):
         evaluation_rewards = []

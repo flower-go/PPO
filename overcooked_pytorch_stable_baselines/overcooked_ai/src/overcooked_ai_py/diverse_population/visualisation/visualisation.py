@@ -28,6 +28,6 @@ def heat_map(table, title, file_name, args, deterministic=True):
     ax.set_title(title)
     fig.tight_layout()
     # plt.savefig(f"diverse_population/visualisation/{args['layout_name']}/coordination_ring.png")
-    file_name = f"diverse_population/visualisation/{args['layout_name']}/" + file_name + '' if deterministic else '_STOCH'
+    file_name = f"diverse_population/visualisation/{args.layout_name}/" + file_name + '' if deterministic else '_STOCH'
     file_name = file_name + ".png"
     plt.savefig(file_name)
