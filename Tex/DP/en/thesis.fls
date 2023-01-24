@@ -1028,6 +1028,16 @@ INPUT ./chap04.tex
 INPUT chap04.tex
 INPUT ./chap04.tex
 INPUT chap04.tex
+INPUT /usr/share/texmf/tex/latex/lm/ot1lmtt.fd
+INPUT /usr/share/texmf/tex/latex/lm/ot1lmtt.fd
+INPUT /usr/share/texmf/tex/latex/lm/ot1lmtt.fd
+INPUT /usr/share/texmf/tex/latex/lm/ot1lmtt.fd
+INPUT /usr/share/texmf/fonts/tfm/public/lm/rm-lmtt12.tfm
+INPUT ./layouts.png
+INPUT ./layouts.png
+INPUT layouts.png
+INPUT ./layouts.png
+INPUT ./layouts.png
 INPUT ./chap05.tex
 INPUT ./chap05.tex
 INPUT ./chap05.tex
@@ -1115,7 +1125,9 @@ INPUT bibliography.aux
 INPUT ./thesis.out
 INPUT ./thesis.out
 INPUT /usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc
+INPUT /usr/share/texmf/fonts/enc/dvips/lm/lm-rmtt.enc
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmr12.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmr17.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmri12.pfb
+INPUT /usr/share/texmf/fonts/type1/public/lm/lmtt12.pfb

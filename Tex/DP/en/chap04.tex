@@ -1,8 +1,41 @@
 \chapter{Overcooked environment}
 
-\section{Description}
-\section{Base layouts}
-Cramped room, Assymetric advantages, Coordination ring, Forced coordination, Counter circuit
+\section{Overcooked game}
+Before we get into our problems with cooperation let us first examine the environment. 
+We will be working with environment based on popular cooking video game \url{https://ghosttowngames.com/overcooked/}.
+Overcooked is multiplayer cooperative game where the goal is to work in a kitchen as a team with partner cooks and prepare together various dishes within limited time.
+However, the game is dynamic to a great extent. In many maps the kitchen itself is not static and may be changing on a run. 
+Moreover, random events such as pots catching fire add to the chaos. The challenge lies in coordination with rest of the team and dividing subtasks efficiently.
+
+\par
+The aforementioned game was simplified and reimplemented to simpler environment \url{https://github.com/HumanCompatibleAI/overcooked_ai} to serve a purpose of scientific common ground for studying multi agent cooperation in somehwat complex settings.
+Lot of additional features of original game were removed and remained only essential aspects.
+In its simplest form, environment is taking place in small static kitchen layout where only available recipe is onion soup which can be prepared by putting three onions in a pot and waiting for given time period.
+Somewhere in the kitchen there is unlimited source of onions and dish dispenser, where player can grab a dish to carry cooked onion soup in to the counter.
+Team of cooks is rewarded as team by abstract reward of value 20 every time cooked soup is delivered to the counter. 
+It may seem that the task is quite straightforward. However, players face problems on multiple levels.
+
+\section{Basic layouts}
+Although the Overcooked implementation has its own generator that can be used to generate new random kitchen layouts, the majority of the related scientific work has so far experimented with a fixed set of predefined layouts. 
+Where each layout captures some important aspect of coordination.
+
+
+\includegraphics*[width=13cm]{layouts.png}
+\break
+(From left to right: Cramped room, Assymetric advantages, Coordination ring, Forced coordination, Counter circuit)
+\par 
+Cramped room as a name suggests represents cramped kitchen layout where all important places are relatively easy to reach. Challenge lies in low level coordination of movement with the other partner as there is no spare room.
+\par
+In Assymetric advantages both players are located in separated regions where each region is fully self-sustaining. However, each region has better potential for specific subtask. 
+And it is only when both players make the most of their region's potential that the maximal shared efficacy is reached.
+
+TODO: to be continued
+
+
+
+
+
+
 \section{Problem of robustness}
 
 \subsection*{Definition of robustness problem}

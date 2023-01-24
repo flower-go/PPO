@@ -8,22 +8,22 @@
 \contentsline {section}{\numberline {3.1}Definitions}{5}{section.3.1}%
 \contentsline {section}{\numberline {3.2}Possible mention of MAPPO success}{5}{section.3.2}%
 \contentsline {chapter}{\numberline {4}Overcooked environment}{6}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Description}{6}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Base layouts}{6}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Problem of robustness}{6}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Human cooperation vs artificial cooperation}{6}{section.4.4}%
-\contentsline {chapter}{\numberline {5}Lack of robustness problem of AI agents}{7}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Related work}{7}{section.5.1}%
-\contentsline {chapter}{\numberline {6}Our contribution}{8}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Utilized framework}{8}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Robustness metric}{8}{section.6.2}%
-\contentsline {section}{\numberline {6.3}Population build up}{8}{section.6.3}%
-\contentsline {section}{\numberline {6.4}Population policies difference rewards augmentation}{8}{section.6.4}%
-\contentsline {section}{\numberline {6.5}Population policies difference loss}{8}{section.6.5}%
-\contentsline {chapter}{Conclusion}{9}{chapter*.10}%
-\contentsline {chapter}{Bibliography}{10}{chapter*.11}%
-\contentsline {chapter}{List of Figures}{11}{chapter*.12}%
-\contentsline {chapter}{List of Tables}{12}{chapter*.13}%
-\contentsline {chapter}{List of Abbreviations}{13}{chapter*.14}%
-\contentsline {chapter}{\numberline {A}Attachments}{14}{appendix.A}%
-\contentsline {section}{\numberline {A.1}First Attachment}{14}{section.A.1}%
+\contentsline {section}{\numberline {4.1}Overcooked game}{6}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Basic layouts}{6}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Problem of robustness}{7}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Human cooperation vs artificial cooperation}{7}{section.4.4}%
+\contentsline {chapter}{\numberline {5}Lack of robustness problem of AI agents}{8}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Related work}{8}{section.5.1}%
+\contentsline {chapter}{\numberline {6}Our contribution}{9}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Utilized framework}{9}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Robustness metric}{9}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Population build up}{9}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Population policies difference rewards augmentation}{9}{section.6.4}%
+\contentsline {section}{\numberline {6.5}Population policies difference loss}{9}{section.6.5}%
+\contentsline {chapter}{Conclusion}{10}{chapter*.10}%
+\contentsline {chapter}{Bibliography}{11}{chapter*.11}%
+\contentsline {chapter}{List of Figures}{12}{chapter*.12}%
+\contentsline {chapter}{List of Tables}{13}{chapter*.13}%
+\contentsline {chapter}{List of Abbreviations}{14}{chapter*.14}%
+\contentsline {chapter}{\numberline {A}Attachments}{15}{appendix.A}%
+\contentsline {section}{\numberline {A.1}First Attachment}{15}{section.A.1}%

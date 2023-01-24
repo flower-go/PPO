@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.23)  23 JAN 2023 15:42
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.23)  24 JAN 2023 18:26
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -572,17 +572,31 @@ Chapter 3.
 
  (./chap04.tex
 Chapter 4.
-) [6
+LaTeX Font Info:    Trying to load font information for OT1+lmtt on input line 5.
+(/usr/share/texmf/tex/latex/lm/ot1lmtt.fd
+File: ot1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+<layouts.png, id=215, 803.0pt x 138.5175pt>
+File: layouts.png Graphic file (type png)
+<use layouts.png>
+Package pdftex.def Info: layouts.png  used on input line 23.
+(pdftex.def)             Requested size: 369.88582pt x 63.80759pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 23--26
+[][] 
+ []
+
+[6
 
 
 
 
-]
+ <./layouts.png>]) [7]
 \openout2 = `chap05.aux'.
 
  (./chap05.tex
 Chapter 5.
-) [7
+) [8
 
 
 
@@ -592,7 +606,7 @@ Chapter 5.
 
  (./chap06.tex
 Chapter 6.
-) [8
+) [9
 
 
 
@@ -600,7 +614,7 @@ Chapter 6.
 ]
 \openout2 = `epilog.aux'.
 
- (./epilog.tex) [9
+ (./epilog.tex) [10
 
 
 
@@ -608,7 +622,7 @@ Chapter 6.
 ]
 \openout2 = `bibliography.aux'.
 
- (./bibliography.tex (./thesis.bbl)) [10
+ (./bibliography.tex (./thesis.bbl)) [11
 
 
 
@@ -617,7 +631,7 @@ Chapter 6.
 \tf@lof=\write7
 \openout7 = `thesis.lof'.
 
- [11
+ [12
 
 
 
@@ -625,31 +639,31 @@ Chapter 6.
 \tf@lot=\write8
 \openout8 = `thesis.lot'.
 
- [12
+ [13
 
-] [13
+] [14
 
 ]
 Appendix A.
-[14
+[15
 
 ] (./thesis.aux (./title.aux) (./preface.aux) (./chap01.aux) (./chap02.aux) (./chap03.aux) (./chap04.aux) (./chap05.aux) (./chap06.aux) (./epilog.aux) (./bibliography.aux))
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 0661B18937EF647628CD7A6C56E8E4D4;5198.
+(rerunfilecheck)             Checksum: A2B934459421A9AA6547DC9A3DFDAC3A;5226.
  ) 
 Here is how much of TeX's memory you used:
- 15069 strings out of 479342
- 231584 string characters out of 5869178
- 501310 words of memory out of 5000000
- 32696 multiletter control sequences out of 15000+600000
- 520458 words of font info for 63 fonts, out of 8000000 for 9000
+ 15120 strings out of 479342
+ 232364 string characters out of 5869178
+ 501311 words of memory out of 5000000
+ 32740 multiletter control sequences out of 15000+600000
+ 520768 words of font info for 64 fonts, out of 8000000 for 9000
  473 hyphenation exceptions out of 8191
  77i,6n,79p,533b,2377s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmri12.pfb>
-Output written on thesis.pdf (18 pages, 426591 bytes).
+{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rmtt.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt12.pfb>
+Output written on thesis.pdf (19 pages, 481133 bytes).
 PDF statistics:
- 292 PDF objects out of 1000 (max. 8388607)
- 253 compressed objects within 3 object streams
- 56 named destinations out of 1000 (max. 500000)
- 250 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 309 PDF objects out of 1000 (max. 8388607)
+ 264 compressed objects within 3 object streams
+ 57 named destinations out of 1000 (max. 500000)
+ 261 words of extra memory for PDF output out of 10000 (max. 10000000)
 

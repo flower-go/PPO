@@ -70,6 +70,7 @@ def load_or_train_models(args, env):
         model = None
         try:
             model_name = directory + str(n).zfill(2)
+            print(f"Looking for file {model_name}")
             model = PPO.load(model_name, env=env, device="cuda")
             model.custom_id = n
             print(f"model {model_name} loaded")
