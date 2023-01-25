@@ -22,7 +22,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--layout_name", default="forced_coordination", type=str, help="Layout name.")
 parser.add_argument("--trained_models", default=14, type=int, help="Number of models to train in experiment.")
 parser.add_argument("--mode", default="POP", type=str, help="Mode of experiment: Self-play ('SP') or Population ('POP').")
-parser.add_argument("--kl_diff_reward_coef", default=0., type=float, help="Coeficient for kl div population policies difference.")
+parser.add_argument("--kl_diff_reward_coef", default=0.5, type=float, help="Coeficient for kl div population policies difference.")
+parser.add_argument("--kl_diff_reward_clip", default=0.1, type=float, help="")
 parser.add_argument("--cross_entropy_loss_coef", default=0., type=float, help="Coeficient for cross-entropy loss of population policies.")
 parser.add_argument("--delay_shared_reward", default=True, type=bool, help="Whether to delay shared rewards.")
 parser.add_argument("--pop_bonus_ts", default=1e5, type=int, help="Number of bonus train time steps for each consecutive individual in population.")
@@ -211,19 +212,25 @@ if __name__ == "__main__":
         full_name = full_name + "_ROP" + str(args.rnd_obj_prob_thresh)
         full_name = full_name + "_M" + str(args.mode)
         full_name = full_name + "_DR" + str(args.kl_diff_reward_coef)
+        full_name = full_name + "_DRC" + str(args.kl_diff_reward_clip)
         full_name = full_name + "_DL" + str(args.cross_entropy_loss_coef)
         full_name = full_name + "_DSR" + str(args.delay_shared_reward)
         args.exp = full_name
 
 
-    for _ in range(1):
-        params_manager.args.layout_name = args.layout_name
-        params_manager.init_base_args_for_layout(args.layout_name)
-        params_manager.init_exp_specific_args(args.exp)
-        # set_random_params()
-        get_name()
-        models = load_or_train_models(args, gym_env)
-        # exit()
+
+    params_manager.args.layout_name = args.layout_name
+    params_manager.init_base_args_for_layout(args.layout_name)
+    params_manager.init_exp_specific_args(args.exp)
+    # set_random_params()
+    get_name()
+    models = load_or_train_models(args, gym_env)
+    # exit()
+
+    args.exp = "CNN_CUDA_RS_EVAL_ROP0.0"
+    # get_name()
+    args.trained_models = 30
+    eval_models = load_or_train_models(args, gym_env)
 
     # for modification_key in modifications.keys():
     #     params_manager.args["layout_name"] = layout
@@ -234,7 +241,7 @@ if __name__ == "__main__":
     #     models = load_or_train_models(args, gym_env, None)
 
 
-    eval_table = evaluator.evaluate(models, models, 2, args.exp)
+    eval_table = evaluator.evaluate(models, eval_models, 1, args.exp)
     heat_map(eval_table, args.exp, args.exp, args)
 
     if args.mode == "POP":

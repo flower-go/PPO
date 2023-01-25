@@ -232,6 +232,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                         diff = kl_diff_reward_loss(actions_dist_logits, pop_ind_actions_dist_logits)
                         kl_divs.append(diff.item())
                     pop_diff_reward = self.args.kl_diff_reward_coef * np.min(kl_divs)
+                    pop_diff_reward = np.clip(pop_diff_reward, 0, self.args.kl_diff_reward_clip)
 
                     rewards = rewards + pop_diff_reward
 
