@@ -12,8 +12,8 @@ class Evaluator(object):
 
         self.venv.reset_times([i for i in range(args.num_workers)])
 
-    def evaluate(self, agent_set_0, agent_set_1, num_games_per_worker = 2, file_name=None, deterministic=True):
-        file_full_name = f"diverse_population/evaluation/{self.args.layout_name}/" + file_name + '' if deterministic else '_STOCH'
+    def evaluate(self, agent_set_0, agent_set_1, num_games_per_worker = 2, layout_name = None, file_name=None, deterministic=True):
+        file_full_name = f"diverse_population/evaluation/{layout_name}/" + file_name + '' if deterministic else '_STOCH'
         try:
             result_matrix = np.loadtxt(file_full_name)
         except:
@@ -45,11 +45,9 @@ class Evaluator(object):
                 with th.no_grad():
                     # Convert to pytorch tensor or to TensorDict
                     obs = np.array([entry["both_agent_obs"][0] for entry in self.venv._last_obs])
-                    # obs_tensor = obs_as_tensor(obs, self.device)
                     actions, _= self_agent_model.policy.predict(obs, deterministic=deterministic)
 
                     other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self.venv._last_obs])
-                    # other_agent_obs_tensor = obs_as_tensor(other_agent_obs, self.device)
                     other_agent_actions, _ = other_agent_model.policy.predict(other_agent_obs, deterministic=deterministic)
 
                 joint_action = [(actions[i], other_agent_actions[i]) for i in range(len(actions))]

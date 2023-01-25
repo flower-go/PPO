@@ -285,9 +285,9 @@ class PPO(OnPolicyAlgorithm):
                     # diff = torch.sub(actions_prob_dist.distribution.probs, population_action_distributions)
                     # diff_square = torch.square(diff)
                     # x = torch.mean(diff_square)
-                    pop_diff_loss = -F.mse_loss(actions_prob_dist.distribution.probs, population_action_distributions, reduction="mean")
+                    # pop_diff_loss = -F.mse_loss(actions_prob_dist.distribution.probs, population_action_distributions, reduction="mean")
 
-                    loss = loss + self.args.cross_entropy_loss_coef * pop_diff_loss
+                    # loss = loss + self.args.cross_entropy_loss_coef * pop_diff_loss
 
 
 

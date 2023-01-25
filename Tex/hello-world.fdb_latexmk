@@ -1,7 +1,7 @@
 # Fdb version 3
-["pdflatex"] 1673613146 "/home/premek/DP/PPO/Tex/hello-world.tex" "hello-world.pdf" "hello-world" 1673613146
+["pdflatex"] 1674660127 "/home/premek/DP/PPO/Tex/hello-world.tex" "hello-world.pdf" "hello-world" 1674660128
   "/etc/texmf/web2c/texmf.cnf" 1663774648 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/premek/DP/PPO/Tex/hello-world.tex" 1673613145 21315 607acf69400151899731c2bcc944e311 ""
+  "/home/premek/DP/PPO/Tex/hello-world.tex" 1674660127 24096 141cd8bf57b3def51e111ef574557b35 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm" 1136768653 1324 c910af8c371558dc20f2d7822f66fe64 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr12.tfm" 1136768653 1288 655e228510b4c2a1abe905c368440826 ""
@@ -50,11 +50,11 @@
   "/usr/share/texlive/texmf-dist/tex/latex/url/url.sty" 1388531844 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1644012257 39432 7155514e09a3d69036fac785183a21c2 ""
   "/usr/share/texmf/web2c/texmf.cnf" 1644012257 39432 7155514e09a3d69036fac785183a21c2 ""
-  "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1663775754 165012 f177baa1c39a3ebd62c3096a43521a0d ""
-  "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1663775757 1435854 02c99c63a09a447356815c4d8fcd2847 ""
-  "hello-world.aux" 1673613146 2665 61ba3f3cd04879134ecd5bb655b51332 "pdflatex"
-  "hello-world.out" 1673613146 3929 9eaf5b14f969d49d95c15c696b11d02a "pdflatex"
-  "hello-world.tex" 1673613145 21315 607acf69400151899731c2bcc944e311 ""
+  "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1674481671 4084082 17ac8003b0e8c37a0e8ee28a14568e54 ""
+  "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1674481472 2618691 62a4233282ede316b39209f38c27fd69 ""
+  "hello-world.aux" 1674660127 2794 a446e659726cb2516a96623ee6045f46 "pdflatex"
+  "hello-world.out" 1674660127 4079 8abb3a6503cbeba438e897bc4a65461a "pdflatex"
+  "hello-world.tex" 1674660127 24096 141cd8bf57b3def51e111ef574557b35 ""
   (generated)
   "hello-world.aux"
   "hello-world.log"

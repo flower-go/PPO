@@ -178,8 +178,9 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
                 other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self._last_obs])
                 #TODO: map other_agents with corresponding other agent observations
-                other_agent_obs_tensor = obs_as_tensor(other_agent_obs, self.device)
-                other_agent_actions, other_agent_values, other_agent_log_probs = env.other_agent_model.policy(other_agent_obs_tensor)
+
+                # other_agent_obs_tensor = obs_as_tensor(other_agent_obs, self.device)
+                # other_agent_actions, other_agent_values, other_agent_log_probs = env.other_agent_model.policy(other_agent_obs_tensor)
                 if self.env.venv.population_mode:
                     other_agent_actions = []
 
@@ -187,9 +188,9 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                     for (pop_chunk, other_agent_model) in zip(self.split_pop_indices(), self.env.population):
                         other_obs = other_agent_obs[ind_start:ind_start+pop_chunk]
                         ind_start+=pop_chunk
-                        other_agent_obs_tensor = obs_as_tensor(other_obs, self.device)
-                        other_agent_a, _, _ = other_agent_model.policy(other_agent_obs_tensor)
-                        other_agent_actions.append(other_agent_a.cpu().numpy())
+                        # other_agent_obs_tensor = obs_as_tensor(other_obs, self.device)
+                        other_agent_a, _ = other_agent_model.policy.predict(other_obs, deterministic=True) # population partners play argmax during training
+                        other_agent_actions.append(other_agent_a)
 
                     other_agent_actions = np.concatenate(other_agent_actions)
                 else:
@@ -430,9 +431,9 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                     for (pop_chunk, other_agent_model) in zip(self.split_pop_indices(), self.env.population):
                         other_obs = other_agent_obs[ind_start:ind_start+pop_chunk]
                         ind_start+=pop_chunk
-                        other_agent_obs_tensor = obs_as_tensor(other_obs, self.device)
-                        other_agent_a, _, _ = other_agent_model.policy(other_agent_obs_tensor)
-                        other_agent_actions.append(other_agent_a.cpu().numpy())
+                        # other_agent_obs_tensor = obs_as_tensor(other_obs, self.device)
+                        other_agent_a, _ = other_agent_model.policy.predict(other_obs, deterministic=True)
+                        other_agent_actions.append(other_agent_a)
 
                     other_agent_actions = np.concatenate(other_agent_actions)
                 else:

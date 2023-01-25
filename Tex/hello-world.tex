@@ -303,7 +303,7 @@ What is Zero-shot coordination?? - studies how independently trained agents may 
 \begin{list}{}{}
     \item Loss\_less funguje, chyba v normalizaci
     \item hyperparametry dle clanku moc nefunguje
-    \item nalezl jsem parametry s vahou critic aspon 0.1 ktere mi funguji pro vsechny mapy
+    \item nalezl jsem parametry s vahou critic aspon 0.1 ktere mi funguji pro vsechny mapy... random zkousenim cca 100 moznych kombinaci hyperparametru
     \item Obcas selze vypada ze pouze pro posledni mapu - mam predcasne ukonceni po 2.5M (cca 12 minut), mozna by mohla byt situace jina s "chytrymi pomocniky"
     \item cramped rooom a asynchronous advantages moc nemaji off-diagonal problem, plus vetsi randomizace prostredi to jeste zhorsuje, nebo stezuje uceni
     \item Pripada mi ze entropy coef 0.1 byl moc silny, ale pouze domnenka, nemam cas se tomu vic venovat
@@ -311,8 +311,32 @@ What is Zero-shot coordination?? - studies how independently trained agents may 
     \item Zacit s populacnim trenovanim - dve myslenky, pridat inverse annealing spolecne reward
     \item Obcas ma vysledny model na konci eval 0 prestoze v prubehu na tom nebyl spatne - tj. budu asi brat nejlepsi model z prubehu. 
         V pripade populace rozmyslet eval, vuci vsem v populaci, aby to nebylo zkreslene
-    \item Zacit s pop diff rewardem, MSE na prop vectoru asi neni dobry napad, tak spis KL  
+    \item Zacit s pop diff rewardem, MSE na prop vectoru asi neni dobry napad, tak spis KL, po konzultaci neresim poradi vstupu do KL\_DIV, proste jedno vybereme 
 \end{list}
+
+\subsection{Summary 25.1.2023}
+\begin{list}{}{}
+    \item Predelal jsem args na Namespace argparses, aby slo dobre volat z prikazove radky
+    \item Prosel jsem si nezavisle conda instalaci bez instalace samotneho stable-baselines3 a overcooked, protoze existuji jako clone v projektu. Momentalne zjistuju jak vytvorit shell script ktery zvladne aktivat conda env a pustit entrypoint
+            Zbyva asi vyresit sys.path.append cesty k overcooked\_ai\_py a stable\_baselines3
+    \item TODO: zkontrolovat co se vlastne pocita v tom mem evaluate. Pripada mi ze to nevraci hodnoty c*20 / \#parallel envs
+    \item Pro populacni trenovani jsem opustil myslenku jednoho pevneho soupere pro celou trenovaci epochu. Namisto toho rozdelim populaci mezi 30 paralelnich prostredi vuci kterym trenuju. 
+        Tim mam zajisteno, ze to pri treninku stale vidi celou populaci. Tento pristup hodne zpomaluje trenovani, protoze najednou musim v kazdem stepu volat vickrat NN.
+        Pro vyreseni nedelitelnosti na zacatku treninkove epochy populaci shuffluju
+    \item Zkousel jsem pri populaci dva ruzne pristupy vzhledem k shared rewards. Prvni je nechat shared rewards tak jak jsou, toto mi nepripada intuitivni, nebot muze stacit aby partner vedet jak varit polevku a pak se ani nemusim snazit/nemusim na tom mit podil a presto mam odmenu.
+        Proto jdu druhou cestu, kdy inverse annealuju shared rewards opacne k tem partial rewards. Tedy intuice je takova ze nejprve se ucim jak se delaji subtasky a pak az je budu umet, tak se budu vic zabyvat tim jak by bylo nejlepsi abych to delal s kuchary v populaci.
+
+    \item KL div reward vuci populaci zatim beru jako minimum ze vsech kl div. TODO: rozmyslet jestli by nebylo lepsi pocitat prumer pres vsechny.
+        Je potreba taky se zamyslet nad koeficientem tohoto rewardu a asi nejspise i jeho clipingem. Tj. aby byl dost silny na to aby mel dopad, ale zaroven hlidat jeho meze, aby se stale resil puvodni problem.
+
+    \item Rozmyslet jako roli hraje KL div vuci entropii. Jestli v KL Div uz neni entropie zachycena. Proto nejspis pak pro modifikaci loss nechat pouze cross entropii.
+
+    \item S kazdym dalsim jedincem v populaci prodlujuzu trenink dalsiho o 1e5 kroku
+    \item Pro kazdou mapu jsem predtrenoval 30 SP agentu, ktere planuju vyuzit jako eval mnozinu.
+    \item Prvni jedinec v populacnim treninku je SP, otazka jestli nepouzivat pro jednu mapu vzdy toho stejneho, aby se v experimentech zacinalo ze stejne strategie. Pak by se mozna lepe porovnavalo jak moc se dokazala populace zdiverzifikovat.
+    \item TODO: should population partners play argmax during training?
+\end{list}
+
 
 
 \end{document}

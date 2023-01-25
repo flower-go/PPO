@@ -10,7 +10,6 @@ class ExperimentsParamsManager(object):
         self.args.action_prob_diff_reward_coef = 0
         self.args.eval_interval = 10
         self.args.evals_num_to_threshold = 2
-        self.args.training_percent_start_eval = 0.4
         self.args.device = "cuda"
         self.args.divergent_check_timestep = 3.5e6
         self.args.rnd_obj_prob_thresh = 0.0

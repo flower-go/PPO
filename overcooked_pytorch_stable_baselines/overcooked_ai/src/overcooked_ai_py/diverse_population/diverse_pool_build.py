@@ -42,6 +42,7 @@ parser.add_argument("--n_steps", default=400, type=int, help="Coeficient for cro
 parser.add_argument("--n_epochs", default=8, type=int, help="Coeficient for cross-entropy loss of population policies.")
 parser.add_argument("--sparse_r_coef_horizon", default=2.5e6, type=int, help="Coeficient for cross-entropy loss of population policies.")
 parser.add_argument("--divergent_check_timestep", default=3e6, type=int, help="Coeficient for cross-entropy loss of population policies.")
+parser.add_argument("--training_percent_start_eval", default=0.0, type=float, help="Coeficient for cross-entropy loss of population policies.")
 
 
 
@@ -193,28 +194,31 @@ if __name__ == "__main__":
         # args["n_epochs"] = np.random.choice([8,10,12])
         args["sparse_r_coef_horizon"] = np.random.randint(2.5e6,5e6)
 
-    def get_name(extended=False):
+    def get_name(sp=False, extended=False):
         full_name = args.exp
-        if extended:
-            full_name = full_name + "_VF" + str(args["vf_coef"])
-            full_name = full_name + "_MGN" + str(args["max_grad_norm"])
-            full_name = full_name + "_CR" + str(args["clip_range"])
-            full_name = full_name + "_LR" + str(args["learning_rate"])
-            full_name = full_name + "_ES" + str(args["ent_coef_start"])
-            full_name = full_name + "_EE" + str(args["ent_coef_end"])
-            full_name = full_name + "_SRC" + str(args["sparse_r_coef_horizon"])
-            full_name = full_name + "_EP" + str(int(args["n_epochs"]))
-            full_name = full_name + "_EH" + str(int(args["ent_coef_horizon"]))
-            full_name = full_name + "_BS" + str(int(args["batch_size"]))
-            full_name = full_name + "_NS" + str(int(args["n_steps"]))
-            full_name = full_name + "_NW" + str(args["num_workers"])
-            full_name = full_name + "_TS" + str(int(args["total_timesteps"]))
-        full_name = full_name + "_ROP" + str(args.rnd_obj_prob_thresh)
-        full_name = full_name + "_M" + str(args.mode)
-        full_name = full_name + "_DR" + str(args.kl_diff_reward_coef)
-        full_name = full_name + "_DRC" + str(args.kl_diff_reward_clip)
-        full_name = full_name + "_DL" + str(args.cross_entropy_loss_coef)
-        full_name = full_name + "_DSR" + str(args.delay_shared_reward)
+        if sp:
+            full_name = full_name + "_ROP" + str(args.rnd_obj_prob_thresh)
+        else:
+            if extended:
+                full_name = full_name + "_VF" + str(args["vf_coef"])
+                full_name = full_name + "_MGN" + str(args["max_grad_norm"])
+                full_name = full_name + "_CR" + str(args["clip_range"])
+                full_name = full_name + "_LR" + str(args["learning_rate"])
+                full_name = full_name + "_ES" + str(args["ent_coef_start"])
+                full_name = full_name + "_EE" + str(args["ent_coef_end"])
+                full_name = full_name + "_SRC" + str(args["sparse_r_coef_horizon"])
+                full_name = full_name + "_EP" + str(int(args["n_epochs"]))
+                full_name = full_name + "_EH" + str(int(args["ent_coef_horizon"]))
+                full_name = full_name + "_BS" + str(int(args["batch_size"]))
+                full_name = full_name + "_NS" + str(int(args["n_steps"]))
+                full_name = full_name + "_NW" + str(args["num_workers"])
+                full_name = full_name + "_TS" + str(int(args["total_timesteps"]))
+            full_name = full_name + "_ROP" + str(args.rnd_obj_prob_thresh)
+            full_name = full_name + "_M" + str(args.mode)
+            full_name = full_name + "_DR" + str(args.kl_diff_reward_coef)
+            full_name = full_name + "_DRC" + str(args.kl_diff_reward_clip)
+            full_name = full_name + "_DL" + str(args.cross_entropy_loss_coef)
+            full_name = full_name + "_DSR" + str(args.delay_shared_reward)
         args.exp = full_name
 
 
@@ -222,35 +226,17 @@ if __name__ == "__main__":
     params_manager.args.layout_name = args.layout_name
     params_manager.init_base_args_for_layout(args.layout_name)
     params_manager.init_exp_specific_args(args.exp)
-    # set_random_params()
     get_name()
     models = load_or_train_models(args, gym_env)
-    # exit()
-
-    args.exp = "CNN_CUDA_RS_EVAL_ROP0.0"
-    # get_name()
-    args.trained_models = 30
-    eval_models = load_or_train_models(args, gym_env)
-
-    # for modification_key in modifications.keys():
-    #     params_manager.args["layout_name"] = layout
-    #     params_manager.init_base_args_for_layout(layout)
-    #     params_manager.init_exp_specific_args(exp)
-    #     args["exp"] = exp + "_" + modification_key
-    #     modifications[modification_key][0](modifications[modification_key][1])
-    #     models = load_or_train_models(args, gym_env, None)
-
-
-    eval_table = evaluator.evaluate(models, eval_models, 1, args.exp)
-    heat_map(eval_table, args.exp, args.exp, args)
 
     if args.mode == "POP":
-        pass
-
-
-
-
-
-
-
-
+        population_name = args.exp
+        args.exp = "SP_EVAL"
+        get_name(sp=True)
+        args.trained_models = 30
+        eval_models = load_or_train_models(args, gym_env)
+        eval_table = evaluator.evaluate(models, eval_models, 1, args.layout_name, population_name)
+        heat_map(eval_table, population_name, population_name, args.layout_name)
+    else:
+        eval_table = evaluator.evaluate(models, models, 1, args.layout_name, args.exp)
+        heat_map(eval_table, args.exp, args.exp, args.layout_name)
