@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.23)  24 JAN 2023 18:26
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.23)  26 JAN 2023 18:57
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -480,7 +480,7 @@ LaTeX Info: Redefining \nameref on input line 109.
 
  (./title.tex
 Package hyperref Info: Option `pageanchor' set `false' on input line 6.
-<../img/logo-en.pdf, id=123, 506.4591pt x 156.49065pt>
+<../img/logo-en.pdf, id=127, 506.4591pt x 156.49065pt>
 File: ../img/logo-en.pdf Graphic file (type pdf)
 <use ../img/logo-en.pdf>
 Package pdftex.def Info: ../img/logo-en.pdf  used on input line 9.
@@ -576,13 +576,13 @@ LaTeX Font Info:    Trying to load font information for OT1+lmtt on input line 5
 (/usr/share/texmf/tex/latex/lm/ot1lmtt.fd
 File: ot1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-<layouts.png, id=215, 803.0pt x 138.5175pt>
+<layouts.png, id=220, 803.0pt x 138.5175pt>
 File: layouts.png Graphic file (type png)
 <use layouts.png>
-Package pdftex.def Info: layouts.png  used on input line 23.
+Package pdftex.def Info: layouts.png  used on input line 22.
 (pdftex.def)             Requested size: 369.88582pt x 63.80759pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 23--26
+Underfull \hbox (badness 10000) in paragraph at lines 22--25
 [][] 
  []
 
@@ -649,21 +649,21 @@ Appendix A.
 
 ] (./thesis.aux (./title.aux) (./preface.aux) (./chap01.aux) (./chap02.aux) (./chap03.aux) (./chap04.aux) (./chap05.aux) (./chap06.aux) (./epilog.aux) (./bibliography.aux))
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: A2B934459421A9AA6547DC9A3DFDAC3A;5226.
+(rerunfilecheck)             Checksum: 40D59C0DE571664980CD739954116FF0;5273.
  ) 
 Here is how much of TeX's memory you used:
- 15120 strings out of 479342
- 232364 string characters out of 5869178
- 501311 words of memory out of 5000000
- 32740 multiletter control sequences out of 15000+600000
+ 15122 strings out of 479342
+ 232398 string characters out of 5869178
+ 502315 words of memory out of 5000000
+ 32741 multiletter control sequences out of 15000+600000
  520768 words of font info for 64 fonts, out of 8000000 for 9000
  473 hyphenation exceptions out of 8191
  77i,6n,79p,533b,2377s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rmtt.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt12.pfb>
-Output written on thesis.pdf (19 pages, 481133 bytes).
+Output written on thesis.pdf (19 pages, 484610 bytes).
 PDF statistics:
- 309 PDF objects out of 1000 (max. 8388607)
- 264 compressed objects within 3 object streams
- 57 named destinations out of 1000 (max. 500000)
- 261 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 315 PDF objects out of 1000 (max. 8388607)
+ 270 compressed objects within 3 object streams
+ 58 named destinations out of 1000 (max. 500000)
+ 269 words of extra memory for PDF output out of 10000 (max. 10000000)
 

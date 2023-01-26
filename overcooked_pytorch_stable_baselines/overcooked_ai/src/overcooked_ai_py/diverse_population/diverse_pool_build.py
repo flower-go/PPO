@@ -1,9 +1,8 @@
 import sys
 
-sys.path.append("/home/premek/DP/PPO/overcooked_pytorch_stable_baselines")
-# sys.path.append("/home/premek/DP/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src")
-sys.path.append("/home/premek/DP/PPO/overcooked_pytorch_stable_baselines/stable-baselines3")
-# sys.path.append("/home/premek/DP/PPO/overcooked_pytorch_stable_baselines/stable-baselines3/stable_baselines3/common")
+sys.path.append("/home/premek/DP_terminal/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src")
+sys.path.append("/home/premek/DP_terminal/PPO/overcooked_pytorch_stable_baselines/stable-baselines3")
+sys.path.append("/home/premek/DP_terminal/PPO/overcooked_pytorch_stable_baselines")
 # print(sys.path)
 # exit()
 from stable_baselines3.ppo.ppo import PPO
@@ -20,12 +19,12 @@ from DivergentSolutionException import DivergentSolutionException
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("--layout_name", default="forced_coordination", type=str, help="Layout name.")
-parser.add_argument("--trained_models", default=14, type=int, help="Number of models to train in experiment.")
+parser.add_argument("--trained_models", default=6, type=int, help="Number of models to train in experiment.")
 parser.add_argument("--mode", default="POP", type=str, help="Mode of experiment: Self-play ('SP') or Population ('POP').")
-parser.add_argument("--kl_diff_reward_coef", default=0.5, type=float, help="Coeficient for kl div population policies difference.")
-parser.add_argument("--kl_diff_reward_clip", default=0.1, type=float, help="")
+parser.add_argument("--kl_diff_reward_coef", default=0.2, type=float, help="Coeficient for kl div population policies difference.")
+parser.add_argument("--kl_diff_reward_clip", default=0.05, type=float, help="")
 parser.add_argument("--cross_entropy_loss_coef", default=0., type=float, help="Coeficient for cross-entropy loss of population policies.")
-parser.add_argument("--delay_shared_reward", default=True, type=bool, help="Whether to delay shared rewards.")
+parser.add_argument("--delay_shared_reward", default=True, action="store_true", help="Whether to delay shared rewards.")
 parser.add_argument("--pop_bonus_ts", default=1e5, type=int, help="Number of bonus train time steps for each consecutive individual in population.")
 parser.add_argument("--exp", default="CNN_CUDA_RS", type=str, help="Experiment name.")
 parser.add_argument("--ent_coef_start", default=0.1, type=float, help="Coeficient for cross-entropy loss of population policies.")
@@ -42,7 +41,7 @@ parser.add_argument("--n_steps", default=400, type=int, help="Coeficient for cro
 parser.add_argument("--n_epochs", default=8, type=int, help="Coeficient for cross-entropy loss of population policies.")
 parser.add_argument("--sparse_r_coef_horizon", default=2.5e6, type=int, help="Coeficient for cross-entropy loss of population policies.")
 parser.add_argument("--divergent_check_timestep", default=3e6, type=int, help="Coeficient for cross-entropy loss of population policies.")
-parser.add_argument("--training_percent_start_eval", default=0.0, type=float, help="Coeficient for cross-entropy loss of population policies.")
+parser.add_argument("--training_percent_start_eval", default=0.5, type=float, help="Coeficient for cross-entropy loss of population policies.")
 
 
 

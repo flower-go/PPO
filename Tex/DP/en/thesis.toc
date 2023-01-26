@@ -7,11 +7,12 @@
 \contentsline {chapter}{\numberline {3}Multi agent environments for RL}{5}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Definitions}{5}{section.3.1}%
 \contentsline {section}{\numberline {3.2}Possible mention of MAPPO success}{5}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Zero sum vs cooperation}{5}{section.3.3}%
 \contentsline {chapter}{\numberline {4}Overcooked environment}{6}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Overcooked game}{6}{section.4.1}%
 \contentsline {section}{\numberline {4.2}Basic layouts}{6}{section.4.2}%
 \contentsline {section}{\numberline {4.3}Problem of robustness}{7}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Human cooperation vs artificial cooperation}{7}{section.4.4}%
+\contentsline {subsection}{\numberline {4.3.1}Human cooperation}{7}{subsection.4.3.1}%
 \contentsline {chapter}{\numberline {5}Lack of robustness problem of AI agents}{8}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Related work}{8}{section.5.1}%
 \contentsline {chapter}{\numberline {6}Our contribution}{9}{chapter.6}%
