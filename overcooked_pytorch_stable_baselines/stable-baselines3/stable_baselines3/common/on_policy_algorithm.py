@@ -177,19 +177,14 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 # summary(self.policy, obs_tensor, print_summary=True, show_hierarchical=True, max_depth=10, )
 
                 other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self._last_obs])
-                #TODO: map other_agents with corresponding other agent observations
-
-                # other_agent_obs_tensor = obs_as_tensor(other_agent_obs, self.device)
-                # other_agent_actions, other_agent_values, other_agent_log_probs = env.other_agent_model.policy(other_agent_obs_tensor)
                 if self.env.venv.population_mode:
                     other_agent_actions = []
 
                     ind_start = 0
-                    for (pop_chunk, other_agent_model) in zip(self.split_pop_indices(), self.env.population):
+                    for (pop_chunk, other_agent_model) in self.split_pop_indices():
                         other_obs = other_agent_obs[ind_start:ind_start+pop_chunk]
                         ind_start+=pop_chunk
-                        # other_agent_obs_tensor = obs_as_tensor(other_obs, self.device)
-                        other_agent_a, _ = other_agent_model.policy.predict(other_obs, deterministic=True) # population partners play argmax during training
+                        other_agent_a, _ = other_agent_model.policy.predict(other_obs, deterministic=False) # TODO: should population agents play argmax during training?
                         other_agent_actions.append(other_agent_a)
 
                     other_agent_actions = np.concatenate(other_agent_actions)
@@ -210,16 +205,16 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
             new_obs, rewards, dones, infos = env.step(joint_action)
 
-            agent_sparse_r = [info["shaped_r_by_agent"][info["policy_agent_idx"]] for info in infos]
+            agent_shaped_r = [info["shaped_r_by_agent"][info["policy_agent_idx"]] for info in infos]
 
 
 
             if self.env.population_mode:
                 if self.args.delay_shared_reward:
-                    rewards = (1 - self.sparse_r_coef_horizon) * rewards
-                rewards = rewards + self.sparse_r_coef_horizon * np.array(agent_sparse_r)
+                    rewards = (1 - self.shaped_r_coef_horizon) * rewards
+                rewards = rewards + self.shaped_r_coef_horizon * np.array(agent_shaped_r)
             else:
-                rewards = rewards + self.sparse_r_coef_horizon * np.array(agent_sparse_r)
+                rewards = rewards + self.shaped_r_coef_horizon * np.array(agent_shaped_r)
 
             if self.env.population_mode and self.args.kl_diff_reward_coef > 0:
                 with th.no_grad():
@@ -313,15 +308,14 @@ class OnPolicyAlgorithm(BaseAlgorithm):
         self.args = args
 
         callback.on_training_start(locals(), globals())
-        self.sparse_r_coef_horizon = 1
+        self.shaped_r_coef_horizon = 1
         self.kl_diff_reward_coef = args.kl_diff_reward_coef
         best_model = None
         best_model_eval_val = -1
-        population_present = len(self.env.population) > 0
 
         while self.num_timesteps < total_timesteps:
 
-            if population_present:
+            if self.env.population_mode:
                 random.shuffle(self.env.population)
 
             if self.args:
@@ -410,7 +404,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
     def anneal_learning_parameters(self):
         if self.args:
             self.ent_coef = max(self.args.ent_coef_end,self.args.ent_coef_start - (self.num_timesteps / self.args.ent_coef_horizon) * (self.args.ent_coef_start - self.args.ent_coef_end))
-            self.sparse_r_coef_horizon = max(0, 1 - (self.num_timesteps / self.args.sparse_r_coef_horizon))
+            self.shaped_r_coef_horizon = max(0, 1 - (self.num_timesteps / self.args.shaped_r_coef_horizon))
 
     def evaluate_env(self):
         evaluation_rewards = []
@@ -428,7 +422,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 if self.env.venv.population_mode:
                     other_agent_actions = []
                     ind_start = 0
-                    for (pop_chunk, other_agent_model) in zip(self.split_pop_indices(), self.env.population):
+                    for (pop_chunk, other_agent_model) in self.split_pop_indices():
                         other_obs = other_agent_obs[ind_start:ind_start+pop_chunk]
                         ind_start+=pop_chunk
                         # other_agent_obs_tensor = obs_as_tensor(other_obs, self.device)
@@ -452,7 +446,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             ind_start = 0
             ind_sum_rewards = []
 
-            for (pop_chunk, other_agent_model) in zip(self.split_pop_indices(), self.env.population):
+            for (pop_chunk, other_agent_model) in self.split_pop_indices():
                 rews = evaluation_rewards[:, ind_start:ind_start+pop_chunk]
                 sum_rewards = np.sum(rews) / pop_chunk
                 ind_sum_rewards.append((sum_rewards, other_agent_model.custom_id))
@@ -467,7 +461,13 @@ class OnPolicyAlgorithm(BaseAlgorithm):
         evaluation_avg_rewards_per_episode = np.sum(evaluation_rewards) / self.env.num_envs
         return evaluation_avg_rewards_per_episode
 
+
     def split_pop_indices(self):
+        """
+        Current population will be evenly distributed into available parallel environments
+        This methods returns how many environments correspond to given individual from population
+        """
+
         indices = []
         remaining_pop_size = len(self.env.population)
         remaining_pop_size = max(remaining_pop_size, 1)
@@ -479,5 +479,6 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             remaining-=chunk
             indices.append(chunk)
 
-        return indices
+        return zip(indices, self.env.population)
+
 

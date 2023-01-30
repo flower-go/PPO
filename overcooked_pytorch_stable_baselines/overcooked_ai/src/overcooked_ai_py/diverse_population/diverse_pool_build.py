@@ -1,11 +1,11 @@
 import sys
 import os
 
-tmpdir = os.environ["TMPDIR"]
+codedir = os.environ["CODEDIR"]
 #tmpdir = /home/premek/DP/
-sys.path.append(tmpdir + "/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src")
-sys.path.append(tmpdir + "/PPO/overcooked_pytorch_stable_baselines/stable-baselines3")
-sys.path.append(tmpdir + "/PPO/overcooked_pytorch_stable_baselines")
+sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src")
+sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines/stable-baselines3")
+sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines")
 # print(sys.path)
 # exit()
 from stable_baselines3.ppo.ppo import PPO
@@ -17,15 +17,16 @@ from visualisation.visualisation import heat_map
 from evaluation.evaluation import Evaluator
 from DivergentSolutionException import DivergentSolutionException
 
+EVAL_SET_SIZE = 30
 
 
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("--layout_name", default="forced_coordination", type=str, help="Layout name.")
-parser.add_argument("--trained_models", default=6, type=int, help="Number of models to train in experiment.")
+parser.add_argument("--trained_models", default=8, type=int, help="Number of models to train in experiment.")
 parser.add_argument("--mode", default="POP", type=str, help="Mode of experiment: Self-play ('SP') or Population ('POP').")
-parser.add_argument("--kl_diff_reward_coef", default=0.2, type=float, help="Coeficient for kl div population policies difference.")
-parser.add_argument("--kl_diff_reward_clip", default=0.05, type=float, help="")
+parser.add_argument("--kl_diff_reward_coef", default=0.0, type=float, help="Coeficient for kl div population policies difference.")
+parser.add_argument("--kl_diff_reward_clip", default=0.0, type=float, help="")
 parser.add_argument("--cross_entropy_loss_coef", default=0., type=float, help="Coeficient for cross-entropy loss of population policies.")
 parser.add_argument("--delay_shared_reward", default=False, action="store_true", help="Whether to delay shared rewards.")
 parser.add_argument("--pop_bonus_ts", default=1e5, type=int, help="Number of bonus train time steps for each consecutive individual in population.")
@@ -42,9 +43,10 @@ parser.add_argument("--clip_range", default=0.1, type=float, help="Coeficient fo
 parser.add_argument("--learning_rate", default=0.0004, type=float, help="Coeficient for cross-entropy loss of population policies.")
 parser.add_argument("--n_steps", default=400, type=int, help="Coeficient for cross-entropy loss of population policies.")
 parser.add_argument("--n_epochs", default=8, type=int, help="Coeficient for cross-entropy loss of population policies.")
-parser.add_argument("--sparse_r_coef_horizon", default=2.5e6, type=int, help="Coeficient for cross-entropy loss of population policies.")
+parser.add_argument("--shaped_r_coef_horizon", default=2.5e6, type=int, help="Annealing horizont for shaped partial rewards")
 parser.add_argument("--divergent_check_timestep", default=3e6, type=int, help="Coeficient for cross-entropy loss of population policies.")
-parser.add_argument("--training_percent_start_eval", default=0.5, type=float, help="Coeficient for cross-entropy loss of population policies.")
+parser.add_argument("--training_percent_start_eval", default=0.0, type=float, help="Coeficient for cross-entropy loss of population policies.")
+parser.add_argument("--init_SP_agents", default=1, type=int, help="Number of self-play agents trained to initialize population.")
 
 
 
@@ -86,8 +88,9 @@ def load_or_train_models(args, env):
 
         models.append(model)
 
-        # First model is always self-play
-        env.population_mode = args.mode == "POP"
+        # First init_SP_agents models are always self-play
+        if (n + 1) >= args.init_SP_agents:
+            env.population_mode = args.mode == "POP"
         env.population = models
 
     return models
@@ -142,60 +145,6 @@ if __name__ == "__main__":
 
     evaluator = Evaluator(gym_env, args, deterministic=True, device="cpu")
 
-
-
-    def vf_coef(val):
-        args["vf_coef"] = val
-
-    def max_grad_norm(val):
-        args["max_grad_norm"] = val
-
-    def clip_range(val):
-        args["clip_range"] = val
-
-    def learning_rate(val):
-        args["learning_rate"] = val
-
-    def batch_size(val):
-        args["batch_size"] = val
-
-    def entropy(val):
-        args["ent_coef_start"] = val
-
-    modifications = {"VF0_0001": (vf_coef, 0.0001),
-                     "VF0_001": (vf_coef, 0.001),
-                     # "VF0_01" : (vf_coef, 0.01),
-                     "VF0_1"  : (vf_coef, 0.1),
-                     "MGN_0_3": (max_grad_norm, 0.3),
-                     "MGN_0_1": (max_grad_norm, 0.1),
-                     "CR_0_1" : (clip_range, 0.1),
-                     "CR_0_05": (clip_range, 0.05),
-                     "LR_6_04": (learning_rate, 6e-4),
-                     "LR_1_04": (learning_rate, 1e-4),
-                     # "BS_100": (batch_size, 100),
-                     "BS_400": (batch_size, 400),
-                     "BS_800": (batch_size, 800),
-                     "E_0_05": (entropy, 0.05),
-                     "E_0_2": (entropy, 0.2),
-
-                     }
-
-    def set_random_params():
-        args["vf_coef"] = np.round(np.random.uniform(0.0001, 0.5),5)
-        args["max_grad_norm"] = np.round(np.random.uniform(0.1,0.5),5)
-        args["clip_range"] = np.round(np.random.uniform(0.05,0.2),5)
-        args["learning_rate"] = np.round(np.random.uniform(0.0001,0.001),5)
-        # args["batch_size"] = np.random.choice([800,1600,6400,9600])
-        args["ent_coef_start"] = np.round(np.random.uniform(0.01,0.2),5)
-        args["ent_coef_end"] = np.random.uniform(0.00, np.max([args["ent_coef_start"], 0.1]))
-        # args["ent_coef_start"] = 0.2
-        # args["ent_coef_horizon"] = np.random.choice([0.5e6, 1e6, 2e6, 3e6])
-        args["ent_coef_horizon"] = np.random.randint(0.5e6,2e6)
-        # args["ent_coef_horizon"] = 1.5e5
-        # args["n_steps"] =  np.random.choice([400,800,1200])
-        # args["n_epochs"] = np.random.choice([8,10,12])
-        args["sparse_r_coef_horizon"] = np.random.randint(2.5e6,5e6)
-
     def get_name(sp=False, extended=False):
         full_name = args.exp
         if sp:
@@ -235,7 +184,7 @@ if __name__ == "__main__":
         population_name = args.exp
         args.exp = "SP_EVAL"
         get_name(sp=True)
-        args.trained_models = 30
+        args.trained_models = EVAL_SET_SIZE
         eval_models = load_or_train_models(args, gym_env)
         eval_table = evaluator.evaluate(models, eval_models, 1, args.layout_name, population_name)
         heat_map(eval_table, population_name, population_name, args.layout_name)
