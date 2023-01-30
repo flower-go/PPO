@@ -1,8 +1,11 @@
 import sys
+import os
 
-sys.path.append("/home/premek/DP_terminal/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src")
-sys.path.append("/home/premek/DP_terminal/PPO/overcooked_pytorch_stable_baselines/stable-baselines3")
-sys.path.append("/home/premek/DP_terminal/PPO/overcooked_pytorch_stable_baselines")
+tmpdir = os.environ["TMPDIR"]
+#tmpdir = /home/premek/DP/
+sys.path.append(tmpdir + "/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src")
+sys.path.append(tmpdir + "/PPO/overcooked_pytorch_stable_baselines/stable-baselines3")
+sys.path.append(tmpdir + "/PPO/overcooked_pytorch_stable_baselines")
 # print(sys.path)
 # exit()
 from stable_baselines3.ppo.ppo import PPO
@@ -24,7 +27,7 @@ parser.add_argument("--mode", default="POP", type=str, help="Mode of experiment:
 parser.add_argument("--kl_diff_reward_coef", default=0.2, type=float, help="Coeficient for kl div population policies difference.")
 parser.add_argument("--kl_diff_reward_clip", default=0.05, type=float, help="")
 parser.add_argument("--cross_entropy_loss_coef", default=0., type=float, help="Coeficient for cross-entropy loss of population policies.")
-parser.add_argument("--delay_shared_reward", default=True, action="store_true", help="Whether to delay shared rewards.")
+parser.add_argument("--delay_shared_reward", default=False, action="store_true", help="Whether to delay shared rewards.")
 parser.add_argument("--pop_bonus_ts", default=1e5, type=int, help="Number of bonus train time steps for each consecutive individual in population.")
 parser.add_argument("--exp", default="CNN_CUDA_RS", type=str, help="Experiment name.")
 parser.add_argument("--ent_coef_start", default=0.1, type=float, help="Coeficient for cross-entropy loss of population policies.")
