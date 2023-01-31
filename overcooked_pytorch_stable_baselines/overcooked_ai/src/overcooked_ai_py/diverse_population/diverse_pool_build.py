@@ -47,6 +47,7 @@ parser.add_argument("--shaped_r_coef_horizon", default=2.5e6, type=int, help="An
 parser.add_argument("--divergent_check_timestep", default=3e6, type=int, help="Coeficient for cross-entropy loss of population policies.")
 parser.add_argument("--training_percent_start_eval", default=0.0, type=float, help="Coeficient for cross-entropy loss of population policies.")
 parser.add_argument("--init_SP_agents", default=1, type=int, help="Number of self-play agents trained to initialize population.")
+parser.add_argument("--pop_train_play_argmax", default=False, action="store_true", help="Whether trained partners from population play argmax for episodes sampling")
 
 
 

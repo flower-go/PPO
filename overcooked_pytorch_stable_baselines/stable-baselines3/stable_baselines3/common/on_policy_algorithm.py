@@ -184,7 +184,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                     for (pop_chunk, other_agent_model) in self.split_pop_indices():
                         other_obs = other_agent_obs[ind_start:ind_start+pop_chunk]
                         ind_start+=pop_chunk
-                        other_agent_a, _ = other_agent_model.policy.predict(other_obs, deterministic=False) # TODO: should population agents play argmax during training?
+                        other_agent_a, _ = other_agent_model.policy.predict(other_obs, deterministic=self.args.pop_train_play_argmax) # TODO: should population agents play argmax during training?
                         other_agent_actions.append(other_agent_a)
 
                     other_agent_actions = np.concatenate(other_agent_actions)
