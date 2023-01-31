@@ -15,6 +15,7 @@ class ExperimentsParamsManager(object):
         self.args.rnd_obj_prob_thresh = 0.0
         self.args.random_start = True
         self.args.mode = "POP" #"SP"
+
         # self.args["kl_diff_reward_coef"] = 0.
         # self.args["cross_entropy_loss_coef"] = 0.
         # self.args["delay_shared_reward"] = True
@@ -44,6 +45,8 @@ class ExperimentsParamsManager(object):
             # self.args["divergent_check_timestep"] = 3e18
             self.args.eval_stop_threshold = 165 #150
             self.args.sparse_r_coef_horizon = 5.5e6
+            self.args.learning_rate = 0.0004
+            self.args.divergent_check_timestep = 3e6
 
         if layout == "counter_circuit_o_1order":
             # self.args["divergent_check_timestep"] = 3e18
@@ -159,24 +162,24 @@ class ExperimentsParamsManager(object):
         self.args["n_epochs"] = 8
         self.args["sparse_r_coef_horizon"] = 10e6
 
-    def set_forced_coordination_CNN_CUDA_RS(self):
-        # self.args["exp"] = "CNN_CUDA_RS"
-        # self.args["random_start"] = True
-        # self.args["ent_coef_start"] = 0.1
-        # self.args["ent_coef_end"] = 0.03
-        # self.args["trained_models"] = 11
-        # self.args["ent_coef_horizon"] = 1.5e6
-        # self.args["total_timesteps"] = 5.5e6
-        # self.args["vf_coef"] = 0.1
-        # self.args["batch_size"] = 2000
-        # self.args["device"] = "cuda"
-        # self.args["max_grad_norm"] = 0.3
-        # self.args["clip_range"] = 0.1
-        self.args.learning_rate = 0.0004
-        # self.args["n_steps"] = 400
-        # self.args["n_epochs"] = 8
-        # self.args["sparse_r_coef_horizon"] = 2.5e6
-        self.args.divergent_check_timestep = 3e6
+    # def set_forced_coordination_CNN_CUDA_RS(self):
+    #     # self.args["exp"] = "CNN_CUDA_RS"
+    #     # self.args["random_start"] = True
+    #     # self.args["ent_coef_start"] = 0.1
+    #     # self.args["ent_coef_end"] = 0.03
+    #     # self.args["trained_models"] = 11
+    #     # self.args["ent_coef_horizon"] = 1.5e6
+    #     # self.args["total_timesteps"] = 5.5e6
+    #     # self.args["vf_coef"] = 0.1
+    #     # self.args["batch_size"] = 2000
+    #     # self.args["device"] = "cuda"
+    #     # self.args["max_grad_norm"] = 0.3
+    #     # self.args["clip_range"] = 0.1
+    #     self.args.learning_rate = 0.0004
+    #     # self.args["n_steps"] = 400
+    #     # self.args["n_epochs"] = 8
+    #     # self.args["sparse_r_coef_horizon"] = 2.5e6
+    #     self.args.divergent_check_timestep = 3e6
 
 
 

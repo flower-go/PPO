@@ -177,7 +177,7 @@ if __name__ == "__main__":
 
     params_manager.args.layout_name = args.layout_name
     params_manager.init_base_args_for_layout(args.layout_name)
-    params_manager.init_exp_specific_args(args.exp)
+    # params_manager.init_exp_specific_args(args.exp)
     get_name()
     models = load_or_train_models(args, gym_env)
 
