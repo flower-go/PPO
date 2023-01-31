@@ -2,6 +2,7 @@ import matplotlib
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
 def heat_map(table, title, file_name, layout_name, deterministic=True):
     table = np.around(table, decimals=2)
@@ -28,6 +29,6 @@ def heat_map(table, title, file_name, layout_name, deterministic=True):
     ax.set_title(title)
     fig.tight_layout()
     # plt.savefig(f"diverse_population/visualisation/{args['layout_name']}/coordination_ring.png")
-    file_name = f"diverse_population/visualisation/{layout_name}/" + file_name + '' if deterministic else '_STOCH'
+    file_name = f"{os.environ['PROJDIR']}/diverse_population/visualisation/{layout_name}/" + file_name + '' if deterministic else '_STOCH'
     file_name = file_name + ".png"
     plt.savefig(file_name)

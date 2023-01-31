@@ -2,7 +2,9 @@ import sys
 import os
 
 codedir = os.environ["CODEDIR"]
-#tmpdir = /home/premek/DP/
+#codedir = /home/premek/DP/
+projdir = os.environ["PROJDIR"]
+#projdir = /home/premek/DP/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_pytorch
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src")
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines/stable-baselines3")
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines")
@@ -70,7 +72,7 @@ def init_gym_env(args):
     return gym_env
 
 def load_or_train_models(args, env):
-    directory = "diverse_population/models/" + args.layout_name + "/" + args.exp + "/"
+    directory = projdir + "/diverse_population/models/" + args.layout_name + "/" + args.exp + "/"
     models = []
     env.population_mode = False
     for n in range(args.trained_models):

@@ -1,5 +1,6 @@
 import numpy as np
 import torch as th
+import os
 from stable_baselines3.common.utils import obs_as_tensor
 
 
@@ -13,7 +14,7 @@ class Evaluator(object):
         self.venv.reset_times([i for i in range(args.num_workers)])
 
     def evaluate(self, agent_set_0, agent_set_1, num_games_per_worker = 2, layout_name = None, file_name=None, deterministic=True):
-        file_full_name = f"diverse_population/evaluation/{layout_name}/" + file_name + '' if deterministic else '_STOCH'
+        file_full_name = f"{os.environ['PROJDIR']}/diverse_population/evaluation/{layout_name}/" + file_name + '' if deterministic else '_STOCH'
         try:
             result_matrix = np.loadtxt(file_full_name)
         except:
