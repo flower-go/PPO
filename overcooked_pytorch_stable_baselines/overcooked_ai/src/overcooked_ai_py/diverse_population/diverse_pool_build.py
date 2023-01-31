@@ -17,7 +17,8 @@ from experiments_params import ExperimentsParamsManager, ALL_LAYOUTS
 import numpy as np
 from visualisation.visualisation import heat_map
 from evaluation.evaluation import Evaluator
-from DivergentSolutionException import DivergentSolutionException
+import DivergentSolutionException
+from divergent_solution_exception import divergent_solution_exception
 
 EVAL_SET_SIZE = 30
 
@@ -122,7 +123,7 @@ def train_model(n, env, args):
             num_steps += n * args.pop_bonus_ts
             model.learn(num_steps, args=args, reset_num_timesteps=False)
             found = True
-        except DivergentSolutionException:
+        except divergent_solution_exception.divergentSolutionException:
             print("found divergent solution")
             found = False
 
