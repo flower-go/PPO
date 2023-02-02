@@ -33,7 +33,7 @@ parser.add_argument("--kl_diff_reward_clip", default=0.0, type=float, help="")
 parser.add_argument("--cross_entropy_loss_coef", default=0., type=float, help="Coeficient for cross-entropy loss of population policies.")
 parser.add_argument("--delay_shared_reward", default=False, action="store_true", help="Whether to delay shared rewards.")
 parser.add_argument("--pop_bonus_ts", default=1e5, type=int, help="Number of bonus train time steps for each consecutive individual in population.")
-parser.add_argument("--exp", default="CNN_CUDA_RS", type=str, help="Experiment name.")
+parser.add_argument("--exp", default="POP_SP_INIT_DET_SAMPL_DET_EVAL", type=str, help="Experiment name.")
 parser.add_argument("--ent_coef_start", default=0.1, type=float, help="Coeficient for cross-entropy loss of population policies.")
 parser.add_argument("--ent_coef_end", default=0.03, type=float, help="Coeficient for cross-entropy loss of population policies.")
 parser.add_argument("--ent_coef_horizon", default=1.5e6, type=int, help="Coeficient for cross-entropy loss of population policies.")
@@ -76,12 +76,20 @@ def load_or_train_models(args, env):
     directory = projdir + "/diverse_population/models/" + args.layout_name + "/" + args.exp + "/"
     models = []
     env.population_mode = False
+    import torch
+    os.environ['CUDA_VISIBLE_DEVICES'] = "0"
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    print('Using device:', device)
+    print()
+    print(torch.cuda.is_available())
+    print(torch.cuda.device_count())
+
     for n in range(args.trained_models):
         model = None
         
         model_name = directory + str(n).zfill(2)
         print(f"Looking for file {model_name}")
-        model = PPO.load(model_name, env=env, device="cuda")
+        model = PPO.load(model_name, env=env, device="cuda:0")
         model.custom_id = n
         print(f"model {model_name} loaded")
 

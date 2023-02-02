@@ -19,6 +19,9 @@ from visualisation.visualisation import heat_map
 from evaluation.evaluation import Evaluator
 import DivergentSolutionException
 from divergent_solution_exception import divergent_solution_exception
+import torch 
+os.environ['CUDA_VISIBLE_DEVICES'] = "0"
+
 
 EVAL_SET_SIZE = 30
 
@@ -97,6 +100,7 @@ def load_or_train_models(args, env):
             env.population_mode = args.mode == "POP"
         env.population = models
 
+    exit()
     return models
 
 def train_model(n, env, args):
