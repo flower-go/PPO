@@ -252,7 +252,7 @@ class PPO(OnPolicyAlgorithm):
                 loss = policy_loss + self.ent_coef * entropy_loss + self.vf_coef * value_loss
 
 
-                pop_kl_diff_loss = th.zeros(0)
+                pop_kl_diff_loss = th.zeros(1)
                 if self.env.population and self.args.kl_diff_loss_coef > 0:
                     actions_prob_dist = self.policy.get_distribution(rollout_data.observations).distribution.logits
 
