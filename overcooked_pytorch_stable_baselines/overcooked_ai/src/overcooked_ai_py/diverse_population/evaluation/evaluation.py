@@ -33,6 +33,13 @@ class Evaluator(object):
 
             if file_name is not None:
                 np.savetxt(file_full_name, np.round(np.array(result_matrix)))
+        print(f"mean SP part: {np.mean(result_matrix[:self.args.init_SP_agents])}")
+        print(f"mean SP of non zeros: {np.sum(result_matrix[:self.args.init_SP_agents][result_matrix[:self.args.init_SP_agents] > 0]) / result_matrix[:self.args.init_SP_agents][result_matrix[:self.args.init_SP_agents] > 0].size}")
+        print(f"zero SP ratio: {np.sum(result_matrix[:self.args.init_SP_agents] == 0.0) / result_matrix[:self.args.init_SP_agents].size}%")
+
+        print(f"mean POP part: {np.mean(result_matrix[self.args.init_SP_agents:])}")
+        print(f"mean POP of non zeros: {np.sum(result_matrix[self.args.init_SP_agents:][result_matrix[self.args.init_SP_agents:] > 0]) / result_matrix[self.args.init_SP_agents:][result_matrix[self.args.init_SP_agents:] > 0].size}")
+        print(f"zero POP ratio: {np.sum(result_matrix[self.args.init_SP_agents:] == 0.0) / result_matrix[self.args.init_SP_agents:].size}%")
 
         return np.array(result_matrix)
 

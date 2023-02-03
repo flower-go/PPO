@@ -337,6 +337,41 @@ What is Zero-shot coordination?? - studies how independently trained agents may 
     \item TODO: should population partners play argmax during training?
 \end{list}
 
+\subsection{Summary 2.2.2023}
+\begin{list}{}{}
+    \item Vypada to ze jsem zprovoznil zakladni skript s gpu na metacentru. Nechavam nyni dobehnout 2 No reward populace, jedna se stoch policy partneru, druha s deter. 
+    Po vyhodnoceni vuci eval mnozine (opet v kombinaci stoch i det) rozhodnu jakou cestou pujdu a pro tu spustim populace s KL\_div reward
+    \item Asi by stalo za to vyzkouset i cross\_entropy dopad a pripravit scripty
+    \item Zjistit jestli eval set s 0 neznamena stuck, pripadne zamyslet se nad anitstucking mechanismem
+\end{list}
+
+\subsection{Summary 3.2.2023}
+\begin{list}{}{}
+    \item Na metacentru se dopočítali dvě populace (15 jedinců), které byli inicializovány pomocí 5 SP agentů. Populace se liší v tom, jestli partneři při samplování používali argmax nebo ne.
+    Při evaluaci během tréninku stále používají deterministic. Toto si myslím, že je stále dobrý nápad protože pokud jsou dobří vůči argmax, tak by neměli být špatní při STOCH, ale obráceně to neplatí.
+    Popualce se jmenují POP_SP_INIT_ROP0.0_MPOP_BRCoef0.0_BRClip0.0_LCoef0.0_LClip0.0_DSRTrue_PADFalse a POP_SP_INIT_ROP0.0_MPOP_BRCoef0.0_BRClip0.0_LCoef0.0_LClip0.0_DSRTrue_PADTrue
+    \item provádím eval vyhodnocí vůči SP eval množině. Zajímají mě výsledky při DETERMINISTIC a STOCH vyhodnocení. Zajímavé by asi mohlo být i kdyby jen jedna strana byla DETERMINISTIC, možná později.
+     
+    PADTrue
+    mean SP part: 40.58
+    mean SP of non zeros: 112.72222222222223
+    zero SP ratio: 0.64%
+
+    mean POP part: 67.35
+    mean POP of non zeros: 83.14814814814815
+    zero POP ratio: 0.19%
+
+    PADFalse
+    mean SP part: 23.06
+    mean SP of non zeros: 98.82857142857142
+    zero SP ratio: 0.7666666666666667%
+
+    mean POP part: 60.86666666666667
+    mean POP of non zeros: 80.79646017699115
+    zero POP ratio: 0.24666666666666667%
+
+\end{list}
+
 
 
 \end{document}

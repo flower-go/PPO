@@ -187,10 +187,11 @@ class PPO(OnPolicyAlgorithm):
             clip_range_vf = self.clip_range_vf(self._current_progress_remaining)
 
         entropy_losses = []
-        pg_losses, value_losses = [], []
+        pg_losses, value_losses, kl_losses = [], [], []
         clip_fractions = []
 
         continue_training = True
+
 
         # train for n_epochs epochs
         for epoch in range(self.n_epochs):
@@ -249,45 +250,31 @@ class PPO(OnPolicyAlgorithm):
                 entropy_losses.append(entropy_loss.item())
 
                 loss = policy_loss + self.ent_coef * entropy_loss + self.vf_coef * value_loss
-                # loss = 0
-
-                # pop_probs = torch.from_numpy(np.array([[[0.34,0.05,0.02,0.01,0.15,0.43] for _ in range(400)], [[0.61,0.2,0.01,0.02,0.01,0.15] for _ in range(400)]]))
-                # probs = torch.from_numpy(np.array([[0.05,0.08,0.24,0.15,0.33,0.15] for _ in range(400)]))
-                #
-                # E = probs - pop_probs
-                # S = np.square(E)
-                # M = np.mean(S, axis=0)
-                # M_total = np.mean(M)
-                #
-                # E = torch.sub(probs, pop_probs)
-                # S = torch.square(E)
-                # M = torch.mean(S, dim=0)
-                # M_total = torch.mean(M)
-                #
-                # M = F.mse_loss(probs, pop_probs)
-                # loss = F.mse_loss(probs, pop_probs, reduction="mean")
-
-                # A = torch.from_numpy(np.array([0., 0., 0., 0., 0.01, 0.99]))
-                # B = torch.from_numpy(np.array([0., 0., 0., 0., 0.99, 0.01]))
-                #
-                # KLN = F.kl_div(A, B)
-                # KLN = F.kl_div(B, A)
 
 
-                if self.env.population and self.args.cross_entropy_loss_coef > 0:
-                    with th.no_grad():
-                        population_action_distributions = torch.from_numpy([ind.policy.get_distribution(rollout_data.observations).distribution.logits for ind in self.env.population])
-                            # torch.from_numpy(np.array(
+                pop_kl_diff_loss = th.zeros(0)
+                if self.env.population and self.args.kl_diff_loss_coef > 0:
+                    actions_prob_dist = self.policy.get_distribution(rollout_data.observations).distribution.logits
+
+                    kl_divs = []
+                    for ind in self.env.population:
+                        pop_ind_actions_dist_logits = ind.policy.get_distribution(rollout_data.observations).distribution.logits
+                        diff = th.nn.functional.kl_div(actions_prob_dist, pop_ind_actions_dist_logits, reduction="batchmean", log_target=True)
+                        kl_divs.append(diff)
+
+                    kl_divs = torch.stack(kl_divs)
+                    pop_kl_diff_loss = self.args.kl_diff_loss_coef * th.mean(kl_divs)
+                    pop_kl_diff_loss = th.clamp(pop_kl_diff_loss, 0, self.args.kl_diff_loss_clip)
+                    pop_kl_diff_loss = -1 * pop_kl_diff_loss
+
+                    loss = loss + pop_kl_diff_loss
+                kl_losses.append(pop_kl_diff_loss.item())
 
 
-                    actions_prob_dist = self.policy.get_distribution(rollout_data.observations)
-                    cross_entropy_loss = F.cross_entropy(actions_prob_dist.distribution.logits, population_action_distributions, reduction="mean")
-                    # diff = torch.sub(actions_prob_dist.distribution.probs, population_action_distributions)
-                    # diff_square = torch.square(diff)
-                    # x = torch.mean(diff_square)
-                    # pop_diff_loss = -F.mse_loss(actions_prob_dist.distribution.probs, population_action_distributions, reduction="mean")
 
-                    # loss = loss + self.args.cross_entropy_loss_coef * pop_diff_loss
+
+
+
 
 
 
@@ -317,6 +304,7 @@ class PPO(OnPolicyAlgorithm):
                 self.policy.optimizer.step()
 
 
+
             if not continue_training:
                 break
 
@@ -327,6 +315,7 @@ class PPO(OnPolicyAlgorithm):
         self.logger.record("train/entropy_loss", np.mean(entropy_losses))
         self.logger.record("train/policy_gradient_loss", np.mean(pg_losses))
         self.logger.record("train/value_loss", np.mean(value_losses))
+        self.logger.record("train/kl_div_loss", np.mean(kl_losses))
         self.logger.record("train/ent_coef", self.ent_coef)
         self.logger.record("train/approx_kl", np.mean(approx_kl_divs))
         self.logger.record("train/clip_fraction", np.mean(clip_fractions), exclude="tensorboard")

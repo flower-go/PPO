@@ -185,7 +185,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                     for (pop_chunk, other_agent_model) in self.split_pop_indices():
                         other_obs = other_agent_obs[ind_start:ind_start+pop_chunk]
                         ind_start+=pop_chunk
-                        other_agent_a, _ = other_agent_model.policy.predict(other_obs, deterministic=self.args.pop_train_play_argmax) # TODO: should population agents play argmax during training?
+                        other_agent_a, _ = other_agent_model.policy.predict(other_obs, deterministic=self.args.partner_action_deterministic) # TODO: should population agents play argmax during training?
                         other_agent_actions.append(other_agent_a)
 
                     other_agent_actions = np.concatenate(other_agent_actions)
@@ -217,7 +217,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             else:
                 rewards = rewards + self.shaped_r_coef_horizon * np.array(agent_shaped_r)
 
-            if self.env.population_mode and self.args.kl_diff_reward_coef > 0:
+            if self.env.population_mode and self.args.kl_diff_bonus_reward_coef > 0:
                 with th.no_grad():
                     kl_divs = []
                     # actions_dist_logits = self.policy.get_distribution(obs_tensor).distribution.logits.cpu()
@@ -228,8 +228,8 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                         pop_ind_actions_dist_logits = ind.policy.get_distribution(obs_tensor).distribution.logits
                         diff = kl_diff_reward_loss(actions_dist_logits, pop_ind_actions_dist_logits)
                         kl_divs.append(diff.item())
-                    pop_diff_reward = self.args.kl_diff_reward_coef * np.mean(kl_divs)
-                    pop_diff_reward = np.clip(pop_diff_reward, 0, self.args.kl_diff_reward_clip)
+                    pop_diff_reward = self.args.kl_diff_bonus_reward_coef * np.mean(kl_divs)
+                    pop_diff_reward = np.clip(pop_diff_reward, 0, self.args.kl_diff_bonus_reward_clip)
 
                     rewards = rewards + pop_diff_reward
 
@@ -310,7 +310,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
         callback.on_training_start(locals(), globals())
         self.shaped_r_coef_horizon = 1
-        self.kl_diff_reward_coef = args.kl_diff_reward_coef
+        self.kl_diff_bonus_reward_coef = args.kl_diff_bonus_reward_coef
         best_model = None
         best_model_eval_val = -1
 
@@ -416,7 +416,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 # Convert to pytorch tensor or to TensorDict
                 obs = np.array([entry["both_agent_obs"][0] for entry in self._last_obs])
                 # obs_tensor = obs_as_tensor(obs, self.device)
-                actions, _= self.policy.predict(obs, deterministic=True)
+                actions, _= self.policy.predict(obs, deterministic=True) #Good result argmaxing => probably good result stochastic, other way not necesarily true
 
 
                 other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self._last_obs])
@@ -427,7 +427,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                         other_obs = other_agent_obs[ind_start:ind_start+pop_chunk]
                         ind_start+=pop_chunk
                         # other_agent_obs_tensor = obs_as_tensor(other_obs, self.device)
-                        other_agent_a, _ = other_agent_model.policy.predict(other_obs, deterministic=True)
+                        other_agent_a, _ = other_agent_model.policy.predict(other_obs, deterministic=True) #Good result argmaxing => probably good result stochastic, other way not necesarily true
                         other_agent_actions.append(other_agent_a)
 
                     other_agent_actions = np.concatenate(other_agent_actions)

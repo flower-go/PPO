@@ -1,5 +1,6 @@
 import copy
 import itertools
+import random
 import warnings
 from collections import Counter, defaultdict
 from functools import reduce
@@ -1295,7 +1296,7 @@ class OvercookedGridworld(object):
         return start_state
 
     def get_random_start_state_fn(
-        self, random_start_pos=False, rnd_obj_prob_thresh=0.0
+        self, random_start_pos=False, rnd_obj_prob_thresh=0.0, random_switch_start_pos=False
     ):
         def start_state_fn():
             if random_start_pos:
@@ -1305,6 +1306,8 @@ class OvercookedGridworld(object):
                 ]
             else:
                 start_pos = self.start_player_positions
+                if random_switch_start_pos:
+                    random.shuffle(start_pos)
 
             start_state = OvercookedState.from_player_positions(
                 start_pos,

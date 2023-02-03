@@ -29,14 +29,15 @@ EVAL_SET_SIZE = 30
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("--layout_name", default="forced_coordination", type=str, help="Layout name.")
-parser.add_argument("--trained_models", default=8, type=int, help="Number of models to train in experiment.")
+parser.add_argument("--trained_models", default=15, type=int, help="Number of models to train in experiment.")
 parser.add_argument("--mode", default="POP", type=str, help="Mode of experiment: Self-play ('SP') or Population ('POP').")
-parser.add_argument("--kl_diff_reward_coef", default=0.0, type=float, help="Coeficient for kl div population policies difference.")
-parser.add_argument("--kl_diff_reward_clip", default=0.0, type=float, help="")
-parser.add_argument("--cross_entropy_loss_coef", default=0., type=float, help="Coeficient for cross-entropy loss of population policies.")
+parser.add_argument("--kl_diff_bonus_reward_coef", default=0., type=float, help="Coeficient for kl div population policies difference.")
+parser.add_argument("--kl_diff_bonus_reward_clip", default=0., type=float, help="")
+parser.add_argument("--kl_diff_loss_coef", default=0.1, type=float, help="Coeficient for cross-entropy loss of population policies.")
+parser.add_argument("--kl_diff_loss_clip", default=0.7, type=float, help="Ccross-entropy loss of population policies clipping.")
 parser.add_argument("--delay_shared_reward", default=False, action="store_true", help="Whether to delay shared rewards.")
 parser.add_argument("--pop_bonus_ts", default=1e5, type=int, help="Number of bonus train time steps for each consecutive individual in population.")
-parser.add_argument("--exp", default="CNN_CUDA_RS", type=str, help="Experiment name.")
+parser.add_argument("--exp", default="POP_SP_INIT", type=str, help="Experiment name.")
 parser.add_argument("--ent_coef_start", default=0.1, type=float, help="Coeficient for cross-entropy loss of population policies.")
 parser.add_argument("--ent_coef_end", default=0.03, type=float, help="Coeficient for cross-entropy loss of population policies.")
 parser.add_argument("--ent_coef_horizon", default=1.5e6, type=int, help="Coeficient for cross-entropy loss of population policies.")
@@ -52,8 +53,8 @@ parser.add_argument("--n_epochs", default=8, type=int, help="Coeficient for cros
 parser.add_argument("--shaped_r_coef_horizon", default=2.5e6, type=int, help="Annealing horizont for shaped partial rewards")
 parser.add_argument("--divergent_check_timestep", default=3e6, type=int, help="Coeficient for cross-entropy loss of population policies.")
 parser.add_argument("--training_percent_start_eval", default=0.0, type=float, help="Coeficient for cross-entropy loss of population policies.")
-parser.add_argument("--init_SP_agents", default=1, type=int, help="Number of self-play agents trained to initialize population.")
-parser.add_argument("--pop_train_play_argmax", default=False, action="store_true", help="Whether trained partners from population play argmax for episodes sampling")
+parser.add_argument("--init_SP_agents", default=5, type=int, help="Number of self-play agents trained to initialize population.")
+parser.add_argument("--partner_action_deterministic", default=False, action="store_true", help="Whether trained partners from population play argmax for episodes sampling")
 
 
 
@@ -174,10 +175,12 @@ if __name__ == "__main__":
                 full_name = full_name + "_TS" + str(int(args["total_timesteps"]))
             full_name = full_name + "_ROP" + str(args.rnd_obj_prob_thresh)
             full_name = full_name + "_M" + str(args.mode)
-            full_name = full_name + "_DR" + str(args.kl_diff_reward_coef)
-            full_name = full_name + "_DRC" + str(args.kl_diff_reward_clip)
-            full_name = full_name + "_DL" + str(args.cross_entropy_loss_coef)
+            full_name = full_name + "_BRCoef" + str(args.kl_diff_bonus_reward_coef)
+            full_name = full_name + "_BRClip" + str(args.kl_diff_bonus_reward_clip)
+            full_name = full_name + "_LCoef" + str(args.kl_diff_loss_coef)
+            full_name = full_name + "_LClip" + str(args.kl_diff_loss_clip)
             full_name = full_name + "_DSR" + str(args.delay_shared_reward)
+            full_name = full_name + "_PAD" + str(args.partner_action_deterministic)
         args.exp = full_name
 
 

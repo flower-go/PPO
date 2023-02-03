@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.23)  25 JAN 2023 16:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.23)  3 FEB 2023 11:46
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -169,7 +169,6 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 3.
 LaTeX Info: Redefining \pageref on input line 3.
 LaTeX Info: Redefining \nameref on input line 3.
- (./hello-world.out) (./hello-world.out)
 \@outlinefile=\write3
 \openout3 = `hello-world.out'.
 
@@ -226,23 +225,471 @@ Overfull \hbox (102.21208pt too wide) in paragraph at lines 298--299
 []\OT1/cmr/m/n/10 Vyzkouset zmenit na loss[]less a pri-dat kon-volucni vrstvy viz (https://arxiv.org/abs/1910.05789v2) 
  []
 
-[12] [13] [14] (./hello-world.aux)
-Package rerunfilecheck Info: File `hello-world.out' has not changed.
-(rerunfilecheck)             Checksum: 8ABB3A6503CBEBA438E897BC4A65461A;4079.
+[12] [13]
+Overfull \hbox (10.71361pt too wide) in paragraph at lines 342--344
+[]\OT1/cmr/m/n/10 Vypada to ze jsem zprovoznil za-k-ladni skript s gpu na meta-cen-tru. Nechavam
+ []
+
+/home/premek/DP/PPO/Tex/hello-world.tex:352: Missing $ inserted.
+<inserted text> 
+                $
+l.352     Popualce se jmenují POP_
+                                   SP_INIT_ROP0.0_MPOP_BRCoef0.0_BRClip0.0_L...
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+/home/premek/DP/PPO/Tex/hello-world.tex:353: LaTeX Error: Command \item invalid in math mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.353     \item
+                provádím eval vyhodnocí vůči SP eval množině. Zajíma...
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+/home/premek/DP/PPO/Tex/hello-world.tex:353: LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.353     \item p
+                 rovádím eval vyhodnocí vůči SP eval množině. Zajíma...
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+/home/premek/DP/PPO/Tex/hello-world.tex:353: LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.353     \item p
+                 rovádím eval vyhodnocí vůči SP eval množině. Zajíma...
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: Command \' invalid in math mode on input line 353.
+
+/home/premek/DP/PPO/Tex/hello-world.tex:353: Please use \mathaccent for accents in math mode.
+\add@accent ... \let \ignorespaces \relax \accent 
+                                                  #1 #2\egroup \ifmmode \els...
+l.353     \item prová
+                      dím eval vyhodnocí vůči SP eval množině. Zajíma...
+I'm changing \accent to \mathaccent here; wish me luck.
+(Accents are not the same in formulas as they are in text.)
+
+
+LaTeX Warning: Command \' invalid in math mode on input line 353.
+
+/home/premek/DP/PPO/Tex/hello-world.tex:353: Please use \mathaccent for accents in math mode.
+\add@accent ... \let \ignorespaces \relax \accent 
+                                                  #1 #2\egroup \ifmmode \els...
+l.353     \item provádí
+                         m eval vyhodnocí vůči SP eval množině. Zajíma...
+I'm changing \accent to \mathaccent here; wish me luck.
+(Accents are not the same in formulas as they are in text.)
+
+/home/premek/DP/PPO/Tex/hello-world.tex:353: Missing { inserted.
+<to be read again> 
+                   \begingroup 
+l.353     \item provádí
+                         m eval vyhodnocí vůči SP eval množině. Zajíma...
+A left brace was mandatory here, so I've put one in.
+You might want to delete and/or insert some corrections
+so that I will find a matching right brace soon.
+(If you're confused by all this, try typing `I}' now.)
+
+
+LaTeX Warning: Command \i invalid in math mode on input line 353.
+
+
+LaTeX Warning: Command \' invalid in math mode on input line 353.
+
+/home/premek/DP/PPO/Tex/hello-world.tex:353: Please use \mathaccent for accents in math mode.
+\add@accent ... \let \ignorespaces \relax \accent 
+                                                  #1 #2\egroup \ifmmode \els...
+l.353     \item provádím eval vyhodnocí
+                                           vůči SP eval množině. Zajíma...
+I'm changing \accent to \mathaccent here; wish me luck.
+(Accents are not the same in formulas as they are in text.)
+
+/home/premek/DP/PPO/Tex/hello-world.tex:353: Missing { inserted.
+<to be read again> 
+                   \begingroup 
+l.353     \item provádím eval vyhodnocí
+                                           vůči SP eval množině. Zajíma...
+A left brace was mandatory here, so I've put one in.
+You might want to delete and/or insert some corrections
+so that I will find a matching right brace soon.
+(If you're confused by all this, try typing `I}' now.)
+
+
+LaTeX Warning: Command \i invalid in math mode on input line 353.
+
+
+LaTeX Warning: Command \r invalid in math mode on input line 353.
+
+/home/premek/DP/PPO/Tex/hello-world.tex:353: Please use \mathaccent for accents in math mode.
+\add@accent ... \let \ignorespaces \relax \accent 
+                                                  #1 #2\egroup \ifmmode \els...
+l.353     \item provádím eval vyhodnocí vů
+                                              či SP eval množině. Zajíma...
+I'm changing \accent to \mathaccent here; wish me luck.
+(Accents are not the same in formulas as they are in text.)
+
+
+LaTeX Warning: Command \v invalid in math mode on input line 353.
+
+/home/premek/DP/PPO/Tex/hello-world.tex:353: Please use \mathaccent for accents in math mode.
+\add@accent ... \let \ignorespaces \relax \accent 
+                                                  #1 #2\egroup \ifmmode \els...
+l.353     \item provádím eval vyhodnocí vůč
+                                                i SP eval množině. Zajíma...
+I'm changing \accent to \mathaccent here; wish me luck.
+(Accents are not the same in formulas as they are in text.)
+
+
+LaTeX Warning: Command \v invalid in math mode on input line 353.
+
+/home/premek/DP/PPO/Tex/hello-world.tex:353: Please use \mathaccent for accents in math mode.
+\add@accent ... \let \ignorespaces \relax \accent 
+                                                  #1 #2\egroup \ifmmode \els...
+l.353 ...dím eval vyhodnocí vůči SP eval množ
+                                                  ině. Zajímají mě výsl...
+I'm changing \accent to \mathaccent here; wish me luck.
+(Accents are not the same in formulas as they are in text.)
+
+
+LaTeX Warning: Command \v invalid in math mode on input line 353.
+
+/home/premek/DP/PPO/Tex/hello-world.tex:353: Please use \mathaccent for accents in math mode.
+\add@accent ... \let \ignorespaces \relax \accent 
+                                                  #1 #2\egroup \ifmmode \els...
+l.353 ... eval vyhodnocí vůči SP eval množině
+                                                  . Zajímají mě výsledky...
+I'm changing \accent to \mathaccent here; wish me luck.
+(Accents are not the same in formulas as they are in text.)
+
+
+LaTeX Warning: Command \' invalid in math mode on input line 353.
+
+/home/premek/DP/PPO/Tex/hello-world.tex:353: Please use \mathaccent for accents in math mode.
+\add@accent ... \let \ignorespaces \relax \accent 
+                                                  #1 #2\egroup \ifmmode \els...
+l.353 ...yhodnocí vůči SP eval množině. Zají
+                                                  mají mě výsledky při D...
+I'm changing \accent to \mathaccent here; wish me luck.
+(Accents are not the same in formulas as they are in text.)
+
+/home/premek/DP/PPO/Tex/hello-world.tex:353: Missing { inserted.
+<to be read again> 
+                   \begingroup 
+l.353 ...yhodnocí vůči SP eval množině. Zají
+                                                  mají mě výsledky při D...
+A left brace was mandatory here, so I've put one in.
+You might want to delete and/or insert some corrections
+so that I will find a matching right brace soon.
+(If you're confused by all this, try typing `I}' now.)
+
+
+LaTeX Warning: Command \i invalid in math mode on input line 353.
+
+
+LaTeX Warning: Command \' invalid in math mode on input line 353.
+
+/home/premek/DP/PPO/Tex/hello-world.tex:353: Please use \mathaccent for accents in math mode.
+\add@accent ... \let \ignorespaces \relax \accent 
+                                                  #1 #2\egroup \ifmmode \els...
+l.353 ...ocí vůči SP eval množině. Zajímají
+                                                   mě výsledky při DETERM...
+I'm changing \accent to \mathaccent here; wish me luck.
+(Accents are not the same in formulas as they are in text.)
+
+/home/premek/DP/PPO/Tex/hello-world.tex:353: Missing { inserted.
+<to be read again> 
+                   \begingroup 
+l.353 ...ocí vůči SP eval množině. Zajímají
+                                                   mě výsledky při DETERM...
+A left brace was mandatory here, so I've put one in.
+You might want to delete and/or insert some corrections
+so that I will find a matching right brace soon.
+(If you're confused by all this, try typing `I}' now.)
+
+
+LaTeX Warning: Command \i invalid in math mode on input line 353.
+
+
+LaTeX Warning: Command \v invalid in math mode on input line 353.
+
+/home/premek/DP/PPO/Tex/hello-world.tex:353: Please use \mathaccent for accents in math mode.
+\add@accent ... \let \ignorespaces \relax \accent 
+                                                  #1 #2\egroup \ifmmode \els...
+l.353 ... vůči SP eval množině. Zajímají mě
+                                                   výsledky při DETERMINIS...
+I'm changing \accent to \mathaccent here; wish me luck.
+(Accents are not the same in formulas as they are in text.)
+
+
+LaTeX Warning: Command \' invalid in math mode on input line 353.
+
+/home/premek/DP/PPO/Tex/hello-world.tex:353: Please use \mathaccent for accents in math mode.
+\add@accent ... \let \ignorespaces \relax \accent 
+                                                  #1 #2\egroup \ifmmode \els...
+l.353 ...či SP eval množině. Zajímají mě vý
+                                                  sledky při DETERMINISTIC ...
+I'm changing \accent to \mathaccent here; wish me luck.
+(Accents are not the same in formulas as they are in text.)
+
+
+LaTeX Warning: Command \v invalid in math mode on input line 353.
+
+/home/premek/DP/PPO/Tex/hello-world.tex:353: Please use \mathaccent for accents in math mode.
+\add@accent ... \let \ignorespaces \relax \accent 
+                                                  #1 #2\egroup \ifmmode \els...
+l.353 ...l množině. Zajímají mě výsledky př
+                                                  i DETERMINISTIC a STOCH vy...
+I'm changing \accent to \mathaccent here; wish me luck.
+(Accents are not the same in formulas as they are in text.)
+
+
+LaTeX Warning: Command \' invalid in math mode on input line 353.
+
+/home/premek/DP/PPO/Tex/hello-world.tex:353: Please use \mathaccent for accents in math mode.
+\add@accent ... \let \ignorespaces \relax \accent 
+                                                  #1 #2\egroup \ifmmode \els...
+l.353 ...y při DETERMINISTIC a STOCH vyhodnocení
+                                                  . Zajímavé by asi mohlo ...
+I'm changing \accent to \mathaccent here; wish me luck.
+(Accents are not the same in formulas as they are in text.)
+
+/home/premek/DP/PPO/Tex/hello-world.tex:353: Missing { inserted.
+<to be read again> 
+                   \begingroup 
+l.353 ...y při DETERMINISTIC a STOCH vyhodnocení
+                                                  . Zajímavé by asi mohlo ...
+A left brace was mandatory here, so I've put one in.
+You might want to delete and/or insert some corrections
+so that I will find a matching right brace soon.
+(If you're confused by all this, try typing `I}' now.)
+
+
+LaTeX Warning: Command \i invalid in math mode on input line 353.
+
+
+LaTeX Warning: Command \' invalid in math mode on input line 353.
+
+/home/premek/DP/PPO/Tex/hello-world.tex:353: Please use \mathaccent for accents in math mode.
+\add@accent ... \let \ignorespaces \relax \accent 
+                                                  #1 #2\egroup \ifmmode \els...
+l.353 ...DETERMINISTIC a STOCH vyhodnocení. Zají
+                                                  mavé by asi mohlo být i ...
+I'm changing \accent to \mathaccent here; wish me luck.
+(Accents are not the same in formulas as they are in text.)
+
+/home/premek/DP/PPO/Tex/hello-world.tex:353: Missing { inserted.
+<to be read again> 
+                   \begingroup 
+l.353 ...DETERMINISTIC a STOCH vyhodnocení. Zají
+                                                  mavé by asi mohlo být i ...
+A left brace was mandatory here, so I've put one in.
+You might want to delete and/or insert some corrections
+so that I will find a matching right brace soon.
+(If you're confused by all this, try typing `I}' now.)
+
+
+LaTeX Warning: Command \i invalid in math mode on input line 353.
+
+
+LaTeX Warning: Command \' invalid in math mode on input line 353.
+
+/home/premek/DP/PPO/Tex/hello-world.tex:353: Please use \mathaccent for accents in math mode.
+\add@accent ... \let \ignorespaces \relax \accent 
+                                                  #1 #2\egroup \ifmmode \els...
+l.353 ...MINISTIC a STOCH vyhodnocení. Zajímavé
+                                                   by asi mohlo být i kdyby...
+I'm changing \accent to \mathaccent here; wish me luck.
+(Accents are not the same in formulas as they are in text.)
+
+
+LaTeX Warning: Command \' invalid in math mode on input line 353.
+
+/home/premek/DP/PPO/Tex/hello-world.tex:353: Please use \mathaccent for accents in math mode.
+\add@accent ... \let \ignorespaces \relax \accent 
+                                                  #1 #2\egroup \ifmmode \els...
+l.353 ...vyhodnocení. Zajímavé by asi mohlo bý
+                                                  t i kdyby jen jedna strana...
+I'm changing \accent to \mathaccent here; wish me luck.
+(Accents are not the same in formulas as they are in text.)
+
+
+LaTeX Warning: Command \v invalid in math mode on input line 353.
+
+/home/premek/DP/PPO/Tex/hello-world.tex:353: Please use \mathaccent for accents in math mode.
+\add@accent ... \let \ignorespaces \relax \accent 
+                                                  #1 #2\egroup \ifmmode \els...
+l.353 ...jen jedna strana byla DETERMINISTIC, mož
+                                                  ná později.
+I'm changing \accent to \mathaccent here; wish me luck.
+(Accents are not the same in formulas as they are in text.)
+
+
+LaTeX Warning: Command \' invalid in math mode on input line 353.
+
+/home/premek/DP/PPO/Tex/hello-world.tex:353: Please use \mathaccent for accents in math mode.
+\add@accent ... \let \ignorespaces \relax \accent 
+                                                  #1 #2\egroup \ifmmode \els...
+l.353 ... jedna strana byla DETERMINISTIC, možná
+                                                   později.
+I'm changing \accent to \mathaccent here; wish me luck.
+(Accents are not the same in formulas as they are in text.)
+
+
+LaTeX Warning: Command \v invalid in math mode on input line 353.
+
+/home/premek/DP/PPO/Tex/hello-world.tex:353: Please use \mathaccent for accents in math mode.
+\add@accent ... \let \ignorespaces \relax \accent 
+                                                  #1 #2\egroup \ifmmode \els...
+l.353 ...strana byla DETERMINISTIC, možná pozdě
+                                                  ji.
+I'm changing \accent to \mathaccent here; wish me luck.
+(Accents are not the same in formulas as they are in text.)
+
+/home/premek/DP/PPO/Tex/hello-world.tex:354: Missing $ inserted.
+<inserted text> 
+                $
+l.354 
+      
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+/home/premek/DP/PPO/Tex/hello-world.tex:354: Missing } inserted.
+<inserted text> 
+                }
+l.354 
+      
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+/home/premek/DP/PPO/Tex/hello-world.tex:354: Missing } inserted.
+<inserted text> 
+                }
+l.354 
+      
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+/home/premek/DP/PPO/Tex/hello-world.tex:354: Missing } inserted.
+<inserted text> 
+                }
+l.354 
+      
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+/home/premek/DP/PPO/Tex/hello-world.tex:354: Missing } inserted.
+<inserted text> 
+                }
+l.354 
+      
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+/home/premek/DP/PPO/Tex/hello-world.tex:354: Missing } inserted.
+<inserted text> 
+                }
+l.354 
+      
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+/home/premek/DP/PPO/Tex/hello-world.tex:354: Missing } inserted.
+<inserted text> 
+                }
+l.354 
+      
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+/home/premek/DP/PPO/Tex/hello-world.tex:354: Missing } inserted.
+<inserted text> 
+                }
+l.354 
+      
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+
+Overfull \hbox (1543.09851pt too wide) in paragraph at lines 350--354
+\OT1/cmr/m/n/10 obr^^Sacen^^Te to ne-plat^^S^^P. Pop-ualce se jmenuj^^S^^P POP$[]\OML/cmm/m/it/10 P[]NIT[]OP\OT1/cmr/m/n/10 0\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 0[]\OML/cmm/m/it/10 POP[]RCoef\OT1/cmr/m/n/10 0\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 0[]\OML/cmm/m/it/10 RClip\OT1/cmr/m/n/10 0\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 0[]\OML/cmm/m/it/10 Coef\OT1/cmr/m/n/10 0\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 0[]\OML/cmm/m/it/10 Clip\OT1/cmr/m/n/10 0\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 0[]\OML/cmm/m/it/10 SRTrue[]ADFalseaPOP[]P[]NIT[]OP\OT1/cmr/m/n/10 0\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 0[]\OML/cmm/m/it/10 POP[]RCoef\OT1/cmr/m/n/10 0\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 0[]\OML/cmm/m/it/10 RClip\OT1/cmr/m/n/10 0\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 0[]\OML/cmm/m/it/10 Coef\OT1/cmr/m/n/10 0\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 0[]\OML/cmm/m/it/10 Clip\OT1/cmr/m/n/10 0\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 0[]\OML/cmm/m/it/10 SRTrue[]ADTrueprov[]d[]$ 
+ []
+
+/home/premek/DP/PPO/Tex/hello-world.tex:354: Extra }, or forgotten \endgroup.
+\par ...m \@noitemerr {\@@par }\fi \else {\@@par }
+                                                  \fi 
+l.354 
+      
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+
+Overfull \hbox (3.1653pt too wide) in paragraph at lines 369--372
+[]\OT1/cmr/m/n/10 mean POP part: 60.86666666666667 mean POP of non ze-ros: 80.79646017699115
+ []
+
+[14] (./hello-world.aux)
+
+Package rerunfilecheck Warning: File `hello-world.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `hello-world.out':
+(rerunfilecheck)             Before: <no file>
+(rerunfilecheck)             After:  9779669375FC639B50B614863289AFE6;4369.
  ) 
 Here is how much of TeX's memory you used:
- 7339 strings out of 479342
- 116017 string characters out of 5869178
- 408111 words of memory out of 5000000
- 25294 multiletter control sequences out of 15000+600000
+ 7327 strings out of 479342
+ 115846 string characters out of 5869178
+ 407849 words of memory out of 5000000
+ 25284 multiletter control sequences out of 15000+600000
  471550 words of font info for 36 fonts, out of 8000000 for 9000
  473 hyphenation exceptions out of 8191
- 60i,5n,63p,653b,389s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 60i,9n,63p,345b,389s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on hello-world.pdf (14 pages, 126036 bytes).
+Output written on hello-world.pdf (14 pages, 135056 bytes).
 PDF statistics:
- 185 PDF objects out of 1000 (max. 8388607)
- 153 compressed objects within 2 object streams
- 35 named destinations out of 1000 (max. 500000)
- 105 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 150 PDF objects out of 1000 (max. 8388607)
+ 118 compressed objects within 2 object streams
+ 37 named destinations out of 1000 (max. 500000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
