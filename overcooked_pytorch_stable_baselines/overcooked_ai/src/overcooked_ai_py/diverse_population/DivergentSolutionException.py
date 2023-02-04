@@ -1,2 +1,0 @@
-class DivergentSolutionException(Exception):
-    pass

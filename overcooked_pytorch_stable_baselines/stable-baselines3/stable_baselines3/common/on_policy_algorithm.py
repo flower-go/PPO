@@ -9,7 +9,7 @@ import torch as th
 
 import random
 
-from overcooked_ai_py.diverse_population.DivergentSolutionException import DivergentSolutionException
+from divergent_solution_exception import divergent_solution_exception
 import overcooked_ai_py.mdp.actions
 from stable_baselines3.common.base_class import BaseAlgorithm
 from stable_baselines3.common.buffers import DictRolloutBuffer, RolloutBuffer
@@ -164,6 +164,8 @@ class OnPolicyAlgorithm(BaseAlgorithm):
         callback.on_rollout_start()
         kl_diff_reward_loss = th.nn.KLDivLoss(reduction="batchmean", log_target=True)
 
+
+
         while n_steps < n_rollout_steps:
             if self.use_sde and self.sde_sample_freq > 0 and n_steps % self.sde_sample_freq == 0:
                 # Sample a new noise matrix
@@ -311,7 +313,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
         callback.on_training_start(locals(), globals())
         self.shaped_r_coef_horizon = 1
         self.kl_diff_bonus_reward_coef = args.kl_diff_bonus_reward_coef
-        best_model = None
+        best_model = self.policy
         best_model_eval_val = -1
 
         while self.num_timesteps < total_timesteps:
@@ -331,7 +333,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 # Neither of agents have managed to serve single plate of soup within first args["divergent_check_timestep"], models have likely converged to some bad local optima
                 if sparse_r < 3 or sparse_r_other_agent < 3:
                     print(f"Divergent solution with sparse reward values for agents ({sparse_r}, {sparse_r_other_agent})")
-                    raise DivergentSolutionException(f"Divergent solution with sparse reward values for agents ({sparse_r}, {sparse_r_other_agent})")
+                    raise divergent_solution_exception.divergent_solution_exception(f"Divergent solution with sparse reward values for agents ({sparse_r}, {sparse_r_other_agent})")
 
             if continue_training is False:
                 break

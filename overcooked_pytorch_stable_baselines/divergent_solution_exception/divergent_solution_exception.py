@@ -1,2 +1,2 @@
-class divergentSolutionException(Exception):
+class divergent_solution_exception(BaseException):
     pass

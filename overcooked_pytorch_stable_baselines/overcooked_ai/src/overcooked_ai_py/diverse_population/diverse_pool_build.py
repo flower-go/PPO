@@ -1,3 +1,4 @@
+import copy
 import sys
 import os
 
@@ -13,38 +14,43 @@ sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines")
 from stable_baselines3.ppo.ppo import PPO
 from overcooked_ai.src.overcooked_ai_py.mdp.overcooked_env import OvercookedGridworld, OvercookedEnv, get_vectorized_gym_env
 from datetime import datetime
-from experiments_params import ExperimentsParamsManager, ALL_LAYOUTS
-import numpy as np
+from experiments_params import set_layout_params
 from visualisation.visualisation import heat_map
 from evaluation.evaluation import Evaluator
-import DivergentSolutionException
 from divergent_solution_exception import divergent_solution_exception
-import torch 
 os.environ['CUDA_VISIBLE_DEVICES'] = "0"
 
 
 EVAL_SET_SIZE = 30
+SP_EVAL_EXP_NAME = "SP_EVAL"
 
 
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("--layout_name", default="forced_coordination", type=str, help="Layout name.")
 parser.add_argument("--trained_models", default=15, type=int, help="Number of models to train in experiment.")
-parser.add_argument("--mode", default="POP", type=str, help="Mode of experiment: Self-play ('SP') or Population ('POP').")
+parser.add_argument("--init_SP_agents", default=5, type=int, help="Number of self-play agents trained to initialize population.") #TODO: Default 5
+parser.add_argument("--mode", default="POP", type=str, help="Mode of experiment: Self-play ('SP') or Population ('POP').") #TODO: set default POP
 parser.add_argument("--kl_diff_bonus_reward_coef", default=0., type=float, help="Coeficient for kl div population policies difference.")
 parser.add_argument("--kl_diff_bonus_reward_clip", default=0., type=float, help="")
 parser.add_argument("--kl_diff_loss_coef", default=0., type=float, help="Coeficient for cross-entropy loss of population policies.")
 parser.add_argument("--kl_diff_loss_clip", default=0., type=float, help="Ccross-entropy loss of population policies clipping.")
 parser.add_argument("--delay_shared_reward", default=False, action="store_true", help="Whether to delay shared rewards.")
-parser.add_argument("--pop_bonus_ts", default=1e5, type=int, help="Number of bonus train time steps for each consecutive individual in population.")
 parser.add_argument("--exp", default="POP_SP_INIT", type=str, help="Experiment name.")
+
+
+parser.add_argument("--partner_action_deterministic", default=False, action="store_true", help="Whether trained partners from population play argmax for episodes sampling")
+parser.add_argument("--random_switch_start_pos", default=False, action="store_true", help="") #TODO: Set default False
+parser.add_argument("--rnd_obj_prob_thresh", default=0.0, type=float, help="Random object generation probability for start state")
+parser.add_argument("--static_start", default=False, action="store_true", help="") #TODO: Set default False
+
+# Now moreless fixed training hyperparameters
 parser.add_argument("--ent_coef_start", default=0.1, type=float, help="Coeficient for cross-entropy loss of population policies.")
 parser.add_argument("--ent_coef_end", default=0.03, type=float, help="Coeficient for cross-entropy loss of population policies.")
 parser.add_argument("--ent_coef_horizon", default=1.5e6, type=int, help="Coeficient for cross-entropy loss of population policies.")
-parser.add_argument("--total_timesteps", default=5.5e6, type=int, help="Coeficient for cross-entropy loss of population policies.")
+parser.add_argument("--total_timesteps", default=5.5e6, type=int, help="Coeficient for cross-entropy loss of population policies.") #TODO: set 5.5e6
 parser.add_argument("--vf_coef", default=0.1, type=float, help="Coeficient for cross-entropy loss of population policies.")
 parser.add_argument("--batch_size", default=2000, type=int, help="Coeficient for cross-entropy loss of population policies.")
-parser.add_argument("--device", default="cuda", type=str, help="Coeficient for cross-entropy loss of population policies.")
 parser.add_argument("--max_grad_norm", default=0.3, type=float, help="Coeficient for cross-entropy loss of population policies.")
 parser.add_argument("--clip_range", default=0.1, type=float, help="Coeficient for cross-entropy loss of population policies.")
 parser.add_argument("--learning_rate", default=0.0004, type=float, help="Coeficient for cross-entropy loss of population policies.")
@@ -52,47 +58,24 @@ parser.add_argument("--n_steps", default=400, type=int, help="Coeficient for cro
 parser.add_argument("--n_epochs", default=8, type=int, help="Coeficient for cross-entropy loss of population policies.")
 parser.add_argument("--shaped_r_coef_horizon", default=2.5e6, type=int, help="Annealing horizont for shaped partial rewards")
 parser.add_argument("--divergent_check_timestep", default=3e6, type=int, help="Coeficient for cross-entropy loss of population policies.")
+parser.add_argument("--num_workers", default=30, type=int, help="Num workers == num of parallel environments")
+parser.add_argument("--eval_interval", default=10, type=int, help="Evaluate after each X steps")
+parser.add_argument("--evals_num_to_threshold", default=2, type=int, help="Number of reevaluations for more exact result")
+parser.add_argument("--device", default="cuda", type=str, help="Device - cuda or cpu")
+parser.add_argument("--pop_bonus_ts", default=1e5, type=int, help="Number of bonus train time steps for each consecutive individual in population.") #TODO: Default 1e5
 parser.add_argument("--training_percent_start_eval", default=0.0, type=float, help="Coeficient for cross-entropy loss of population policies.")
-parser.add_argument("--init_SP_agents", default=5, type=int, help="Number of self-play agents trained to initialize population.")
-parser.add_argument("--partner_action_deterministic", default=False, action="store_true", help="Whether trained partners from population play argmax for episodes sampling")
-
 
 
 args = parser.parse_args([] if "__file__" not in globals() else None)
-# args = {}
 
 # TODO: should i study effect of annealing of entropy_coef, sparse_r_coef, learning_rate???, ... values found such that works for all maps
-
-def init_gym_env(args):
-    mdp = OvercookedGridworld.from_layout_name(args["map"])
-    overcooked_env = OvercookedEnv.from_mdp(mdp, horizon=400)
-    feature_fn = lambda _, state: overcooked_env.featurize_state_mdp(state) # TODO: maybe lossless encoding?
-    gym_env = get_vectorized_gym_env(
-        overcooked_env, 'Overcooked-v0', agent_idx=0, featurize_fn=feature_fn
-    )
-
-    agent_idxs = [ int(x < args["num_workers"] / 2) for x in range(args["num_workers"])]
-    gym_env.remote_set_agent_idx(agent_idxs)
-
-    return gym_env
 
 def load_or_train_models(args, env):
     directory = projdir + "/diverse_population/models/" + args.layout_name + "/" + args.exp + "/"
     models = []
     env.population_mode = False
     for n in range(args.trained_models):
-        model = None
-        try:
-            model_name = directory + str(n).zfill(2)
-            print(f"Looking for file {model_name}")
-            model = PPO.load(model_name, env=env, device="cuda")
-            model.custom_id = n
-            print(f"model {model_name} loaded")
-        except:
-            if model is None:
-                model = train_model(n, env, args)
-            model.save(model_name)
-            print(f"model {model_name} learned")
+        model = load_or_train_model(directory, n, env, args)
 
         models.append(model)
 
@@ -101,8 +84,28 @@ def load_or_train_models(args, env):
             env.population_mode = args.mode == "POP"
         env.population = models
 
-    exit()
+    if args.mode == "POP":
+        final_model = train_final_model(directory, n+1, env, args)
+        models.append(final_model)
     return models
+
+
+def load_or_train_model(directory, n, env, args):
+    model = None
+    model_name = directory + str(n).zfill(2)
+    try:
+        print(f"Looking for file {model_name}")
+        model = PPO.load(model_name, env=env, device="cuda")
+        model.custom_id = n
+        print(f"model {model_name} loaded")
+    except:
+        if model is None:
+            model = train_model(n, env, args)
+        model.save(model_name)
+        print(f"model {model_name} learned")
+
+    return model
+
 
 def train_model(n, env, args):
     now = datetime.now()
@@ -128,22 +131,72 @@ def train_model(n, env, args):
             num_steps += n * args.pop_bonus_ts
             model.learn(num_steps, args=args, reset_num_timesteps=False)
             found = True
-        except divergent_solution_exception.divergentSolutionException:
+        except divergent_solution_exception.divergent_solution_exception:
             print("found divergent solution")
             found = False
 
     return model
 
-params_manager = ExperimentsParamsManager(args)
 
-mdp = OvercookedGridworld.from_layout_name(params_manager.args.layout_name)
+def train_final_model(directory, n, env, args):
+    final_args = copy.deepcopy(args)
+
+    # Reset all population diversification techniques
+    final_args.total_timesteps = 2 * final_args.total_timesteps
+    final_args.kl_diff_bonus_reward_coef = 0.
+    final_args.kl_diff_bonus_reward_clip = 0.
+    final_args.kl_diff_loss_coef = 0.
+    final_args.kl_diff_loss_clip = 0.
+
+    return load_or_train_model(directory, n, env, final_args)
+
+def get_eval_models(args, gym_env):
+    eval_args = copy.deepcopy(args)
+    eval_args.exp = get_name(SP_EVAL_EXP_NAME)
+    eval_args.trained_models = EVAL_SET_SIZE
+    eval_args.mode = "SP"
+    return load_or_train_models(eval_args, gym_env)
+
+
+def get_name(name, sp=False, extended=False):
+    full_name = name
+    if sp or full_name == SP_EVAL_EXP_NAME:
+        full_name = full_name + "_ROP" + str(args.rnd_obj_prob_thresh)
+    else:
+        if extended:
+            full_name = full_name + "_VF" + str(args.vf_coef)
+            full_name = full_name + "_MGN" + str(args.max_grad_norm)
+            full_name = full_name + "_CR" + str(args.clip_range)
+            full_name = full_name + "_LR" + str(args.learning_rate)
+            full_name = full_name + "_ES" + str(args.ent_coef_start)
+            full_name = full_name + "_EE" + str(args.ent_coef_end)
+            full_name = full_name + "_SRC" + str(args.shaped_r_coef_horizon)
+            full_name = full_name + "_EP" + str(int(args.n_epochs))
+            full_name = full_name + "_EH" + str(int(args.ent_coef_horizon))
+            full_name = full_name + "_BS" + str(int(args.batch_size))
+            full_name = full_name + "_NS" + str(int(args.n_steps))
+            full_name = full_name + "_NW" + str(args.num_workers)
+            full_name = full_name + "_TS" + str(int(args.total_timesteps))
+        full_name = full_name + "_ROP" + str(args.rnd_obj_prob_thresh)
+        full_name = full_name + "_M" + str(args.mode)
+        full_name = full_name + "_BRCoef" + str(args.kl_diff_bonus_reward_coef)
+        full_name = full_name + "_BRClip" + str(args.kl_diff_bonus_reward_clip)
+        full_name = full_name + "_LCoef" + str(args.kl_diff_loss_coef)
+        full_name = full_name + "_LClip" + str(args.kl_diff_loss_clip)
+        full_name = full_name + "_DSR" + str(args.delay_shared_reward)
+        full_name = full_name + "_PAD" + str(args.partner_action_deterministic)
+    return full_name
+
+
+mdp = OvercookedGridworld.from_layout_name(args.layout_name)
 overcooked_env = OvercookedEnv.from_mdp(mdp, horizon=400)
 
 
 if __name__ == "__main__":
 
     feature_fn = lambda _, state: overcooked_env.lossless_state_encoding_mdp(state, debug=False)
-    start_state_fn = mdp.get_random_start_state_fn(random_start_pos=True, rnd_obj_prob_thresh = args.rnd_obj_prob_thresh) if args.random_start == True else mdp.get_standard_start_state
+    start_state_fn = mdp.get_random_start_state_fn(random_start_pos=True, # TODO: set Default True
+                                                   rnd_obj_prob_thresh = args.rnd_obj_prob_thresh, random_switch_start_pos = args.random_switch_start_pos) if args.static_start == False else mdp.get_standard_start_state
     gym_env = get_vectorized_gym_env(
         overcooked_env, 'Overcooked-v0', agent_idx=0, featurize_fn=feature_fn, start_state_fn=start_state_fn, args=args
     )
@@ -154,49 +207,16 @@ if __name__ == "__main__":
 
     evaluator = Evaluator(gym_env, args, deterministic=True, device="cpu")
 
-    def get_name(sp=False, extended=False):
-        full_name = args.exp
-        if sp:
-            full_name = full_name + "_ROP" + str(args.rnd_obj_prob_thresh)
-        else:
-            if extended:
-                full_name = full_name + "_VF" + str(args["vf_coef"])
-                full_name = full_name + "_MGN" + str(args["max_grad_norm"])
-                full_name = full_name + "_CR" + str(args["clip_range"])
-                full_name = full_name + "_LR" + str(args["learning_rate"])
-                full_name = full_name + "_ES" + str(args["ent_coef_start"])
-                full_name = full_name + "_EE" + str(args["ent_coef_end"])
-                full_name = full_name + "_SRC" + str(args["sparse_r_coef_horizon"])
-                full_name = full_name + "_EP" + str(int(args["n_epochs"]))
-                full_name = full_name + "_EH" + str(int(args["ent_coef_horizon"]))
-                full_name = full_name + "_BS" + str(int(args["batch_size"]))
-                full_name = full_name + "_NS" + str(int(args["n_steps"]))
-                full_name = full_name + "_NW" + str(args["num_workers"])
-                full_name = full_name + "_TS" + str(int(args["total_timesteps"]))
-            full_name = full_name + "_ROP" + str(args.rnd_obj_prob_thresh)
-            full_name = full_name + "_M" + str(args.mode)
-            full_name = full_name + "_BRCoef" + str(args.kl_diff_bonus_reward_coef)
-            full_name = full_name + "_BRClip" + str(args.kl_diff_bonus_reward_clip)
-            full_name = full_name + "_LCoef" + str(args.kl_diff_loss_coef)
-            full_name = full_name + "_LClip" + str(args.kl_diff_loss_clip)
-            full_name = full_name + "_DSR" + str(args.delay_shared_reward)
-            full_name = full_name + "_PAD" + str(args.partner_action_deterministic)
-        args.exp = full_name
+    set_layout_params(args)
+    args.exp = get_name(args.exp)
 
 
-
-    params_manager.args.layout_name = args.layout_name
-    params_manager.init_base_args_for_layout(args.layout_name)
-    # params_manager.init_exp_specific_args(args.exp)
-    get_name()
     models = load_or_train_models(args, gym_env)
+
 
     if args.mode == "POP":
         population_name = args.exp
-        args.exp = "SP_EVAL"
-        get_name(sp=True)
-        args.trained_models = EVAL_SET_SIZE
-        eval_models = load_or_train_models(args, gym_env)
+        eval_models = get_eval_models(args, gym_env)
         eval_table = evaluator.evaluate(models, eval_models, 1, args.layout_name, population_name)
         heat_map(eval_table, population_name, population_name, args.layout_name)
     else:

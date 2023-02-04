@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.23)  3 FEB 2023 11:46
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.23)  4 FEB 2023 15:50
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -675,21 +675,21 @@ Package rerunfilecheck Warning: File `hello-world.out' has changed.
 
 Package rerunfilecheck Info: Checksums for `hello-world.out':
 (rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  9779669375FC639B50B614863289AFE6;4369.
+(rerunfilecheck)             After:  5CE959506B3ACBE94B0651AB8DF19E07;4514.
  ) 
 Here is how much of TeX's memory you used:
- 7327 strings out of 479342
- 115846 string characters out of 5869178
- 407849 words of memory out of 5000000
+ 7328 strings out of 479342
+ 115862 string characters out of 5869178
+ 408849 words of memory out of 5000000
  25284 multiletter control sequences out of 15000+600000
  471550 words of font info for 36 fonts, out of 8000000 for 9000
  473 hyphenation exceptions out of 8191
  60i,9n,63p,345b,389s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on hello-world.pdf (14 pages, 135056 bytes).
+Output written on hello-world.pdf (14 pages, 135416 bytes).
 PDF statistics:
- 150 PDF objects out of 1000 (max. 8388607)
- 118 compressed objects within 2 object streams
- 37 named destinations out of 1000 (max. 500000)
+ 151 PDF objects out of 1000 (max. 8388607)
+ 119 compressed objects within 2 object streams
+ 38 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
