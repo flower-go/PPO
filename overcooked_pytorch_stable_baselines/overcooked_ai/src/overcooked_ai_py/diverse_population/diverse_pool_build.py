@@ -217,7 +217,7 @@ if __name__ == "__main__":
     if args.mode == "POP":
         population_name = args.exp
         eval_models = get_eval_models(args, gym_env)
-        eval_table = evaluator.evaluate(models, eval_models, 1, args.layout_name, population_name)
+        eval_table = evaluator.evaluate(models, eval_models, 3, args.layout_name, population_name)
         heat_map(eval_table, population_name, population_name, args.layout_name)
     else:
         eval_table = evaluator.evaluate(models, models, 1, args.layout_name, args.exp)
