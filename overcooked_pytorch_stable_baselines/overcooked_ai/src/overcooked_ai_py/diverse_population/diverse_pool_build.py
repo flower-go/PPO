@@ -33,11 +33,13 @@ parser.add_argument("--init_SP_agents", default=5, type=int, help="Number of sel
 parser.add_argument("--mode", default="POP", type=str, help="Mode of experiment: Self-play ('SP') or Population ('POP').") #TODO: set default POP
 parser.add_argument("--kl_diff_bonus_reward_coef", default=0., type=float, help="Coeficient for kl div population policies difference.")
 parser.add_argument("--kl_diff_bonus_reward_clip", default=0., type=float, help="")
-parser.add_argument("--kl_diff_loss_coef", default=0., type=float, help="Coeficient for cross-entropy loss of population policies.")
-parser.add_argument("--kl_diff_loss_clip", default=0., type=float, help="Ccross-entropy loss of population policies clipping.")
+parser.add_argument("--kl_diff_loss_coef", default=0.1, type=float, help="Coeficient for cross-entropy loss of population policies.")
+parser.add_argument("--kl_diff_loss_clip", default=0.5, type=float, help="Ccross-entropy loss of population policies clipping.")
 parser.add_argument("--delay_shared_reward", default=False, action="store_true", help="Whether to delay shared rewards.")
 parser.add_argument("--exp", default="POP_SP_INIT", type=str, help="Experiment name.")
-
+parser.add_argument("--eval_set_name", default="SP_EVAL_ROP0.0", type=str, help="Name of evaluation set.")
+parser.add_argument("--execute_final_eval", default=False, action="store_true", help="Whether to do final population evaluation.")
+parser.add_argument("--final_eval_games_per_worker", default=30, type=int, help="Number of games per worker for pair in final evaluation.")
 
 parser.add_argument("--partner_action_deterministic", default=False, action="store_true", help="Whether trained partners from population play argmax for episodes sampling")
 parser.add_argument("--random_switch_start_pos", default=False, action="store_true", help="") #TODO: Set default False
@@ -152,16 +154,23 @@ def train_final_model(directory, n, env, args):
 
 def get_eval_models(args, gym_env):
     eval_args = copy.deepcopy(args)
-    eval_args.exp = get_name(SP_EVAL_EXP_NAME)
+    eval_args.exp = args.eval_set_name
     eval_args.trained_models = EVAL_SET_SIZE
     eval_args.mode = "SP"
     return load_or_train_models(eval_args, gym_env)
+
+def models_are_same(model1, model2):
+    for p1, p2 in zip(model1.policy.parameters(), model2.policy.parameters()):
+        if p1.data.ne(p2.data).sum() > 0:
+            return False
+    return True
 
 
 def get_name(name, sp=False, extended=False):
     full_name = name
     if sp or full_name == SP_EVAL_EXP_NAME:
-        full_name = full_name + "_ROP" + str(args.rnd_obj_prob_thresh)
+        full_name = args.eval_set_name
+        #full_name = full_name + "_ROP" + str(args.rnd_obj_prob_thresh)
     else:
         if extended:
             full_name = full_name + "_VF" + str(args.vf_coef)
@@ -196,7 +205,8 @@ if __name__ == "__main__":
 
     feature_fn = lambda _, state: overcooked_env.lossless_state_encoding_mdp(state, debug=False)
     start_state_fn = mdp.get_random_start_state_fn(random_start_pos=True, # TODO: set Default True
-                                                   rnd_obj_prob_thresh = args.rnd_obj_prob_thresh, random_switch_start_pos = args.random_switch_start_pos) if args.static_start == False else mdp.get_standard_start_state
+                                                   rnd_obj_prob_thresh = args.rnd_obj_prob_thresh,# TODO: set Default args.rnd_obj_prob_thresh,
+                                                   random_switch_start_pos = args.random_switch_start_pos) if args.static_start == False else mdp.get_standard_start_state
     gym_env = get_vectorized_gym_env(
         overcooked_env, 'Overcooked-v0', agent_idx=0, featurize_fn=feature_fn, start_state_fn=start_state_fn, args=args
     )
@@ -213,12 +223,13 @@ if __name__ == "__main__":
 
     models = load_or_train_models(args, gym_env)
 
-
-    if args.mode == "POP":
-        population_name = args.exp
-        eval_models = get_eval_models(args, gym_env)
-        eval_table = evaluator.evaluate(models, eval_models, 3, args.layout_name, population_name)
-        heat_map(eval_table, population_name, population_name, args.layout_name)
-    else:
-        eval_table = evaluator.evaluate(models, models, 1, args.layout_name, args.exp)
-        heat_map(eval_table, args.exp, args.exp, args.layout_name)
+    if args.execute_final_eval:
+        eval_env = "_ENVROP" + str(args.rnd_obj_prob_thresh)
+        if args.mode == "POP":
+            population_name = args.exp
+            eval_models = get_eval_models(args, gym_env)
+            eval_table = evaluator.evaluate(models, eval_models, args.final_eval_games_per_worker, args.layout_name, population_name, eval_env = eval_env)
+            heat_map(eval_table, population_name, population_name, args.layout_name, eval_env = eval_env)
+        else:
+            eval_table = evaluator.evaluate(models, models, args.final_eval_games_per_worker, args.layout_name, args.exp, eval_env = eval_env)
+            heat_map(eval_table, args.exp, args.exp, args.layout_name, eval_env = eval_env)

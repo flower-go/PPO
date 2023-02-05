@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-def heat_map(table, title, file_name, layout_name, deterministic=True):
+def heat_map(table, title, file_name, layout_name, deterministic=True, eval_env=""):
     table = np.around(table, decimals=2)
     # table[table <= 179] = 0
 
@@ -30,5 +30,5 @@ def heat_map(table, title, file_name, layout_name, deterministic=True):
     fig.tight_layout()
     # plt.savefig(f"diverse_population/visualisation/{args['layout_name']}/coordination_ring.png")
     file_name = f"{os.environ['PROJDIR']}/diverse_population/visualisation/{layout_name}/" + file_name + '' if deterministic else '_STOCH'
-    file_name = file_name + ".png"
+    file_name = file_name + eval_env + ".png"
     plt.savefig(file_name)
