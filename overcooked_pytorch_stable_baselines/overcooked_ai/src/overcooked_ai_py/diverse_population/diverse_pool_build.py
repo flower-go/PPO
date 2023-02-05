@@ -33,13 +33,13 @@ parser.add_argument("--init_SP_agents", default=5, type=int, help="Number of sel
 parser.add_argument("--mode", default="POP", type=str, help="Mode of experiment: Self-play ('SP') or Population ('POP').") #TODO: set default POP
 parser.add_argument("--kl_diff_bonus_reward_coef", default=0., type=float, help="Coeficient for kl div population policies difference.")
 parser.add_argument("--kl_diff_bonus_reward_clip", default=0., type=float, help="")
-parser.add_argument("--kl_diff_loss_coef", default=0.1, type=float, help="Coeficient for cross-entropy loss of population policies.")
-parser.add_argument("--kl_diff_loss_clip", default=0.5, type=float, help="Ccross-entropy loss of population policies clipping.")
+parser.add_argument("--kl_diff_loss_coef", default=0., type=float, help="Coeficient for cross-entropy loss of population policies.")
+parser.add_argument("--kl_diff_loss_clip", default=0., type=float, help="Ccross-entropy loss of population policies clipping.")
 parser.add_argument("--delay_shared_reward", default=False, action="store_true", help="Whether to delay shared rewards.")
 parser.add_argument("--exp", default="POP_SP_INIT", type=str, help="Experiment name.")
 parser.add_argument("--eval_set_name", default="SP_EVAL_ROP0.0", type=str, help="Name of evaluation set.")
 parser.add_argument("--execute_final_eval", default=False, action="store_true", help="Whether to do final population evaluation.")
-parser.add_argument("--final_eval_games_per_worker", default=30, type=int, help="Number of games per worker for pair in final evaluation.")
+parser.add_argument("--final_eval_games_per_worker", default=20, type=int, help="Number of games per worker for pair in final evaluation.")
 
 parser.add_argument("--partner_action_deterministic", default=False, action="store_true", help="Whether trained partners from population play argmax for episodes sampling")
 parser.add_argument("--random_switch_start_pos", default=False, action="store_true", help="") #TODO: Set default False
