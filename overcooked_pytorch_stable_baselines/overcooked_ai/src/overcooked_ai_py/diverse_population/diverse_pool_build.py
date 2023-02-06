@@ -43,7 +43,8 @@ parser.add_argument("--final_eval_games_per_worker", default=20, type=int, help=
 
 parser.add_argument("--partner_action_deterministic", default=False, action="store_true", help="Whether trained partners from population play argmax for episodes sampling")
 parser.add_argument("--random_switch_start_pos", default=False, action="store_true", help="") #TODO: Set default False
-parser.add_argument("--rnd_obj_prob_thresh", default=0.0, type=float, help="Random object generation probability for start state")
+parser.add_argument("--rnd_obj_prob_thresh_agent", default=0.0, type=float, help="Random object generation probability for start state ")
+parser.add_argument("--rnd_obj_prob_thresh_env", default=0.0, type=float, help="Random object generation probability for start state")
 parser.add_argument("--static_start", default=False, action="store_true", help="") #TODO: Set default False
 
 # Now moreless fixed training hyperparameters
@@ -186,7 +187,7 @@ def get_name(name, sp=False, extended=False):
             full_name = full_name + "_NS" + str(int(args.n_steps))
             full_name = full_name + "_NW" + str(args.num_workers)
             full_name = full_name + "_TS" + str(int(args.total_timesteps))
-        full_name = full_name + "_ROP" + str(args.rnd_obj_prob_thresh)
+        full_name = full_name + "_ROP" + str(args.rnd_obj_prob_thresh_agent)
         full_name = full_name + "_M" + str(args.mode)
         full_name = full_name + "_BRCoef" + str(args.kl_diff_bonus_reward_coef)
         full_name = full_name + "_BRClip" + str(args.kl_diff_bonus_reward_clip)
@@ -205,7 +206,7 @@ if __name__ == "__main__":
 
     feature_fn = lambda _, state: overcooked_env.lossless_state_encoding_mdp(state, debug=False)
     start_state_fn = mdp.get_random_start_state_fn(random_start_pos=True, # TODO: set Default True
-                                                   rnd_obj_prob_thresh = args.rnd_obj_prob_thresh,# TODO: set Default args.rnd_obj_prob_thresh,
+                                                   rnd_obj_prob_thresh = args.rnd_obj_prob_thresh_env,# TODO: set Default args.rnd_obj_prob_thresh_env,
                                                    random_switch_start_pos = args.random_switch_start_pos) if args.static_start == False else mdp.get_standard_start_state
     gym_env = get_vectorized_gym_env(
         overcooked_env, 'Overcooked-v0', agent_idx=0, featurize_fn=feature_fn, start_state_fn=start_state_fn, args=args
@@ -224,7 +225,7 @@ if __name__ == "__main__":
     models = load_or_train_models(args, gym_env)
 
     if args.execute_final_eval:
-        eval_env = "_ENVROP" + str(args.rnd_obj_prob_thresh)
+        eval_env = "_ENVROP" + str(args.rnd_obj_prob_thresh_env)
         if args.mode == "POP":
             population_name = args.exp
             eval_models = get_eval_models(args, gym_env)
