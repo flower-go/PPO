@@ -21,10 +21,10 @@ def heat_map(table, title, file_name, layout_name, deterministic=True, eval_env=
              rotation_mode="anchor")
 
     # Loop over data dimensions and create text annotations.
-    for i in range(len(table)):
-        for j in range(len(table[0])):
-            text = ax.text(j, i, table[i, j],
-                           ha="center", va="center", color="w")
+    # for i in range(len(table)):
+    #     for j in range(len(table[0])):
+    #         text = ax.text(j, i, table[i, j],
+    #                        ha="center", va="center", color="w")
 
     ax.set_title(title)
     fig.tight_layout()

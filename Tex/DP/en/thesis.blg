@@ -9,13 +9,14 @@ A level-1 auxiliary file: chap03.aux
 A level-1 auxiliary file: chap04.aux
 A level-1 auxiliary file: chap05.aux
 A level-1 auxiliary file: chap06.aux
+A level-1 auxiliary file: chap07.aux
 A level-1 auxiliary file: epilog.aux
 A level-1 auxiliary file: bibliography.aux
 The style file: plainnat.bst
 Database file #1: bibliography.bib
 You've used 1 entry,
             2773 wiz_defined-function locations,
-            611 strings with 5056 characters,
+            612 strings with 5066 characters,
 and the built_in function-call counts, 354 in all, are:
 = -- 30
 > -- 10

@@ -1,6 +1,40 @@
-\chapter{Lack of robustness problem of AI agents}
-\section{Related work}
-\subsection*{Common approaches fail when paired with foreign }
+\chapter{Related work}
+\section{Human-ai cooperation results}
+
+\subsection{Human cooperation}
+Most of the previous work in this area has focused on one of two types of coordination. 
+The first being coordination between a human and an AI partner. 
+And second, focusing solely on the fully AI-driven pair.
+
+\par
+
+While perfect AI-human coordination is generally a more desirable goal to achieve in all sorts of domains, it will not be our main focus.  
+Several previous scientific papers have addressed this issue. A particularly noteworthy contribution is the article 
+On the Utility of Learning about Humans for Human-AI Coordination
+\url{https://arxiv.org/abs/1910.05789}, whose authors are also responsible for creating the overcooked environment implementation. 
+They collected many human-human episodes and incorporated these experiences in the form of human behavior clone models into the training. Their main conclusions were that AI models often rely heavily on the optimal behavior of their partner. 
+However, when such a model is paired with generally suboptimal human behavior, it often fails to cooperate at all, regardless of the approach used for training of the AI model.
+
+One of the other important conclusions they came to was that even AI-AI coordination often fails when models are paired with another AI model trained using a different approach. 
+We will discuss some of these popular approaches in the next section.
+
+\textbf{TODO: How much further focus on human-ai coordination if not our interest?}
+
+
+\section{Problem of robustness}
+
+
+\subsection{Problem of robustness definition}
+Ad hoc agent playing? Trivial states failure (unit-test based aproach)?
+
+\section{AI-AI coordination}
+\subsection{Aproaches}
+\textbf{Self-play, Population}
+
+\subsection{Results}
+\textbf{It fails}
+
+
 
 
 

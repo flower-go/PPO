@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.23)  26 JAN 2023 18:57
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.23)  8 FEB 2023 13:46
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -419,7 +419,7 @@ File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 File: l3backend-pdftex.def 2022-01-12 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count293
 \l__pdf_internal_box=\box55
-) (./thesis.aux (./title.aux) (./preface.aux) (./chap01.aux) (./chap02.aux) (./chap03.aux) (./chap04.aux) (./chap05.aux) (./chap06.aux) (./epilog.aux) (./bibliography.aux))
+) (./thesis.aux (./title.aux) (./preface.aux) (./chap01.aux) (./chap02.aux) (./chap03.aux) (./chap04.aux) (./chap05.aux) (./chap06.aux) (./chap07.aux) (./epilog.aux) (./bibliography.aux))
 \openout1 = `thesis.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 109.
@@ -480,7 +480,7 @@ LaTeX Info: Redefining \nameref on input line 109.
 
  (./title.tex
 Package hyperref Info: Option `pageanchor' set `false' on input line 6.
-<../img/logo-en.pdf, id=127, 506.4591pt x 156.49065pt>
+<../img/logo-en.pdf, id=208, 506.4591pt x 156.49065pt>
 File: ../img/logo-en.pdf Graphic file (type pdf)
 <use ../img/logo-en.pdf>
 Package pdftex.def Info: ../img/logo-en.pdf  used on input line 9.
@@ -522,19 +522,19 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 LaTeX Font Info:    Trying to load font information for U+msb on input line 3.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-))
+) [1
+
+
+
+
+])
 \tf@toc=\write6
 \openout6 = `thesis.toc'.
 
- [1
-
-
-
-
-]
+ [2]
 \openout2 = `preface.aux'.
 
- (./preface.tex) [2
+ (./preface.tex) [3
 
 
 ]
@@ -542,7 +542,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
  (./chap01.tex
 Chapter 1.
-) [3
+) [4
 
 
 
@@ -552,7 +552,12 @@ Chapter 1.
 
  (./chap02.tex
 Chapter 2.
-) [4
+
+Overfull \hbox (1.88188pt too wide) in paragraph at lines 2--2
+[]\OT1/lmr/bx/n/17.28 Comparison with off pol-icy Q learn-ing meth-|
+ []
+
+) [5
 
 
 
@@ -562,7 +567,7 @@ Chapter 2.
 
  (./chap03.tex
 Chapter 3.
-) [5
+) [6
 
 
 
@@ -576,7 +581,7 @@ LaTeX Font Info:    Trying to load font information for OT1+lmtt on input line 5
 (/usr/share/texmf/tex/latex/lm/ot1lmtt.fd
 File: ot1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-<layouts.png, id=220, 803.0pt x 138.5175pt>
+<layouts.png, id=327, 803.0pt x 138.5175pt>
 File: layouts.png Graphic file (type png)
 <use layouts.png>
 Package pdftex.def Info: layouts.png  used on input line 22.
@@ -586,17 +591,17 @@ Underfull \hbox (badness 10000) in paragraph at lines 22--25
 [][] 
  []
 
-[6
+[7
 
 
 
 
- <./layouts.png>]) [7]
+ <./layouts.png>]) [8]
 \openout2 = `chap05.aux'.
 
  (./chap05.tex
 Chapter 5.
-) [8
+) [9
 
 
 
@@ -606,7 +611,17 @@ Chapter 5.
 
  (./chap06.tex
 Chapter 6.
-) [9
+) [10
+
+
+
+
+]
+\openout2 = `chap07.aux'.
+
+ (./chap07.tex
+Chapter 7.
+) [11
 
 
 
@@ -614,7 +629,7 @@ Chapter 6.
 ]
 \openout2 = `epilog.aux'.
 
- (./epilog.tex) [10
+ (./epilog.tex) [12
 
 
 
@@ -622,7 +637,7 @@ Chapter 6.
 ]
 \openout2 = `bibliography.aux'.
 
- (./bibliography.tex (./thesis.bbl)) [11
+ (./bibliography.tex (./thesis.bbl)) [13
 
 
 
@@ -631,7 +646,7 @@ Chapter 6.
 \tf@lof=\write7
 \openout7 = `thesis.lof'.
 
- [12
+ [14
 
 
 
@@ -639,31 +654,31 @@ Chapter 6.
 \tf@lot=\write8
 \openout8 = `thesis.lot'.
 
- [13
+ [15
 
-] [14
+] [16
 
 ]
 Appendix A.
-[15
+[17
 
-] (./thesis.aux (./title.aux) (./preface.aux) (./chap01.aux) (./chap02.aux) (./chap03.aux) (./chap04.aux) (./chap05.aux) (./chap06.aux) (./epilog.aux) (./bibliography.aux))
+] (./thesis.aux (./title.aux) (./preface.aux) (./chap01.aux) (./chap02.aux) (./chap03.aux) (./chap04.aux) (./chap05.aux) (./chap06.aux) (./chap07.aux) (./epilog.aux) (./bibliography.aux))
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 40D59C0DE571664980CD739954116FF0;5273.
+(rerunfilecheck)             Checksum: 00CA48CC1206E9E1EBD5F761D9965EF4;9444.
  ) 
 Here is how much of TeX's memory you used:
- 15122 strings out of 479342
- 232398 string characters out of 5869178
- 502315 words of memory out of 5000000
- 32741 multiletter control sequences out of 15000+600000
+ 15188 strings out of 479342
+ 233677 string characters out of 5869178
+ 505740 words of memory out of 5000000
+ 32782 multiletter control sequences out of 15000+600000
  520768 words of font info for 64 fonts, out of 8000000 for 9000
  473 hyphenation exceptions out of 8191
- 77i,6n,79p,533b,2377s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 77i,6n,79p,570b,2377s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rmtt.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt12.pfb>
-Output written on thesis.pdf (19 pages, 484610 bytes).
+Output written on thesis.pdf (21 pages, 490430 bytes).
 PDF statistics:
- 315 PDF objects out of 1000 (max. 8388607)
- 270 compressed objects within 3 object streams
- 58 named destinations out of 1000 (max. 500000)
- 269 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 426 PDF objects out of 1000 (max. 8388607)
+ 378 compressed objects within 4 object streams
+ 76 named destinations out of 1000 (max. 500000)
+ 429 words of extra memory for PDF output out of 10000 (max. 10000000)
 

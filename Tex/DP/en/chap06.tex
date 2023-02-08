@@ -1,22 +1,23 @@
-\chapter{Our contribution}
+\chapter{Our work - Preparation}
 
 \section{Utilized framework}
 \subsection*{Comparision of rllib and StableBaselines3}
 Rllib framework was used in original paper, however for our usages stable baselines seemed sufficient and reasonably easy to extend.
 Stable baselines has no explicit support of multi-agent environments.
-\subsection*{Essential modifications of stable baselines}
-By default SB3 comes with various wrappers to support most of common environment settings, including 
+\subsection{Modifications of stable baselines}
+\par
+\textbf{CNN policy wrapper,}
+\textbf{Partner embedded into environment}
 
-\subsection*{Essential modifications of stable baselines}
-Initializing methods that resets environment did not yield correct initial positions for some maps.
+\subsection{NN structure modification}
 
-\section{Robustness metric}
-Defining our own metric for robust cooperation of two sets of agents. Probably just average of pair results (non diagonal in case of same sets).
-Maybe number of pairs who surpassed some threshold?
+\subsection{Hyperparameters random search}
 
-\section{Population build up}
+\subsection{Randomization function correction}
 
-\section{Population policies difference rewards augmentation}
+\section{Self-play}
+\subsection{Training}
+\subsection{Results}
 
-\section{Population policies difference loss}
+
 

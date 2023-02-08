@@ -31,8 +31,8 @@ parser.add_argument("--layout_name", default="forced_coordination", type=str, he
 parser.add_argument("--trained_models", default=15, type=int, help="Number of models to train in experiment.")
 parser.add_argument("--init_SP_agents", default=5, type=int, help="Number of self-play agents trained to initialize population.") #TODO: Default 5
 parser.add_argument("--mode", default="POP", type=str, help="Mode of experiment: Self-play ('SP') or Population ('POP').") #TODO: set default POP
-parser.add_argument("--kl_diff_bonus_reward_coef", default=0., type=float, help="Coeficient for kl div population policies difference.")
-parser.add_argument("--kl_diff_bonus_reward_clip", default=0., type=float, help="")
+parser.add_argument("--kl_diff_bonus_reward_coef", default=0.0, type=float, help="Coeficient for kl div population policies difference.")
+parser.add_argument("--kl_diff_bonus_reward_clip", default=0.0, type=float, help="")
 parser.add_argument("--kl_diff_loss_coef", default=0., type=float, help="Coeficient for cross-entropy loss of population policies.")
 parser.add_argument("--kl_diff_loss_clip", default=0., type=float, help="Ccross-entropy loss of population policies clipping.")
 parser.add_argument("--delay_shared_reward", default=False, action="store_true", help="Whether to delay shared rewards.")
