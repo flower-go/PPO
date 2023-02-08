@@ -253,5 +253,5 @@ if __name__ == "__main__":
             eval_table = evaluator.evaluate(models, eval_models, args.final_eval_games_per_worker, args.layout_name, population_name, eval_env = eval_env)
             heat_map(eval_table, population_name, population_name, args.layout_name, eval_env = eval_env)
         else:
-            eval_table = evaluator.evaluate(models, models, args.final_eval_games_per_worker, args.layout_name, args.full_exp_name, eval_env = eval_env)
-            heat_map(eval_table, args.full_exp_name, args.full_exp_name, args.layout_name, eval_env = eval_env)
+            eval_table = evaluator.evaluate(models, models, args.final_eval_games_per_worker, args.layout_name, args.exp, eval_env = eval_env)
+            heat_map(eval_table, args.exp, args.exp, args.layout_name, eval_env = eval_env)
