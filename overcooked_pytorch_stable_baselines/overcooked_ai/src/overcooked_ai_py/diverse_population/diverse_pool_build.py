@@ -28,7 +28,7 @@ SP_EVAL_EXP_NAME = "SP_EVAL"
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("--layout_name", default="forced_coordination", type=str, help="Layout name.")
-parser.add_argument("--trained_models", default=15, type=int, help="Number of models to train in experiment.")
+parser.add_argument("--trained_models", default=15, type=int, help="Number of models to train in experiment.") #TODO: Default 15
 parser.add_argument("--init_SP_agents", default=5, type=int, help="Number of self-play agents trained to initialize population.") #TODO: Default 5
 parser.add_argument("--mode", default="POP", type=str, help="Mode of experiment: Self-play ('SP') or Population ('POP').") #TODO: set default POP
 parser.add_argument("--kl_diff_bonus_reward_coef", default=0.0, type=float, help="Coeficient for kl div population policies difference.")
@@ -39,7 +39,7 @@ parser.add_argument("--delay_shared_reward", default=False, action="store_true",
 parser.add_argument("--exp", default="POP_SP_INIT", type=str, help="Experiment name.")
 parser.add_argument("--eval_set_name", default="SP_EVAL_ROP0.0", type=str, help="Name of evaluation set.")
 parser.add_argument("--execute_final_eval", default=False, action="store_true", help="Whether to do final population evaluation.")
-parser.add_argument("--final_eval_games_per_worker", default=20, type=int, help="Number of games per worker for pair in final evaluation.")
+parser.add_argument("--final_eval_games_per_worker", default=5, type=int, help="Number of games per worker for pair in final evaluation.")
 
 parser.add_argument("--partner_action_deterministic", default=False, action="store_true", help="Whether trained partners from population play argmax for episodes sampling")
 parser.add_argument("--random_switch_start_pos", default=False, action="store_true", help="") #TODO: Set default False
@@ -66,7 +66,8 @@ parser.add_argument("--eval_interval", default=10, type=int, help="Evaluate afte
 parser.add_argument("--evals_num_to_threshold", default=2, type=int, help="Number of reevaluations for more exact result")
 parser.add_argument("--device", default="cuda", type=str, help="Device - cuda or cpu")
 parser.add_argument("--pop_bonus_ts", default=1e5, type=int, help="Number of bonus train time steps for each consecutive individual in population.") #TODO: Default 1e5
-parser.add_argument("--training_percent_start_eval", default=0.0, type=float, help="Coeficient for cross-entropy loss of population policies.")
+parser.add_argument("--training_percent_start_eval", default=0.5, type=float, help="Coeficient for cross-entropy loss of population policies.")
+parser.add_argument("--tensorboard_log", default=False, action="store_true", help="") #TODO: Set default False
 
 
 args = parser.parse_args([] if "__file__" not in globals() else None)
@@ -117,7 +118,8 @@ def train_model(n, env, args):
         try:
             print(f"Learning {args.layout_name}/{args.exp}")
             model = PPO("CnnPolicy", env, device=args.device, verbose=0,
-                        tensorboard_log=f"./diverse_population/logs/{args.layout_name}/{args.exp}/{str(n).zfill(2)}",
+
+                        tensorboard_log=f"./diverse_population/logs/{args.layout_name}/{args.exp}/{str(n).zfill(2)}" if args.tensorboard_log else None,
                         n_steps=args.n_steps,
                         seed=now.microsecond + now.hour,
                         batch_size=args.batch_size,
@@ -126,7 +128,7 @@ def train_model(n, env, args):
                         gae_lambda=0.98,
                         clip_range=args.clip_range,
                         max_grad_norm = args.max_grad_norm,
-                        vf_coef=args.vf_coef
+                        vf_coef=args.vf_coef,
                         )
             model.custom_id = n
             env.other_agent_model = model

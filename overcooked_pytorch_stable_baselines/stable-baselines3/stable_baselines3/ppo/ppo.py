@@ -255,10 +255,12 @@ class PPO(OnPolicyAlgorithm):
                 pop_kl_diff_loss = th.zeros(1)
                 if self.env.population and self.args.kl_diff_loss_coef > 0:
                     actions_prob_dist = self.policy.get_distribution(rollout_data.observations).distribution.logits
+                    dist = self.policy.get_distribution(rollout_data.observations).distribution
 
                     kl_divs = []
                     for ind in self.env.population:
                         pop_ind_actions_dist_logits = ind.policy.get_distribution(rollout_data.observations).distribution.logits
+                        pop_ind_actions_dist = ind.policy.get_distribution(rollout_data.observations).distribution
                         diff = th.nn.functional.kl_div(actions_prob_dist, pop_ind_actions_dist_logits, reduction="batchmean", log_target=True)
                         kl_divs.append(diff)
 
