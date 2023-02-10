@@ -1,3 +1,28 @@
 \chapter*{Introduction}
 \addcontentsline{toc}{chapter}{Introduction}
 
+In recent years people are witnessing fast progress in artificial inteligence(AI) in all sort of domains. 
+Beating world champions in chess or Go is no longer any issue for AI models. 
+Same pattern is showing in more recent popular games such as Dota (\cite{DotaOpenFive}) or Starcraft, where even great Human-AI team cooperation behavior has been achieved.
+However, all of these examples share common property of being competetive.
+Ultimate goal of our society is to create AI that will be cooperating with humans, not competing.
+
+Recent work has shown us that AI cooperative models trained together for purely cooperative tasks tend to rely mostly on expect near optimal behavior from their partners and fail to cooperate with partners who don't satisfy this condition.
+
+Which is bad news for us humans as our behavior is rarely optimal.
+
+Great example of human-AI cooperation domain where humans do not always perform perfectly are self driving cars. 
+In a situation where an accident is imminent humans have to react quickly without having enough time to consider all possible reactions or even analyze entire current road situation.
+However car accidents maybe even too extreme example of human unoptimal behavior. 
+People often fail at even simplier task of obeying the standard traffic rules when having enough time to react.
+We can imagine how predicting human behavior is not an easy task for self driving car. 
+
+In this work we will firstly revisit definition of Markov decision process, building block of reinforcement learning, then mention basic aproaches of Q-learning.
+We will focus on policy branch of reinforcement algorithms, mention their variants and conclude with policy learning algorithm Proximal policiy optimization which is considered as state of art algorithm masively deployed in many succesful projects.
+
+We will utilize simplified cooperative cooking environment based on popular video game Overcooked, where two partners are forced to coordinate shared task of cooking and delivering soup to customer.
+Here we are going to summarize what aproaches have been tested in related work in terms of ad-hoc agent cooperation.
+Some of which will we reimplement for our evaluating purposes.
+We mention problem of definition of robustness of agent cooperation.
+
+And finally we contribute with our ideas of diversificated partners population. 

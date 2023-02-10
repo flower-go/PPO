@@ -1,5 +1,85 @@
-\chapter{Gentle summarization of Reinforcement learning}
+\chapter{Introduction to reinforcement learning}
 
-An~example citation: \cite{Andel07}
+\section{Markov decision process}
+\subsection*{Environment cycle}
+Whole problem of reinforcement learning (RL) can be best described by following visualisation.
 
-\section{Definitions - Markov decision process}
+\includegraphics*[width=12cm]{rl_diagram_transparent_bg.png}
+
+Environment represents some kind of world with its inner rules and properties. 
+Agent is then an entity that exists inside this world, observes \textbf{state s} of the world, decides on the basis of this state to react with \textbf{action a} and as consequence of this action recieves \textbf{reward r}.
+Entire mechanism of this environment can be then broken into these cycles of states, actions and rewards.
+The goal of an agent is to interact with environemt in such a way to maximize its cumulative reward.
+
+In order to be fully able to formalize problems of reinforcement learning we have to expand further our notation.
+
+\subsection*{Observability}
+State s contains all information about environment at given time. 
+However, agent in some environment can percieve \textbf{observation o} where some information about environment can be missing.
+In that case we say environment is \textbf{partially observable} as opposed to \textbf{fully observable} environment where agent has available entire information at it's observation.
+
+\subsection*{Actions and policies}
+Environments can also differ from point of what actions are possible inside of given world.
+Set of possible actions is called \textbf{action space} which again can be divided into two types. 
+\textbf{Discrete} action space contains finite number of possible actions. 
+And \textbf{continuous} action space which allows for action to be any real-valued number or vector.
+
+Agent's action selection can then be described by a rule called \textbf{policy}. 
+Common notation is established that if the action selection is deterministic, we say policy is \textbf{deterministic} and denote 
+
+\begin{center}
+$
+\bm{a_t = \mu(s_t)}
+$.
+\end{center}
+
+If policy is \textbf{stochastic} it is usually noted as 
+
+\begin{center}
+    $
+    \bm{a_t \sim \pi(\cdot |s_t)}
+    $.
+\end{center}
+
+Policies are main object of interest of reinforcement learning as this action selection mechanism of an agent is what we are trying to learn.
+Policy, for optimization purposes, is function often \textbf{parametrized} by a neural network whose parameters are usually denoted by symbol
+$
+    \bm{\theta}
+$
+, therefore parametrized deterministic and stochastic policy are represented by symbols     $\bm{\mu_\theta(s_t)} , \bm{\pi_\theta(\cdot |s_t)}$ respectively.
+
+\subsection*{Trajectory}
+Next important definition is notion of trajectory also known as episode or rollout.
+Trajectory is a sequence of states and actions in an environment.
+\begin{center}
+    $\tau = (s_0, a_0, s_1, a_1, ...)$
+\end{center}
+Initial state $s_0$ of an environment is sampled from \textbf{start-state distribution}. 
+Subsequent states follow transition laws of environment. 
+These can be again deterministic 
+\begin{center}
+    $s_{t+1} = f(s_t, a_t)$
+\end{center} or stochastic,
+\begin{center}
+    $s_{t+1} \sim P(\cdot | s_t, a_t)$
+\end{center}
+
+\subsection*{Return}
+We already mentioned agent aspiration of maximization of cumulative rewards.
+Now we combine it with trajectories and derive formulation of \textbf{return}.
+\begin{center}
+$\bm{R(\tau)} = \sum_{t=0}^{T}r_t$
+\end{center}
+ for finite-horizon.
+And infinite-horizon discounted return:
+\begin{center}
+    $\bm{R(\tau)} = \sum_{t=0}^{T}\gamma^t r_t$
+\end{center}
+Discounting infinite-horizon is both intuitive and convinient for mathematical purposes.
+
+\begin{center}$r_t = R(s_t, a_t, s_{t+1})$\end{center} is a function of states and action. 
+However, this definition is often abreviated only to pair of current state and taken action 
+\begin{center}$r_t = R(s_t, a_t)$\end{center}
+
+
+\subsection*{Optimal policy}
