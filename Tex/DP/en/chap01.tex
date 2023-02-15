@@ -125,7 +125,7 @@ This idea provides also recursive relation.
 For us, the most important theorem is reformulation of Bellman equations for optimal policies:
 \begin{align*}
     V^*(s) &= \max_a \mathop{\mathbb{E}}_{s' \sim P} [R(s,a,s') + \gamma V^*(s')] \\
-    Q^\pi(s,a) &= \mathop{\mathbb{E}}_{s' \sim P} [R(s,a,s') + \gamma \max_{a'} Q^*(s',a')]
+    Q^*(s,a) &= \mathop{\mathbb{E}}_{s' \sim P} [R(s,a,s') + \gamma \max_{a'} Q^*(s',a')]
 \end{align*}
 
 As we will see in next section. 

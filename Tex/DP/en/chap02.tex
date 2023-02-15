@@ -1,6 +1,153 @@
 \chapter{RL alrotighms}
-\section{Algorithms taxonomy}
-TODO: continue here
+\section{Q-Learning}
+
+\subsection*{Idea}
+We will start with family of algorithms that focuses on learning action-value approximator $Q_\theta(s,a)$ as described in previous chapter.
+For this reason, the group of such algorithms can be also refered to as Q-learning.
+Our primary goal in RL problem is to find policy that agent can follow.
+In the case of Q-learning once we have have learned approximator $Q_\theta(s,a)$ we can derive policy by always taking the best possible action in given state according to the learned action-value function
+\[a(s) = \arg \max_a Q_\theta(s,a).\]
+By incorporating Bellman equations for optimal policy we can directly train Q-network by minimizing the loss
+\[L(\Theta)=(r + \gamma \max_{a'} Q_\theta(s',a') - Q_\theta(s,a))^2.\]
+And by computing loss gradient we arrive at update rule
+\[Q_\theta(s,a) = Q_\theta(s,a) + \alpha (r + \gamma \max_{a'}Q_\theta(s',a') - Q(s,a)),\]
+which is the backbone of the algorithm \ref*{Qlearning} bearing the same name.
+\subsection*{Instability}
+Algorithm has been rarely used in his pure form. 
+This aproach has been primarily described for tabular methods where action-value function is represented by table instead of network approximator.
+In its simplest form, the training is unstable and suffers from a number of significant shortcomings.
+Most worthy of mention is the theoretical deadly triad counter example \cite{sutton2018reinforcement} which consists of a combination of value approximation, bootstrapping, and off-policy training that can lead to instability and divergence.
+Condition of value approximation is met since we use Q-network to approximate action-value.
+Bootstrapping means that estimate is used for computation of targets, this is also true in Q-learning for the same reason.
+Lastly term off-policy stands for approach where training data are collected using different distribution than that of a target policy.
+
+
+
+
+
+\begin{algorithm}
+  \KwIn{initial action-value aproximator Q parameters $\theta$ .}
+  \Repeat{convegence}{
+    Observe state $s$ and select action $a$ according to $\epsilon$-greedy w.r.t. $Q$ e.g.
+    \[
+      a =
+      \begin{cases}
+        \text{random action},      & \text{with probability} \; \epsilon, \\
+        \underset{a}{\arg\max} Q(s,a), & \text{otherwise}.
+      \end{cases}
+    \] \\
+    Execute $a$ in the environment. \\
+    Observe next state $s'$, reward  $r$ and done signal $d$ to indicate whether $s'$ is terminal. \\
+    \If{$d$ is true}{
+      Reset environment state. \\
+    }
+    Compute targets \\
+    \[y(r,s',d) = r + \gamma(1-d) \max_{a'}Q_\theta(s',a')\]
+
+    Update Q-network taking one step of gradient decent on \[(y(r,s',d) - Q_\theta(s', a))^2\]
+  }
+  \caption{Q-learning}
+  \label{Qlearning}
+\end{algorithm}
+
+
+
+
+
+
+\subsection*{DQN}
+One of the most outstanding paper based on Q-learning was the algorithm Deep Q-learning \ref{DeepQLearning} which demonstrated super-human results on multiple Atari games \cite{Atari}.
+We give the pseudocode of the algorithm in it's original form.
+Notation might seem a bit different from ours, nevertheless it represents the same mechanisms that we expect.
+To address the problem of correlated transition sequences of data they introduce experience replay where previously sampled transitions are stored.
+During training data are sampled from this buffer thus smoothing the training distribution over different past behaviors.
+However, probably the most important idea was the usage of target Q-network, which broke value approximation condition of deadly triad, thus making the algorithm more stable.
+Target network is a copy of original Q-network that has its parameters frozen and updated only once in while based on parameters of the main network.
+It's sole purpose is to compute target estimates that are not directly dependent on Q-network function.
+
+\begin{algorithm}
+  Initialize replay memory $D$ to capacity $N$ \\
+  Initialize action-value function $Q$ with random weights $\theta$ \\
+  Initialize target action-value function $\hat{Q}$ with weights $\theta^- = \theta $\\
+  
+  \For{episode = 1,M }{
+    Initialize sequence $s_1=\{x_1\}$ and preprocessed sequence $\phi_1=\phi(s_1)$ 
+    \For{t=1, T}{
+      With probability $\epsilon$ select a random action $a_t$ \\
+      otherwise select $a_t = \underset{a}{\arg\max} Q(\phi(s_t),a; \theta)$
+
+      Execute action $a_t$ in emulator and observer reward $r_t$ and image $x_{t+1}$
+
+      Set $s_{t+1}=s_t,a_t,x_{t+1}$ and preprocess $\phi_{t+1} = \phi(s_{t+1})$
+
+      Store transition $(\phi_t,a_t, r_t, \phi_{t+1})$ in $D$
+
+      Sample random minibatch of transitions $(\phi_j,a_j,r_j,\phi_{j+1})$ from $D$
+
+      Set
+      \[
+        y_j =
+        \begin{cases}
+          r_j      & \text{if terminates at step }  j+1  \\
+          r_j + \gamma \max_{a'}\hat{Q}(\phi_{j+1}, a'; \theta^-)     & \text{otherwise} 
+        \end{cases}
+      \]
+
+      Perform a gradient descent step on $(y_j - Q(\phi_j,a_j; \theta))^2$ with respect to the network parameters $\theta$
+
+      Every $C$ steps reset $\hat{Q}=Q$
+
+    }
+  }
+  \caption{Algorithm 1: deep Q-learning with experience replay}
+  \label{DeepQLearning}
+\end{algorithm}
+
+\subsection*{Rainbow}
+Deep Q Learning was a significant contribution that led to the study of further Q Learning capabilities.
+Project Rainbow \cite{Rainbow} could be probably marked as peak of such research.
+In this paper they examine further several isolated ideas of possible improvements and try to combine them together.
+To name a few, they use Double Q-network to address the problem of maximization bias and improves sampling from experience buffer by considering priority of stored individual data samples.
+Together with all other improvements that achieved at given time state-of-the-art performance on Atari 2600 benchmark, both in terms of data efficiency and final performance.
+
+
+
+
+
+
+
+
+\section{Policy gradient algorithms}
+\subsection*{Idea and mathematical theory}
+In the previous section, we got acquainted with the first group of RL algorithms, where we derived final policy by taking action according to $argmax$ of our Q function approximator.
+Since our objective is to find optimal policy, using this approach of considering Q values may seem a bit indirect.
+There is a whole other family of algorithms out there that deal with this very issue.
+As the name suggests Policy gradient algorithms focuses on directly optimizing policy $\pi_\theta(a|s)$. 
+This is achieved by directly taking steps along gradient of the performance objective of expected return $J(\pi_\theta) = \mathop{\mathbb{E}}_{\tau \sim \pi_\theta}[R(\tau)]$.
+Optimization step then has the form of:
+\[\theta_{k+1} = \theta_k+\alpha  \nabla_\theta J(\pi_\theta)|\theta_k\] and the gradient $\nabla_\theta J(\pi_\theta)$ is called \textbf{policy gradient}.
+
+Before we can transform this into an algorithm we have to be able to compute policy gradient numerically.
+Such expression can be obtained as result of Policy Gradient Theorem (PGT).
+Policy Gradient Theorem. It holds: 
+\begin{align*}
+  \nabla_\theta J(\pi_\theta) \propto \mathop{\mathbb{E}}_{\tau \sim \pi_\theta}[\sum_{t=0}^{|\tau|}R(\tau) \nabla_\theta \log \pi_\theta(a_t|s_t)] \\
+   \propto \mathop{\mathbb{E}}_{s_t \sim \eta_{\pi_\theta}}  \mathop{\mathbb{E}}_{a_t \sim \pi_\theta}  [R(\tau) \nabla_\theta \log \pi_\theta(a_t|s_t)]
+\end{align*}
+
+
+
+
+\subsection*{TRPO}
+limiting how much can changed policy differ from previous, making save steps
+Second order method
+
+\subsection*{PPO}
+easy clipped version of TRPO
+
+
+
+
 \section{Comparison with off policy Q learning methods}
 
 \section{Idea, motivation and brief technical description of algorithm}
