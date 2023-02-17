@@ -4,49 +4,51 @@
 \contentsline {chapter}{\numberline {2}RL alrotighms}{8}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Q-Learning}{8}{section.2.1}%
 \contentsline {section}{\numberline {2.2}Policy gradient algorithms}{11}{section.2.2}%
-\contentsline {section}{\numberline {2.3}Comparison with off policy Q learning methods}{11}{section.2.3}%
-\contentsline {section}{\numberline {2.4}Idea, motivation and brief technical description of algorithm}{11}{section.2.4}%
-\contentsline {section}{\numberline {2.5}Variants of policy theorem}{11}{section.2.5}%
-\contentsline {chapter}{\numberline {3}Multi agent environments for RL ???}{12}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Definitions}{12}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Possible mention of MAPPO success}{12}{section.3.2}%
-\contentsline {section}{\numberline {3.3}Cooperation harder than competition}{12}{section.3.3}%
-\contentsline {chapter}{\numberline {4}Overcooked environment}{13}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Overcooked game}{13}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Basic layouts}{13}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Environment description}{14}{section.4.3}%
-\contentsline {subsection}{\numberline {4.3.1}Actions space, episode horizont, shaped rewards, state representation MLP vs CNN}{14}{subsection.4.3.1}%
-\contentsline {subsection}{\numberline {4.3.2}Reset state static position, index switching, Randomization function}{14}{subsection.4.3.2}%
-\contentsline {chapter}{\numberline {5}Related work}{15}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Human-ai cooperation results}{15}{section.5.1}%
-\contentsline {subsection}{\numberline {5.1.1}Human cooperation}{15}{subsection.5.1.1}%
-\contentsline {section}{\numberline {5.2}Problem of robustness}{15}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}Problem of robustness definition}{15}{subsection.5.2.1}%
-\contentsline {section}{\numberline {5.3}AI-AI coordination}{15}{section.5.3}%
-\contentsline {subsection}{\numberline {5.3.1}Aproaches}{15}{subsection.5.3.1}%
-\contentsline {subsection}{\numberline {5.3.2}Results}{15}{subsection.5.3.2}%
-\contentsline {chapter}{\numberline {6}Our work - Preparation}{16}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Utilized framework}{16}{section.6.1}%
-\contentsline {subsection}{\numberline {6.1.1}Modifications of stable baselines}{16}{subsection.6.1.1}%
-\contentsline {subsection}{\numberline {6.1.2}NN structure modification}{16}{subsection.6.1.2}%
-\contentsline {subsection}{\numberline {6.1.3}Hyperparameters random search}{16}{subsection.6.1.3}%
-\contentsline {subsection}{\numberline {6.1.4}Randomization function correction}{16}{subsection.6.1.4}%
-\contentsline {section}{\numberline {6.2}Self-play}{16}{section.6.2}%
-\contentsline {subsection}{\numberline {6.2.1}Training}{16}{subsection.6.2.1}%
-\contentsline {subsection}{\numberline {6.2.2}Results}{16}{subsection.6.2.2}%
-\contentsline {chapter}{\numberline {7}Our work - Contribution}{17}{chapter.7}%
-\contentsline {section}{\numberline {7.1}Our definition(s?) of robustness}{17}{section.7.1}%
-\contentsline {section}{\numberline {7.2}Population construction}{17}{section.7.2}%
-\contentsline {subsection}{\numberline {7.2.1}SP agents initialization}{17}{subsection.7.2.1}%
-\contentsline {subsection}{\numberline {7.2.2}population partner sampling during training}{17}{subsection.7.2.2}%
-\contentsline {subsection}{\numberline {7.2.3}Final agent training}{17}{subsection.7.2.3}%
-\contentsline {section}{\numberline {7.3}Diverzification}{17}{section.7.3}%
-\contentsline {subsection}{\numberline {7.3.1}Population policies difference rewards augmentation}{17}{subsection.7.3.1}%
-\contentsline {subsection}{\numberline {7.3.2}Population policies difference loss}{17}{subsection.7.3.2}%
-\contentsline {chapter}{Conclusion}{18}{chapter*.23}%
-\contentsline {chapter}{Bibliography}{19}{chapter*.24}%
-\contentsline {chapter}{List of Figures}{20}{chapter*.25}%
-\contentsline {chapter}{List of Tables}{21}{chapter*.26}%
-\contentsline {chapter}{List of Abbreviations}{22}{chapter*.27}%
-\contentsline {chapter}{\numberline {A}Attachments}{23}{appendix.A}%
-\contentsline {section}{\numberline {A.1}First Attachment}{23}{section.A.1}%
+\contentsline {subsection}{\numberline {2.2.1}Idea}{11}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Policy Gradient Theorem}{11}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Vanilla Policy Gradient}{12}{subsection.2.2.3}%
+\contentsline {subsection}{\numberline {2.2.4}Trust Region Policy Optimization}{13}{subsection.2.2.4}%
+\contentsline {subsection}{\numberline {2.2.5}Proximal Policy Optimization}{14}{subsection.2.2.5}%
+\contentsline {chapter}{\numberline {3}Multi agent environments for RL ???}{15}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Definitions}{15}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Possible mention of MAPPO success}{15}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Cooperation harder than competition}{15}{section.3.3}%
+\contentsline {chapter}{\numberline {4}Overcooked environment}{16}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Overcooked game}{16}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Basic layouts}{16}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Environment description}{17}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Actions space, episode horizont, shaped rewards, state representation MLP vs CNN}{17}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Reset state static position, index switching, Randomization function}{17}{subsection.4.3.2}%
+\contentsline {chapter}{\numberline {5}Related work}{18}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Human-ai cooperation results}{18}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Human cooperation}{18}{subsection.5.1.1}%
+\contentsline {section}{\numberline {5.2}Problem of robustness}{18}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Problem of robustness definition}{18}{subsection.5.2.1}%
+\contentsline {section}{\numberline {5.3}AI-AI coordination}{18}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Aproaches}{18}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Results}{18}{subsection.5.3.2}%
+\contentsline {chapter}{\numberline {6}Our work - Preparation}{19}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Utilized framework}{19}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}Modifications of stable baselines}{19}{subsection.6.1.1}%
+\contentsline {subsection}{\numberline {6.1.2}NN structure modification}{19}{subsection.6.1.2}%
+\contentsline {subsection}{\numberline {6.1.3}Hyperparameters random search}{19}{subsection.6.1.3}%
+\contentsline {subsection}{\numberline {6.1.4}Randomization function correction}{19}{subsection.6.1.4}%
+\contentsline {section}{\numberline {6.2}Self-play}{19}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}Training}{19}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}Results}{19}{subsection.6.2.2}%
+\contentsline {chapter}{\numberline {7}Our work - Contribution}{20}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Our definition(s?) of robustness}{20}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Population construction}{20}{section.7.2}%
+\contentsline {subsection}{\numberline {7.2.1}SP agents initialization}{20}{subsection.7.2.1}%
+\contentsline {subsection}{\numberline {7.2.2}population partner sampling during training}{20}{subsection.7.2.2}%
+\contentsline {subsection}{\numberline {7.2.3}Final agent training}{20}{subsection.7.2.3}%
+\contentsline {section}{\numberline {7.3}Diverzification}{20}{section.7.3}%
+\contentsline {subsection}{\numberline {7.3.1}Population policies difference rewards augmentation}{20}{subsection.7.3.1}%
+\contentsline {subsection}{\numberline {7.3.2}Population policies difference loss}{20}{subsection.7.3.2}%
+\contentsline {chapter}{Conclusion}{21}{chapter*.18}%
+\contentsline {chapter}{Bibliography}{22}{chapter*.19}%
+\contentsline {chapter}{List of Figures}{23}{chapter*.20}%
+\contentsline {chapter}{List of Tables}{24}{chapter*.21}%
+\contentsline {chapter}{List of Abbreviations}{25}{chapter*.22}%
+\contentsline {chapter}{\numberline {A}Attachments}{26}{appendix.A}%
+\contentsline {section}{\numberline {A.1}First Attachment}{26}{section.A.1}%

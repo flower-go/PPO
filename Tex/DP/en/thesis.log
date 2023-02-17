@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.23)  15 FEB 2023 18:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.23)  17 FEB 2023 18:57
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -545,7 +545,7 @@ LaTeX Info: Redefining \nameref on input line 112.
 
  (./title.tex
 Package hyperref Info: Option `pageanchor' set `false' on input line 6.
-<../img/logo-en.pdf, id=216, 506.4591pt x 156.49065pt>
+<../img/logo-en.pdf, id=224, 506.4591pt x 156.49065pt>
 File: ../img/logo-en.pdf Graphic file (type pdf)
 <use ../img/logo-en.pdf>
 Package pdftex.def Info: ../img/logo-en.pdf  used on input line 9.
@@ -620,7 +620,7 @@ Overfull \hbox (7.93741pt too wide) in paragraph at lines 7--9
 \OT1/lmtt/m/n/12 openai . com / en / latest / spinningup / rl _ intro . html$[] \OT1/lmr/m/n/12 Whole prob-lem of re-in-force-|
  []
 
-<rl_diagram_transparent_bg.png, id=321, 429.10312pt x 150.5625pt>
+<rl_diagram_transparent_bg.png, id=331, 429.10312pt x 150.5625pt>
 File: rl_diagram_transparent_bg.png Graphic file (type png)
 <use rl_diagram_transparent_bg.png>
 Package pdftex.def Info: rl_diagram_transparent_bg.png  used on input line 10.
@@ -644,16 +644,16 @@ Chapter 2.
 
 
 ] [9] [10]
-Overfull \hbox (1.88188pt too wide) in paragraph at lines 151--151
-[]\OT1/lmr/bx/n/17.28 Comparison with off pol-icy Q learn-ing meth-|
+Overfull \hbox (4.39015pt too wide) in paragraph at lines 134--136
+\OT1/lmtt/m/n/12 openai . com / en / latest / spinningup / rl _ intro3 . html$[] \OT1/lmr/m/n/12 and ref-er-ences orig-i-nal lit-|
  []
 
-) [11]
+[11] [12] [13]) [14]
 \openout2 = `chap03.aux'.
 
  (./chap03.tex
 Chapter 3.
-) [12
+) [15
 
 
 
@@ -663,7 +663,7 @@ Chapter 3.
 
  (./chap04.tex
 Chapter 4.
-<layouts.png, id=440, 803.0pt x 138.5175pt>
+<layouts.png, id=478, 803.0pt x 138.5175pt>
 File: layouts.png Graphic file (type png)
 <use layouts.png>
 Package pdftex.def Info: layouts.png  used on input line 22.
@@ -673,17 +673,17 @@ Underfull \hbox (badness 10000) in paragraph at lines 22--25
 [][] 
  []
 
-[13
+[16
 
 
 
 
- <./layouts.png>]) [14]
+ <./layouts.png>]) [17]
 \openout2 = `chap05.aux'.
 
  (./chap05.tex
 Chapter 5.
-) [15
+) [18
 
 
 
@@ -693,7 +693,7 @@ Chapter 5.
 
  (./chap06.tex
 Chapter 6.
-) [16
+) [19
 
 
 
@@ -703,7 +703,7 @@ Chapter 6.
 
  (./chap07.tex
 Chapter 7.
-) [17
+) [20
 
 
 
@@ -711,7 +711,7 @@ Chapter 7.
 ]
 \openout2 = `epilog.aux'.
 
- (./epilog.tex) [18
+ (./epilog.tex) [21
 
 
 
@@ -719,7 +719,7 @@ Chapter 7.
 ]
 \openout2 = `bibliography.aux'.
 
- (./bibliography.tex (./thesis.bbl)) [19
+ (./bibliography.tex (./thesis.bbl)) [22
 
 
 
@@ -728,7 +728,7 @@ Chapter 7.
 \tf@lof=\write7
 \openout7 = `thesis.lof'.
 
- [20
+ [23
 
 
 
@@ -736,31 +736,31 @@ Chapter 7.
 \tf@lot=\write8
 \openout8 = `thesis.lot'.
 
- [21
+ [24
 
-] [22
+] [25
 
 ]
 Appendix A.
-[23
+[26
 
 ] (./thesis.aux (./title.aux) (./preface.aux) (./chap01.aux) (./chap02.aux) (./chap03.aux) (./chap04.aux) (./chap05.aux) (./chap06.aux) (./chap07.aux) (./epilog.aux) (./bibliography.aux))
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 19FF3DF95E22CB03207F684E782D7E9C;9572.
+(rerunfilecheck)             Checksum: 13BDCB958018ED94DBCC10BD6340F0B5;9586.
  ) 
 Here is how much of TeX's memory you used:
- 16787 strings out of 479342
- 260781 string characters out of 5869178
- 543053 words of memory out of 5000000
- 34297 multiletter control sequences out of 15000+600000
+ 16806 strings out of 479342
+ 261034 string characters out of 5869178
+ 543261 words of memory out of 5000000
+ 34306 multiletter control sequences out of 15000+600000
  521143 words of font info for 65 fonts, out of 8000000 for 9000
  473 hyphenation exceptions out of 8191
  77i,24n,79p,570b,2377s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rmtt.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx8.pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi6.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi8.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy6.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on thesis.pdf (27 pages, 617018 bytes).
+Output written on thesis.pdf (30 pages, 627967 bytes).
 PDF statistics:
- 598 PDF objects out of 1000 (max. 8388607)
- 518 compressed objects within 6 object streams
- 135 named destinations out of 1000 (max. 500000)
- 456 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 640 PDF objects out of 1000 (max. 8388607)
+ 557 compressed objects within 6 object streams
+ 145 named destinations out of 1000 (max. 500000)
+ 472 words of extra memory for PDF output out of 10000 (max. 10000000)
 
