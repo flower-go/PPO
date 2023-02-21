@@ -16,45 +16,45 @@ The style file: plainnat.bst
 Database file #1: bibliography.bib
 Warning--entry type for "DotaOpenFive" isn't style-file defined
 --line 96 of file bibliography.bib
-You've used 6 entries,
+You've used 15 entries,
             2773 wiz_defined-function locations,
-            644 strings with 6374 characters,
-and the built_in function-call counts, 3763 in all, are:
-= -- 279
-> -- 394
-< -- 2
-+ -- 133
-- -- 126
-* -- 355
-:= -- 619
-add.period$ -- 18
-call.type$ -- 6
-change.case$ -- 58
-chr.to.int$ -- 5
-cite$ -- 12
-duplicate$ -- 104
-empty$ -- 203
-format.name$ -- 134
-if$ -- 742
+            714 strings with 8215 characters,
+and the built_in function-call counts, 7998 in all, are:
+= -- 629
+> -- 710
+< -- 7
++ -- 241
+- -- 225
+* -- 706
+:= -- 1297
+add.period$ -- 51
+call.type$ -- 15
+change.case$ -- 116
+chr.to.int$ -- 14
+cite$ -- 30
+duplicate$ -- 271
+empty$ -- 519
+format.name$ -- 244
+if$ -- 1612
 int.to.chr$ -- 2
 int.to.str$ -- 1
-missing$ -- 3
-newline$ -- 38
-num.names$ -- 24
-pop$ -- 133
+missing$ -- 10
+newline$ -- 88
+num.names$ -- 60
+pop$ -- 266
 preamble$ -- 1
-purify$ -- 54
+purify$ -- 105
 quote$ -- 0
-skip$ -- 118
+skip$ -- 262
 stack$ -- 0
-substring$ -- 30
-swap$ -- 9
+substring$ -- 94
+swap$ -- 20
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 61
+type$ -- 150
 warning$ -- 0
-while$ -- 19
+while$ -- 49
 width$ -- 0
-write$ -- 80
+write$ -- 203
 (There was 1 warning)

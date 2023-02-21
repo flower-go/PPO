@@ -1,9 +1,32 @@
-\begin{thebibliography}{6}
+\begin{thebibliography}{15}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Armijo(1966)]{BacktrackingLineSearch}
+Larry Armijo.
+\newblock {Minimization of functions having Lipschitz continuous first partial
+  derivatives.}
+\newblock \emph{Pacific Journal of Mathematics}, 16\penalty0 (1):\penalty0 1 --
+  3, 1966.
+\newblock \doi{pjm/1102995080}.
+\newblock URL \url{https://doi.org/}.
+
+\bibitem[Fujimoto et~al.(2018)Fujimoto, van Hoof, and Meger]{TD3}
+Scott Fujimoto, Herke van Hoof, and David Meger.
+\newblock Addressing function approximation error in actor-critic methods,
+  2018.
+\newblock URL \url{https://arxiv.org/abs/1802.09477}.
+
+\bibitem[Haarnoja et~al.(2018)Haarnoja, Zhou, Hartikainen, Tucker, Ha, Tan,
+  Kumar, Zhu, Gupta, Abbeel, and Levine]{SAC}
+Tuomas Haarnoja, Aurick Zhou, Kristian Hartikainen, George Tucker, Sehoon Ha,
+  Jie Tan, Vikash Kumar, Henry Zhu, Abhishek Gupta, Pieter Abbeel, and Sergey
+  Levine.
+\newblock Soft actor-critic algorithms and applications, 2018.
+\newblock URL \url{https://arxiv.org/abs/1812.05905}.
 
 \bibitem[Hessel et~al.(2017)Hessel, Modayil, van Hasselt, Schaul, Ostrovski,
   Dabney, Horgan, Piot, Azar, and Silver]{Rainbow}
@@ -11,6 +34,23 @@ Matteo Hessel, Joseph Modayil, Hado van Hasselt, Tom Schaul, Georg Ostrovski,
   Will Dabney, Dan Horgan, Bilal Piot, Mohammad Azar, and David Silver.
 \newblock Rainbow: Combining improvements in deep reinforcement learning, 2017.
 \newblock URL \url{https://arxiv.org/abs/1710.02298}.
+
+\bibitem[Kakade and Langford(2002)]{CPI}
+Sham~M. Kakade and John Langford.
+\newblock Approximately optimal approximate reinforcement learning.
+\newblock In \emph{International Conference on Machine Learning}, 2002.
+
+\bibitem[Kullback(1959)]{KLDIV}
+Solomon Kullback.
+\newblock \emph{Information Theory and Statistics}.
+\newblock Wiley, New York, 1959.
+
+\bibitem[Lillicrap et~al.(2015)Lillicrap, Hunt, Pritzel, Heess, Erez, Tassa,
+  Silver, and Wierstra]{DDPG}
+Timothy~P. Lillicrap, Jonathan~J. Hunt, Alexander Pritzel, Nicolas Heess, Tom
+  Erez, Yuval Tassa, David Silver, and Daan Wierstra.
+\newblock Continuous control with deep reinforcement learning, 2015.
+\newblock URL \url{https://arxiv.org/abs/1509.02971}.
 
 \bibitem[Mnih et~al.(2015)Mnih, Kavukcuoglu, Silver, Rusu, Veness, Bellemare,
   Graves, Riedmiller, Fidjeland, Ostrovski, Petersen, Beattie, Sadik,
@@ -27,6 +67,12 @@ Volodymyr Mnih, Koray Kavukcuoglu, David Silver, Andrei Rusu, Joel Veness, Marc
 OpenAI, 2019.
 \newblock URL \url{https://openai.com/blog/openai-five-finals/}.
 
+\bibitem[Rockafellar(1970)]{LagrangDuality}
+R.~Tyrrell Rockafellar.
+\newblock \emph{Convex analysis}.
+\newblock Princeton Mathematical Series. Princeton University Press, Princeton,
+  N. J., 1970.
+
 \bibitem[Schulman et~al.(2015{\natexlab{a}})Schulman, Levine, Moritz, Jordan,
   and Abbeel]{TRPO}
 John Schulman, Sergey Levine, Philipp Moritz, Michael~I. Jordan, and Pieter
@@ -42,9 +88,25 @@ John Schulman, Philipp Moritz, Sergey Levine, Michael Jordan, and Pieter
   estimation, 2015{\natexlab{b}}.
 \newblock URL \url{https://arxiv.org/abs/1506.02438}.
 
+\bibitem[Schulman et~al.(2017)Schulman, Wolski, Dhariwal, Radford, and
+  Klimov]{PPO}
+John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov.
+\newblock Proximal policy optimization algorithms, 2017.
+\newblock URL \url{https://arxiv.org/abs/1707.06347}.
+
 \bibitem[Sutton and Barto(2018)]{sutton2018reinforcement}
 Richard~S Sutton and Andrew~G Barto.
 \newblock \emph{Reinforcement learning: An introduction}.
 \newblock MIT press, 2018.
+
+\bibitem[Williams(1992)]{EntropyRegularization}
+Ronald~J. Williams.
+\newblock Simple statistical gradient-following algorithms for connectionist
+  reinforcement learning.
+\newblock \emph{Mach. Learn.}, 8\penalty0 (3–4):\penalty0 229–256, may
+  1992.
+\newblock ISSN 0885-6125.
+\newblock \doi{10.1007/BF00992696}.
+\newblock URL \url{https://doi.org/10.1007/BF00992696}.
 
 \end{thebibliography}

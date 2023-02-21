@@ -1175,14 +1175,6 @@ INPUT ./thesis.bbl
 INPUT thesis.bbl
 INPUT ./thesis.bbl
 INPUT thesis.bbl
-INPUT ./thesis.lof
-INPUT thesis.lof
-INPUT thesis.lof
-OUTPUT thesis.lof
-INPUT ./thesis.lot
-INPUT thesis.lot
-INPUT thesis.lot
-OUTPUT thesis.lot
 INPUT thesis.aux
 INPUT ./title.aux
 INPUT title.aux
