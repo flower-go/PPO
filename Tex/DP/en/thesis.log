@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.23)  21 FEB 2023 18:19
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.23)  24 FEB 2023 19:11
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -484,7 +484,11 @@ File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 File: l3backend-pdftex.def 2022-01-12 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count305
 \l__pdf_internal_box=\box63
-) (./thesis.aux (./title.aux) (./preface.aux) (./chap01.aux) (./chap02.aux) (./chap03.aux) (./chap04.aux) (./chap05.aux) (./chap06.aux) (./chap07.aux) (./epilog.aux) (./bibliography.aux))
+) (./thesis.aux (./title.aux) (./preface.aux) (./chap01.aux) (./chap02.aux
+
+LaTeX Warning: Label `PPO' multiply defined.
+
+) (./chap03.aux) (./chap04.aux) (./chap05.aux) (./chap06.aux) (./chap07.aux) (./epilog.aux) (./bibliography.aux))
 \openout1 = `thesis.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 112.
@@ -545,7 +549,7 @@ LaTeX Info: Redefining \nameref on input line 112.
 
  (./title.tex
 Package hyperref Info: Option `pageanchor' set `false' on input line 6.
-<../img/logo-en.pdf, id=203, 506.4591pt x 156.49065pt>
+<../img/logo-en.pdf, id=216, 506.4591pt x 156.49065pt>
 File: ../img/logo-en.pdf Graphic file (type pdf)
 <use ../img/logo-en.pdf>
 Package pdftex.def Info: ../img/logo-en.pdf  used on input line 9.
@@ -620,7 +624,7 @@ Overfull \hbox (7.93741pt too wide) in paragraph at lines 7--9
 \OT1/lmtt/m/n/12 openai . com / en / latest / spinningup / rl _ intro . html$[] \OT1/lmr/m/n/12 Whole prob-lem of re-in-force-|
  []
 
-<rl_diagram_transparent_bg.png, id=306, 429.10312pt x 150.5625pt>
+<rl_diagram_transparent_bg.png, id=321, 429.10312pt x 150.5625pt>
 File: rl_diagram_transparent_bg.png Graphic file (type png)
 <use rl_diagram_transparent_bg.png>
 Package pdftex.def Info: rl_diagram_transparent_bg.png  used on input line 10.
@@ -649,21 +653,21 @@ Overfull \hbox (4.39015pt too wide) in paragraph at lines 134--136
  []
 
 [11] [12] [13] [14] [15]
-Overfull \hbox (1.0197pt too wide) in paragraph at lines 332--335
+Overfull \hbox (1.0197pt too wide) in paragraph at lines 335--338
 []\OT1/lmr/m/n/12 CPI refers to con-ser-va-tive pol-icy it-er-a-tion([]Kakade and Lang-ford[] [[]2002[]]), where|
  []
 
 
-Overfull \hbox (2.02945pt too wide) in paragraph at lines 348--350
+Overfull \hbox (2.02945pt too wide) in paragraph at lines 351--353
 []\OT1/lmr/m/n/12 Alternatively au-thors pro-pose sec-ond ver-sion of PPO in-cor-po-rat-ing KL penalty|
  []
 
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `htbp') on input line 357.
+               Default added (so using `htbp') on input line 360.
 
 
-Overfull \hbox (35.13916pt too wide) detected at line 381
+Overfull \hbox (35.13916pt too wide) detected at line 384
 \OML/lmm/m/it/12 ^^R[] \OT1/lmr/m/n/12 = [] [] [] [] [] [] [] \OML/lmm/m/it/12 ;|
  []
 
@@ -672,17 +676,27 @@ Overfull \hbox (35.13916pt too wide) detected at line 381
 
  (./chap03.tex
 Chapter 3.
-) [19
+
+Overfull \hbox (6.26076pt too wide) in paragraph at lines 14--19
+\OT1/lmr/bx/n/12 Mul-ti-a-gent Markov De-ci-sion Pro-cess\OT1/lmr/m/n/12 ([]Boutilier[] [[]1996[]])is a tu-ple $\OMS/lmsy/m/n/12 h\OML/lmm/m/it/12 n; S; \OMS/lmsy/m/n/12 A\OML/lmm/m/it/12 ; T; R\OMS/lmsy/m/n/12 i$ |
+ []
+
+[19
 
 
 
 
-]
+] [20]
+Underfull \hbox (badness 10000) in paragraph at lines 81--85
+\OT1/lmr/m/n/12 de-fined as:
+ []
+
+[21] [22]) [23]
 \openout2 = `chap04.aux'.
 
  (./chap04.tex
 Chapter 4.
-<layouts.png, id=523, 803.0pt x 138.5175pt>
+<layouts.png, id=583, 803.0pt x 138.5175pt>
 File: layouts.png Graphic file (type png)
 <use layouts.png>
 Package pdftex.def Info: layouts.png  used on input line 22.
@@ -692,17 +706,17 @@ Underfull \hbox (badness 10000) in paragraph at lines 22--25
 [][] 
  []
 
-[20
+[24
 
 
 
 
- <./layouts.png>]) [21]
+ <./layouts.png>]) [25]
 \openout2 = `chap05.aux'.
 
  (./chap05.tex
 Chapter 5.
-) [22
+) [26
 
 
 
@@ -712,7 +726,7 @@ Chapter 5.
 
  (./chap06.tex
 Chapter 6.
-) [23
+) [27
 
 
 
@@ -722,7 +736,7 @@ Chapter 6.
 
  (./chap07.tex
 Chapter 7.
-) [24
+) [28
 
 
 
@@ -730,7 +744,7 @@ Chapter 7.
 ]
 \openout2 = `epilog.aux'.
 
- (./epilog.tex) [25
+ (./epilog.tex) [29
 
 
 
@@ -738,28 +752,31 @@ Chapter 7.
 ]
 \openout2 = `bibliography.aux'.
 
- (./bibliography.tex (./thesis.bbl [26
+ (./bibliography.tex (./thesis.bbl [30
 
 
 
 
-])) [27] (./thesis.aux (./title.aux) (./preface.aux) (./chap01.aux) (./chap02.aux) (./chap03.aux) (./chap04.aux) (./chap05.aux) (./chap06.aux) (./chap07.aux) (./epilog.aux) (./bibliography.aux))
+])) [31] (./thesis.aux (./title.aux) (./preface.aux) (./chap01.aux) (./chap02.aux) (./chap03.aux) (./chap04.aux) (./chap05.aux) (./chap06.aux) (./chap07.aux) (./epilog.aux) (./bibliography.aux))
+
+LaTeX Warning: There were multiply-defined labels.
+
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 50DE8B3EFEEBFC8EDDED4F9B130BE516;8926.
+(rerunfilecheck)             Checksum: 8AD378EA010FD9334C48FA9A71CB9DD7;9374.
  ) 
 Here is how much of TeX's memory you used:
- 16850 strings out of 479342
- 261700 string characters out of 5869178
- 543888 words of memory out of 5000000
- 34324 multiletter control sequences out of 15000+600000
+ 16889 strings out of 479342
+ 262162 string characters out of 5869178
+ 544335 words of memory out of 5000000
+ 34345 multiletter control sequences out of 15000+600000
  521143 words of font info for 65 fonts, out of 8000000 for 9000
  473 hyphenation exceptions out of 8191
  77i,24n,79p,570b,2377s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rmtt.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx8.pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi6.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi8.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy6.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on thesis.pdf (31 pages, 652742 bytes).
+{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rmtt.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx8.pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi6.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi8.pfb></usr/share/texmf/fonts/type1/public/lm/lmmib10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy6.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on thesis.pdf (35 pages, 677086 bytes).
 PDF statistics:
- 691 PDF objects out of 1000 (max. 8388607)
- 606 compressed objects within 7 object streams
- 177 named destinations out of 1000 (max. 500000)
- 432 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 762 PDF objects out of 1000 (max. 8388607)
+ 671 compressed objects within 7 object streams
+ 195 named destinations out of 1000 (max. 500000)
+ 456 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -1223,6 +1223,7 @@ INPUT /usr/share/texmf/fonts/type1/public/lm/lmex10.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmmi12.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmmi6.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmmi8.pfb
+INPUT /usr/share/texmf/fonts/type1/public/lm/lmmib10.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmr12.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmr17.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmr8.pfb

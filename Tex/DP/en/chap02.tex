@@ -173,7 +173,10 @@ where $\Psi_t$, can be one of the following:
 
 \subsection{Vanilla Policy Gradient}
 Common practise for policy gradient algorithms is utilize some form of advantage function where baseline function is using value aproximator $b(s_t) = V^\pi(s_t)$.
-Value approximator is usually represented by another neural network is being learned concurrently with the policy.
+Value approximator is usually represented by another neural network and is being learned concurrently with the policy.
+There exists a naming convenction for the two types of network.
+The policy network is usually called an actor because it's job is to provide a policy that the agents act upon.
+The value network, on the other hand, is often recalled as a critic, since it in a sense produces a critique of the value of the state.
 Incorporating value approximator and idea of advantage function reduces variance in sample estimation and results in more stable and faster learning.
 
 With all of this being said we present first algorithm from this class.
@@ -303,7 +306,7 @@ where $\alpha \in (0,1)$ is the backtracking coefficient and $j$ is smallest non
 \end{algorithm}
 
 
-\subsection{Proximal Policy Optimization}
+\subsection{Proximal Policy Optimization}\label{PPO}
 Finally we will conclude this chapter with last algorithm from family of policy gradient algorithms that is considered in many aspects to be the state of art algorithm.
 As the authors of this next algorithm state. (TODO: should I emphasize more quoting the original text?)
 With the leading contenders Q-learning, "vanilla" policy gradient methods and trust region policy gradient methods there is still room for developing a method that is 
@@ -403,7 +406,7 @@ Hence final PPO objective may have a following form:
 where $c_2$ is another coefficient and $S$ denotes an entropy bonus.
 
 
-\section*{Q-Learning and Policy optimization}
+\section*{Q-Learning and Policy optimization}\label{QPlusPolicy}
 So far we have covered possible the simplest division rule among types of reinforcement learning algorithms.
 However, there are actually several algorithms that combine both the Q-learning and Policy optimization.
 In these algorithms both $Q$ approximator and policy approximator are being learned concurrently.
