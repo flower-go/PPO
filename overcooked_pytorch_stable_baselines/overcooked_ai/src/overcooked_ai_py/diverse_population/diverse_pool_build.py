@@ -1,4 +1,5 @@
 import copy
+import random
 import sys
 import os
 
@@ -69,13 +70,19 @@ parser.add_argument("--pop_bonus_ts", default=1e5, type=int, help="Number of bon
 parser.add_argument("--training_percent_start_eval", default=0.5, type=float, help="Coeficient for cross-entropy loss of population policies.")
 parser.add_argument("--tensorboard_log", default=False, action="store_true", help="") #TODO: Set default False
 
+parser.add_argument("--seed", default=42, type=int, help="Random seed.")
+
+
 
 args = parser.parse_args([] if "__file__" not in globals() else None)
 
-# TODO: should i study effect of annealing of entropy_coef, sparse_r_coef, learning_rate???, ... values found such that works for all maps
+random.seed(args.seed)
+import numpy as np
+np.random.seed(args.seed)
+
 
 def load_or_train_models(args, env):
-    directory = projdir + "/diverse_population/models/" + args.layout_name + "/" + args.exp + "/"
+    directory = projdir + "/diverse_population/models/" + args.layout_name + "/"
     models = []
     env.population_mode = False
     for n in range(args.trained_models):
@@ -91,12 +98,20 @@ def load_or_train_models(args, env):
     if args.mode == "POP":
         final_model = train_final_model(directory, n+1, env, args)
         models.append(final_model)
+
+        env.population = models[args.init_SP_agents:-1]
+        final_model = train_final_model(directory, n+2, env, args)
+        models.append(final_model)
     return models
 
 
 def load_or_train_model(directory, n, env, args):
     model = None
-    model_name = directory + str(n).zfill(2)
+    if args.mode == "SP" or n < args.init_SP_agents:
+        exp_part = args.exp
+    else:
+        exp_part = args.full_exp_name
+    model_name = directory + exp_part + "/" + str(n).zfill(2)
     try:
         print(f"Looking for file {model_name}")
         model = PPO.load(model_name, env=env, device="cuda")
@@ -112,7 +127,6 @@ def load_or_train_model(directory, n, env, args):
 
 
 def train_model(n, env, args):
-    now = datetime.now()
     found = False
     while not found:
         try:
@@ -121,7 +135,7 @@ def train_model(n, env, args):
 
                         tensorboard_log=f"./diverse_population/logs/{args.layout_name}/{args.exp}/{str(n).zfill(2)}" if args.tensorboard_log else None,
                         n_steps=args.n_steps,
-                        seed=now.microsecond + now.hour,
+                        seed=args.seed,
                         batch_size=args.batch_size,
                         n_epochs=args.n_epochs,
                         learning_rate=args.learning_rate,
@@ -221,7 +235,7 @@ if __name__ == "__main__":
     evaluator = Evaluator(gym_env, args, deterministic=True, device="cpu")
 
     set_layout_params(args)
-    args.exp = get_name(args.exp)
+    args.full_exp_name = get_name(args.exp)
 
 
     models = load_or_train_models(args, gym_env)
@@ -234,5 +248,5 @@ if __name__ == "__main__":
             eval_table = evaluator.evaluate(models, eval_models, args.final_eval_games_per_worker, args.layout_name, population_name, eval_env = eval_env)
             heat_map(eval_table, population_name, population_name, args.layout_name, eval_env = eval_env)
         else:
-            eval_table = evaluator.evaluate(models, models, args.final_eval_games_per_worker, args.layout_name, args.exp, eval_env = eval_env)
-            heat_map(eval_table, args.exp, args.exp, args.layout_name, eval_env = eval_env)
+            eval_table = evaluator.evaluate(models, models, args.final_eval_games_per_worker, args.layout_name, args.full_exp_name, eval_env = eval_env)
+            heat_map(eval_table, args.full_exp_name, args.full_exp_name, args.layout_name, eval_env = eval_env)
