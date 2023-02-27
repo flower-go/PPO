@@ -41,6 +41,8 @@ parser.add_argument("--exp", default="POP_SP_INIT", type=str, help="Experiment n
 parser.add_argument("--eval_set_name", default="SP_EVAL_ROP0.0", type=str, help="Name of evaluation set.")
 parser.add_argument("--execute_final_eval", default=False, action="store_true", help="Whether to do final population evaluation.")
 parser.add_argument("--final_eval_games_per_worker", default=5, type=int, help="Number of games per worker for pair in final evaluation.")
+parser.add_argument("--n_sample_partners", default=-1, type=int, help="Number of sampled partners for data collection.")
+
 
 parser.add_argument("--partner_action_deterministic", default=False, action="store_true", help="Whether trained partners from population play argmax for episodes sampling")
 parser.add_argument("--random_switch_start_pos", default=False, action="store_true", help="") #TODO: Set default False

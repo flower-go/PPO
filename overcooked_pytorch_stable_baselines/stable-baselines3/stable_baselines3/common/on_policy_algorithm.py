@@ -184,7 +184,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                     other_agent_actions = []
 
                     ind_start = 0
-                    for (pop_chunk, other_agent_model) in self.split_pop_indices():
+                    for (pop_chunk, other_agent_model) in self.split_pop_indices(train=True):
                         other_obs = other_agent_obs[ind_start:ind_start+pop_chunk]
                         ind_start+=pop_chunk
                         other_agent_a, _ = other_agent_model.policy.predict(other_obs, deterministic=self.args.partner_action_deterministic) # TODO: should population agents play argmax during training?
@@ -465,14 +465,19 @@ class OnPolicyAlgorithm(BaseAlgorithm):
         return evaluation_avg_rewards_per_episode
 
 
-    def split_pop_indices(self):
+    def split_pop_indices(self, train=False):
         """
         Current population will be evenly distributed into available parallel environments
         This methods returns how many environments correspond to given individual from population
         """
 
+        sample_population = self.env.population
+
+        if train and self.args.n_sample_partners > 0:
+            sample_population = np.random.choice(self.env.population, size=self.args.n_sample_partners)
+
         indices = []
-        remaining_pop_size = len(self.env.population)
+        remaining_pop_size = len(sample_population)
         remaining_pop_size = max(remaining_pop_size, 1)
         total = self.env.num_envs
         remaining = total
@@ -482,6 +487,6 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             remaining-=chunk
             indices.append(chunk)
 
-        return zip(indices, self.env.population)
+        return zip(indices, sample_population)
 
 
