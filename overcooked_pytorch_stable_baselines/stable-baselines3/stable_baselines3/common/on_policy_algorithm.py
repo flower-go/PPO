@@ -180,7 +180,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 # summary(self.policy, obs_tensor, print_summary=True, show_hierarchical=True, max_depth=10, )
 
                 other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self._last_obs])
-                if self.env.venv.population_mode:
+                if self.env.population_mode:
                     other_agent_actions = []
 
                     ind_start = 0
@@ -422,7 +422,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
 
                 other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self._last_obs])
-                if self.env.venv.population_mode:
+                if self.env.population_mode:
                     other_agent_actions = []
                     ind_start = 0
                     for (pop_chunk, other_agent_model) in self.split_pop_indices():
@@ -445,7 +445,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
         evaluation_rewards = np.array(evaluation_rewards)
 
-        if self.env.venv.population_mode:
+        if self.env.population_mode:
             ind_start = 0
             ind_sum_rewards = []
 

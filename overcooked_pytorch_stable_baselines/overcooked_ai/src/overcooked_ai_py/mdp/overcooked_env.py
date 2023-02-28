@@ -711,7 +711,8 @@ class Overcooked(gym.Env):
             # runs with the same seed.
             # The effect of this should be negligible, as all other randomness is
             # controlled by the actual run seeds
-            np.random.seed(0)
+            # np.random.seed(0)
+            pass
 
 
         self.base_env = base_env

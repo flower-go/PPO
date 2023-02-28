@@ -1,9 +1,13 @@
-\begin{thebibliography}{20}
+\begin{thebibliography}{22}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Achiam(2018)]{SpinningUpIntro}
+Josh Achiam, 2018.
+\newblock URL \url{https://spinningup.openai.com/en/latest/}.
 
 \bibitem[Armijo(1966)]{BacktrackingLineSearch}
 Larry Armijo.
@@ -123,6 +127,14 @@ John Schulman, Philipp Moritz, Sergey Levine, Michael Jordan, and Pieter
 John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov.
 \newblock Proximal policy optimization algorithms, 2017.
 \newblock URL \url{https://arxiv.org/abs/1707.06347}.
+
+\bibitem[Shapley(1953)]{StochasticGame}
+L.~S. Shapley.
+\newblock Stochastic games*.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 39\penalty0
+  (10):\penalty0 1095--1100, 1953.
+\newblock \doi{10.1073/pnas.39.10.1095}.
+\newblock URL \url{https://www.pnas.org/doi/abs/10.1073/pnas.39.10.1095}.
 
 \bibitem[Sutton and Barto(2018)]{sutton2018reinforcement}
 Richard~S Sutton and Andrew~G Barto.

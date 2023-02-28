@@ -1,28 +1,37 @@
 \chapter*{Introduction}
 \addcontentsline{toc}{chapter}{Introduction}
 
-In recent years people are witnessing fast progress in artificial inteligence(AI) in all sort of domains. 
-Beating world champions in chess or Go is no longer any issue for AI models. 
-Same pattern is showing in more recent popular games such as Dota (\cite{DotaOpenFive}) or Starcraft, where even great Human-AI team cooperation behavior has been achieved.
-However, all of these examples share common property of being competetive.
-Ultimate goal of our society is to create AI that will be cooperating with humans, not competing.
+In recent years, people have witnessed rapid progress in artificial intelligence (AI) in all kinds of fields. 
+Beating world champions at chess or Go is no longer a problem for AI models. 
+The same pattern can be seen in more recent popular games such as Dota (\cite{DotaOpenFive}) or Starcraft, where even great human-AI team cooperation behavior has been achieved.
+However, all of these examples share the common trait of being competitive.
+The ultimate goal of our society is to create AI that cooperates with humans, not competes with them.
 
-Recent work has shown us that AI cooperative models trained together for purely cooperative tasks tend to rely mostly on expect near optimal behavior from their partners and fail to cooperate with partners who don't satisfy this condition.
+Recent work has shown that cooperative AI models trained together on purely cooperative tasks tend to rely on near-optimal behavior from their partners, and fail to cooperate with partners who don't meet this condition.
+This is bad news for us humans, because our behavior is rarely optimal.
 
-Which is bad news for us humans as our behavior is rarely optimal.
+A great example of human-AI cooperation where humans do not always perform perfectly are self-driving cars. 
+In a situation where an accident is imminent, humans have to react quickly without having enough time to consider all possible reactions or even analyze the entire current road situation.
+However, car accidents are perhaps even too extreme an example of human suboptimal behavior. 
+Nevertheless, people often fail at the even simpler task of following standard traffic rules when they have enough time to react.
+We can imagine that predicting human behavior is not an easy task for a self-driving car.
 
-Great example of human-AI cooperation domain where humans do not always perform perfectly are self driving cars. 
-In a situation where an accident is imminent humans have to react quickly without having enough time to consider all possible reactions or even analyze entire current road situation.
-However car accidents maybe even too extreme example of human unoptimal behavior. 
-People often fail at even simplier task of obeying the standard traffic rules when having enough time to react.
-We can imagine how predicting human behavior is not an easy task for self driving car. 
+In this work, we will first operate in a single-agent environment, revisiting the definition of Markov decision, the building block of reinforcement learning.
+Based on this theory, we will intuitively introduce popular reinforcement learning algorithms divided into two categories of Q-learning and policy optimization.
+We primarily focus on policy branch of reinforcement algorithms, especially policy learning algorithm proximal policy optimization, which is considered as state of the art algorithm masively deployed in many successful projects.
 
-In this work we will firstly revisit definition of Markov decision process, building block of reinforcement learning, then mention basic aproaches of Q-learning.
-We will focus on policy branch of reinforcement algorithms, mention their variants and conclude with policy learning algorithm Proximal policiy optimization which is considered as state of art algorithm masively deployed in many succesful projects.
+Subsequently, we extend the theory developed for single-agent environments to more complex scenarios where more agents are involved.
+We highlight problems related to multi-agent settings, where the observability of the world is often an issue compared to single-agent environments.
+We illustrate problems with multi-agent training, where changes in one agent affect the behavior of the environment from the point of view of other agents, introducing the problem of non-stationarity.
+Finally, some single-agent variants of reinforcement learning algorithms are extended to multi-agent settings, where we mention the important aspects of these extensions.
 
-We will utilize simplified cooperative cooking environment based on popular video game Overcooked, where two partners are forced to coordinate shared task of cooking and delivering soup to customer.
-Here we are going to summarize what aproaches have been tested in related work in terms of ad-hoc agent cooperation.
-Some of which will we reimplement for our evaluating purposes.
-We mention problem of definition of robustness of agent cooperation.
 
-And finally we contribute with our ideas of diversificated partners population. 
+We will use a simplified cooperative cooking environment based on the popular video game Overcooked, where two partners are forced to coordinate a shared task of cooking and delivering soup to a customer.
+We will familiarize ourselves with several different kitchen layouts, as each layout may offer different cooperative obstacles.
+Here we summarize what approaches have been tested in related work with respect to ad hoc agent cooperation.
+We mention the problem of defining the robustness of agent cooperation and different possible definitions of robustness.
+
+And in the last part of this work, we prepare our working environment by modifying the stable-baselines3 library designed for reinforcement learning algorithms.
+We try to reimplement some methods of previously related work regarding the problem of ad hoc coordination in AI-AI settings, both for verification purposes and also for building us an evaluation tool for our experiments.
+And finally, we propose a diversification method for building a population of agents that are designed to try to differentiate their behavior from those they have encountered in the training population.
+After tuning and optimizing our experiments on a selected kitchen layout, we then evaluate our approach on some of the remaining layouts.

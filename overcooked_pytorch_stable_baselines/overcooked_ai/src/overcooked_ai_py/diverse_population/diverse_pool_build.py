@@ -149,7 +149,8 @@ def train_model(n, env, args):
             model.custom_id = n
             env.other_agent_model = model
             num_steps = args.total_timesteps
-            num_steps += n * args.pop_bonus_ts
+            if args.mode == "POP":
+                num_steps += n * args.pop_bonus_ts
             model.learn(num_steps, args=args, reset_num_timesteps=False)
             found = True
         except divergent_solution_exception.divergent_solution_exception:
@@ -223,6 +224,7 @@ overcooked_env = OvercookedEnv.from_mdp(mdp, horizon=400)
 if __name__ == "__main__":
 
     feature_fn = lambda _, state: overcooked_env.lossless_state_encoding_mdp(state, debug=False)
+    # feature_fn = lambda _, state: overcooked_env.featurize_state_mdp(state)
     start_state_fn = mdp.get_random_start_state_fn(random_start_pos=True, # TODO: set Default True
                                                    rnd_obj_prob_thresh = args.rnd_obj_prob_thresh_env,# TODO: set Default args.rnd_obj_prob_thresh_env,
                                                    random_switch_start_pos = args.random_switch_start_pos) if args.static_start == False else mdp.get_standard_start_state

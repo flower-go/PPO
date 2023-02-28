@@ -1,25 +1,32 @@
-\chapter{RL algorithms}
+\chapter{Reinforcement learning algorithms}
+
+In the previous chapter, we built the theoretical foundation of reinforcement learning.
+In this chapter, we translate that theory into practical algorithms.
+There are no precise classification boundaries between RL algorithms, as many of the techniques described are shared and crossed by all kinds of algorithms.
+Therefore, it is difficult to come up with an absolutely definitive taxonomy.
+However, for our purposes and the scope required, the following division into Q-learning and policy optimization is sufficient.
+
 \section{Q-Learning}
 
 \subsection*{Idea}
-We will start with family of algorithms that focuses on learning action-value approximator $Q_\theta(s,a)$ as described in previous chapter.
-For this reason, the group of such algorithms can be also refered to as Q-learning.
-Our primary goal in RL problem is to find policy that agent can follow.
-In the case of Q-learning once we have have learned approximator $Q_\theta(s,a)$ we can derive policy by always taking the best possible action in given state according to the learned action-value function
+We will start with a family of algorithms that focuses on learning the action value approximator $Q_\theta(s,a)$, as described in the previous chapter.
+For this reason, the group of such algorithms can also be referred to as Q-learning.
+Our primary goal in the RL problem is to find a policy that the agent can follow.
+In the case of Q-learning, once we have learned the approximator $Q_\theta(s,a)$, we can derive the policy by always taking the best possible action in the given state according to the learned action-value function.
 \[a(s) = \arg \max_a Q_\theta(s,a).\]
-By incorporating Bellman equations for optimal policy we can directly train Q-network by minimizing the loss
-\[L(\Theta)=(r + \gamma \max_{a'} Q_\theta(s',a') - Q_\theta(s,a))^2.\]
-And by computing loss gradient we arrive at update rule
+By incorporating Bellman's optimal policy equations, we can directly train the Q-network by minimizing the loss
+\[L(\theta)=(r + \gamma \max_{a'} Q_\theta(s',a') - Q_\theta(s,a))^2.\]
+And by computing the loss gradient, we arrive at the update rule
 \[Q_\theta(s,a) = Q_\theta(s,a) + \alpha (r + \gamma \max_{a'}Q_\theta(s',a') - Q(s,a)),\]
-which is the backbone of the algorithm \ref*{Qlearning} bearing the same name.
+which is the backbone of the \ref*{Qlearning} algorithm bearing the same name.
 \subsection*{Instability}
-Algorithm has been rarely used in his pure form. 
-This aproach has been primarily described for tabular methods where action-value function is represented by table instead of network approximator.
-In its simplest form, the training is unstable and suffers from a number of significant shortcomings.
-Most worthy of mention is the theoretical deadly triad counter example \cite{sutton2018reinforcement} which consists of a combination of value approximation, bootstrapping, and off-policy training that can lead to instability and divergence.
-Condition of value approximation is met since we use Q-network to approximate action-value.
-Bootstrapping means that estimate is used for computation of targets, this is also true in Q-learning for the same reason.
-Lastly term off-policy stands for approach where training data are collected using different distribution than that of a target policy.
+The algorithm has rarely been used in this pure form. 
+It has primarily been described for tabular methods, where the action-value function is represented by a table instead of a network approximator.
+In its simplest form, training is unstable and suffers from a number of significant shortcomings.
+Most notable is the theoretical deadly triad counter example \cite{sutton2018reinforcement}, which consists of a combination of value approximation, bootstrapping, and off-policy training that can lead to instability and divergence.
+The value approximation condition is met because we use a Q-network to approximate the action value.
+Bootstrapping means that the estimate is used to compute the targets, this is also true in Q-learning for the same reason.
+Finally, the term off-policy stands for an approach where training data is collected using a different distribution than that of a target policy.
 
 
 
@@ -56,14 +63,14 @@ Lastly term off-policy stands for approach where training data are collected usi
 
 
 \subsection*{DQN}
-One of the most outstanding paper based on Q-learning was the algorithm Deep Q-learning \ref{DeepQLearning} which demonstrated super-human results on multiple Atari games \cite{Atari}.
+One of the most outstanding papers based on Q-learning was the algorithm Deep Q-learning \ref{DeepQLearning}, which demonstrated super-human results on several Atari games \cite{Atari}.
 We give the pseudocode of the algorithm in it's original form.
-Notation might seem a bit different from ours, nevertheless it represents the same mechanisms that we expect.
-To address the problem of correlated transition sequences of data they introduce experience replay where previously sampled transitions are stored.
-During training data are sampled from this buffer thus smoothing the training distribution over different past behaviors.
-However, probably the most important idea was the usage of target Q-network, which broke value approximation condition of deadly triad, thus making the algorithm more stable.
-Target network is a copy of original Q-network that has its parameters frozen and updated only once in while based on parameters of the main network.
-It's sole purpose is to compute target estimates that are not directly dependent on Q-network function.
+The notation may seem a bit different from ours, but it represents the same mechanisms that we expect.
+To address the problem of correlated transition sequences of data, they introduce experience replay, where previously sampled transitions are stored.
+During training, data is sampled from this buffer, thus smoothing the training distribution over different past behaviors.
+However, probably the most important idea was the usage of a target Q-network, which broke the value approximation condition of the deadly triad, thus making the algorithm more robust.
+The target network is a copy of the original Q-network, with its parameters frozen and updated only once in a while based on the parameters of the main network.
+Its sole purpose is to compute target estimates that are not directly dependent on the Q-network function.
 
 \begin{algorithm}
   Initialize replay memory $D$ to capacity $N$ \\
@@ -105,11 +112,10 @@ It's sole purpose is to compute target estimates that are not directly dependent
 
 \subsection*{Rainbow}
 Deep Q Learning was a significant contribution that led to the study of further Q Learning capabilities.
-Project Rainbow \cite{Rainbow} could be probably marked as peak of such research.
-In this paper they examine further several isolated ideas of possible improvements and try to combine them together.
-To name a few, they use Double Q-network to address the problem of maximization bias and improves sampling from experience buffer by considering priority of stored individual data samples.
-Together with all other improvements that achieved at given time state-of-the-art performance on Atari 2600 benchmark, both in terms of data efficiency and final performance.
-
+The Rainbow project \cite{Rainbow} could probably be called the pinnacle of such research.
+In this paper, they further investigate several isolated ideas of possible improvements and try to combine them.
+To name a few, they use double Q-network to address the problem of maximization bias and enhance sampling from experience buffer by considering the priority of stored individual data samples.
+Together with all the other improvements, they achieved state-of-the-art performance on the Atari 2600 benchmark, both in terms of data efficiency and final performance.
 
 
 
@@ -119,21 +125,25 @@ Together with all other improvements that achieved at given time state-of-the-ar
 
 \section{Policy gradient methods}
 \subsection{Idea}
-In the previous section, we got acquainted with the first group of RL algorithms, where we derived final policy by taking action according to $argmax$ of our Q function approximator.
-Since our objective is to find optimal policy, using this approach of considering Q values may seem a bit indirect.
-There is a whole other family of algorithms out there that deal with this very issue.
-As the name suggests Policy gradient algorithms focus on directly optimizing policy $\pi_\theta(a|s)$. 
-This is achieved by directly taking steps along gradient of the performance objective of expected return $J(\pi_\theta) = \mathop{\mathbb{E}}_{\tau \sim \pi_\theta}[R(\tau)]$.
-Optimization step then has the form of:
+In the previous section, we were acquainted with the first group of RL algorithms, where we derived the final policy by acting according to $argmax$ of our Q-function approximator.
+Since our objective is to find an optimal policy, this approach of considering Q values may seem a bit indirect.
+Fortunately, there is a whole other family of algorithms that deal with this very issue.
+As the name suggests, policy gradient algorithms focus on directly optimizing the policy $\pi_\theta(a|s)$. 
+This is achieved by directly taking steps along the gradient of the expected return return $J(\pi_\theta) = \mathop{\mathbb{E}}_{\tau \sim \pi_\theta}[R(\tau)]$.
+The optimization step then has the form
 \[\theta_{k+1} = \theta_k+\alpha  \nabla_\theta J(\pi_\theta)|\theta_k\] and the gradient $\nabla_\theta J(\pi_\theta)$ is called \textbf{policy gradient}.
 
-Before we can transform this into an algorithm we have to be able to compute policy gradient numerically.
-Such expression can be obtained as result of Policy Gradient Theorem (PGT).
+Before converting this into an algorithm, we have to figure out how to compute the policy gradient numerically.
+Such an expression can be obtained as a result of the Policy Gradient Theorem (PGT).
 
 \par
-TODO: Following algorithm seems to be inspired by \url{https://spinningup.openai.com/en/latest/spinningup/rl_intro3.html} and references original literature where no proof for integral is included.
-Also it already includes baseline b(s) which was not stated, nor proved as a part of original theorem
-
+{
+\color{blue}
+TODO: Nasledujici veta a dukaz je inspirovany odtud \url{https://spinningup.openai.com/en/latest/spinningup/rl_intro3.html} kde se odkazuji na puvodni literaturu, kde je skutecne PGT dokazany. Ale je tam pouze v Sumarni podobe s hodne predpoklady a celkove dost jinou reprezentaci.
+Nikde se tam veta nebo dukaz pro integral nevyskytuje. Dava mi intuitivne dost smysl dukaz prepsat z diskretniho stavu do spojiteho a tvarit se ze vse plati jako predtim, ale nevim, nevim, nepodarilo se mi najit nikde jinde odkaz na vysledek v teto podobe.
+Zajimave bylo kdyz jsem se koukal do diplomky od Honzy Uhlika, ze on to tam uvadi take v integralni podobe, zavadi si tam jeste distribuci pro pocatecni stav a do zneni vety rovnou zahrne i fakt za expected return lze nahradit za jinou nahodnou promenou nezavislou na akci - take tam ma pouze odkaz na tu samou puvodni literaturu.
+Tak nevim, jak se k tomu postavit. Jen tak prohlasit ze kdyz to plati pro diskretni podminky, tak ze to plati i pro spojite, mi pripada zvlastni.
+}
 \subsection{Policy Gradient Theorem}
 Policy Gradient Theorem(\cite{sutton2018reinforcement}). It holds: 
 \begin{align*}
@@ -152,12 +162,12 @@ This can be proven by rewriting the formula in the following way:
   % = \mathop{\mathbb{E}}_{\tau \sim \pi_\theta}[\sum_{t=0}^{|\tau|} R(\tau)\nabla_\theta \log \pi_\theta(a_t|s_t) ]     
 \end{align*}
 
-It is interesting to look at the expression and what does it represent. 
-There are two important part of the expression $\pi_\theta(a_t|s_t)$ and $R(\tau)$.
-If we take gradient step of this objective we say we want to make change of the log probability $\pi_\theta(a_t|s_t)$ weighted by how good the expected return was.
-However this may feel somehow counter intuitive since excepted return considers all rewards of the episode.
-We might want to limit ourselfs only to the future consequences of given action.
-Fortunatly it can be shown that $R(\tau)$ can be replaced by many other useful functions(\cite{GAE}):
+It is useful to have a look at the expression and what it represents. 
+There are two important components of the expression: $\pi_\theta(a_t|s_t)$ and $R(\tau)$.
+Taking the gradient step of this objective, we are actually stating that we want to make the change in log probability $\pi_\theta(a_t|s_t)$ weighted by how good the expected return was.
+However, this may feel slightly counterintuitive, since the expected return takes into account all the rewards of the episode.
+We may want to restrict ourselves to the future consequences of a given action.
+Fortunately, it can be shown that $R(\tau)$ can be replaced by many other useful functions(\cite{GAE}):
 
 \[
   \nabla_\theta J(\pi_\theta) = \mathop{\mathbb{E}}_{\tau \sim \pi_\theta}\left[\sum_{t=0}^{|\tau|} \Psi_t \nabla_\theta \log \pi_\theta(a_t|s_t)\right],
@@ -172,14 +182,14 @@ where $\Psi_t$, can be one of the following:
 \end{list}
 
 \subsection{Vanilla Policy Gradient}
-Common practise for policy gradient algorithms is utilize some form of advantage function where baseline function is using value aproximator $b(s_t) = V^\pi(s_t)$.
-Value approximator is usually represented by another neural network and is being learned concurrently with the policy.
-There exists a naming convenction for the two types of network.
-The policy network is usually called an actor because it's job is to provide a policy that the agents act upon.
-The value network, on the other hand, is often recalled as a critic, since it in a sense produces a critique of the value of the state.
-Incorporating value approximator and idea of advantage function reduces variance in sample estimation and results in more stable and faster learning.
+Common practice for policy gradient algorithms is to use some form of advantage function, where the baseline function is the value approximator $b(s_t) = V^\pi(s_t)$.
+The value approximator is typically represented by another neural network and is learned in parallel with the policy.
+There is a naming convention for the two types of networks.
+The policy network is usually called an actor since it's job is to provide a policy for the agents to act on.
+The value network, on the other hand, is often referred to as a critic, because it produces, in a sense, a critique of the value of the state.
+Incorporating the value approximator and the idea of the utility function reduces the variance in the sample estimation and leads to more stable and faster learning.
 
-With all of this being said we present first algorithm from this class.
+With all of this said, we present the first algorithm of this class.
 
 \begin{algorithm}[H]
   Input: initial policy parameters $\theta_0$, initial value function parameters $\phi_0$
@@ -213,56 +223,53 @@ With all of this being said we present first algorithm from this class.
   \label{Vanilla}
 \end{algorithm}
 
-Policy gradient methods differ from Q-learning in several aspects.
+Policy gradient methods differ from Q-learning in several ways.
 
-Firstly the absolute value of performance objective function we optimize cannot be interpreted in terms of performace result.
-Taking one step of gradient descent does not even guarantee improving expected return in general.
-On a given batch of samples value of $-\infty$ can be achieved. 
-However expected return of changed policy would most likely be abysmal.
+First, the absolute value of the objective function we are optimizing cannot be interpreted in terms of performance outcome.
+In fact, taking a step in the gradient descent does not even guarantee an improvement in the expected return in general.
+On a given set of samples, a value of even $-\infty$ can be achieved. 
+However, the expected return of a changed policy would most likely be abysmal.
 
-And secondly, policy gradient algorithms are \textbf{on-policy}, meaning that only data samples collected using most recent policy are used for training.
-Oppositely to Q-learning off-policy approach where training data samples collected throughout entire training process are used for learning steps.
-For this reason policy gradient algorithms, especially Vanilla Policy Gradient algorithm is often considered as sample inefficient in comparision to off-policy algorithms.
-
+And second, policy gradient algorithms are \textbf{on-policy}, meaning that only data samples collected using the most recent policy are used for training.
+This is in contrast to the off-policy approach of Q-learning, where training data samples collected throughout the training process are used for learning steps.
+For this reason, policy gradient algorithms, especially vanilla policy gradient algorithms, are often considered sample-inefficient compared to off-policy algorithms.
 
 \subsection{Trust Region Policy Optimization}
-Although standard policy gradient step makes small policy change within the parameter space, it, as it turns out, might have a singificant impact on performance difference.
-Therefore, the vanilla policy gradient algorithm must be careful not to take large steps, making it an even more sample-inefficient algorithm.
+Although the standard policy gradient step makes a small policy change within the parameter space, it turns out that it may have a significant change on the performance difference.
+Therefore, vanilla policy gradient algorithm must be careful not to take large steps, making it even more sample-inefficient.
 
-Next algorithm from the family of policy gradient theorem is trying to face this problem.
-As the name suggests, Trust Region Policy Optimization (\cite{TRPO}) attempts to take steps within the region where it is constrained so as not to degrade performance.
-
-TRPO proposes theoretical update of parametrized policy $\pi_\theta$ as 
+The next algorithm in the policy gradient family attempts to address this problem.
+As its name suggests, Trust Region Policy Optimization (\cite{TRPO}) tries to take steps within the trusted region in which it is constrained so as not to degrade performance.
+TRPO proposes theoretical update of parameterized policy $\pi_\theta$ as
 \begin{align*}
   \theta_{k+1} = \arg &\max_\theta \mathcal{L}(\theta_k,\theta)   \\  
   &\text{s.t.}  \bar{D}_{KL}(\theta||\theta_k) \leq \delta
 \end{align*}
 
 where \[\mathcal{L}(\theta_k,\theta) = \mathop{\mathbb{E}}_{s,a \sim \pi_{\theta_k}} \ \left[ \frac{\pi_\theta(a|s)}{\pi_{\theta_k}(a|s)}A^{\pi_{\theta_k}} (s,a) \right] \]
-is surrogate advantage measuring policy $\pi_\theta$ peformance relative to the old policy $\pi_{\theta_k}$.
+is a surrogate advantage measuring the performance of the policy $\pi_\theta$ relative to the old policy $\pi_{\theta_k}$.
 
-And \[\bar{D}_{KL}(\theta||\theta_k) = \mathop{\mathbb{E}}_{s \sim \pi_{\theta_k}}[D_{KL}(\pi_\theta(\cdot|s)||\pi_{\theta_k}(\cdot|s))]\] is average KL-divergence(\cite{KLDIV}) between policies evaluated on states visited by the old policy.
-However working with theoretical update of TRPO in this form is not an easy task. 
-Therefore approximations obtained by applying Taylor expansion around $\theta_k$ are being used:
+And \[\bar{D}_{KL}(\theta||\theta_k) = \mathop{\mathbb{E}}_{s \sim \pi_{\theta_k}}[D_{KL}(\pi_\theta(\cdot|s)||\pi_{\theta_k}(\cdot|s))]\] is the average KL-divergence(\cite{KLDIV}) between policies evaluated on states visited by the old policy.
+However, working with theoretical updates of TRPO in this form is not an easy task. 
+Therefore, approximations obtained by applying Taylor expansion around $\theta_k$ are being used:
 
 \begin{align*}
   \mathcal{L}(\theta_k,\theta) &\approx g^T(\theta - \theta_k) \\
   \bar{D}_{KL}(\theta||\theta_k) &\approx \frac{1}{2} (\theta-\theta_k)^TH(\theta-\theta_k)
 \end{align*}
 
-And original problem can be then reformulated as approximate optimization problem:
+And the original problem can then be reformulated as an approximate optimization problem:
 
 \begin{align*}
   \theta_{k+1} = \arg &\max_\theta g^T(\theta - \theta_k)   \\  
   &\text{s.t.}  \frac{1}{2} (\theta-\theta_k)^TH(\theta-\theta_k) \leq \delta
 \end{align*}
-Such approximate reformulation can be solved analytically using methods of Lagrangian duality(\cite{LagrangDuality}), yielding solution:
+Such an approximate reformulation can be solved analytically using methods of Lagrangian duality (\cite{LagrangDuality}), yielding the solution:
 \[\theta_{k+1} = \theta_k + \sqrt{\frac{2\delta}{g^TH^{-1}g}}H^{-1}g\]
-However, since we used Taylor expansion, approximation error might break KL divergence constraint.
-For this reason TRPO incorporate idea of backtracking line search (\cite{BacktrackingLineSearch}):
+However, since we employed Taylor expansion, the approximation error could violate the KL divergence constraint.
+For this reason, TRPO incorporates the idea of backtracking line search (\cite{BacktrackingLineSearch}):
 \[\theta_{k+1} = \theta_k + \alpha^j \sqrt{\frac{2\delta}{g^TH^{-1}g}}H^{-1}g\]
-where $\alpha \in (0,1)$ is the backtracking coefficient and $j$ is smallest non negative integer such that KL divergence constraint is satisfied and surrogate advantage is positive.
-
+where $\alpha \in (0,1)$ is the backtracking coefficient and $j$ is the smallest non-negative integer such that the KL divergence constraint is fulfilled and the surrogate advantage is positive.
 
 \begin{algorithm}[H]
   Input: initial policy parameters $\theta_0$, initial value function parameters $\phi_0$
@@ -307,21 +314,21 @@ where $\alpha \in (0,1)$ is the backtracking coefficient and $j$ is smallest non
 
 
 \subsection{Proximal Policy Optimization}\label{PPO}
-Finally we will conclude this chapter with last algorithm from family of policy gradient algorithms that is considered in many aspects to be the state of art algorithm.
-As the authors of this next algorithm state. (TODO: should I emphasize more quoting the original text?)
-With the leading contenders Q-learning, "vanilla" policy gradient methods and trust region policy gradient methods there is still room for developing a method that is 
+Finally, we will conclude this chapter with last algorithm from family of policy gradient algorithms, which is considered in many aspects to be the state of the art algorithm.
+As the authors of this next algorithm state.
+With the leading contenders Q-learning, "vanilla" policy gradient methods, and trust region policy gradient methods, there is still room for the development of a method that is
 \begin{itemize}{}{}
   \item scalable - large models and parallel implementations
   \item data efficient
-  \item robust - successful on a variety of problems without Hyperparameters tuning
+  \item robust - successful on a variety of problems without hyperparameters tuning
 \end{itemize}
 
-Q-learning is poorly understood and fails on many simple problems.
-Vanilla policy gradient methods have poor data effiency and robustness.
-And trust region policy optimization is relatively complicated, and is not compatible with architectures that include noise or parameter sharing.
+Q-learning is poorly understood and fails on many trivial problems.
+Vanilla policy gradient methods suffer from poor data efficiency and robustness.
+And trust region policy optimization is relatively complicated and not well suited to architectures including noise or parameter sharing.
 
-Proximal policy optimization (\cite{PPO}) aims at data efficiency and realiability of TRPO performance, while using only first-order optimization.
-Authors propose a novel objective with clipped probability ratios, which forms a pessimistic lower bound of the performance of the policy.
+Proximal policy optimization (\cite{PPO}) aims at data efficiency and reliability of TRPO performance while using only first-order optimization.
+The authors propose a novel objective with clipped probability ratios, which provides a pessimistic lower bound on the performance of the policy.
 
 Let $r_t(\theta)$ denote the probability ratio 
 \[
@@ -332,30 +339,30 @@ Then the "surrogate" objective of TRPO can be expressed again in the form:
   L^{CPI}(\theta)=\hat{\mathbb{E}}_t \left[ \frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_{old}}(a_t|s_t)}\hat{A_t} \right] = \hat{\mathbb{E}}_t \left[ r_t(\theta) \hat{A_t}\right]   
 \]
 
-CPI refers to conservative policy iteration(\cite{CPI}), where was this objective originaly proposed.
-Maximization of $L^{CPI}$ without any constraint would lead, as it was already discussed in previous section, to an excessively large policy update.
-Hence authors propose new modified objective called clipped surrogate objective that penalizes changes to the policy that move $r_t(\theta)$ far away from 1.
+CPI refers to conservative policy iteration (\cite{CPI}), where this objective was originally proposed.
+Maximizing $L^{CPI}$ without any constraint would, as discussed in the previous section, lead to an excessively large policy update.
+Thus, the authors propose a new modified objective, called the clipped surrogate objective, which penalizes policy adjustments that move $r_t(\theta)$ far from 1.
 
 \[
   L^{CLIP}(\theta) = \hat{\mathbb{E}}_t \left[ \min (r_t(\theta) \hat{A_t}, \textrm{clip} (r_t(\theta), 1-\epsilon, 1+\epsilon) \hat{A_t})\right],
 \]
 where the value $\epsilon = 0.2$ is empirically suggested. 
-Objective can be intuitively explained as follows.
-First term in $\min$ is $L^{CPI}$ as before.
-And the second term modifies surrogate objective by clipping probability ratio which prevents $r_t$ from escaping the interval $[1-\epsilon, 1+ \epsilon]$.
-Finally taking the minimum of the clipped and unclipped objective makes the final objective pessimistic bound on the unclipped objective.
+The objective can be intuitively explained as following.
+The first term in $\min$ is the previous $L^{CPI}$.
+And the second term modifies the surrogate objective by a clipping probability ratio that prevents $r_t$ from escaping the interval $[1-\epsilon, 1+ \epsilon]$.
+Finally, taking the minimum of the clipped and unclipped objectives makes the final objective pessimistically bounded on the unclipped objective.
 
-Training process of PPO then proposes alternating between sampling data from the policy and then performing several epochs of optimization steps on the sampled data.
-Notice here that for every first training epoch it holds that $r_t(\theta) = 1$ making the objective in first epoch always equal to $L^{CPI}$
+The training process of PPO then proposes to alternately sample data from the policy and then perform several epochs of optimization steps on the sampled data.
+Note here that for each first training epoch it holds that $r_t(\theta) = 1$, so the objective in the first epoch always equals $L^{CPI}$.
 
-Alternatively authors propose second version of PPO incorporating KL penalty as part of objective, which makes it even more similar to idea proposed in TRPO.
-However, we will not cover here more details as authors themselfs uplifts more the version including clipping of surrogate objective.
+Alternatively, the authors propose a second version of PPO that includes the KL penalty as part of the objective, making it even more similar to the idea proposed in TRPO.
+However, we will not cover more details here, as the authors themselves prefer the version including clipping of the surrogate objective.
 
-If using neural network architecture that shares parameters between policy and value function, a combined objective function that contains both the policy surrogate and value function error term must be applied.
+When using a neural network architecture that shares parameters between the policy and the value function, a combined objective function that includes both the policy surrogate and the value function error term must be applied.
 \[
-  L_t^{CLIP+VF}(\theta) =   \hat{\mathbb{E}}_t \left[L_t^{CLIP}(\theta) - c_1 L_t^{VF}(\theta) \right],
+  L_t^{CLIP+VF}(\theta) = \hat{\mathbb{E}}_t \left[L_t^{CLIP}(\theta) - c_1 L_t^{VF}(\theta) \right],
 \]
-where $c_1$ is coefficient nad $L_t^{VF}$ is a squared-error loss $(V_\theta(s_t) - V_t^{targ})^2$.
+where $c_1$ is the coefficient and $L_t^{VF}$ is a squared error loss $(V_\theta(s_t) - V_t^{targ})^2$.
 
 \begin{algorithm}[]
   Input: initial policy parameters $\theta_0$, initial value function parameters $\phi_0$
@@ -387,18 +394,18 @@ where $c_1$ is coefficient nad $L_t^{VF}$ is a squared-error loss $(V_\theta(s_t
 \end{algorithm}
 
 \pagebreak
-Lastly one thing, that we explicitly haven't covered yet is the problem of exploitation and exploration.
-In general during training we always seek balance between exploitation of learned experience and exploring new possibilities.
-In the case of Q-learning, this is done  quite artificially most often using by using the $\epsilon$-greedy approach, where with probability $1-\epsilon$ we exploit our knowledge by taking $\arg \max_a$ action according to the $Q$ value.
-And with probability $\epsilon$ exploring by taking random action.
+Lastly, one problem we haven't explicitly addressed is that of exploitation and exploration.
+In general, during training we always try to strike a balance between exploiting learned experience and exploring new possibilities.
+In the case of Q-learning, this is most often done artificially by using the $\epsilon$-greedy approach, where with probability $1-\epsilon$ we exploit our knowledge by taking $\arg \max_a$ action according to the $Q$ value.
+And with probability $\epsilon$ we explore by taking a random action.
 
-By sampling according to the policy $\pi_\theta$ in policy optimization methods this problem is solved more naturally.
-Usually, in the begining of the training process when the parameters are initialized, the parametrized probability distribution is close to uniform, which implicitly makes the action selection mechanism to be exploratory.
-And as the policy is updated, it becomes more specialized toward the optimal policy, effectively forcing the choice of actions to be more exploitative.
-Unfortunately, the exploration described in policy optimization methods is often insufficient, and policies tend to get stuck at bad local optima despite initial uniform distribution.
-On that account explorative mechanism in the form of bonus entropy(\cite{EntropyRegularization}) is often being utilized and also suggested by the PPO authors.
-By adding a small bonus for policy entropy, the policy is slightly forced toward uniform distribution, shifting toward exploratory behavior.
-Hence final PPO objective may have a following form:
+Sampling according to the policy $\pi_\theta$ in policy optimization methods solves this problem more naturally.
+Typically, at the beginning of the training process, when the parameters are initialized, the parametrized probability distribution is close to uniform, which implicitly makes the action selection mechanism exploratory.
+And as the policy is updated, it becomes more specialized towards the optimal policy, effectively forcing the action selection to be more exploitative.
+Unfortunately, the exploration described in policy optimization methods is often insufficient, and policies tend to get stuck at bad local optima despite an initial uniform distribution.
+On this account, an exploration mechanism in the form of bonus entropy(\cite{EntropyRegularization}) is often employed and also recommended by the PPO authors.
+By adding a small bonus for policy entropy, the policy is slightly forced in the direction of uniform distribution, shifting towards exploratory behavior.
+Thus, the final PPO objective may have a form as follows:
 
 \[
   L_t^{CLIP+VF}(\theta) =   \hat{\mathbb{E}}_t \left[L_t^{CLIP}(\theta) - c_1 L_t^{VF}(\theta)  + c_2S[\pi_\theta](s_t)\right],
@@ -407,11 +414,11 @@ where $c_2$ is another coefficient and $S$ denotes an entropy bonus.
 
 
 \section*{Q-Learning and Policy optimization}\label{QPlusPolicy}
-So far we have covered possible the simplest division rule among types of reinforcement learning algorithms.
-However, there are actually several algorithms that combine both the Q-learning and Policy optimization.
-In these algorithms both $Q$ approximator and policy approximator are being learned concurrently.
-Just to name a few of the more popular ones: Deep Deterministic Policy Gradient (DDPG, \cite{DDPG}), Twin Delayed DDPG (TD3, \cite{TD3}), Soft Actor-Critic(SAC, \cite{SAC}).
-We won't cover these in detail, as they are beyond the scope of our needs.
+So far we have covered the simplest possible division rule between types of reinforcement learning algorithms.
+However, there are actually several algorithms that combine both Q-learning and policy optimization.
+In these algorithms, both the $Q$ approximator and the policy approximator are learned simultaneously.
+To name just a handful of the more popular ones: Deep Deterministic Policy Gradient (DDPG, \cite{DDPG}), Twin Delayed DDPG (TD3, \cite{TD3}), Soft Actor-Critic (SAC, \cite{SAC}).
+We won't cover them in detail, as they are beyond the scope of our needs.
 
 
 
