@@ -237,7 +237,7 @@ if __name__ == "__main__":
     evaluator = Evaluator(gym_env, args, deterministic=True, device="cpu")
 
     set_layout_params(args)
-    args.full_exp_name = get_name(args.exp)
+    args.full_exp_name = get_name(args.exp, sp=args.mode=="SP")
 
 
     models = load_or_train_models(args, gym_env)
