@@ -3,30 +3,30 @@ import sys
 import os
 
 codedir = os.environ["DATADIR"]
-#codedir = /home/premek/DP/
-#projdir = os.environ["PROJDIR"]
-#projdir = /home/premek/DP/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_pytorch
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src")
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines/stable-baselines3")
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines")
 projdir = codedir
 print(sys.path)
-#exit()
+print("ok0")
 from stable_baselines3.ppo.ppo import PPO
-from overcooked_ai.src.overcooked_ai_py.mdp.overcooked_env import OvercookedGridworld, OvercookedEnv, get_vectorized_gym_env
+from overcooked_ai.src.overcooked_ai_py.mdp.overcooked_env import OvercookedGridworld
+from overcooked_ai.src.overcooked_ai_py.mdp.overcooked_env import OvercookedEnv
+from overcooked_ai.src.overcooked_ai_py.mdp.overcooked_env import get_vectorized_gym_env
+print("ok01")
 from datetime import datetime
 from experiments_params import set_layout_params
 from visualisation.visualisation import heat_map
 from evaluation.evaluation import Evaluator
 from divergent_solution_exception import divergent_solution_exception
-exit()
+
 os.environ['CUDA_VISIBLE_DEVICES'] = "0"
 
 
 EVAL_SET_SIZE = 30
 SP_EVAL_EXP_NAME = "SP_EVAL"
 
-
+print("ok1")
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("--layout_name", default="forced_coordination", type=str, help="Layout name.")
@@ -70,11 +70,11 @@ parser.add_argument("--device", default="cuda", type=str, help="Device - cuda or
 parser.add_argument("--pop_bonus_ts", default=1e5, type=int, help="Number of bonus train time steps for each consecutive individual in population.") #TODO: Default 1e5
 parser.add_argument("--training_percent_start_eval", default=0.0, type=float, help="Coeficient for cross-entropy loss of population policies.")
 
-
+print("ok2")
 args = parser.parse_args([] if "__file__" not in globals() else None)
 
 # TODO: should i study effect of annealing of entropy_coef, sparse_r_coef, learning_rate???, ... values found such that works for all maps
-
+print("ok3")
 def load_or_train_models(args, env):
     directory = projdir + "/diverse_population/models/" + args.layout_name + "/" + args.exp + "/"
     models = []
