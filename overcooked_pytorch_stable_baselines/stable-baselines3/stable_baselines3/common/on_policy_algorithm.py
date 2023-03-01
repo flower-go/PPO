@@ -327,13 +327,25 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             continue_training = self.collect_rollouts(self.env, callback, self.rollout_buffer, n_rollout_steps=self.n_steps)
 
             # Divergent solution check
-            if not self.env.population_mode and args.divergent_check_timestep is not None and self.num_timesteps > args.divergent_check_timestep and self.num_timesteps < args.divergent_check_timestep + 1e5:
-                sparse_r = safe_mean([ep_info["ep_game_stats"]["cumulative_sparse_rewards_by_agent"][1 - ep_info["policy_agent_idx"]] for ep_info in self.ep_info_buffer])
-                sparse_r_other_agent = safe_mean([ep_info["ep_game_stats"]["cumulative_sparse_rewards_by_agent"][ep_info["policy_agent_idx"]] for ep_info in self.ep_info_buffer])
-                # Neither of agents have managed to serve single plate of soup within first args["divergent_check_timestep"], models have likely converged to some bad local optima
-                if sparse_r < 3 or sparse_r_other_agent < 3:
-                    print(f"Divergent solution with sparse reward values for agents ({sparse_r}, {sparse_r_other_agent})")
-                    raise divergent_solution_exception.divergent_solution_exception(f"Divergent solution with sparse reward values for agents ({sparse_r}, {sparse_r_other_agent})")
+            if args.divergent_check_timestep is not None:
+                check_timestep = args.divergent_check_timestep
+                if self.env.population_mode:
+                    check_timestep = check_timestep / 2
+
+                if self.num_timesteps > check_timestep and self.num_timesteps < check_timestep + 1e5:
+                    sparse_r = safe_mean([ep_info["ep_game_stats"]["cumulative_sparse_rewards_by_agent"][1 - ep_info["policy_agent_idx"]] for ep_info in self.ep_info_buffer])
+                    sparse_r_other_agent = safe_mean([ep_info["ep_game_stats"]["cumulative_sparse_rewards_by_agent"][ep_info["policy_agent_idx"]] for ep_info in self.ep_info_buffer])
+                    print(f"checking for divergence - values: {sparse_r},{sparse_r_other_agent}")
+                    if self.env.population_mode:
+                        #in population learning it can easily happen that the learned agent is being dominant in delivering completed soups
+                        if sparse_r < 3 and sparse_r_other_agent < 3:
+                            print(f"Divergent solution with sparse reward values for agents ({sparse_r}, {sparse_r_other_agent})")
+                            raise divergent_solution_exception.divergent_solution_exception(f"Divergent solution with sparse reward values for agents ({sparse_r}, {sparse_r_other_agent})")
+                    else:
+                        # Neither of agents have managed to serve single plate of soup within first args["divergent_check_timestep"], models have likely converged to some bad local optima
+                        if sparse_r < 3 or sparse_r_other_agent < 3:
+                            print(f"Divergent solution with sparse reward values for agents ({sparse_r}, {sparse_r_other_agent})")
+                            raise divergent_solution_exception.divergent_solution_exception(f"Divergent solution with sparse reward values for agents ({sparse_r}, {sparse_r_other_agent})")
 
             if continue_training is False:
                 break
@@ -370,16 +382,16 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
             if evaluate and args.eval_interval is not None and iteration % args.eval_interval == 0:
                 evaluation_avg_rewards_per_episode = self.evaluate_env()
+                print(evaluation_avg_rewards_per_episode)
                 eval_values = [evaluation_avg_rewards_per_episode]
                 if evaluation_avg_rewards_per_episode > 0.98 * best_model_eval_val:
                     for _ in range(args.evals_num_to_threshold):
                         eval_values.append(self.evaluate_env())
-                    if np.mean(eval_values) > best_model_eval_val:
+                    if np.mean(eval_values) > 0.98 * best_model_eval_val:
                         print(f"found better model with value {np.mean(eval_values)}")
                         best_model_eval_val = np.mean(eval_values)
                         best_model = copy.deepcopy(self.policy)
 
-                # if "eval_stop_threshold" in args and evaluation_avg_rewards_per_episode > args.eval_stop_threshold:
                 if evaluation_avg_rewards_per_episode > args.eval_stop_threshold:
                     print(f"evaluation result over {args.eval_stop_threshold} detected, continuing with further evaluation")
                     eval_values = [evaluation_avg_rewards_per_episode]
@@ -473,8 +485,8 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
         sample_population = self.env.population
 
-        if train and self.args.n_sample_partners > 0:
-            sample_population = np.random.choice(self.env.population, size=self.args.n_sample_partners)
+        # if train and self.args.n_sample_partners > 0:
+        #     sample_population = np.random.choice(self.env.population, size=self.args.n_sample_partners)
 
         indices = []
         remaining_pop_size = len(sample_population)
