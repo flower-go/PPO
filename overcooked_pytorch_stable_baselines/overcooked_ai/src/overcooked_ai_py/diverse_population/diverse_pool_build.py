@@ -86,16 +86,17 @@ np.random.seed(args.seed)
 def load_or_train_models(args, env):
     directory = projdir + "/diverse_population/models/" + args.layout_name + "/"
     models = []
+    env.population = []
     env.population_mode = False
     for n in range(args.trained_models):
         model = load_or_train_model(directory, n, env, args)
 
         models.append(model)
+        env.population.append(model)
 
         # First init_SP_agents models are always self-play
         if (n + 1) >= args.init_SP_agents:
             env.population_mode = args.mode == "POP"
-        env.population = models
 
     if args.mode == "POP":
         final_model = train_final_model(directory, n+1, env, args)
@@ -149,8 +150,8 @@ def train_model(n, env, args):
             model.custom_id = n
             env.other_agent_model = model
             num_steps = args.total_timesteps
-            if args.mode == "POP":
-                num_steps += n * args.pop_bonus_ts
+            # if args.mode == "POP":
+            #     num_steps += n * args.pop_bonus_ts
             model.learn(num_steps, args=args, reset_num_timesteps=False)
             found = True
         except divergent_solution_exception.divergent_solution_exception:
@@ -164,7 +165,7 @@ def train_final_model(directory, n, env, args):
     final_args = copy.deepcopy(args)
 
     # Reset all population diversification techniques
-    final_args.total_timesteps = 2 * final_args.total_timesteps
+    final_args.total_timesteps = 1.5 * final_args.total_timesteps
     final_args.kl_diff_bonus_reward_coef = 0.
     final_args.kl_diff_bonus_reward_clip = 0.
     final_args.kl_diff_loss_coef = 0.
