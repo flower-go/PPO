@@ -897,9 +897,12 @@ def get_vectorized_gym_env(base_env, gym_env_name, agent_idx, featurize_fn=None,
     """
 
     def gym_env_fn():
+        print("get_env pred gymem")
         gym_env = gym.make(gym_env_name)
+        print("get env po gymu")
         gym_env.custom_init(base_env, featurize_fn=featurize_fn, start_state_fn=start_state_fn, baselines_reproducible=True, agent_idx=agent_idx)
         return gym_env
 
+    print("pred vektorizaci")
     vectorized_gym_env = SubprocVecEnv([gym_env_fn] * args.num_workers)
     return vectorized_gym_env

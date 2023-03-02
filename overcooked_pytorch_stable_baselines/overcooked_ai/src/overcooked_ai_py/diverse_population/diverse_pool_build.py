@@ -210,22 +210,24 @@ if __name__ == "__main__":
     start_state_fn = mdp.get_random_start_state_fn(random_start_pos=True, # TODO: set Default True
                                                    rnd_obj_prob_thresh = args.rnd_obj_prob_thresh_env,# TODO: set Default args.rnd_obj_prob_thresh_env,
                                                    random_switch_start_pos = args.random_switch_start_pos) if args.static_start == False else mdp.get_standard_start_state
+    print("pred gym env")
     gym_env = get_vectorized_gym_env(
         overcooked_env, 'Overcooked-v0', agent_idx=0, featurize_fn=feature_fn, start_state_fn=start_state_fn, args=args
     )
+    print("mame gym env")
     agent_idxs = [0 for _ in range(args.num_workers)]
     gym_env.remote_set_agent_idx(agent_idxs)
     gym_env.population = []
 
 
     evaluator = Evaluator(gym_env, args, deterministic=True, device="cpu")
-
+    print("mame evaluator")
     set_layout_params(args)
     args.exp = get_name(args.exp)
 
 
     models = load_or_train_models(args, gym_env)
-
+    print("naloadovane modely")
     if args.execute_final_eval:
         eval_env = "_ENVROP" + str(args.rnd_obj_prob_thresh_env)
         if args.mode == "POP":
