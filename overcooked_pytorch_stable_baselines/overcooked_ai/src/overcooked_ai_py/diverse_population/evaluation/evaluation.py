@@ -13,8 +13,8 @@ class Evaluator(object):
 
         self.venv.reset_times([i for i in range(args.num_workers)])
 
-    def evaluate(self, agent_set_0, agent_set_1, num_games_per_worker = 2, layout_name = None, file_name=None, deterministic=True, eval_env=""):
-        file_full_name = f"{os.environ['PROJDIR']}/diverse_population/evaluation/{layout_name}/" + file_name + '' if deterministic else '_STOCH'
+    def evaluate(self, agent_set_0, agent_set_1, num_games_per_worker = 2, layout_name = None, group_name = None, deterministic=True, eval_env="", mode="POP"):
+        file_full_name = f"{os.environ['PROJDIR']}/diverse_population/evaluation/{layout_name}/" + group_name + '' if deterministic else '_STOCH'
         file_full_name += eval_env
         try:
             result_matrix = np.loadtxt(file_full_name)
@@ -32,15 +32,28 @@ class Evaluator(object):
 
                 print(f"completed {completed} out of {total}")
 
-            if file_name is not None:
+            if file_full_name is not None:
                 np.savetxt(file_full_name, np.round(np.array(result_matrix)))
-        print(f"mean SP part: {np.mean(result_matrix[:self.args.init_SP_agents])}")
-        print(f"mean SP of non zeros: {np.sum(result_matrix[:self.args.init_SP_agents][result_matrix[:self.args.init_SP_agents] > 0]) / result_matrix[:self.args.init_SP_agents][result_matrix[:self.args.init_SP_agents] > 0].size}")
-        print(f"zero SP ratio: {np.sum(result_matrix[:self.args.init_SP_agents] == 0.0) / result_matrix[:self.args.init_SP_agents].size}%")
 
-        print(f"mean POP part: {np.mean(result_matrix[self.args.init_SP_agents:])}")
-        print(f"mean POP of non zeros: {np.sum(result_matrix[self.args.init_SP_agents:][result_matrix[self.args.init_SP_agents:] > 0]) / result_matrix[self.args.init_SP_agents:][result_matrix[self.args.init_SP_agents:] > 0].size}")
-        print(f"zero POP ratio: {np.sum(result_matrix[self.args.init_SP_agents:] == 0.0) / result_matrix[self.args.init_SP_agents:].size}%")
+
+        if mode == "POP":
+            row_avgs = np.sum(result_matrix, axis=1) / result_matrix.shape[1]
+            best_agent = np.argmax(row_avgs)
+            best_agent_avg = np.max(row_avgs)
+
+            print(f"best agent id: {best_agent}, with avg value: {best_agent_avg}")
+
+            print(f"mean SP part: {np.mean(result_matrix[:self.args.init_SP_agents])}")
+            print(f"mean SP of non zeros: {np.sum(result_matrix[:self.args.init_SP_agents][result_matrix[:self.args.init_SP_agents] > 0]) / result_matrix[:self.args.init_SP_agents][result_matrix[:self.args.init_SP_agents] > 0].size}")
+            print(f"zero SP ratio: {np.sum(result_matrix[:self.args.init_SP_agents] == 0.0) / result_matrix[:self.args.init_SP_agents].size}%")
+
+            print(f"mean POP part: {np.mean(result_matrix[self.args.init_SP_agents:])}")
+            print(f"mean POP of non zeros: {np.sum(result_matrix[self.args.init_SP_agents:][result_matrix[self.args.init_SP_agents:] > 0]) / result_matrix[self.args.init_SP_agents:][result_matrix[self.args.init_SP_agents:] > 0].size}")
+            print(f"zero POP ratio: {np.sum(result_matrix[self.args.init_SP_agents:] == 0.0) / result_matrix[self.args.init_SP_agents:].size}%")
+
+        else:
+            print(f"avg of diagonal: {np.mean(np.diagonal(result_matrix))}")
+            print(f"avg of NON-diagonal: {np.mean(result_matrix[~np.eye(result_matrix.shape[0],dtype=bool)])}")
 
         return np.array(result_matrix)
 

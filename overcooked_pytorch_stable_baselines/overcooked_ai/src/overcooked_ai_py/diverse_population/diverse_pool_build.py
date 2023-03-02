@@ -29,8 +29,8 @@ SP_EVAL_EXP_NAME = "SP_EVAL"
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("--layout_name", default="forced_coordination", type=str, help="Layout name.")
-parser.add_argument("--trained_models", default=15, type=int, help="Number of models to train in experiment.") #TODO: Default 15
-parser.add_argument("--init_SP_agents", default=5, type=int, help="Number of self-play agents trained to initialize population.") #TODO: Default 5
+parser.add_argument("--trained_models", default=11, type=int, help="Number of models to train in experiment.") #TODO: Default 11
+parser.add_argument("--init_SP_agents", default=3, type=int, help="Number of self-play agents trained to initialize population.") #TODO: Default 3
 parser.add_argument("--mode", default="POP", type=str, help="Mode of experiment: Self-play ('SP') or Population ('POP').") #TODO: set default POP
 parser.add_argument("--kl_diff_bonus_reward_coef", default=0.0, type=float, help="Coeficient for kl div population policies difference.")
 parser.add_argument("--kl_diff_bonus_reward_clip", default=0.0, type=float, help="")
@@ -38,7 +38,7 @@ parser.add_argument("--kl_diff_loss_coef", default=0., type=float, help="Coefici
 parser.add_argument("--kl_diff_loss_clip", default=0., type=float, help="Ccross-entropy loss of population policies clipping.")
 parser.add_argument("--delay_shared_reward", default=False, action="store_true", help="Whether to delay shared rewards.")
 parser.add_argument("--exp", default="POP_SP_INIT", type=str, help="Experiment name.")
-parser.add_argument("--eval_set_name", default="SP_EVAL_ROP0.0", type=str, help="Name of evaluation set.")
+parser.add_argument("--eval_set_name", default="SP_EVAL2_ROP0.0", type=str, help="Name of evaluation set.")
 parser.add_argument("--execute_final_eval", default=False, action="store_true", help="Whether to do final population evaluation.")
 parser.add_argument("--final_eval_games_per_worker", default=5, type=int, help="Number of games per worker for pair in final evaluation.")
 parser.add_argument("--n_sample_partners", default=-1, type=int, help="Number of sampled partners for data collection.")
@@ -190,8 +190,7 @@ def models_are_same(model1, model2):
 def get_name(name, sp=False, extended=False):
     full_name = name
     if sp or full_name == SP_EVAL_EXP_NAME:
-        full_name = args.eval_set_name
-        #full_name = full_name + "_ROP" + str(args.rnd_obj_prob_thresh)
+        pass
     else:
         if extended:
             full_name = full_name + "_VF" + str(args.vf_coef)
@@ -248,10 +247,14 @@ if __name__ == "__main__":
     if args.execute_final_eval:
         eval_env = "_ENVROP" + str(args.rnd_obj_prob_thresh_env)
         if args.mode == "POP":
-            population_name = args.full_exp_name
+            models_name = args.full_exp_name
+            evals_name = args.eval_set_name
+            group_name = models_name + "_X_" + evals_name
+
             eval_models = get_eval_models(args, gym_env)
-            eval_table = evaluator.evaluate(models, eval_models, args.final_eval_games_per_worker, args.layout_name, population_name, eval_env = eval_env)
-            heat_map(eval_table, population_name, population_name, args.layout_name, eval_env = eval_env)
+            eval_table = evaluator.evaluate(models, eval_models, args.final_eval_games_per_worker, args.layout_name, group_name, eval_env = eval_env, mode=args.mode)
+            heat_map(eval_table, group_name, args.layout_name, eval_env = eval_env)
         else:
-            eval_table = evaluator.evaluate(models, models, args.final_eval_games_per_worker, args.layout_name, args.full_exp_name, eval_env = eval_env)
-            heat_map(eval_table, args.full_exp_name, args.full_exp_name, args.layout_name, eval_env = eval_env)
+            group_name = args.full_exp_name + "_X_" + args.full_exp_name
+            eval_table = evaluator.evaluate(models, models, args.final_eval_games_per_worker, args.layout_name, group_name, eval_env = eval_env, mode=args.mode)
+            heat_map(eval_table, group_name, args.layout_name, eval_env = eval_env)
