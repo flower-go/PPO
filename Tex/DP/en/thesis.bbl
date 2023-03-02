@@ -1,14 +1,161 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{22}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 
-\bibitem[Anděl(2007)]{Andel07}
-J.~Anděl.
-\newblock \emph{Základy matematické statistiky}.
-\newblock Druhé opravené vydání. Matfyzpress, Praha, 2007.
-\newblock ISBN 80-7378-001-1.
+\bibitem[Achiam(2018)]{SpinningUpIntro}
+Josh Achiam, 2018.
+\newblock URL \url{https://spinningup.openai.com/en/latest/}.
+
+\bibitem[Armijo(1966)]{BacktrackingLineSearch}
+Larry Armijo.
+\newblock {Minimization of functions having Lipschitz continuous first partial
+  derivatives.}
+\newblock \emph{Pacific Journal of Mathematics}, 16\penalty0 (1):\penalty0 1 --
+  3, 1966.
+\newblock \doi{pjm/1102995080}.
+\newblock URL \url{https://doi.org/}.
+
+\bibitem[Boutilier(1996)]{MMDP}
+Craig Boutilier.
+\newblock Planning, learning and coordination in multiagent decision processes.
+\newblock In \emph{Proceedings of the 6th Conference on Theoretical Aspects of
+  Rationality and Knowledge}, TARK '96, page 195–210, San Francisco, CA, USA,
+  1996. Morgan Kaufmann Publishers Inc.
+\newblock ISBN 1558604179.
+
+\bibitem[Fujimoto et~al.(2018)Fujimoto, van Hoof, and Meger]{TD3}
+Scott Fujimoto, Herke van Hoof, and David Meger.
+\newblock Addressing function approximation error in actor-critic methods,
+  2018.
+\newblock URL \url{https://arxiv.org/abs/1802.09477}.
+
+\bibitem[Haarnoja et~al.(2018)Haarnoja, Zhou, Hartikainen, Tucker, Ha, Tan,
+  Kumar, Zhu, Gupta, Abbeel, and Levine]{SAC}
+Tuomas Haarnoja, Aurick Zhou, Kristian Hartikainen, George Tucker, Sehoon Ha,
+  Jie Tan, Vikash Kumar, Henry Zhu, Abhishek Gupta, Pieter Abbeel, and Sergey
+  Levine.
+\newblock Soft actor-critic algorithms and applications, 2018.
+\newblock URL \url{https://arxiv.org/abs/1812.05905}.
+
+\bibitem[Hessel et~al.(2017)Hessel, Modayil, van Hasselt, Schaul, Ostrovski,
+  Dabney, Horgan, Piot, Azar, and Silver]{Rainbow}
+Matteo Hessel, Joseph Modayil, Hado van Hasselt, Tom Schaul, Georg Ostrovski,
+  Will Dabney, Dan Horgan, Bilal Piot, Mohammad Azar, and David Silver.
+\newblock Rainbow: Combining improvements in deep reinforcement learning, 2017.
+\newblock URL \url{https://arxiv.org/abs/1710.02298}.
+
+\bibitem[Kakade and Langford(2002)]{CPI}
+Sham~M. Kakade and John Langford.
+\newblock Approximately optimal approximate reinforcement learning.
+\newblock In \emph{International Conference on Machine Learning}, 2002.
+
+\bibitem[Kullback(1959)]{KLDIV}
+Solomon Kullback.
+\newblock \emph{Information Theory and Statistics}.
+\newblock Wiley, New York, 1959.
+
+\bibitem[Lillicrap et~al.(2015)Lillicrap, Hunt, Pritzel, Heess, Erez, Tassa,
+  Silver, and Wierstra]{DDPG}
+Timothy~P. Lillicrap, Jonathan~J. Hunt, Alexander Pritzel, Nicolas Heess, Tom
+  Erez, Yuval Tassa, David Silver, and Daan Wierstra.
+\newblock Continuous control with deep reinforcement learning, 2015.
+\newblock URL \url{https://arxiv.org/abs/1509.02971}.
+
+\bibitem[Lowe et~al.(2017)Lowe, Wu, Tamar, Harb, Abbeel, and Mordatch]{MADDPG}
+Ryan Lowe, Yi~Wu, Aviv Tamar, Jean Harb, Pieter Abbeel, and Igor Mordatch.
+\newblock Multi-agent actor-critic for mixed cooperative-competitive
+  environments, 2017.
+\newblock URL \url{https://arxiv.org/abs/1706.02275}.
+
+\bibitem[Mnih et~al.(2015)Mnih, Kavukcuoglu, Silver, Rusu, Veness, Bellemare,
+  Graves, Riedmiller, Fidjeland, Ostrovski, Petersen, Beattie, Sadik,
+  Antonoglou, King, Kumaran, Wierstra, Legg, and Hassabis]{Atari}
+Volodymyr Mnih, Koray Kavukcuoglu, David Silver, Andrei Rusu, Joel Veness, Marc
+  Bellemare, Alex Graves, Martin Riedmiller, Andreas Fidjeland, Georg
+  Ostrovski, Stig Petersen, Charles Beattie, Amir Sadik, Ioannis Antonoglou,
+  Helen King, Dharshan Kumaran, Daan Wierstra, Shane Legg, and Demis Hassabis.
+\newblock Human-level control through deep reinforcement learning.
+\newblock \emph{Nature}, 518:\penalty0 529--33, 02 2015.
+\newblock \doi{10.1038/nature14236}.
+
+\bibitem[Nash(1950)]{NASH}
+John~F. Nash.
+\newblock Equilibrium points in <i>n</i>-person games.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 36\penalty0
+  (1):\penalty0 48--49, 1950.
+\newblock \doi{10.1073/pnas.36.1.48}.
+\newblock URL \url{https://www.pnas.org/doi/abs/10.1073/pnas.36.1.48}.
+
+\bibitem[Oliehoek et~al.(2008)Oliehoek, Spaan, and Vlassis]{DecPOMDP}
+F.~A. Oliehoek, M.~T.~J. Spaan, and N.~Vlassis.
+\newblock Optimal and approximate q-value functions for decentralized {POMDPs}.
+\newblock \emph{Journal of Artificial Intelligence Research}, 32:\penalty0
+  289--353, may 2008.
+\newblock \doi{10.1613/jair.2447}.
+\newblock URL \url{https://doi.org/10.1613%2Fjair.2447}.
+
+\bibitem[OpenAI(2019)]{DotaOpenFive}
+OpenAI, 2019.
+\newblock URL \url{https://openai.com/blog/openai-five-finals/}.
+
+\bibitem[Rockafellar(1970)]{LagrangDuality}
+R.~Tyrrell Rockafellar.
+\newblock \emph{Convex analysis}.
+\newblock Princeton Mathematical Series. Princeton University Press, Princeton,
+  N. J., 1970.
+
+\bibitem[Schulman et~al.(2015{\natexlab{a}})Schulman, Levine, Moritz, Jordan,
+  and Abbeel]{TRPO}
+John Schulman, Sergey Levine, Philipp Moritz, Michael~I. Jordan, and Pieter
+  Abbeel.
+\newblock Trust region policy optimization, 2015{\natexlab{a}}.
+\newblock URL \url{https://arxiv.org/abs/1502.05477}.
+
+\bibitem[Schulman et~al.(2015{\natexlab{b}})Schulman, Moritz, Levine, Jordan,
+  and Abbeel]{GAE}
+John Schulman, Philipp Moritz, Sergey Levine, Michael Jordan, and Pieter
+  Abbeel.
+\newblock High-dimensional continuous control using generalized advantage
+  estimation, 2015{\natexlab{b}}.
+\newblock URL \url{https://arxiv.org/abs/1506.02438}.
+
+\bibitem[Schulman et~al.(2017)Schulman, Wolski, Dhariwal, Radford, and
+  Klimov]{PPO}
+John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov.
+\newblock Proximal policy optimization algorithms, 2017.
+\newblock URL \url{https://arxiv.org/abs/1707.06347}.
+
+\bibitem[Shapley(1953)]{StochasticGame}
+L.~S. Shapley.
+\newblock Stochastic games*.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 39\penalty0
+  (10):\penalty0 1095--1100, 1953.
+\newblock \doi{10.1073/pnas.39.10.1095}.
+\newblock URL \url{https://www.pnas.org/doi/abs/10.1073/pnas.39.10.1095}.
+
+\bibitem[Sutton and Barto(2018)]{sutton2018reinforcement}
+Richard~S Sutton and Andrew~G Barto.
+\newblock \emph{Reinforcement learning: An introduction}.
+\newblock MIT press, 2018.
+
+\bibitem[Williams(1992)]{EntropyRegularization}
+Ronald~J. Williams.
+\newblock Simple statistical gradient-following algorithms for connectionist
+  reinforcement learning.
+\newblock \emph{Mach. Learn.}, 8\penalty0 (3–4):\penalty0 229–256, may
+  1992.
+\newblock ISSN 0885-6125.
+\newblock \doi{10.1007/BF00992696}.
+\newblock URL \url{https://doi.org/10.1007/BF00992696}.
+
+\bibitem[Yu et~al.(2021)Yu, Velu, Vinitsky, Gao, Wang, Bayen, and Wu]{MAPPO}
+Chao Yu, Akash Velu, Eugene Vinitsky, Jiaxuan Gao, Yu~Wang, Alexandre Bayen,
+  and Yi~Wu.
+\newblock The surprising effectiveness of ppo in cooperative, multi-agent
+  games, 2021.
+\newblock URL \url{https://arxiv.org/abs/2103.01955}.
 
 \end{thebibliography}

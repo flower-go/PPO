@@ -1,5 +1,143 @@
-\chapter{Gentle summarization of Reinforcement learning}
+\chapter{Introduction to reinforcement learning}
 
-An~example citation: \cite{Andel07}
+In this introductory chapter, we slowly build up the intuition and motivation behind reinforcement learning.
+We start by defining the mathematical model of the Markov decision process and then proceed with other related properties and relationships.
+The following pages are inspired by the introduction to reinforcement learning as presented by the authors of the spinningup library (\cite{SpinningUpIntro}) and also by the introductory book to reinforcement learning (\cite{sutton2018reinforcement}).
 
-\section{Definitions - Markov decision process}
+\section{Markov decision process}
+\subsection*{Definition}
+
+\label{MDP} \textbf{Markov Decision Process} is tuple $\langle S, A, R, P, \rho_0\rangle$, where
+\begin{itemize}
+    \item $S$ is the set of all valid states,
+    \item $A$ is the set of all valid actions,
+    \item $R: S \times A \times S \rightarrow \mathbb{R}$ is the reward function, with $r_t=R(s_t, a_t,s_{t+1})$ being reward obtained when transitioning from state $s_t$ to $s_{t+1}$ using action $a_t$.
+    \item $P: S \times A \rightarrow \mathcal{P}(S)$ is the transition probabilty function, where $P(s_{t+1}|s_t, a_t)$ is probability of transition from state $s_t$ to $s_{t+1}$ after taking action $a_t$. 
+    \item $\rho_0$ is starting state distribution.
+\end{itemize}
+The name Markov comes from the fact that the system satisfies the Markov property, which states that the history of previous states has no effect on the next state and that only the current state is considered for state transitions.
+
+\section{Single-agent environment}
+Having defined the mathematical model of the environment, let's review the related concepts.
+The whole problem of reinforcement learning (RL) can be best described by the following visualization.
+
+\includegraphics*[width=12cm]{rl_diagram_transparent_bg.png}
+
+Environment represents a kind of world with its internal rules and properties. 
+The agent is then an entity that exists within this world, observes \textbf{state s} of the world, decides to react with \textbf{action a} on the basis of this state, and receives \textbf{reward r} as a consequence of this action.
+The entire mechanism of this environment can then be broken down into these cycles of states, actions, and rewards.
+The goal of an agent is to interact with the environment in such a way as to maximize its cumulative reward.
+
+
+
+\subsection*{Observability}
+State s contains all information about environment at given time. 
+However, in some environment agent can perceive only \textbf{observation o} where some information about environment can be missing.
+In this case we say that environment is \textbf{partially observable} as opposed to \textbf{fully observable} environment where agent has all information available at it's observation.
+Nevertheless, this problem is more related to multi-agent environments discussed in the next chapter and not so much to single-agent settings.
+
+\subsection*{Actions and policies}
+Environments can also differ in terms of what actions are possible within a given world.
+The set of possible actions is called \textbf{action space}, which again can be divided into two types. 
+\textbf{Discrete} action space contains finite number of possible actions. 
+And \textbf{continuous} action space, which allows the action to be any real-valued number or vector.
+
+The agent's choice of action can then be described by a rule called \textbf{policy}. 
+A common notation is that if the action selection is deterministic, we say the policy is \textbf{deterministic} and denote by
+
+$$
+a_t = \mu(s_t).
+$$
+
+If policy is \textbf{stochastic} it is usually noted as 
+
+$$a_t \sim \pi(\cdot |s_t).$$
+
+Policies are the main object of interest of reinforcement learning, as this action selection mechanism of an agent is what we are trying to learn.
+A policy, for optimization purposes, is a function often parametrized by a neural network whose parameters are usually denoted by the symbol
+$
+    \theta
+$
+, therefore, parameterized deterministic and stochastic policies are represented by the symbols     $\mu_\theta(s_t) , \pi_\theta(\cdot |s_t)$ respectively.
+
+\subsection*{Trajectory}
+The next important definition is the notion of trajectory, also known as episode or rollout.
+A trajectory is a sequence of states and actions in an environment.
+$$\tau = (s_0, a_0, s_1, a_1, ...)$$
+The initial state $s_0$ of an environment is sampled from \textbf{start-state distribution}, denoted as $\rho_0$. 
+Subsequent states follow the transition function of the environment. 
+These may again be deterministic 
+$$s_{t+1} = f(s_t, a_t)$$ or stochastic,
+$$s_{t+1} \sim P(\cdot | s_t, a_t)$$
+
+\subsection*{Return}
+We have already mentioned the agent's desire to maximize cumulative rewards.
+Now we combine it with trajectories and derive the formulation of \textbf{return}.
+$$R(\tau) = \sum_{t=0}^{|\tau|}r_t \quad \textrm{(finite-horizon)} $$
+$$R(\tau) = \sum_{t=0}^{|\tau|}\gamma^t r_t \quad \textrm{(infinite-horizon discounted return)} $$
+Infinite-horizon discounting is both intuitive and mathematically convenient.
+
+
+
+\subsection*{Optimal policy}
+In general, the goal of RL is to find such a policy that maximizes the expected return when acted upon.
+Suppose both the environment state transitions and the policy are stochastic. 
+Then we can define the probability of the trajectory as
+$$P(\tau|\pi) = \rho_0(s_0) \prod_{t=0}^{|\tau|} P(s_{t+1}|s_t,a_t)\pi(a_t|s_t).$$
+The expected return $J(\pi)$ can then be expressed as
+$$J(\pi)=\int_\tau P(\tau|\pi)R(\tau)= \mathop{\mathbb{E}}_{\tau \sim \pi}[R(\tau)].$$
+And finally, we can finish by defining the optimal policy 
+$$\pi^* = \arg \max_\pi J(\pi)$$
+which is also an expression describing the central RL optimization problem.
+
+\subsection*{Value functions}
+Once we have some policy $\pi$ it would be useful to define value of observed state. 
+For that matter we define two functions.
+
+\textbf{On-Policy Value Function} $V^\pi(s)$, which yields value of expected return when starting from state $s$ and following policy $\pi$:
+$$V^\pi(s) = \mathop{\mathbb{E}}_{\tau \sim \pi}[R(\tau)|s_0=s]$$
+
+Similarly we define \textbf{On-Policy Action-Value Function} $Q^\pi(s,a)$ which adds the possibility to say that in state $s$ we take an arbitrary action $a$ that does not necessarily have to come from policy $\pi$:
+$$Q^\pi(s,a) = \mathop{\mathbb{E}}_{\tau \sim \pi}[R(\tau)|s_0=s,a_0=a]$$
+
+For the optimal policy we further define \textbf{optimal value function} $V_{\pi^*(s)}$ and \textbf{optimal action-value function} $Q_{\pi^*(s,a)}$:
+
+\begin{gather*}
+    V^*(s) = \max_\pi \mathop{\mathbb{E}}_{\tau \sim \pi}[R(\tau)|s_0=s], \\
+    Q^*(s,a) = \max_\pi \mathop{\mathbb{E}}_{\tau \sim \pi}[R(\tau)|s_0=s,a_0=a]
+\end{gather*}
+
+\subsection*{Bellman equations}
+There exist formulations called Bellman equations that provide a way how to express value function in terms of action-value function and vice versa.
+They are based on the idea that the value of a state is equal to the reward you get in a given state, plus the value of the state you will obtain in the next transition. 
+This idea also provides recursive relation.
+\begin{align*}
+    V^\pi(s) &= \mathop{\mathbb{E}}_{a \sim \pi(s)} [Q_\pi(s,a)] \\
+    &= \mathop{\mathbb{E}}_{a \sim \pi(s), s' \sim P(\cdot|s,a)} [R(s,a, s') + \gamma V^\pi(s')]
+\end{align*}
+\begin{align*}
+    Q^\pi(s,a) &= \mathop{\mathbb{E}}_{s' \sim P(\cdot|s,a)} [R(s,a,s') + \gamma V_\pi(s')] \\
+    &= \mathop{\mathbb{E}}_{s' \sim P(\cdot|s,a)} [R(s,a,s') + \gamma \mathop{\mathbb{E}}_{a' \sim \pi(s')} [Q_\pi(s',a')]]
+\end{align*}
+
+The most important theorem for us is the reformulation of Bellman's equations for optimal policies:
+\begin{align*}
+    V^*(s) &= \max_a \mathop{\mathbb{E}}_{s' \sim P} [R(s,a,s') + \gamma V^*(s')] \\
+    Q^*(s,a) &= \mathop{\mathbb{E}}_{s' \sim P} [R(s,a,s') + \gamma \max_{a'} Q^*(s',a')]
+\end{align*}
+
+As we will see in the next section. 
+The first RL algorithm will be a straightforward application of the Bellman equation for optimal policy.
+
+\subsection*{Advantage function}
+Now that we've spent a few sections defining functions for the absolute value of actions or state-action pairs, it's worth considering relative value as well.
+Often, when dealing with RL problems, it is not so important for us to know the exact value of the action-state pair, but rather whether and by how much a given action is, on average, relatively better than others.
+In other words, we want to know the relative advantage of a given action over others.
+For a given policy $\pi$, the advantage function $A^\pi(s,a)$ describes how much better it is to take action $a$ over randomly sampled actions following policy $\pi$, assuming that policy $\pi$ is followed in all subsequent steps.
+Mathematically, the advantage function is defined as follows
+$$A^\pi(s,a) = Q^\pi(s,a) - V^\pi(s).$$
+The concept of an advantage function will be an integral part of policy gradient based methods, as we will see in a later section.
+
+
+
+

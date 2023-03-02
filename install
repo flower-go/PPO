@@ -1,7 +1,8 @@
-conda create -n overcooked_ai_terminal python=3.7
-conda activate overcooked_ai_terminal
-git clone https://github.com/PremekBasta/PPO.git
+module add conda-modules-py37
+conda create --prefix /storage/plzen1/ayshi/envs/overcooked_ai_terminal python=3.7
+conda activate /storage/plzen1/ayshi/envs/overcooked_ai_terminal
 conda install -y pytorch torchvision torchaudio pytorch-cuda=11.6 -c pytorch -c nvidia # check current pytorch install instruction
 conda install -y -c conda-forge gym tqdm tensorboard
 conda install -y -c anaconda pandas scipy
 conda install -y -c "conda-forge/label/broken" matplotlib
+

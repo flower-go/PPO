@@ -1,7 +1,183 @@
-\chapter{Multi agent environments for RL ???}
+\chapter{Multi-agent environment}
 
-\section{Definitions}
+In this chapter, we revisit concepts from the previous section and extend them to multi-agent settings.
+We introduce theoretical definitions for various types of settings and provide possible schemes for concurrent learning of multiple agents.
+And at the end, we mention two popular RL approaches in the field of MARL.
 
-\section{Possible mention of MAPPO success}
-\section{Cooperation harder than competition}
+\section{Multi-agent Markov Decision Process}
+So far, all the theory and algorithms that have been built have revolved around environments where there is a single agent.
+However, this is rarely the case in real-world problems.
+Much more often we encounter environments with multiple agents operating within them.
+In the general case, the agents are heterogeneous, which means that the agents may have different goals.
+Nevertheless, we will mostly focus on environments that are fully cooperative, meaning that the utility of any given state of the system is equivalent for all agents.
+
+With this setting we can extend the definition from the MDP section \ref{MDP}:
+\subsection*{Definition}
+\textbf{Multiagent Markov Decision Process}(\cite{MMDP})is a tuple 
+$\langle n, S, \mathcal{A}, T, R\rangle$
+\begin{itemize}
+    \item $n$ is the number of agents
+    \item $S$ is the set of all valid states,
+    \item $\mathcal{A} $ is the set of joint actions
+    \item $T: S \times \mathcal{A} \times S \rightarrow [0,1]$ is the transition function
+    \item $R: S  \rightarrow \mathbb{R}$ is a real-valued reward function, where reward determined by the reward function $R(s)$ is received by the the entire collection of agents, or alternatively, all agents receive the same reward.
+
+\end{itemize}
+
+\section{Decentralized Partially Observable MDP}
+Unfortunately, we cannot be satisfied with this definition, since MMDP provides a description that is far too idyllic for real-world problems.
+The MMDP model presumes that the state of the environment can be globally accessed by all agents.
+However, this is rarely the case in multi-agent environments.
+In general, the world can be of high complexity, and combined with limited sensory capabilities, the agent may perceive only limited observations describing only a part of the entire environment state.
+Therefore, we extend our model definition to include the concept of partial observability.
+
+\subsection*{Definition}
+\textbf{Decentralized partially observable Markov decision process} (Dec-POMDP, \cite{DecPOMDP}) is tuple
+$\langle n, S, \mathcal{A}, P, R, \mathcal{O}, O, h, b^0\rangle$ where,
+\begin{itemize}
+    \item $n$ is the number of agents
+    \item $S$ is the set of all valid states,
+    \item $\mathcal{A} $ is the set of joint actions
+    \item $P: S \times \mathcal{A} \times S \rightarrow [0,1]$ is the transition function
+    \item $R: S  \rightarrow \mathbb{R}$ is the immediate reward function
+    \item $\mathcal{O}$ is the set of joint observations
+    \item $O: \mathcal{A} \times S \rightarrow \mathcal{P}(\mathcal{O})$ is the observation function
+    \item $h$ is the horizon of the problem
+    \item $b^0 \in \mathcal{P}(S)$, is the initial state distribution at time $t=0$
+
+\end{itemize}
+
+We define $\mathcal{A} = \times_i \mathcal{A}^i$, where $\mathcal{A}^i$ is the set of actions available to agent $i$.
+Similarly, $\mathcal{O} = \times_i \mathcal{O}^i$, where $\mathcal{O}^i$ is the set of observations available to agent $i$. 
+Note that even this definitional extension does not provide us with a model capable of describing an environment where agents have different reward functions, which is needed for situations where agents have different goals or are even competing.
+This extension is possible with the definition of Stochastic game (\cite{StochasticGame}). 
+However, we don't need to provide the formal definition and extend our models, since the primary goal of this work will focus mainly on the cooperative setting where all agents have a common goal.
+
+If the observation satisfies the condition that the individual observation of all agents uniquely identifies the true state of the environment, the environment is considered fully observable and such a Dec-POMDP can be reduced to MMDP.
+\subsection*{Notation}
+To denote common entities, we will use bold:
+$\boldsymbol{a}=(a^1,..a^n) \in \mathcal{A}$.
+The common policy $\boldsymbol{\pi}$ induced by the set of individual policies ${\{\pi^i\}}_{i \in n}$ gives the mapping from states to common actions.
+Now we can use the similar notation as in the first chapter by using the bold symbols:
+
+\begin{align*}    
+        \textrm{Trajectory}&: \quad \boldsymbol{\tau} = (s_0, \boldsymbol{a_0}, s_1, \boldsymbol{a_1}, ...) \\
+        \textrm{Return}&: \quad R(\boldsymbol{\tau}) = \sum_{t=0}^{\boldsymbol{\tau}}r_t  \\
+        \textrm{Probability of trajectory}&: \quad P(\boldsymbol{\tau}|\boldsymbol{\pi}) = \rho_0(s_0) \prod_{t=0}^{|\boldsymbol{\tau}|} P(s_{t+1}|s_t,\boldsymbol{a_t})\boldsymbol{\pi}(\boldsymbol{a_t}|s_t) \\
+        \textrm{Expected return}&: \quad J(\boldsymbol{\pi})=\int_{\boldsymbol{\tau}} P(\boldsymbol{\tau}|\boldsymbol{\pi})R(\boldsymbol{\tau})= \mathop{\mathbb{E}}_{\boldsymbol{\tau} \sim \boldsymbol{\pi}}[R(\boldsymbol{\tau})]
+\end{align*}
+
+
+Given the joint utility function, it is useful to think of the collection of agents as a single agent whose goal is to produce an optimal joint policy.
+The problem with treating MMDP as a standard MDP where actions are distributed lies in coordination.
+In general, there are several different optimal joint policies.
+However, even if all agents choose their individual policies according to some optimal policy, there is no guarantee that they all pick from the same optimal joint policy.
+Such a final joint policy may be nowhere near the optimal one, and most likely even produce significantly worse performance.
+In theory, there are two simple ways to ensure optimal coordination.
+First, there could exist a central control mechanism \ref{CentralScheme} that can compute the joint policy and then communicate the result actions to all individual agents.
+Or second, each agent can communicate its choice of individual policy to the others.
+However, neither of these approaches are feasible in the real application.
+
+\subsection{Nash Equilibria}
+Alternatively, we can look at the MMDP from the perspective of an n-person game. 
+Then the problem of determining an optimal joint policy can be viewed as a problem of optimal equilibrium selection.
+A Nash equilibrium (\cite{NASH}) for a $\boldsymbol{\pi}^*$ can be defined as:\linebreak
+A set of policies $\pi^*$ is a Nash equilibrium if:
+\[
+    \forall i \in n, \forall \pi^i: J(\boldsymbol{\pi}^{*-i}, \pi^{*i}) \ge J(\boldsymbol{\pi}^{*-i}, \pi^i)
+\]
+
+However, not all Nash equilibria are optimal joint policies, as some may have lower utility than others.
+This makes multi-agent environments more sensitive to convergence to local suboptimal policies, as the only way to escape such an equilibrium is through coordinated modifications of all individual policies.
+
+
+
+\section{Learning schemes}
+\subsection*{Centralized scheme}\label{CentralScheme}
+From a theoretical point of view, we could consider MMDP as an instance of single-agent MDP, where the goal would be to learn a central joint policy, which would then be distributed among individual agents.
+With this idea, we could solve MMDP problems using the same single-agent RL algorithms from the second chapter, only instead of learning a single policy, we would learn a joint policy.
+However, this approach has several shortcomings in real-world cases.
+
+First, from a practical point of view, agents in this scenario would be somewhat passive entities whose job would only be to report perceived observations to some central authority.
+After all the observations have been collected by the central unit, a joint policy is constructed and distributed to the agents, who then blindly act as instructed by the central control.
+This has several serious problems.
+Imagine that some failure of the central mechanism occurs.
+Suddenly, the whole system of agents collapses because all agents lack individual autonomy.
+
+Second, such an intensive communication between all agents and the central control mechanism may be too demanding or not even plausible for technical reasons.
+
+Finally, from a theoretical point of view, the representation of such a joint policy grows exponentially with the number of agents with respect to both observations ($\prod_{i=0}^{n}{|\mathcal{O}^i|}$) and actions ($\prod_{i=0}^{n}|\mathcal{A}^i|$), which makes it unscalable.
+
+\subsection*{Concurrent scheme}
+At the other end of the spectrum is the concurrent scheme.
+Here, all kinds of global information are omitted and agents rely solely on their local observations.
+The training of such an agent is then completely independent.
+
+\subsection*{Centralized training with decentralized execution}
+And finally, somewhere in between the concurrent and centralized schemes, we can identify the so-called centralized training with decentralized execution.
+Here we consider the two life stages of agents. 
+First, we train our agents in safe laboratory conditions, and only after the training is complete are they deployed in the real world.
+
+During training, we can take advantage of the fact that we presumably have more information about the state of the environment at our disposal.
+Whether it is the true global state of the environment, local observations of other agents, or actions taken by others.
+All of this additional information can be incorporated into the training process to capture the true state to act upon.
+In other words, we want to make the training process as simple and accurate as possible.
+
+Once the agents are deployed, they again depend solely on their local observations.
+
+This learning scheme is often used in RL algorithms where both actors and critics are employed.
+For example, this is reflected in the PPO \ref{PPO} algorithms mentioned above.
+During training, both actor and critic are trained in parallel, and the value estimate obtained by the critic can be used to provide more accurate information about the real value of the given state, making the actor's policy update more stable and accurate.
+Once training is complete, the agents, provided with local observations, are asked to take action based solely on the actor.
+
+\section{Non-stationarity}
+In addition to all the problems of partial observability, local equilibria, and policy distribution that have been mentioned so far
+there is another important problem that is not present in single-agent settings.
+Although we are able to reproduce the value function expressions:
+\begin{align*}  
+    &V^{\boldsymbol{\pi}}(s) = \mathop{\mathbb{E}}_{\boldsymbol{\tau} \sim \boldsymbol{\pi}}[R(\boldsymbol{\tau})|s_0=s] \\
+    &Q^{\boldsymbol{\pi}}(s,\boldsymbol{a}) = \mathop{\mathbb{E}}_{\boldsymbol{\tau} \sim \boldsymbol{\pi}}[R(\boldsymbol{\tau})|s_0=s,\boldsymbol{a_0}=\boldsymbol{a}] \\ 
+    &A^{\boldsymbol{\pi}}(s,\boldsymbol{a}) = Q^{\boldsymbol{\pi}}(s,\boldsymbol{a}) - V^{\boldsymbol{\pi}}(s)
+\end{align*}
+due to the non-stationarity problem, we cannot obtain the optimal value using Bellman equations as it was done in the single agent setting.
+Non-stationarity refers to the fact that changing policies of other agents as a consequence changes, from a fixed agent's perspective, the state transition and the reward function of the environment. 
+Using the idea of Bellman equations for optimality is still possible.
+However, in a multi-agent setting, we lose the theoretical basis that promises convergence to the optimal policy, and training using the Q-learning update rule must be accompanied by some mechanisms to overcome the non-stationarity problem.
+
+\section{RL algorithms}
+Having extended our mathematical model to settings that satisfy the conditions for a multi-agent environment, we can continue with a brief mention of the multi-agent variants of reinforcement learning algorithms discussed in the previous chapter.
+\subsection*{MADDPG}
+The first of the algorithms mentioned is the Multi Agent Deep Deterministic Policy Gradient (MADDPG, \cite{MADDPG}) algorithm.
+The authors extend DDPG (briefly mentioned in \ref{QPlusPolicy}) by using centralized learning with decentralized execution.
+To address the problem of non-stationarity, the authors propose sampling from the ensemble of policies for each agent to obtain more robust multi-agent policies.
+This algorithm has been extensively experimented in academia with respect to multi-agent coordination environments.
+\subsection*{MAPPO}
+Finally, we want to mention the recent success in the form of Multi Agent Proximal Policy Optimization (MAPPO, \cite{MAPPO}) variant of the PPO \ref{PPO} algorithm.
+The authors revisit the use of PPO in multi-agent settings.
+In recent years, MADDPG has usually been the first choice of algorithm when dealing with multi-agent environments, leaving PPO ommitted.
+The authors hypothesize that this is due to two reasons: first, the belief that PPO is less sample-efficient than off-policy methods, and second, the fact that common implementation and hyperparameter tuning techniques when using PPO in single-agent settings often do not yield strong performance when transferred to multi-agent settings.
+
+The authors propose five important changes with respect to adaptation to multi-agent settings.
+\begin{itemize}
+    \item Value normalization: \newline 
+    employing value normalization using Generalized Advantage Estimation (\cite{GAE}) 
+    
+    \item Input Representation to Value Function: \newline 
+    enhanced global state with agent-specific features are used for critic, where such representation does not have substantially higher dimension
+
+    \item Training Data Usage: \newline
+    using smaller amount of trainig epochs to avoid non-stationarity problem and not splitting data to mini-batches to make policy update more accurate
+
+    \item PPO Clipping: \newline
+    maintain a clipping ratio $\epsilon$ under $0.2$, within this range, tune $\epsilon$ as trade-off between training stability and fast convergence
+
+    \item PPO Batch Size: \newline
+    utilize a large batch size
+\end{itemize}
+
+Using these five concepts, they were able to achieve comparable or superior results to off-policy algorithms on several benchmark frameworks without any other domain or structural modifications.
+
+
+
+
 

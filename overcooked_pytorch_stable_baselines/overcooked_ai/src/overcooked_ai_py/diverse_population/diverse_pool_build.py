@@ -1,4 +1,5 @@
 import copy
+import random
 import sys
 import os
 
@@ -30,7 +31,7 @@ SP_EVAL_EXP_NAME = "SP_EVAL"
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("--layout_name", default="forced_coordination", type=str, help="Layout name.")
-parser.add_argument("--trained_models", default=15, type=int, help="Number of models to train in experiment.")
+parser.add_argument("--trained_models", default=15, type=int, help="Number of models to train in experiment.") #TODO: Default 15
 parser.add_argument("--init_SP_agents", default=5, type=int, help="Number of self-play agents trained to initialize population.") #TODO: Default 5
 parser.add_argument("--mode", default="POP", type=str, help="Mode of experiment: Self-play ('SP') or Population ('POP').") #TODO: set default POP
 parser.add_argument("--kl_diff_bonus_reward_coef", default=0.0, type=float, help="Coeficient for kl div population policies difference.")
@@ -41,7 +42,9 @@ parser.add_argument("--delay_shared_reward", default=False, action="store_true",
 parser.add_argument("--exp", default="POP_SP_INIT", type=str, help="Experiment name.")
 parser.add_argument("--eval_set_name", default="SP_EVAL_ROP0.0", type=str, help="Name of evaluation set.")
 parser.add_argument("--execute_final_eval", default=False, action="store_true", help="Whether to do final population evaluation.")
-parser.add_argument("--final_eval_games_per_worker", default=20, type=int, help="Number of games per worker for pair in final evaluation.")
+parser.add_argument("--final_eval_games_per_worker", default=5, type=int, help="Number of games per worker for pair in final evaluation.")
+parser.add_argument("--n_sample_partners", default=-1, type=int, help="Number of sampled partners for data collection.")
+
 
 parser.add_argument("--partner_action_deterministic", default=False, action="store_true", help="Whether trained partners from population play argmax for episodes sampling")
 parser.add_argument("--random_switch_start_pos", default=False, action="store_true", help="") #TODO: Set default False
@@ -68,36 +71,52 @@ parser.add_argument("--eval_interval", default=10, type=int, help="Evaluate afte
 parser.add_argument("--evals_num_to_threshold", default=2, type=int, help="Number of reevaluations for more exact result")
 parser.add_argument("--device", default="cuda", type=str, help="Device - cuda or cpu")
 parser.add_argument("--pop_bonus_ts", default=1e5, type=int, help="Number of bonus train time steps for each consecutive individual in population.") #TODO: Default 1e5
-parser.add_argument("--training_percent_start_eval", default=0.0, type=float, help="Coeficient for cross-entropy loss of population policies.")
+parser.add_argument("--training_percent_start_eval", default=0.5, type=float, help="Coeficient for cross-entropy loss of population policies.")
+parser.add_argument("--tensorboard_log", default=False, action="store_true", help="") #TODO: Set default False
+
+parser.add_argument("--seed", default=42, type=int, help="Random seed.")
+
 
 
 args = parser.parse_args([] if "__file__" not in globals() else None)
 
-# TODO: should i study effect of annealing of entropy_coef, sparse_r_coef, learning_rate???, ... values found such that works for all maps
+random.seed(args.seed)
+import numpy as np
+np.random.seed(args.seed)
+
 
 def load_or_train_models(args, env):
-    directory = projdir + "/diverse_population/models/" + args.layout_name + "/" + args.exp + "/"
+    directory = projdir + "/diverse_population/models/" + args.layout_name + "/"
     models = []
+    env.population = []
     env.population_mode = False
     for n in range(args.trained_models):
         model = load_or_train_model(directory, n, env, args)
 
         models.append(model)
+        env.population.append(model)
 
         # First init_SP_agents models are always self-play
         if (n + 1) >= args.init_SP_agents:
             env.population_mode = args.mode == "POP"
-        env.population = models
 
     if args.mode == "POP":
         final_model = train_final_model(directory, n+1, env, args)
+        models.append(final_model)
+
+        env.population = models[args.init_SP_agents:-1]
+        final_model = train_final_model(directory, n+2, env, args)
         models.append(final_model)
     return models
 
 
 def load_or_train_model(directory, n, env, args):
     model = None
-    model_name = directory + str(n).zfill(2)
+    if args.mode == "SP" or n < args.init_SP_agents:
+        exp_part = args.exp
+    else:
+        exp_part = args.full_exp_name
+    model_name = directory + exp_part + "/" + str(n).zfill(2)
     try:
         print(f"Looking for file {model_name}")
         model = PPO.load(model_name, env=env, device="cuda")
@@ -113,27 +132,28 @@ def load_or_train_model(directory, n, env, args):
 
 
 def train_model(n, env, args):
-    now = datetime.now()
     found = False
     while not found:
         try:
             print(f"Learning {args.layout_name}/{args.exp}")
             model = PPO("CnnPolicy", env, device=args.device, verbose=0,
-                        tensorboard_log=f"./diverse_population/logs/{args.layout_name}/{args.exp}/{str(n).zfill(2)}",
+
+                        tensorboard_log=f"./diverse_population/logs/{args.layout_name}/{args.exp}/{str(n).zfill(2)}" if args.tensorboard_log else None,
                         n_steps=args.n_steps,
-                        seed=now.microsecond + now.hour,
+                        seed=args.seed,
                         batch_size=args.batch_size,
                         n_epochs=args.n_epochs,
                         learning_rate=args.learning_rate,
                         gae_lambda=0.98,
                         clip_range=args.clip_range,
                         max_grad_norm = args.max_grad_norm,
-                        vf_coef=args.vf_coef
+                        vf_coef=args.vf_coef,
                         )
             model.custom_id = n
             env.other_agent_model = model
             num_steps = args.total_timesteps
-            num_steps += n * args.pop_bonus_ts
+            # if args.mode == "POP":
+            #     num_steps += n * args.pop_bonus_ts
             model.learn(num_steps, args=args, reset_num_timesteps=False)
             found = True
         except divergent_solution_exception.divergent_solution_exception:
@@ -147,7 +167,7 @@ def train_final_model(directory, n, env, args):
     final_args = copy.deepcopy(args)
 
     # Reset all population diversification techniques
-    final_args.total_timesteps = 2 * final_args.total_timesteps
+    final_args.total_timesteps = 1.5 * final_args.total_timesteps
     final_args.kl_diff_bonus_reward_coef = 0.
     final_args.kl_diff_bonus_reward_clip = 0.
     final_args.kl_diff_loss_coef = 0.
@@ -207,6 +227,7 @@ overcooked_env = OvercookedEnv.from_mdp(mdp, horizon=400)
 if __name__ == "__main__":
     print("python is running")
     feature_fn = lambda _, state: overcooked_env.lossless_state_encoding_mdp(state, debug=False)
+    # feature_fn = lambda _, state: overcooked_env.featurize_state_mdp(state)
     start_state_fn = mdp.get_random_start_state_fn(random_start_pos=True, # TODO: set Default True
                                                    rnd_obj_prob_thresh = args.rnd_obj_prob_thresh_env,# TODO: set Default args.rnd_obj_prob_thresh_env,
                                                    random_switch_start_pos = args.random_switch_start_pos) if args.static_start == False else mdp.get_standard_start_state
@@ -221,7 +242,7 @@ if __name__ == "__main__":
     evaluator = Evaluator(gym_env, args, deterministic=True, device="cpu")
 
     set_layout_params(args)
-    args.exp = get_name(args.exp)
+    args.full_exp_name = get_name(args.exp, sp=args.mode=="SP")
 
 
     models = load_or_train_models(args, gym_env)
