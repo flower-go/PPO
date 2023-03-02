@@ -247,7 +247,7 @@ if __name__ == "__main__":
     if args.execute_final_eval:
         eval_env = "_ENVROP" + str(args.rnd_obj_prob_thresh_env)
         if args.mode == "POP":
-            population_name = args.exp
+            population_name = args.full_exp_name
             eval_models = get_eval_models(args, gym_env)
             eval_table = evaluator.evaluate(models, eval_models, args.final_eval_games_per_worker, args.layout_name, population_name, eval_env = eval_env)
             heat_map(eval_table, population_name, population_name, args.layout_name, eval_env = eval_env)
