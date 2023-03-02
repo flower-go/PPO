@@ -20,7 +20,7 @@ from experiments_params import set_layout_params
 from visualisation.visualisation import heat_map
 from evaluation.evaluation import Evaluator
 from divergent_solution_exception import divergent_solution_exception
-exit()
+#exit()
 os.environ['CUDA_VISIBLE_DEVICES'] = "0"
 
 
