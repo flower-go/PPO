@@ -78,8 +78,10 @@ parser.add_argument("--seed", default=42, type=int, help="Random seed.")
 
 args = parser.parse_args([] if "__file__" not in globals() else None)
 
-random.seed(args.seed)
+
+
 import numpy as np
+random.seed(args.seed)
 np.random.seed(args.seed)
 
 
@@ -245,6 +247,9 @@ if __name__ == "__main__":
     models = load_or_train_models(args, gym_env)
 
     if args.execute_final_eval:
+        random.seed(args.seed)
+        np.random.seed(args.seed)
+
         eval_env = "_ENVROP" + str(args.rnd_obj_prob_thresh_env)
         if args.mode == "POP":
             models_name = args.full_exp_name
