@@ -225,6 +225,7 @@ def get_name(name, args, sp=False, extended=False):
         full_name = full_name + "_LClip" + str(args.kl_diff_loss_clip)
         full_name = full_name + "_DSR" + str(args.delay_shared_reward)
         full_name = full_name + "_PAD" + str(args.partner_action_deterministic)
+        full_name = full_name + "_NSP" + str(args.n_sample_partners)
     return full_name
 
 
