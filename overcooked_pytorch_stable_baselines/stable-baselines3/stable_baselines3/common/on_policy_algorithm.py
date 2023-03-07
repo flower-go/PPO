@@ -330,7 +330,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             if args.divergent_check_timestep is not None:
                 check_timestep = args.divergent_check_timestep
                 if self.env.population_mode:
-                    check_timestep = check_timestep / 2
+                    check_timestep = check_timestep * 0.7
 
                 if self.num_timesteps > check_timestep and self.num_timesteps < check_timestep + 1e5:
                     sparse_r = safe_mean([ep_info["ep_game_stats"]["cumulative_sparse_rewards_by_agent"][1 - ep_info["policy_agent_idx"]] for ep_info in self.ep_info_buffer])
@@ -484,6 +484,8 @@ class OnPolicyAlgorithm(BaseAlgorithm):
         """
 
         sample_population = self.env.population
+        if train and self.args.n_sample_partners > 0:
+            sample_population = self.env.population[0:self.args.n_sample_partners]
 
         # if train and self.args.n_sample_partners > 0:
         #     sample_population = np.random.choice(self.env.population, size=self.args.n_sample_partners)

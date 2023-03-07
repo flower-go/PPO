@@ -31,6 +31,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--layout_name", default="forced_coordination", type=str, help="Layout name.")
 parser.add_argument("--trained_models", default=11, type=int, help="Number of models to train in experiment.") #TODO: Default 11
 parser.add_argument("--init_SP_agents", default=3, type=int, help="Number of self-play agents trained to initialize population.") #TODO: Default 3
+parser.add_argument("--eval_agents", default=30, type=int, help="Number of agents from evaluation set.") #TODO: Default 11
 parser.add_argument("--mode", default="POP", type=str, help="Mode of experiment: Self-play ('SP') or Population ('POP').") #TODO: set default POP
 parser.add_argument("--kl_diff_bonus_reward_coef", default=0.0, type=float, help="Coeficient for kl div population policies difference.")
 parser.add_argument("--kl_diff_bonus_reward_clip", default=0.0, type=float, help="")
@@ -39,6 +40,7 @@ parser.add_argument("--kl_diff_loss_clip", default=0., type=float, help="Ccross-
 parser.add_argument("--delay_shared_reward", default=False, action="store_true", help="Whether to delay shared rewards.")
 parser.add_argument("--exp", default="POP_SP_INIT", type=str, help="Experiment name.")
 parser.add_argument("--eval_set_name", default="SP_EVAL2_ROP0.0", type=str, help="Name of evaluation set.")
+parser.add_argument("--base_eval_name", default="SP_EVAL2_ROP0.0", type=str, help="Name of evaluation set.")
 parser.add_argument("--execute_final_eval", default=False, action="store_true", help="Whether to do final population evaluation.")
 parser.add_argument("--final_eval_games_per_worker", default=5, type=int, help="Number of games per worker for pair in final evaluation.")
 parser.add_argument("--n_sample_partners", default=-1, type=int, help="Number of sampled partners for data collection.")
@@ -175,11 +177,18 @@ def train_final_model(directory, n, env, args):
 
     return load_or_train_model(directory, n, env, final_args)
 
-def get_eval_models(args, gym_env):
+def get_eval_models(args, gym_env, mode):
     eval_args = copy.deepcopy(args)
-    eval_args.exp = args.eval_set_name
-    eval_args.trained_models = EVAL_SET_SIZE
-    eval_args.mode = "SP"
+    # eval_args.exp = args.eval_set_name
+    # eval_args.trained_models = EVAL_SET_SIZE
+    # eval_args.mode = "SP"
+
+
+    # args.base_eval_name = "POP_SMALL2"
+    eval_args.exp = args.base_eval_name
+    eval_args.full_exp_name = args.eval_set_name
+    eval_args.trained_models = args.eval_agents
+    eval_args.mode = mode
     return load_or_train_models(eval_args, gym_env)
 
 def models_are_same(model1, model2):
@@ -189,7 +198,7 @@ def models_are_same(model1, model2):
     return True
 
 
-def get_name(name, sp=False, extended=False):
+def get_name(name, args, sp=False, extended=False):
     full_name = name
     if sp or full_name == SP_EVAL_EXP_NAME:
         pass
@@ -241,7 +250,7 @@ if __name__ == "__main__":
     evaluator = Evaluator(gym_env, args, deterministic=True, device="cpu")
 
     set_layout_params(args)
-    args.full_exp_name = get_name(args.exp, sp=args.mode=="SP")
+    args.full_exp_name = get_name(args.exp, args, sp=args.mode=="SP")
 
 
     models = load_or_train_models(args, gym_env)
@@ -256,10 +265,73 @@ if __name__ == "__main__":
             evals_name = args.eval_set_name
             group_name = models_name + "_X_" + evals_name
 
-            eval_models = get_eval_models(args, gym_env)
+            eval_models = get_eval_models(args, gym_env, mode="SP")
+
+            # models = models[args.init_SP_agents:]
+            # eval_models = eval_models[args.init_SP_agents:]
+            # evaluator.args.init_SP_agents = 0
             eval_table = evaluator.evaluate(models, eval_models, args.final_eval_games_per_worker, args.layout_name, group_name, eval_env = eval_env, mode=args.mode)
+            evaluator.analyze(eval_table,verbose=1)
             heat_map(eval_table, group_name, args.layout_name, eval_env = eval_env)
         else:
             group_name = args.full_exp_name + "_X_" + args.full_exp_name
             eval_table = evaluator.evaluate(models, models, args.final_eval_games_per_worker, args.layout_name, group_name, eval_env = eval_env, mode=args.mode)
+            evaluator.analyze(eval_table, mode="SP", verbose=1)
             heat_map(eval_table, group_name, args.layout_name, eval_env = eval_env)
+
+    # experiments = [
+    #     (0.0, 0.0, 0.0, 0.0),
+    #
+    #     (0.08, 0.025, 0.0, 0.0),
+    #     (0.15, 0.05, 0.0, 0.0),
+    #     (0.1, 0.075, 0.0, 0.0),
+    #
+    #     (0.0, 0.0, 0.12, 0.07),
+    #     (0.0, 0.0, 0.08, 0.03),
+    #     (0.0, 0.0, 0.1, 0.15),
+    #
+    #     (0.1, 0.05, 0.1, 0.05)
+    # ]
+    #
+    # import matplotlib.pyplot as plot
+    # for exp_num in range(1, 6):
+    #     data = []
+    #     for exp_setting in experiments:
+    #         (BR_coef, BR_clip, L_coef, L_clip) = exp_setting
+    #         eval_args = copy.deepcopy(args)
+    #         eval_args.exp = f"POP_SMALL{exp_num}"
+    #         eval_args.kl_diff_bonus_reward_coef = BR_coef
+    #         eval_args.kl_diff_bonus_reward_clip = BR_clip
+    #         eval_args.kl_diff_loss_coef = L_coef
+    #         eval_args.kl_diff_loss_clip = L_clip
+    #
+    #         eval_args.full_exp_name = get_name(eval_args.exp, eval_args, sp=eval_args.mode == "SP")
+    #
+    #         models_name = eval_args.full_exp_name
+    #         evals_name = eval_args.eval_set_name
+    #         group_name = models_name + "_X_" + evals_name
+    #
+    #         print(group_name)
+    #         eval_table = evaluator.evaluate(None, None, eval_args.final_eval_games_per_worker, eval_args.layout_name, group_name, eval_env = eval_env, mode=eval_args.mode)
+    #         stats = evaluator.analyze(eval_table, verbose=1)
+    #
+    #         data.append((stats["init_avg"], stats["best_init_avg"], stats["final_best_avg"], stats["best_pop_avg"]))
+    #
+    #         print(stats["best_agent"])
+    #         print(stats["best_agent_avg"])
+    #         print(stats["avg"])
+    #         print(stats["non_zero_avg"])
+    #
+    #     plt = plot.plot(["0","R0","R1","R2","L0","L1","L2","R0L0"], data, 'o')
+    #     plt[0].set_label("init avg")
+    #     plt[1].set_label("best init row avg")
+    #     plt[2].set_label("final best row avg")
+    #     plt[3].set_label("pop best row avg")
+    #
+    #     plot.legend()
+    #     # plt.legend(['A', 'B', "C", 'D'])
+    #     # , label = ['A', 'B', "C", 'D']
+    #
+    #     plot.savefig(f"./diverse_population/results/{args.layout_name}/POP_SMALL{exp_num}.png")
+    #     plot.show()
+

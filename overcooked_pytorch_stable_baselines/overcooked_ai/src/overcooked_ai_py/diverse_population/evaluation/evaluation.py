@@ -1,3 +1,5 @@
+import copy
+
 import numpy as np
 import torch as th
 import os
@@ -35,28 +37,65 @@ class Evaluator(object):
             if file_full_name is not None:
                 np.savetxt(file_full_name, np.round(np.array(result_matrix)))
 
+        return np.array(result_matrix)
+
+    def analyze(self, table, mode="POP", verbose=0):
+        best_agent = None
+        best_agent_avg = None
 
         if mode == "POP":
-            row_avgs = np.sum(result_matrix, axis=1) / result_matrix.shape[1]
+            row_avgs = np.sum(table, axis=1) / table.shape[1]
+            best_init_avg = np.max(row_avgs[:self.args.init_SP_agents])
+            init_avg = np.mean(row_avgs[:self.args.init_SP_agents])
+            avg = np.mean(table[self.args.init_SP_agents:])
+            non_zero_avg = np.sum(table[self.args.init_SP_agents:][table[self.args.init_SP_agents:] > 0]) / table[self.args.init_SP_agents:][table[self.args.init_SP_agents:] > 0].size
+
+            final_best_avg = np.max(row_avgs[self.args.trained_models:])
+            best_pop_avg = np.max(row_avgs[self.args.init_SP_agents:self.args.trained_models])
+
+
+            if verbose:
+                print(f"best init row average: {best_init_avg}")
+                print(f"init average: {init_avg}")
+
+                print(f"final best row average: {final_best_avg}")
+                # print(f"pop best row average: {best_pop_avg}")
+
+                # print(f"mean SP part: {np.mean(table[:self.args.init_SP_agents])}")
+                # print(f"mean SP of non zeros: {np.sum(table[:self.args.init_SP_agents][table[:self.args.init_SP_agents] > 0]) / table[:self.args.init_SP_agents][table[:self.args.init_SP_agents] > 0].size}")
+                # print(f"zero SP ratio: {np.sum(table[:self.args.init_SP_agents] == 0.0) / table[:self.args.init_SP_agents].size}%")
+                # print(f"mean POP part: {avg}")
+                # print(f"mean POP of non zeros: {non_zero_avg}")
+                # print(f"zero POP ratio: {np.sum(table[self.args.init_SP_agents:] == 0.0) / table[self.args.init_SP_agents:].size}%")
+
+        else:
+            zero_diag = copy.deepcopy(table)
+            np.fill_diagonal(zero_diag, 0)
+            row_avgs = np.sum(table, axis=1) / table.shape[1]
             best_agent = np.argmax(row_avgs)
             best_agent_avg = np.max(row_avgs)
 
-            print(f"best agent id: {best_agent}, with avg value: {best_agent_avg}")
+            row_avgs = np.sum(zero_diag, axis=1) / zero_diag.shape[1]
+            best_agent = np.argmax(row_avgs)
+            best_agent_avg = np.max(row_avgs)
 
-            print(f"mean SP part: {np.mean(result_matrix[:self.args.init_SP_agents])}")
-            print(f"mean SP of non zeros: {np.sum(result_matrix[:self.args.init_SP_agents][result_matrix[:self.args.init_SP_agents] > 0]) / result_matrix[:self.args.init_SP_agents][result_matrix[:self.args.init_SP_agents] > 0].size}")
-            print(f"zero SP ratio: {np.sum(result_matrix[:self.args.init_SP_agents] == 0.0) / result_matrix[:self.args.init_SP_agents].size}%")
+            avg = np.mean(table[~np.eye(table.shape[0], dtype=bool)])
+            if verbose:
+                print(f"avg of diagonal: {np.mean(np.diagonal(table))}")
+                print(f"avg of NON-diagonal: {avg}")
 
-            print(f"mean POP part: {np.mean(result_matrix[self.args.init_SP_agents:])}")
-            print(f"mean POP of non zeros: {np.sum(result_matrix[self.args.init_SP_agents:][result_matrix[self.args.init_SP_agents:] > 0]) / result_matrix[self.args.init_SP_agents:][result_matrix[self.args.init_SP_agents:] > 0].size}")
-            print(f"zero POP ratio: {np.sum(result_matrix[self.args.init_SP_agents:] == 0.0) / result_matrix[self.args.init_SP_agents:].size}%")
+            non_zero_avg = None
+        return {
+            "best_agent": best_agent,
+            "best_agent_avg": best_agent_avg,
+            "avg": avg,
+            "non_zero_avg": non_zero_avg,
+            "best_init_avg": best_init_avg,
+            "init_avg": init_avg,
+            "final_best_avg": final_best_avg,
+            "best_pop_avg": best_pop_avg
 
-        else:
-            print(f"avg of diagonal: {np.mean(np.diagonal(result_matrix))}")
-            print(f"avg of NON-diagonal: {np.mean(result_matrix[~np.eye(result_matrix.shape[0],dtype=bool)])}")
-
-        return np.array(result_matrix)
-
+        }
 
     def eval_episodes(self, self_agent_model, other_agent_model, num_games_per_worker, deterministic=True):
         evaluation_rewards = []
