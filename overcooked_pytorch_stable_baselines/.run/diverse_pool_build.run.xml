@@ -14,7 +14,7 @@
     <option name="ADD_CONTENT_ROOTS" value="true" />
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <option name="SCRIPT_NAME" value="$PROJECT_DIR$/overcooked_ai/src/overcooked_ai_py/diverse_population/diverse_pool_build.py" />
-    <option name="PARAMETERS" value="--mode=&quot;POP&quot; --exp=&quot;POP_SMALL1&quot; --trained_models=11 --seed=11 --training_percent_start_eval=0.0 --kl_diff_bonus_reward_coef=0.0 --kl_diff_bonus_reward_clip=0.0 --total_timesteps=5500000 --kl_diff_loss_coef=0.1 --kl_diff_loss_clip=0.15 --execute_final_eval --final_eval_games_per_worker=1 --eval_set_name=&quot;SP_EVAL2_ROP0.0&quot; --base_eval_name=&quot;SP_EVAL2_ROP0.0&quot; --rnd_obj_prob_thresh_env=0.0 --eval_agents=30 --tensorboard_log --n_sample_partners=1 --init_SP_agents=3" />
+    <option name="PARAMETERS" value="--mode=&quot;POP&quot; --exp=&quot;POP_SMALL8&quot; --trained_models=11 --seed=11 --training_percent_start_eval=0.0 --kl_diff_bonus_reward_coef=0.08 --kl_diff_bonus_reward_clip=0.02 --total_timesteps=5500000 --kl_diff_loss_coef=0.08 --kl_diff_loss_clip=0.02 --execute_final_eval --final_eval_games_per_worker=1 --eval_set_name=&quot;SP_EVAL2_ROP0.0&quot; --base_eval_name=&quot;SP_EVAL2_ROP0.0&quot; --rnd_obj_prob_thresh_env=0.0 --eval_agents=30 --n_sample_partners=2 --init_SP_agents=3" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <option name="EMULATE_TERMINAL" value="false" />
     <option name="MODULE_MODE" value="false" />

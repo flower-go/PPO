@@ -16,7 +16,7 @@ class Evaluator(object):
         self.venv.reset_times([i for i in range(args.num_workers)])
 
     def evaluate(self, agent_set_0, agent_set_1, num_games_per_worker = 2, layout_name = None, group_name = None, deterministic=True, eval_env="", mode="POP"):
-        file_full_name = f"{os.environ['PROJDIR']}/diverse_population/evaluation/{layout_name}/" + group_name + '' if deterministic else '_STOCH'
+        file_full_name = f"{os.environ['PROJDIR']}/diverse_population/evaluation/{layout_name}/" + group_name + ('' if deterministic else '_STOCH')
         file_full_name += eval_env
         try:
             result_matrix = np.loadtxt(file_full_name)
@@ -42,6 +42,10 @@ class Evaluator(object):
     def analyze(self, table, mode="POP", verbose=0):
         best_agent = None
         best_agent_avg = None
+        best_init_avg=None
+        init_avg=None
+        final_best_avg=None
+        best_pop_avg=None
 
         if mode == "POP":
             row_avgs = np.sum(table, axis=1) / table.shape[1]

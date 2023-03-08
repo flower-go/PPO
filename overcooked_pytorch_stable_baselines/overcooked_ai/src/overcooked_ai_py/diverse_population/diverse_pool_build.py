@@ -271,29 +271,29 @@ if __name__ == "__main__":
             # models = models[args.init_SP_agents:]
             # eval_models = eval_models[args.init_SP_agents:]
             # evaluator.args.init_SP_agents = 0
-            eval_table = evaluator.evaluate(models, eval_models, args.final_eval_games_per_worker, args.layout_name, group_name, eval_env = eval_env, mode=args.mode)
+            eval_table = evaluator.evaluate(models, eval_models, args.final_eval_games_per_worker, args.layout_name, group_name, eval_env = eval_env, mode=args.mode, deterministic=True)
             evaluator.analyze(eval_table,verbose=1)
-            heat_map(eval_table, group_name, args.layout_name, eval_env = eval_env)
+            heat_map(eval_table, group_name, args.layout_name, eval_env = eval_env, deterministic=True)
         else:
             group_name = args.full_exp_name + "_X_" + args.full_exp_name
-            eval_table = evaluator.evaluate(models, models, args.final_eval_games_per_worker, args.layout_name, group_name, eval_env = eval_env, mode=args.mode)
+            eval_table = evaluator.evaluate(models, models, args.final_eval_games_per_worker, args.layout_name, group_name, eval_env = eval_env, mode=args.mode, deterministic=True)
             evaluator.analyze(eval_table, mode="SP", verbose=1)
-            heat_map(eval_table, group_name, args.layout_name, eval_env = eval_env)
+            heat_map(eval_table, group_name, args.layout_name, eval_env = eval_env, deterministic=True)
 
-    # experiments = [
-    #     (0.0, 0.0, 0.0, 0.0),
-    #
-    #     (0.08, 0.025, 0.0, 0.0),
-    #     (0.15, 0.05, 0.0, 0.0),
-    #     (0.1, 0.075, 0.0, 0.0),
-    #
-    #     (0.0, 0.0, 0.12, 0.07),
-    #     (0.0, 0.0, 0.08, 0.03),
-    #     (0.0, 0.0, 0.1, 0.15),
-    #
-    #     (0.1, 0.05, 0.1, 0.05)
-    # ]
-    #
+    experiments = [
+        (0.0, 0.0, 0.0, 0.0),
+
+        (0.08, 0.025, 0.0, 0.0),
+        (0.15, 0.05, 0.0, 0.0),
+        (0.1, 0.075, 0.0, 0.0),
+
+        (0.0, 0.0, 0.12, 0.07),
+        (0.0, 0.0, 0.08, 0.03),
+        (0.0, 0.0, 0.1, 0.15),
+
+        (0.1, 0.05, 0.1, 0.05)
+    ]
+
     # import matplotlib.pyplot as plot
     # for exp_num in range(1, 6):
     #     data = []
@@ -324,6 +324,7 @@ if __name__ == "__main__":
     #         print(stats["non_zero_avg"])
     #
     #     plt = plot.plot(["0","R0","R1","R2","L0","L1","L2","R0L0"], data, 'o')
+    #     plot.ylim([0, 120])
     #     plt[0].set_label("init avg")
     #     plt[1].set_label("best init row avg")
     #     plt[2].set_label("final best row avg")

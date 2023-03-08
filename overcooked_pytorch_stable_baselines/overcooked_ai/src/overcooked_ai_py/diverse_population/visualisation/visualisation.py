@@ -29,6 +29,6 @@ def heat_map(table, group_name, layout_name, deterministic=True, eval_env=""):
     ax.set_title(group_name)
     fig.tight_layout()
     # plt.savefig(f"diverse_population/visualisation/{args['layout_name']}/coordination_ring.png")
-    file_name = f"{os.environ['PROJDIR']}/diverse_population/visualisation/{layout_name}/" + group_name + '' if deterministic else '_STOCH'
+    file_name = f"{os.environ['PROJDIR']}/diverse_population/visualisation/{layout_name}/" + group_name + ('' if deterministic else '_STOCH')
     file_name = file_name + eval_env + ".png"
     plt.savefig(file_name)
