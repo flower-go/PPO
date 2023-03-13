@@ -57,6 +57,10 @@ class Evaluator(object):
             final_best_avg = np.max(row_avgs[self.args.trained_models:])
             best_pop_avg = np.max(row_avgs[self.args.init_SP_agents:self.args.trained_models])
 
+            above_threshold = (table[self.args.init_SP_agents:] > 40).sum(axis=1)
+            max_above_threshold = np.max(above_threshold)
+            avg_above_threshold = np.mean(above_threshold)
+
 
             if verbose:
                 print(f"best init row average: {best_init_avg}")
@@ -64,6 +68,8 @@ class Evaluator(object):
 
                 print(f"final best row average: {final_best_avg}")
                 # print(f"pop best row average: {best_pop_avg}")
+
+                print(f"max_above_threshold: {max_above_threshold}")
 
                 # print(f"mean SP part: {np.mean(table[:self.args.init_SP_agents])}")
                 # print(f"mean SP of non zeros: {np.sum(table[:self.args.init_SP_agents][table[:self.args.init_SP_agents] > 0]) / table[:self.args.init_SP_agents][table[:self.args.init_SP_agents] > 0].size}")
@@ -83,6 +89,13 @@ class Evaluator(object):
             best_agent = np.argmax(row_avgs)
             best_agent_avg = np.max(row_avgs)
 
+            sorted = np.sort(row_avgs)
+            print(sorted)
+
+            above_threshold = (zero_diag > 40).sum(axis=1)
+            max_above_threshold = np.max(above_threshold)
+            avg_above_threshold = np.mean(above_threshold)
+
             avg = np.mean(table[~np.eye(table.shape[0], dtype=bool)])
             if verbose:
                 print(f"avg of diagonal: {np.mean(np.diagonal(table))}")
@@ -97,7 +110,9 @@ class Evaluator(object):
             "best_init_avg": best_init_avg,
             "init_avg": init_avg,
             "final_best_avg": final_best_avg,
-            "best_pop_avg": best_pop_avg
+            "best_pop_avg": best_pop_avg,
+            "max_above_threshold": max_above_threshold,
+            "avg_above_threshold": avg_above_threshold
 
         }
 
@@ -106,13 +121,23 @@ class Evaluator(object):
 
         for _ in range(num_games_per_worker):
             self.venv._last_obs = self.venv.reset()
+            obs = np.array([entry["both_agent_obs"][0] for entry in self.venv._last_obs])
+            other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self.venv._last_obs])
+
+            obs = self.initialize_obs(obs)
+            other_agent_obs = self.initialize_obs(other_agent_obs)
+
+
+
             for _ in range(400):
                 with th.no_grad():
                     # Convert to pytorch tensor or to TensorDict
-                    obs = np.array([entry["both_agent_obs"][0] for entry in self.venv._last_obs])
-                    actions, _= self_agent_model.policy.predict(obs, deterministic=deterministic)
+                    # obs = np.array([entry["both_agent_obs"][0] for entry in self.venv._last_obs])
+                    obs = self.update_obs(obs, np.array([entry["both_agent_obs"][0] for entry in self.venv._last_obs]))
+                    actions, _ = self_agent_model.policy.predict(obs, deterministic=deterministic)
 
-                    other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self.venv._last_obs])
+                    # other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self.venv._last_obs])
+                    other_agent_obs = self.update_obs(other_agent_obs, np.array([entry["both_agent_obs"][1] for entry in self.venv._last_obs]))
                     other_agent_actions, _ = other_agent_model.policy.predict(other_agent_obs, deterministic=deterministic)
 
                 joint_action = [(actions[i], other_agent_actions[i]) for i in range(len(actions))]
@@ -129,4 +154,38 @@ class Evaluator(object):
         print(evaluation_avg_rewards_per_episode)
 
         return evaluation_avg_rewards_per_episode
+
+    # def update_obs(self, last_obs, obs):
+    #     if self.args.frame_stacking > 1:
+    #         last_obs = np.roll(last_obs, 1, axis=1)
+    #         last_obs[:,0] = obs
+    #         obs = last_obs
+    #
+    #     return obs
+
+    def update_obs(self, last_obs, obs):
+        if self.args.frame_stacking > 1:
+            if self.args.frame_stacking_mode == "tuple":
+                last_obs = np.roll(last_obs, 1, axis=1)
+                last_obs[:,0] = obs
+            else:
+                num_channels_per_state = 22
+                last_obs = np.roll(last_obs, num_channels_per_state, axis=1)
+                last_obs[:,0:num_channels_per_state,:,:] = obs
+            obs = last_obs
+
+        return obs
+
+    def initialize_obs(self, obs):
+        if self.args.frame_stacking > 1:
+            if self.args.frame_stacking_mode == "tuple":
+                # creates (B X Frames x C x W x H) observation
+                obs = np.array([[single_obs for _ in range(self.args.frame_stacking)] for single_obs in obs])
+            else:
+                # creates (B x (C x Frames) x W x H) observation
+                obs = np.concatenate([obs for _ in range(self.args.frame_stacking)], axis=1)
+
+
+
+        return obs
 

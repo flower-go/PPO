@@ -19,11 +19,13 @@ class BaseFeaturesExtractor(nn.Module):
     :param features_dim: Number of features extracted.
     """
 
-    def __init__(self, observation_space: gym.Space, features_dim: int = 0):
+    def __init__(self, observation_space: gym.Space, features_dim: int = 0, frame_stacking: int = 0, frame_stacking_mode: str = "tuple"):
         super().__init__()
         assert features_dim > 0
         self._observation_space = observation_space
         self._features_dim = features_dim
+        self._frame_stacking = frame_stacking
+        self._frame_stacking_mode = frame_stacking_mode
 
     @property
     def features_dim(self) -> int:
@@ -61,21 +63,38 @@ class NatureCNN(BaseFeaturesExtractor):
         This corresponds to the number of unit for the last layer.
     """
 
-    def __init__(self, observation_space: gym.spaces.Box, features_dim: int = 32):
-        super().__init__(observation_space, features_dim)
+    def __init__(self, observation_space: gym.spaces.Box, features_dim: int = 32, frame_stacking = 0, frame_stacking_mode="tuple"):
+        super().__init__(observation_space, features_dim, frame_stacking, frame_stacking_mode)
+
         # We assume CxHxW images (channels first)
         # Re-ordering will be done by pre-preprocessing or wrapper
-        assert is_image_space(observation_space, check_channels=False), (
-            "You should use NatureCNN "
-            f"only with images not with {observation_space}\n"
-            "(you are probably using `CnnPolicy` instead of `MlpPolicy` or `MultiInputPolicy`)\n"
-            "If you are using a custom environment,\n"
-            "please check it using our env checker:\n"
-            "https://stable-baselines3.readthedocs.io/en/master/common/env_checker.html"
-        )
+
+        #PBa - frame stacking - assertion disabled
+        # assert is_image_space(observation_space, check_channels=False), (
+        #     "You should use NatureCNN "
+        #     f"only with images not with {observation_space}\n"
+        #     "(you are probably using `CnnPolicy` instead of `MlpPolicy` or `MultiInputPolicy`)\n"
+        #     "If you are using a custom environment,\n"
+        #     "please check it using our env checker:\n"
+        #     "https://stable-baselines3.readthedocs.io/en/master/common/env_checker.html"
+        # )
+
+
 
         out_channels = 25
-        n_input_channels = observation_space.shape[0] #PBa, they used 0 here, TODO: try to figure out how to set observation space correctly globally with transposition
+
+        if self._frame_stacking > 1:
+            if self._frame_stacking_mode == "tuple":
+                # Frames x C x H x W
+                n_input_channels = observation_space.shape[1]
+            else:
+                # C(extended by channels from previous states) x H x W
+                # we add 4 out channels for each frame stacked since we want to extend the capacity of the model to learn temporal features
+                out_channels += 4 * (self._frame_stacking - 1)
+                n_input_channels = observation_space.shape[0]
+        else:
+            n_input_channels = observation_space.shape[0]
+
         self.cnn = nn.Sequential(
             # nn.Conv2d(n_input_channels, 32, kernel_size=8, stride=4, padding=0),
             # nn.ReLU(),
@@ -100,45 +119,50 @@ class NatureCNN(BaseFeaturesExtractor):
 
         # Compute shape by doing one forward pass
         with th.no_grad():
-            n_flatten = self.cnn(th.as_tensor(observation_space.sample()[None]).float()).shape[1]
+            if self._frame_stacking > 1 and self._frame_stacking_mode == "tuple":
+                frame_0 = self.cnn(th.as_tensor(observation_space.sample()[0]).float())
+                flatten = th.flatten(frame_0)
+                n_flatten = flatten.shape[0]
+            else:
+                n_flatten = self.cnn(th.as_tensor(observation_space.sample()[None]).float()).shape[1]
+
+        first_hidden_out = 32
+
+        if self._frame_stacking > 1 and self._frame_stacking_mode == "tuple":
+            frame_dense_output_dim = 12
+
+            self.frame_linear = nn.Sequential(
+                nn.Linear(n_flatten, frame_dense_output_dim),
+                nn.LeakyReLU(),
+            )
+
+            n_flatten += (self._frame_stacking - 1) * frame_dense_output_dim
+            first_hidden_out += (self._frame_stacking - 1) * 3
 
         # self.linear = nn.Sequential(nn.Linear(n_flatten, features_dim), nn.ReLU())  #PBa TODO: probably make smaller than
         self.linear = nn.Sequential(
-            nn.Linear(n_flatten, 32),
+            nn.Linear(n_flatten, first_hidden_out), #32 OUT
             nn.LeakyReLU(),
-            nn.Linear(32, 32),
+            nn.Linear(first_hidden_out, 32),  #32 IN
             nn.LeakyReLU(),
             nn.Linear(32, 32),
             nn.LeakyReLU(),
         )
 
-        import numpy as np
-        # gain = 1.
-        # for sub_net in self.cnn:
-        #     if sub_net.__class__.__name__ == "Conv2d":
-        #         # narr = sub_net.weight.detach().numpy()
-        #         # print(narr)
-        #         #
-        #         # print(np.mean(narr))
-        #         # print(np.std(narr))
-        #         # print(np.min(narr))
-        #         # print(np.max(narr))
-        #
-        #
-        #
-        #
-        #         nn.init.xavier_normal_(sub_net.weight, gain=gain)
-        #
-        #         nn.init.zeros_(sub_net.bias)
-        #     pass
-        #
-        # for sub_net in self.linear:
-        #     if sub_net.__class__.__name__ == "Linear":
-        #         nn.init.xavier_normal_(sub_net.weight, gain=gain)
-        #         nn.init.zeros_(sub_net.bias)
-        #     pass
+
 
     def forward(self, observations: th.Tensor) -> th.Tensor:
+        #PBa - frame stacking
+        if self._frame_stacking > 1 and self._frame_stacking_mode == "tuple":
+            stacked_frames = self.cnn(observations[:,0])
+            # for i in range(1, self._frame_stacking):
+            #     stacked_frames = th.concatenate([stacked_frames, self.cnn(observations[:,i])], dim=1)
+
+            for i in range(1, self._frame_stacking):
+                stacked_frames = th.concatenate([stacked_frames, self.frame_linear(self.cnn(observations[:,i]))], dim=1)
+
+
+            return self.linear(stacked_frames)
         return self.linear(self.cnn(observations))
 
 

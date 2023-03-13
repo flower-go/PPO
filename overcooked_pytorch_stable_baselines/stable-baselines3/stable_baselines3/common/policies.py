@@ -66,7 +66,7 @@ class BaseModel(nn.Module):
         features_extractor: Optional[nn.Module] = None,
         normalize_images: bool = True,
         optimizer_class: Type[th.optim.Optimizer] = th.optim.Adam,
-        optimizer_kwargs: Optional[Dict[str, Any]] = None,
+        optimizer_kwargs: Optional[Dict[str, Any]] = None
     ):
         super().__init__()
 
@@ -122,8 +122,7 @@ class BaseModel(nn.Module):
         :return:
         """
         assert self.features_extractor is not None, "No features extractor was set"
-        # preprocessed_obs = preprocess_obs(obs, self.observation_space, normalize_images=self.normalize_images) #PBa
-        preprocessed_obs = preprocess_obs(obs, self.observation_space, normalize_images=False)
+        preprocessed_obs = preprocess_obs(obs, self.observation_space, normalize_images=self.normalize_images)
         return self.features_extractor(preprocessed_obs)
 
     def _get_constructor_parameters(self) -> Dict[str, Any]:
@@ -227,7 +226,7 @@ class BaseModel(nn.Module):
                 # Add batch dimension if needed
                 observation[key] = obs_.reshape((-1,) + self.observation_space[key].shape)
 
-        elif is_image_space(self.observation_space):
+        elif True or is_image_space(self.observation_space):
             # Handle the different cases for images
             # as PyTorch use channel first format
             observation = maybe_transpose(observation, self.observation_space)

@@ -19,9 +19,10 @@ class VecTransposeImage(VecEnvWrapper):
     """
 
     def __init__(self, venv: VecEnv, skip: bool = False):
-        assert is_image_space(venv.observation_space) or isinstance(
-            venv.observation_space, spaces.dict.Dict
-        ), "The observation space must be an image or dictionary observation space"
+        #PBa - stack framing - assertion disabled
+        # assert is_image_space(venv.observation_space) or isinstance(
+        #     venv.observation_space, spaces.dict.Dict
+        # ), "The observation space must be an image or dictionary observation space"
 
         self.skip = skip
         # Do nothing
@@ -38,11 +39,11 @@ class VecTransposeImage(VecEnvWrapper):
                     self.image_space_keys.append(key)
                     observation_space.spaces[key] = self.transpose_space(space, key)
         else:
-            observation_space = self.transpose_space(venv.observation_space)
+            observation_space = self.transpose_space(venv.observation_space, frame_stacking=venv.frame_stacking, frame_stacking_mode=venv.frame_stacking_mode)
         super().__init__(venv, observation_space=observation_space)
 
     @staticmethod
-    def transpose_space(observation_space: spaces.Box, key: str = "") -> spaces.Box:
+    def transpose_space(observation_space: spaces.Box, key: str = "", frame_stacking = 0, frame_stacking_mode="tuple") -> spaces.Box:
         """
         Transpose an observation space (re-order channels).
 
@@ -51,13 +52,21 @@ class VecTransposeImage(VecEnvWrapper):
         :return:
         """
         # Sanity checks
-        assert is_image_space(observation_space), "The observation space must be an image"
+        # assert is_image_space(observation_space), "The observation space must be an image" #PBa - stack framing - assertion disabled
         # assert not is_image_space_channels_first(                                         #PBa commented assert
         #     observation_space
         # ), f"The observation space {key} must follow the channel last convention"
         # height, width, channels = observation_space.shape #PBa
-        width, height, channels = observation_space.shape
-        new_shape = (channels, width, height)
+
+        if frame_stacking > 1 and frame_stacking_mode == "tuple":
+            frames, width, height, channels = observation_space.shape
+            new_shape = (frames, channels, width, height)
+
+        else:
+            width, height, channels = observation_space.shape
+            new_shape = (channels, width, height)
+
+
         return spaces.Box(low=0, high=255, shape=new_shape, dtype=observation_space.dtype)
 
     @staticmethod
@@ -83,14 +92,16 @@ class VecTransposeImage(VecEnvWrapper):
             # return np.transpose(image, (2, 0, 1))
             return np.transpose(image, (2, 1, 0))
 
+        # if not isinstance(image[0], dict):
+        #     return np.transpose(image, (0, 3, 1, 2))
+        #TODO: for frame_stacking
         if not isinstance(image[0], dict):
-            return np.transpose(image, (0, 3, 1, 2))
+            return np.transpose(image, (0, 1, 4 ,2, 3))
+
         #PBa: working with observartion being in format of [batch, {both_agents_observation(2): image [26,5,4]}
         # original_images = [item["both_agent_observation"]]
         for item in image:
             item["both_agent_obs"] = (np.transpose(item["both_agent_obs"][0], (2,0,1)), np.transpose(item["both_agent_obs"][1], (2,0,1)))
-            # temp = item["both_agent_obs"][0]
-            # temp2 = temp
 
         return image
 

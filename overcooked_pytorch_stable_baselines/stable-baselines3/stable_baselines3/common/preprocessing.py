@@ -73,7 +73,8 @@ def maybe_transpose(observation: np.ndarray, observation_space: spaces.Space) ->
     # Avoid circular import
     from stable_baselines3.common.vec_env import VecTransposeImage
 
-    if is_image_space(observation_space):
+    # TODO: for frame_stacking
+    if True or is_image_space(observation_space):
         if not (observation.shape == observation_space.shape or observation.shape[1:] == observation_space.shape):
             # Try to re-order the channels
             transpose_obs = VecTransposeImage.transpose_image(observation)

@@ -166,6 +166,18 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
 
 
+
+        obs = np.array([entry["both_agent_obs"][0] for entry in self._last_obs])
+        other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self._last_obs])
+
+        obs = self.initialize_obs(obs)
+        other_agent_obs = self.initialize_obs(other_agent_obs)
+
+
+        # if self.args.frame_stacking > 1:
+        #     obs = np.array([[single_obs for _ in range(self.args.frame_stacking)] for single_obs in obs])
+        #     other_agent_obs = np.array([[single_other_agent_obs for _ in range(self.args.frame_stacking)] for single_other_agent_obs in other_agent_obs])
+
         while n_steps < n_rollout_steps:
             if self.use_sde and self.sde_sample_freq > 0 and n_steps % self.sde_sample_freq == 0:
                 # Sample a new noise matrix
@@ -173,18 +185,24 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
             with th.no_grad():
                 # Convert to pytorch tensor or to TensorDict
-                obs = np.array([entry["both_agent_obs"][0] for entry in self._last_obs])
+                # obs = np.array([entry["both_agent_obs"][0] for entry in self._last_obs])
+                # obs_tensor = obs_as_tensor(obs, self.device)
+
+                obs = self.update_obs(obs, np.array([entry["both_agent_obs"][0] for entry in self._last_obs]))
                 obs_tensor = obs_as_tensor(obs, self.device)
                 actions, values, log_probs = self.policy(obs_tensor)
+
                 # from pytorch_model_summary import summary
                 # summary(self.policy, obs_tensor, print_summary=True, show_hierarchical=True, max_depth=10, )
 
-                other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self._last_obs])
+                # other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self._last_obs])
+                other_agent_obs = self.update_obs(other_agent_obs, np.array([entry["both_agent_obs"][1] for entry in self._last_obs]))
                 if self.env.population_mode:
                     other_agent_actions = []
 
                     ind_start = 0
                     for (pop_chunk, other_agent_model) in self.split_pop_indices(train=True):
+                        #TODO: solve action concatenation for frame_stacking
                         other_obs = other_agent_obs[ind_start:ind_start+pop_chunk]
                         ind_start+=pop_chunk
                         other_agent_a, _ = other_agent_model.policy.predict(other_obs, deterministic=self.args.partner_action_deterministic) # TODO: should population agents play argmax during training?
@@ -263,7 +281,8 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                     rewards[idx] += self.gamma * terminal_value
 
             self._last_obs = np.array([entry["both_agent_obs"][0] for entry in self._last_obs])
-            rollout_buffer.add(self._last_obs, actions, rewards, self._last_episode_starts, values, log_probs, pop_diff_reward)
+            # rollout_buffer.add(self._last_obs, actions, rewards, self._last_episode_starts, values, log_probs, pop_diff_reward)
+            rollout_buffer.add(obs, actions, rewards, self._last_episode_starts, values, log_probs, pop_diff_reward)
 
             self._last_obs = new_obs
             self._last_episode_starts = dones
@@ -272,8 +291,9 @@ class OnPolicyAlgorithm(BaseAlgorithm):
         with th.no_grad():
             # Compute value for the last timestep
 
-            new_obs = np.array([entry["both_agent_obs"][0] for entry in new_obs])
-            values = self.policy.predict_values(obs_as_tensor(new_obs, self.device))
+            # new_obs = np.array([entry["both_agent_obs"][0] for entry in new_obs])
+            last_obs = self.update_obs(obs, np.array([entry["both_agent_obs"][0] for entry in new_obs]))
+            values = self.policy.predict_values(obs_as_tensor(last_obs, self.device))
 
         rollout_buffer.compute_returns_and_advantage(last_values=values, dones=dones)
 
@@ -336,16 +356,23 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                     sparse_r = safe_mean([ep_info["ep_game_stats"]["cumulative_sparse_rewards_by_agent"][1 - ep_info["policy_agent_idx"]] for ep_info in self.ep_info_buffer])
                     sparse_r_other_agent = safe_mean([ep_info["ep_game_stats"]["cumulative_sparse_rewards_by_agent"][ep_info["policy_agent_idx"]] for ep_info in self.ep_info_buffer])
                     print(f"checking for divergence - values: {sparse_r},{sparse_r_other_agent}")
-                    if self.env.population_mode:
+
+                    if sparse_r < 3 and sparse_r_other_agent < 3:
+                        print(
+                            f"Divergent solution with sparse reward values for agents ({sparse_r}, {sparse_r_other_agent})")
+                        raise divergent_solution_exception.divergent_solution_exception(
+                            f"Divergent solution with sparse reward values for agents ({sparse_r}, {sparse_r_other_agent})")
+
+                    # if self.env.population_mode:
                         #in population learning it can easily happen that the learned agent is being dominant in delivering completed soups
-                        if sparse_r < 3 and sparse_r_other_agent < 3:
-                            print(f"Divergent solution with sparse reward values for agents ({sparse_r}, {sparse_r_other_agent})")
-                            raise divergent_solution_exception.divergent_solution_exception(f"Divergent solution with sparse reward values for agents ({sparse_r}, {sparse_r_other_agent})")
-                    else:
-                        # Neither of agents have managed to serve single plate of soup within first args["divergent_check_timestep"], models have likely converged to some bad local optima
-                        if sparse_r < 3 or sparse_r_other_agent < 3:
-                            print(f"Divergent solution with sparse reward values for agents ({sparse_r}, {sparse_r_other_agent})")
-                            raise divergent_solution_exception.divergent_solution_exception(f"Divergent solution with sparse reward values for agents ({sparse_r}, {sparse_r_other_agent})")
+                    #     if sparse_r < 3 and sparse_r_other_agent < 3:
+                    #         print(f"Divergent solution with sparse reward values for agents ({sparse_r}, {sparse_r_other_agent})")
+                    #         raise divergent_solution_exception.divergent_solution_exception(f"Divergent solution with sparse reward values for agents ({sparse_r}, {sparse_r_other_agent})")
+                    # else:
+                    #     # Neither of agents have managed to serve single plate of soup within first args["divergent_check_timestep"], models have likely converged to some bad local optima
+                    #     if sparse_r < 3 or sparse_r_other_agent < 3:
+                    #         print(f"Divergent solution with sparse reward values for agents ({sparse_r}, {sparse_r_other_agent})")
+                    #         raise divergent_solution_exception.divergent_solution_exception(f"Divergent solution with sparse reward values for agents ({sparse_r}, {sparse_r_other_agent})")
 
             if continue_training is False:
                 break
@@ -379,7 +406,6 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
 
             evaluate = self.num_timesteps > args.training_percent_start_eval * args.total_timesteps
-
             if evaluate and args.eval_interval is not None and iteration % args.eval_interval == 0:
                 evaluation_avg_rewards_per_episode = self.evaluate_env()
                 print(evaluation_avg_rewards_per_episode)
@@ -399,10 +425,10 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                         eval_values.append(self.evaluate_env())
 
                     print(f"evaluation result after re-evaluation: {np.mean(eval_values)}")
-                    if np.mean(eval_values) > args.eval_stop_threshold:
-                        print("found good solution, terminating training")
-                        self.logger.record("evaluation_rollout/avg_ep_rew_sum", np.mean(eval_values))
-                        break
+                    # if np.mean(eval_values) > args.eval_stop_threshold:
+                    #     print("found good solution, terminating training")
+                    #     self.logger.record("evaluation_rollout/avg_ep_rew_sum", np.mean(eval_values))
+                    #     break
                 else:
                     self.logger.record("evaluation_rollout/avg_ep_rew_sum", evaluation_avg_rewards_per_episode)
 
@@ -425,15 +451,23 @@ class OnPolicyAlgorithm(BaseAlgorithm):
         evaluation_rewards = []
 
         self._last_obs = self.env.reset()
+        obs = np.array([entry["both_agent_obs"][0] for entry in self._last_obs])
+        other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self._last_obs])
+
+        obs = self.initialize_obs(obs)
+        other_agent_obs = self.initialize_obs(other_agent_obs)
+
         for _ in range(400):
             with th.no_grad():
                 # Convert to pytorch tensor or to TensorDict
-                obs = np.array([entry["both_agent_obs"][0] for entry in self._last_obs])
+                obs = self.update_obs(obs, np.array([entry["both_agent_obs"][0] for entry in self._last_obs]))
+                # obs = np.array([entry["both_agent_obs"][0] for entry in self._last_obs])
                 # obs_tensor = obs_as_tensor(obs, self.device)
                 actions, _= self.policy.predict(obs, deterministic=True) #Good result argmaxing => probably good result stochastic, other way not necesarily true
 
 
-                other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self._last_obs])
+                other_agent_obs = self.update_obs(other_agent_obs, np.array([entry["both_agent_obs"][1] for entry in self._last_obs]))
+                # other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self._last_obs])
                 if self.env.population_mode:
                     other_agent_actions = []
                     ind_start = 0
@@ -502,5 +536,38 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             indices.append(chunk)
 
         return zip(indices, sample_population)
+
+    def update_obs(self, last_obs, obs):
+        if self.args.frame_stacking > 1:
+            if self.args.frame_stacking_mode == "tuple":
+                last_obs = np.roll(last_obs, 1, axis=1)
+                last_obs[:,0] = obs
+            else:
+                num_channels_per_state = 22
+                player_info_part = obs[:,0:10,:,:]
+                last_obs = np.roll(last_obs, 10, axis=1)
+                last_obs[:,num_channels_per_state:num_channels_per_state+10,:,:] = player_info_part
+                last_obs[:, 0:num_channels_per_state, :, :] = obs
+            obs = last_obs
+
+        return obs
+
+    def initialize_obs(self, obs):
+        if self.args.frame_stacking > 1:
+            if self.args.frame_stacking_mode == "tuple":
+                # creates (B X Frames x C x W x H) observation
+                obs = np.array([[single_obs for _ in range(self.args.frame_stacking)] for single_obs in obs])
+            else:
+                # creates (B x (C x Frames) x W x H) observation
+                data = [obs]
+                for _ in range(self.args.frame_stacking - 1):
+                    data.append(obs[:,0:10,:,:])
+                # arr = [obs[:,0:10,:,:] for _ in range(self.args.frame_stacking)]
+                obs = np.concatenate(data, axis=1)
+
+
+
+        return obs
+
 
 

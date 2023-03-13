@@ -695,7 +695,7 @@ class Overcooked(gym.Env):
         self.action_space = gym.spaces.Box(low, high, dtype=np.float32)
 
     def custom_init(
-        self, base_env, featurize_fn, start_state_fn, agent_idx, baselines_reproducible=False, seed=0
+        self, base_env, featurize_fn, start_state_fn, agent_idx, baselines_reproducible=False, seed=0, frame_stacking = 0, frame_stacking_mode= "tuple"
     ):
         """
         base_env: OvercookedEnv
@@ -718,6 +718,8 @@ class Overcooked(gym.Env):
         self.base_env = base_env
         self.featurize_fn = featurize_fn
         self.base_env.start_state_fn = start_state_fn
+        self.frame_stacking = frame_stacking
+        self.frame_stacking_mode = frame_stacking_mode
         self.observation_space = self._setup_observation_space()
         self.action_space = gym.spaces.Discrete(len(Action.ALL_ACTIONS))
         self.set_agent_idx(agent_idx)
@@ -735,7 +737,18 @@ class Overcooked(gym.Env):
         # high = np.ones(obs_shape) * float("inf") #For MLP
         # return gym.spaces.Box(low, high, dtype=np.float32) # for MLP
 
+        if self.frame_stacking > 1:
+            if self.frame_stacking_mode == "tuple":
+                frames_stacked_obs_shape = (self.frame_stacking, obs_shape[0], obs_shape[1], obs_shape[2])
+            else:
+                frames_stacked_obs_shape = (obs_shape[0], obs_shape[1], obs_shape[2] + 10 * (self.frame_stacking - 1))
+
+            obs_shape = frames_stacked_obs_shape
+
+
+        low = np.zeros(obs_shape)
         high = np.ones(obs_shape) * 255  # For CNN
+
         return gym.spaces.Box(low, high, dtype=np.uint8) # for CNN
 
 
@@ -899,7 +912,7 @@ def get_vectorized_gym_env(base_env, gym_env_name, agent_idx, featurize_fn=None,
 
     def gym_env_fn():
         gym_env = gym.make(gym_env_name)
-        gym_env.custom_init(base_env, featurize_fn=featurize_fn, start_state_fn=start_state_fn, baselines_reproducible=True, agent_idx=agent_idx)
+        gym_env.custom_init(base_env, featurize_fn=featurize_fn, start_state_fn=start_state_fn, baselines_reproducible=True, agent_idx=agent_idx, frame_stacking = args.frame_stacking, frame_stacking_mode=args.frame_stacking_mode)
         return gym_env
 
     vectorized_gym_env = SubprocVecEnv([gym_env_fn] * args.num_workers)
