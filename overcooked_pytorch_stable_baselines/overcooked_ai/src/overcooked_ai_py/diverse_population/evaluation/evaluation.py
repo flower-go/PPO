@@ -164,28 +164,46 @@ class Evaluator(object):
     #     return obs
 
     def update_obs(self, last_obs, obs):
+        obs = self.tranpose(obs)
+
         if self.args.frame_stacking > 1:
             if self.args.frame_stacking_mode == "tuple":
                 last_obs = np.roll(last_obs, 1, axis=1)
-                last_obs[:,0] = obs
+                last_obs[:, 0] = obs
             else:
                 num_channels_per_state = 22
-                last_obs = np.roll(last_obs, num_channels_per_state, axis=1)
-                last_obs[:,0:num_channels_per_state,:,:] = obs
+                player_info_part = obs[:, 0:10, :, :]
+                last_obs = np.roll(last_obs, 10, axis=1)
+                last_obs[:, num_channels_per_state:num_channels_per_state + 10, :, :] = player_info_part
+                last_obs[:, 0:num_channels_per_state, :, :] = obs
             obs = last_obs
 
         return obs
 
     def initialize_obs(self, obs):
+        obs = self.tranpose(obs)
+
         if self.args.frame_stacking > 1:
             if self.args.frame_stacking_mode == "tuple":
                 # creates (B X Frames x C x W x H) observation
                 obs = np.array([[single_obs for _ in range(self.args.frame_stacking)] for single_obs in obs])
             else:
                 # creates (B x (C x Frames) x W x H) observation
-                obs = np.concatenate([obs for _ in range(self.args.frame_stacking)], axis=1)
+                data = [obs]
+                for _ in range(self.args.frame_stacking - 1):
+                    data.append(obs[:, 0:10, :, :])
+                # arr = [obs[:,0:10,:,:] for _ in range(self.args.frame_stacking)]
+                obs = np.concatenate(data, axis=1)
 
 
+
+        return obs
+
+    def tranpose(self, obs):
+        if len(obs.shape) == 5:
+            obs = np.transpose(obs, (0, 1, 4, 2, 3))
+        if len(obs.shape) == 4:
+            obs = np.transpose(obs, (0, 3, 1, 2))
 
         return obs
 

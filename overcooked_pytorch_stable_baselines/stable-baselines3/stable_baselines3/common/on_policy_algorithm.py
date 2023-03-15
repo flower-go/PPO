@@ -162,7 +162,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             self.policy.reset_noise(env.num_envs)
 
         callback.on_rollout_start()
-        kl_diff_reward_loss = th.nn.KLDivLoss(reduction="batchmean", log_target=True)
+        kl_diff_reward_loss = th.nn.KLDivLoss(reduction="none", log_target=True)
 
 
 
@@ -247,8 +247,9 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                         # pop_ind_actions_dist_logits = ind.policy.get_distribution(obs_tensor).distribution.logits.cpu()
                         pop_ind_actions_dist_logits = ind.policy.get_distribution(obs_tensor).distribution.logits
                         diff = kl_diff_reward_loss(actions_dist_logits, pop_ind_actions_dist_logits)
-                        kl_divs.append(diff.item())
-                    pop_diff_reward = self.args.kl_diff_bonus_reward_coef * np.mean(kl_divs)
+                        diff = th.sum(diff, dim=1)
+                        kl_divs.append(diff.cpu().numpy())
+                    pop_diff_reward = self.args.kl_diff_bonus_reward_coef * np.mean(kl_divs, axis=0)
                     pop_diff_reward = np.clip(pop_diff_reward, 0, self.args.kl_diff_bonus_reward_clip)
 
                     rewards = rewards + pop_diff_reward

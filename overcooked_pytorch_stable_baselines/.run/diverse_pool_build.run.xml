@@ -14,7 +14,7 @@
     <option name="ADD_CONTENT_ROOTS" value="true" />
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <option name="SCRIPT_NAME" value="$PROJECT_DIR$/overcooked_ai/src/overcooked_ai_py/diverse_population/diverse_pool_build.py" />
-    <option name="PARAMETERS" value="--mode=&quot;SP&quot; --exp=&quot;CH_FS&quot; --trained_models=15 --seed=46 --training_percent_start_eval=0.0 --kl_diff_bonus_reward_coef=0.0 --kl_diff_bonus_reward_clip=0.00 --total_timesteps=6000000 --kl_diff_loss_coef=0.0 --kl_diff_loss_clip=0.0 --final_eval_games_per_worker=1 --eval_set_name=&quot;SP_EVAL_FS&quot; --base_eval_name=&quot;SP_EVAL_FS&quot; --rnd_obj_prob_thresh_env=0.0 --n_sample_partners=3 --init_SP_agents=3 --tensorboard_log --execute_final_eval --frame_stacking=4 --frame_stacking_mode=&quot;channels&quot;" />
+    <option name="PARAMETERS" value="--mode=&quot;POP&quot; --exp=&quot;FS_TUPLE_POP_03&quot; --trained_models=11 --seed=46 --kl_diff_bonus_reward_coef=0.08 --kl_diff_bonus_reward_clip=0.025 --kl_diff_loss_coef=0.1 --kl_diff_loss_clip=0.1 --n_sample_partners=3 --init_SP_agents=3 --frame_stacking=4 --frame_stacking_mode=&quot;tuple&quot;" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <option name="EMULATE_TERMINAL" value="false" />
     <option name="MODULE_MODE" value="false" />

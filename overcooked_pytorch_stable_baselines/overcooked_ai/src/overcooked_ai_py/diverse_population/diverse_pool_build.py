@@ -278,7 +278,7 @@ if __name__ == "__main__":
             # eval_models = eval_models[args.init_SP_agents:]
             # evaluator.args.init_SP_agents = 0
             eval_table = evaluator.evaluate(models, eval_models, args.final_eval_games_per_worker, args.layout_name, group_name, eval_env = eval_env, mode=args.mode, deterministic=True)
-            evaluator.analyze(eval_table,verbose=1)
+            # evaluator.analyze(eval_table,verbose=1)
             heat_map(eval_table, group_name, args.layout_name, eval_env = eval_env, deterministic=True)
         else:
             group_name = args.full_exp_name + "_X_" + args.full_exp_name
@@ -302,65 +302,65 @@ if __name__ == "__main__":
     #
     # labels = ["0","R0","R1","R2","L0","L1","L2","R0L0"]
 
-    experiments = [
-        1,
-        2,3,5
-    ]
-
-    labels = [
-        "NSP1",
-        "NSP2", "NSP3", "NSP5"]
-
-    import matplotlib.pyplot as plot
-    for exp_num in range(6, 9):
-        data = []
-        for exp_setting in experiments:
-            # (BR_coef, BR_clip, L_coef, L_clip) = exp_setting
-            eval_args = copy.deepcopy(args)
-            eval_args.exp = f"POP_SMALL{exp_num}"
-            # eval_args.kl_diff_bonus_reward_coef = BR_coef
-            # eval_args.kl_diff_bonus_reward_clip = BR_clip
-            # eval_args.kl_diff_loss_coef = L_coef
-            # eval_args.kl_diff_loss_clip = L_clip
-
-            eval_args.kl_diff_bonus_reward_coef = 0.08
-            eval_args.kl_diff_bonus_reward_clip = 0.02
-            eval_args.kl_diff_loss_coef = 0.08
-            eval_args.kl_diff_loss_clip = 0.02
-            eval_args.n_sample_partners = exp_setting
-
-            eval_args.full_exp_name = get_name(eval_args.exp, eval_args, sp=eval_args.mode == "SP")
-
-            models_name = eval_args.full_exp_name
-            evals_name = eval_args.eval_set_name
-            group_name = models_name + "_X_" + evals_name
-
-            print(group_name)
-            eval_table = evaluator.evaluate(None, None, eval_args.final_eval_games_per_worker, eval_args.layout_name, group_name, eval_env = eval_env, mode=eval_args.mode)
-            stats = evaluator.analyze(eval_table, verbose=1)
-
-            data.append((stats["init_avg"], stats["best_init_avg"], stats["final_best_avg"], stats["best_pop_avg"], stats["max_above_threshold"], stats["avg_above_threshold"]))
-
-            print(stats["best_agent"])
-            print(stats["best_agent_avg"])
-            print(stats["avg"])
-            print(stats["non_zero_avg"])
-
-        plt = plot.plot(labels, data, 'o')
-        plot.ylim([0, 120])
-        plt[0].set_label("init avg")
-        plt[1].set_label("best init row avg")
-        plt[2].set_label("final best row avg")
-        plt[3].set_label("pop best row avg")
-        plt[4].set_label("max_above_threshold")
-        plt[5].set_label("avg_above_threshold")
-
-        plot.axhline(y=21, color='r', linestyle='-')
-        plot.axhline(y=10.5, color='g', linestyle='-')
-        plot.legend()
-        # plt.legend(['A', 'B', "C", 'D'])
-        # , label = ['A', 'B', "C", 'D']
-
-        plot.savefig(f"./diverse_population/results/{args.layout_name}/POP_SMALL{exp_num}.png")
-        plot.show()
+    # experiments = [
+    #     1,
+    #     2,3,5
+    # ]
+    #
+    # labels = [
+    #     "NSP1",
+    #     "NSP2", "NSP3", "NSP5"]
+    #
+    # import matplotlib.pyplot as plot
+    # for exp_num in range(6, 9):
+    #     data = []
+    #     for exp_setting in experiments:
+    #         # (BR_coef, BR_clip, L_coef, L_clip) = exp_setting
+    #         eval_args = copy.deepcopy(args)
+    #         eval_args.exp = f"POP_SMALL{exp_num}"
+    #         # eval_args.kl_diff_bonus_reward_coef = BR_coef
+    #         # eval_args.kl_diff_bonus_reward_clip = BR_clip
+    #         # eval_args.kl_diff_loss_coef = L_coef
+    #         # eval_args.kl_diff_loss_clip = L_clip
+    #
+    #         eval_args.kl_diff_bonus_reward_coef = 0.08
+    #         eval_args.kl_diff_bonus_reward_clip = 0.02
+    #         eval_args.kl_diff_loss_coef = 0.08
+    #         eval_args.kl_diff_loss_clip = 0.02
+    #         eval_args.n_sample_partners = exp_setting
+    #
+    #         eval_args.full_exp_name = get_name(eval_args.exp, eval_args, sp=eval_args.mode == "SP")
+    #
+    #         models_name = eval_args.full_exp_name
+    #         evals_name = eval_args.eval_set_name
+    #         group_name = models_name + "_X_" + evals_name
+    #
+    #         print(group_name)
+    #         eval_table = evaluator.evaluate(None, None, eval_args.final_eval_games_per_worker, eval_args.layout_name, group_name, eval_env = eval_env, mode=eval_args.mode)
+    #         stats = evaluator.analyze(eval_table, verbose=1)
+    #
+    #         data.append((stats["init_avg"], stats["best_init_avg"], stats["final_best_avg"], stats["best_pop_avg"], stats["max_above_threshold"], stats["avg_above_threshold"]))
+    #
+    #         print(stats["best_agent"])
+    #         print(stats["best_agent_avg"])
+    #         print(stats["avg"])
+    #         print(stats["non_zero_avg"])
+    #
+    #     plt = plot.plot(labels, data, 'o')
+    #     plot.ylim([0, 120])
+    #     plt[0].set_label("init avg")
+    #     plt[1].set_label("best init row avg")
+    #     plt[2].set_label("final best row avg")
+    #     plt[3].set_label("pop best row avg")
+    #     plt[4].set_label("max_above_threshold")
+    #     plt[5].set_label("avg_above_threshold")
+    #
+    #     plot.axhline(y=21, color='r', linestyle='-')
+    #     plot.axhline(y=10.5, color='g', linestyle='-')
+    #     plot.legend()
+    #     # plt.legend(['A', 'B', "C", 'D'])
+    #     # , label = ['A', 'B', "C", 'D']
+    #
+    #     plot.savefig(f"./diverse_population/results/{args.layout_name}/POP_SMALL{exp_num}.png")
+    #     plot.show()
 

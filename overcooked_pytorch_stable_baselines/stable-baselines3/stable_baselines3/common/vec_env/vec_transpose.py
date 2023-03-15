@@ -95,8 +95,10 @@ class VecTransposeImage(VecEnvWrapper):
         # if not isinstance(image[0], dict):
         #     return np.transpose(image, (0, 3, 1, 2))
         #TODO: for frame_stacking
+        if len(image.shape) == 5:
+            return np.transpose(image, (0, 1, 4, 2, 3))
         if not isinstance(image[0], dict):
-            return np.transpose(image, (0, 1, 4 ,2, 3))
+            return np.transpose(image, (0, 3, 1, 2))
 
         #PBa: working with observartion being in format of [batch, {both_agents_observation(2): image [26,5,4]}
         # original_images = [item["both_agent_observation"]]
