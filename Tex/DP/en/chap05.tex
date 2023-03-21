@@ -1,24 +1,73 @@
 \chapter{Related work}
-\section{Human-ai cooperation results}
 
-\subsection{Human cooperation}
+Common approach when dealing with two-player game is to train agent to play with a set of other AI agents.
+This has been shown to perform impressively well against human experts in multiple complex games like Dota (\cite{DotaOpenFive}) or Starcraft (\cite{Starcraft}).
+The authors of overcooked environment believe (\cite{carroll2020utility}) that the distributional shift from AI training to Human evaluation is successful due to the fact that the nature of these environment is strongly competitive.
+This is ilustrated by the canonical case of a two-player zero-sum game.
+When humans take branch in search tree that is mistakenly suboptimal while being in the role of minimizer, this only increases the result for the maximizer.
+
+However, the situation is not this ideal in case of common-payoff games such as overcooked environment.
+If a self-play trained AI agent is paired with another sub-optimal partner the result can be abysmal. 
+In this case both agents play maximizing role in search tree. 
+When self-play AI agent is expecting it's sub-optimal partner to be the same agent, it can choose branches that lead to maximal common payoff.
+However, since sub-optimal partner may behave sub-optimally, it can choose by mistake some worse branches unforeseen by self-play agent, which can lead to way worse result.
+However, since common payoff is shared between the two agents, this is no longer advantage for the self-play maximizer agent.
+It rather causes failure for both agents.
+
+\section{Human cooperation}
 Most of the previous work in this area has focused on one of two types of coordination. 
 The first being coordination between a human and an AI partner. 
 And second, focusing solely on the fully AI-driven pair.
+
 
 \par
 
 While perfect AI-human coordination is generally a more desirable goal to achieve in all sorts of domains, it will not be our main focus.  
 Several previous scientific papers have addressed this issue. A particularly noteworthy contribution is the article 
-On the Utility of Learning about Humans for Human-AI Coordination
-\url{https://arxiv.org/abs/1910.05789}, whose authors are also responsible for creating the overcooked environment implementation. 
-They collected many human-human episodes and incorporated these experiences in the form of human behavior clone models into the training. Their main conclusions were that AI models often rely heavily on the optimal behavior of their partner. 
-However, when such a model is paired with generally suboptimal human behavior, it often fails to cooperate at all, regardless of the approach used for training of the AI model.
+On the Utility of Learning about Humans for Human-AI Coordination (\cite{carroll2020utility}). 
+They collected several human-human episodes and incorporated these experiences during training.
+These human data have been used to create human-based models using behavior cloning and Generative Adversarial Imitation Learning (\cite{Ho2016GenerativeAI}) and consequently incorporated to the training.
+One of the important conclusion was that when self-play and population-based agents were paired with humand models the overall results was way worse than when paired with agents designed to play with human models.
 
-One of the other important conclusions they came to was that even AI-AI coordination often fails when models are paired with another AI model trained using a different approach. 
-We will discuss some of these popular approaches in the next section.
 
-\textbf{TODO: How much further focus on human-ai coordination if not our interest?}
+\section{AI-AI cooperation}
+We already mentioned the problem when self-play agent is paired with sub-optimal (eg. human) partner.
+Nevertheless, similar problem can occur even when two different agents trained in self-play mode are paired together.
+Common approach used in competetive setting is to introduce diversity through exposing trained agent to diverse set of partners during training phase.
+There are several frequently used methods for partner selection during training.
+
+\subsubsection*{Self-play}
+Self-play method was already mentioned.
+It is argubaly the simplest and most straightforward method for partner sampling.
+As the name suggest, the idea of this approach is that the agent that is currently being learned is paired during training with the copy of itself.
+This method does not introduce any kind of diversity into the learning process as it learns exclusively from it's own current policy.
+
+\subsubsection*{Partner Sampling}
+Partner sampling is extension of the previous method. 
+Instead of playing solely with current policy, partner is sampled from previously periodically saved policies of this given training period.
+The diversity in this method comes from the theoretical point of view that previous policies correspond to different behaviors.
+
+\subsubsection*{Population-Based Training}
+Population-Based Training method is based on evolutionary algorithm focusing on training hyperparameters and model selection.
+Population consists of agents parametrized by neural network and trained via DRL algorithm.
+During each iteration agents are drawn from the population and are being trained using the collected trajectories.
+Pair-wise results are recorded.
+And at the end of the iteration the worst agents are replaced by a copy of best ones with their hyperparameter mutated.
+
+\subsubsection*{Pre-trained Partners}
+Lastly, remaining often used method consists of using previously pre-trained partners.
+Diversity is here expected through the fact that different runs of reinforcement learning algorithms often yield different agent behaviors.
+
+
+\subsubsection*{Result}
+Problem with fully cooperative games is that when agents are trained together they tend to exploit the common knowledge experienced during training, which often makes them unable to cooperate with unseen agents.
+It has been shown (\cite{10.1007/978-3-030-63823-8_46}) that this strongly holds for the first three mentioned methods, 
+where when performing cross-play evaluation of the set of different agents obtained by the same method, 
+only such pair of agents that have been trained together, managed to perform well, while all others failed.
+
+{\color{blue} Nemam si tady od nich z toho clanku pujcit primo ty obrazky ukazujici ten SP off-diagonal failure, abych se na to pak mohl vizualne odkazat ve svych experimentech? 
+Nebo krast obrazky se nedela?}
+The authors conclude with results showing that incorporating different pre-trained agents for training robust agents was significantly more successful than other methods.
 
 
 \section{Problem of robustness}
@@ -27,9 +76,7 @@ We will discuss some of these popular approaches in the next section.
 \subsection{Problem of robustness definition}
 Ad hoc agent playing? Trivial states failure (unit-test based aproach)?
 
-\section{AI-AI coordination}
-\subsection{Aproaches}
-\textbf{Self-play, Population}
+
 
 
 

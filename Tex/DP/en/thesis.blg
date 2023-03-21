@@ -18,45 +18,47 @@ Warning--entry type for "DotaOpenFive" isn't style-file defined
 --line 96 of file bibliography.bib
 Warning--entry type for "SpinningUpIntro" isn't style-file defined
 --line 107 of file bibliography.bib
-You've used 22 entries,
+Warning--entry type for "Starcraft" isn't style-file defined
+--line 449 of file bibliography.bib
+You've used 26 entries,
             2773 wiz_defined-function locations,
-            773 strings with 9637 characters,
-and the built_in function-call counts, 11364 in all, are:
-= -- 939
-> -- 903
-< -- 12
-+ -- 308
-- -- 285
-* -- 969
-:= -- 1808
-add.period$ -- 79
-call.type$ -- 22
-change.case$ -- 156
-chr.to.int$ -- 21
-cite$ -- 44
-duplicate$ -- 421
-empty$ -- 785
-format.name$ -- 311
-if$ -- 2333
+            797 strings with 10542 characters,
+and the built_in function-call counts, 13382 in all, are:
+= -- 1105
+> -- 1050
+< -- 15
++ -- 357
+- -- 330
+* -- 1127
+:= -- 2116
+add.period$ -- 91
+call.type$ -- 26
+change.case$ -- 180
+chr.to.int$ -- 25
+cite$ -- 52
+duplicate$ -- 508
+empty$ -- 943
+format.name$ -- 362
+if$ -- 2762
 int.to.chr$ -- 2
 int.to.str$ -- 1
-missing$ -- 14
-newline$ -- 129
-num.names$ -- 88
-pop$ -- 349
+missing$ -- 16
+newline$ -- 148
+num.names$ -- 106
+pop$ -- 412
 preamble$ -- 1
-purify$ -- 139
+purify$ -- 160
 quote$ -- 0
-skip$ -- 396
+skip$ -- 474
 stack$ -- 0
-substring$ -- 193
-swap$ -- 47
-text.length$ -- 1
+substring$ -- 233
+swap$ -- 61
+text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 227
+type$ -- 271
 warning$ -- 0
-while$ -- 75
+while$ -- 91
 width$ -- 0
-write$ -- 306
-(There were 2 warnings)
+write$ -- 355
+(There were 3 warnings)

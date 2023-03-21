@@ -1,4 +1,4 @@
-\begin{thebibliography}{22}
+\begin{thebibliography}{26}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -26,6 +26,28 @@ Craig Boutilier.
   1996. Morgan Kaufmann Publishers Inc.
 \newblock ISBN 1558604179.
 
+\bibitem[Carroll et~al.(2020)Carroll, Shah, Ho, Griffiths, Seshia, Abbeel, and
+  Dragan]{carroll2020utility}
+Micah Carroll, Rohin Shah, Mark~K. Ho, Thomas~L. Griffiths, Sanjit~A. Seshia,
+  Pieter Abbeel, and Anca Dragan.
+\newblock On the utility of learning about humans for human-ai coordination,
+  2020.
+
+\bibitem[Charakorn et~al.(2020)Charakorn, Manoonpong, and
+  Dilokthanakul]{10.1007/978-3-030-63823-8_46}
+Rujikorn Charakorn, Poramate Manoonpong, and Nat Dilokthanakul.
+\newblock Investigating partner diversification methods in cooperative
+  multi-agent deep reinforcement learning.
+\newblock In Haiqin Yang, Kitsuchart Pasupa, Andrew Chi-Sing Leung, James~T.
+  Kwok, Jonathan~H. Chan, and Irwin King, editors, \emph{Neural Information
+  Processing}, pages 395--402, Cham, 2020. Springer International Publishing.
+\newblock ISBN 978-3-030-63823-8.
+
+\bibitem[Deepmind(2019)]{Starcraft}
+Deepmind, 2019.
+\newblock URL
+  \url{https://www.deepmind.com/blog/alphastar-mastering-the-real-time-strategy-game-starcraft-ii}.
+
 \bibitem[Fujimoto et~al.(2018)Fujimoto, van Hoof, and Meger]{TD3}
 Scott Fujimoto, Herke van Hoof, and David Meger.
 \newblock Addressing function approximation error in actor-critic methods,
@@ -46,6 +68,11 @@ Matteo Hessel, Joseph Modayil, Hado van Hasselt, Tom Schaul, Georg Ostrovski,
   Will Dabney, Dan Horgan, Bilal Piot, Mohammad Azar, and David Silver.
 \newblock Rainbow: Combining improvements in deep reinforcement learning, 2017.
 \newblock URL \url{https://arxiv.org/abs/1710.02298}.
+
+\bibitem[Ho and Ermon(2016)]{Ho2016GenerativeAI}
+Jonathan Ho and Stefano Ermon.
+\newblock Generative adversarial imitation learning.
+\newblock In \emph{NIPS}, 2016.
 
 \bibitem[Kakade and Langford(2002)]{CPI}
 Sham~M. Kakade and John Langford.

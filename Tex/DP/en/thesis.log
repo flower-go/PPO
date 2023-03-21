@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.23)  28 FEB 2023 18:16
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.23)  21 MAR 2023 18:20
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -615,7 +615,7 @@ LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 12
 (/usr/share/texmf/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-<rl_diagram_transparent_bg.png, id=333, 429.10312pt x 150.5625pt>
+<rl_diagram_transparent_bg.png, id=331, 429.10312pt x 150.5625pt>
 File: rl_diagram_transparent_bg.png Graphic file (type png)
 <use rl_diagram_transparent_bg.png>
 Package pdftex.def Info: rl_diagram_transparent_bg.png  used on input line 24.
@@ -684,12 +684,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 82--86
 
  (./chap04.tex
 Chapter 4.
-<../img/cramped_room_layout.png, id=609, 399.4925pt x 320.19624pt>
+<../img/cramped_room_layout.png, id=607, 399.4925pt x 320.19624pt>
 File: ../img/cramped_room_layout.png Graphic file (type png)
 <use ../img/cramped_room_layout.png>
 Package pdftex.def Info: ../img/cramped_room_layout.png  used on input line 24.
 (pdftex.def)             Requested size: 113.81102pt x 91.21779pt.
-<../img/asymmetric_advantages_layout.png, id=611, 720.6925pt x 399.4925pt>
+<../img/asymmetric_advantages_layout.png, id=609, 720.6925pt x 399.4925pt>
 File: ../img/asymmetric_advantages_layout.png Graphic file (type png)
 <use ../img/asymmetric_advantages_layout.png>
 Package pdftex.def Info: ../img/asymmetric_advantages_layout.png  used on input line 32.
@@ -700,47 +700,47 @@ Package pdftex.def Info: ../img/asymmetric_advantages_layout.png  used on input 
 
 
  <../img/cramped_room_layout.png>]
-<../img/coordination_ring_layout.png, id=621, 398.48875pt x 398.48875pt>
+<../img/coordination_ring_layout.png, id=619, 398.48875pt x 398.48875pt>
 File: ../img/coordination_ring_layout.png Graphic file (type png)
 <use ../img/coordination_ring_layout.png>
 Package pdftex.def Info: ../img/coordination_ring_layout.png  used on input line 39.
 (pdftex.def)             Requested size: 113.81102pt x 113.8076pt.
-<../img/forced_coordination_layout.png, id=623, 400.49625pt x 398.48875pt>
+<../img/forced_coordination_layout.png, id=621, 400.49625pt x 398.48875pt>
 File: ../img/forced_coordination_layout.png Graphic file (type png)
 <use ../img/forced_coordination_layout.png>
 Package pdftex.def Info: ../img/forced_coordination_layout.png  used on input line 46.
 (pdftex.def)             Requested size: 113.81102pt x 113.23604pt.
-<../img/counter_circuit_layout.png, id=625, 639.38875pt x 399.4925pt>
+<../img/counter_circuit_layout.png, id=623, 639.38875pt x 399.4925pt>
 File: ../img/counter_circuit_layout.png Graphic file (type png)
 <use ../img/counter_circuit_layout.png>
 Package pdftex.def Info: ../img/counter_circuit_layout.png  used on input line 54.
 (pdftex.def)             Requested size: 170.71652pt x 106.66354pt.
- [28 <../img/asymmetric_advantages_layout.png> <../img/coordination_ring_layout.png> <../img/forced_coordination_layout.png>]) [29 <../img/counter_circuit_layout.png>]
+ [28 <../img/asymmetric_advantages_layout.png> <../img/coordination_ring_layout.png> <../img/forced_coordination_layout.png>] [29 <../img/counter_circuit_layout.png>] [30]) [31]
 \openout2 = `chap05.aux'.
 
  (./chap05.tex
 Chapter 5.
-) [30
+[32
 
 
 
 
-]
+]) [33] [34]
 \openout2 = `chap06.aux'.
 
  (./chap06.tex
 Chapter 6.
-[31
+[35
 
 
 
 
-]) [32]
+]) [36]
 \openout2 = `chap07.aux'.
 
  (./chap07.tex
 Chapter 7.
-) [33
+) [37
 
 
 
@@ -748,7 +748,7 @@ Chapter 7.
 ]
 \openout2 = `epilog.aux'.
 
- (./epilog.tex) [34
+ (./epilog.tex) [38
 
 
 
@@ -756,31 +756,36 @@ Chapter 7.
 ]
 \openout2 = `bibliography.aux'.
 
- (./bibliography.tex (./thesis.bbl [35
+ (./bibliography.tex (./thesis.bbl
+Underfull \hbox (badness 10000) in paragraph at lines 47--50
+[]\OT1/lmr/m/n/12 Deepmind, 2019.  URL []$\OT1/lmtt/m/n/12 https : / / www . deepmind . com / blog /
+ []
+
+[39
 
 
 
 
-])) [36] (./thesis.aux (./title.aux) (./preface.aux) (./chap01.aux) (./chap02.aux) (./chap03.aux) (./chap04.aux) (./chap05.aux) (./chap06.aux) (./chap07.aux) (./epilog.aux) (./bibliography.aux))
+] [40])) [41] (./thesis.aux (./title.aux) (./preface.aux) (./chap01.aux) (./chap02.aux) (./chap03.aux) (./chap04.aux) (./chap05.aux) (./chap06.aux) (./chap07.aux) (./epilog.aux) (./bibliography.aux))
 
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 52DB3C33B5E88AB36D61921F6972DC02;9561.
+(rerunfilecheck)             Checksum: DA3B429D7492DFD6149F89587F465F4A;8843.
  ) 
 Here is how much of TeX's memory you used:
- 16938 strings out of 479342
- 263681 string characters out of 5869178
- 544390 words of memory out of 5000000
- 34376 multiletter control sequences out of 15000+600000
+ 16965 strings out of 479342
+ 264197 string characters out of 5869178
+ 544610 words of memory out of 5000000
+ 34389 multiletter control sequences out of 15000+600000
  521143 words of font info for 65 fonts, out of 8000000 for 9000
  473 hyphenation exceptions out of 8191
- 77i,24n,79p,570b,2377s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 77i,24n,79p,533b,2377s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rmtt.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx8.pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi6.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi8.pfb></usr/share/texmf/fonts/type1/public/lm/lmmib10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy6.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on thesis.pdf (40 pages, 675026 bytes).
+Output written on thesis.pdf (45 pages, 686617 bytes).
 PDF statistics:
- 826 PDF objects out of 1000 (max. 8388607)
- 717 compressed objects within 8 object streams
- 209 named destinations out of 1000 (max. 500000)
+ 873 PDF objects out of 1000 (max. 8388607)
+ 759 compressed objects within 8 object streams
+ 223 named destinations out of 1000 (max. 500000)
  508 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -59,12 +59,62 @@ However, the cooks still need to decide who will be responsible for bringing the
 
 
 \section{Environment description}
-\subsection{Actions space, episode horizont, shaped rewards, state representation MLP vs CNN}
-\subsection{Reset state static position, index switching, Randomization function}
+\subsection{Action space}
+Action space is quite trivial as it contains only essential actions needed to operate within this environment.
+\begin{itemize}
+    \item Go north
+    \item Go south
+    \item Go east
+    \item Go west
+    \item Stay
+    \item Interact
+\end{itemize}
+
+\subsection{State representation}
+There are two state representation functions prefabricated by the authors, namely \texttt{featurize\_state} and \texttt{lossless\_state\_encoding}.
+
+First of the two extracts manually designed features into the single dimension vector of ones and zeroes. 
+These features can be interpreted as partial observable representation of the environment state as majority of features are computed in relation to the closest point of interest.
+For instance only closest source locations of onions and dishes related to current player location are included, which results in loss of global information about whole layout. 
+
+Second of the mentioned state representation, as the name suggests, provides lossless global information about environment state.
+As in previous case, variables about environment are also represented by ones and zeros. 
+However, contrary to previous function, resulting representation is not a single dimension vector.
+Result is formed by stacked masks, where each mask represents some feature of the environment in the form of two dimension vector corresponding to layout width and height.
+For instance, the mask representing player $i$ location is vector of shape \[(width, height)\] filled with zeroes on all positions except for the value one at coordinates where player $i$ is located.
+Similarly the mask of the same shape representing onion sources is filled with zeroes and on all coordinates where there is an onion source in the environment there are ones instead.
+We can see that this representation goes beyond the closest locations and provide global informations.
+
+\subsection{Rewards}
+As we already said in the introduction, the environment is purely cooperative environment in a sense that players share the common reward of value 20 every time a soup is delivered to counter location.
+And this reward is player independent. 
+The cycle of the environment is virtually infinite as there is no a priori terminal state. 
+Hence it could be theoretically possible to easily obtain cummulative sum reward of infinity.
+This is prevented be setting finite time horizon that set by a convention to the limit of 400 steps.
+This way it makes sense to compare the results of different runs.
+
+Apart from the common reward for delivering soups, there can be utilized player-dependent partial rewards that are not considered in overall cummulative sum of rewards.
+These rewards are utilized mostly for learning purposes of the agents as especially on some particular maps it extremly unlikely that by following random policy whole process of soup making including delivery will be completed.
+Using predefined partial rewards
+\begin{itemize}
+    \item Dish pickup reward - dish is picked in usefull situation, eg. pot is ready or cooking
+    \item Soup pickup reward 
+    \item Placement in pot reward - usefull ingredience is added to the pot, in our setting only onion soup recipe is used, so this corresponds to the action the onion was put in the pot
+\end{itemize}
+allows agents to learn subtasks first.
+It is important to eventually ignore these partial rewards during training, as agents could focus on these subtasks and ignore the main goal thus failing the task whatsoever.
 
 
+\subsection{Initial state}
+As there were two functions predefined by the authors to represent the environment state, there are also two ways how the initial state of the environment can be created.
 
+First of the two uses fixed layout initial player locations, which always create identical initial state including both players initial locations.
+However, with this fixed initial state the agent that was learned by starting in this position will likely fail if set in the initial position of the other player.
+For this reason the $player\_index$ is introduced to specify which agent is interpreted as player number one and player two.
+This index is being randomized every time the environment resets, this way it is ensured that agent encounters both starting locations.
+Using this index introduces a mild chaos into the environment as multiple parts of environment control must adress the problem of the index and both actions and state observations must be switched to correct order, which makes it a bit opaque.
+We suppose that this kind of initial state is suitable for some sort of benchmarking where the initial conditions are always the same.
 
-
-
-
+However, in our experiments we utilize the second approach to state initialization, where initial locations are always sampled randomly for both players.
+This is in agreement with our intuition, that robust cooperative agents should be able cooperate well no matter their starting position.
+Apart from random locations, the randomized initialization function offers also probabilty threshold argument that can be used to randomly initialize some random objects within the environment.
