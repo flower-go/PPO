@@ -261,6 +261,7 @@ if __name__ == "__main__":
 
 
     models = load_or_train_models(args, gym_env)
+    # models = None
 
     if args.execute_final_eval:
         random.seed(args.seed)

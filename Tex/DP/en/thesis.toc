@@ -29,25 +29,22 @@
 \contentsline {section}{\numberline {5.1}Human cooperation}{32}{section.5.1}%
 \contentsline {section}{\numberline {5.2}AI-AI cooperation}{32}{section.5.2}%
 \contentsline {section}{\numberline {5.3}Problem of robustness}{34}{section.5.3}%
-\contentsline {subsection}{\numberline {5.3.1}Problem of robustness definition}{34}{subsection.5.3.1}%
-\contentsline {chapter}{\numberline {6}Our work - Preparation}{35}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Idea}{35}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Utilized framework}{36}{section.6.2}%
-\contentsline {subsection}{\numberline {6.2.1}Modifications of stable baselines}{36}{subsection.6.2.1}%
-\contentsline {section}{\numberline {6.3}Self-play}{36}{section.6.3}%
-\contentsline {subsection}{\numberline {6.3.1}Training}{36}{subsection.6.3.1}%
-\contentsline {subsection}{\numberline {6.3.2}Results}{36}{subsection.6.3.2}%
-\contentsline {subsection}{\numberline {6.3.3}NN structure modification}{36}{subsection.6.3.3}%
-\contentsline {subsection}{\numberline {6.3.4}Hyperparameters random search}{36}{subsection.6.3.4}%
-\contentsline {subsection}{\numberline {6.3.5}Randomization function correction}{36}{subsection.6.3.5}%
-\contentsline {chapter}{\numberline {7}Our work - Contribution}{37}{chapter.7}%
-\contentsline {section}{\numberline {7.1}Our definition(s?) of robustness}{37}{section.7.1}%
-\contentsline {section}{\numberline {7.2}Population construction}{37}{section.7.2}%
-\contentsline {subsection}{\numberline {7.2.1}SP agents initialization}{37}{subsection.7.2.1}%
-\contentsline {subsection}{\numberline {7.2.2}population partner sampling during training}{37}{subsection.7.2.2}%
-\contentsline {subsection}{\numberline {7.2.3}Final agent training}{37}{subsection.7.2.3}%
-\contentsline {section}{\numberline {7.3}Diverzification}{37}{section.7.3}%
-\contentsline {subsection}{\numberline {7.3.1}Population policies difference rewards augmentation}{37}{subsection.7.3.1}%
-\contentsline {subsection}{\numberline {7.3.2}Population policies difference loss}{37}{subsection.7.3.2}%
-\contentsline {chapter}{Conclusion}{38}{chapter*.36}%
-\contentsline {chapter}{Bibliography}{39}{chapter*.37}%
+\contentsline {chapter}{\numberline {6}Our work - Preparation}{36}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Framework}{36}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}Modifications}{36}{subsection.6.1.1}%
+\contentsline {section}{\numberline {6.2}Self-play}{38}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}NN structure modification}{38}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}Hyperparameters random search}{38}{subsection.6.2.2}%
+\contentsline {subsection}{\numberline {6.2.3}Randomization function correction}{38}{subsection.6.2.3}%
+\contentsline {chapter}{\numberline {7}Our work - Contribution}{39}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Idea}{39}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Our definition(s?) of robustness}{40}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Population construction}{40}{section.7.3}%
+\contentsline {subsection}{\numberline {7.3.1}SP agents initialization}{40}{subsection.7.3.1}%
+\contentsline {subsection}{\numberline {7.3.2}population partner sampling during training}{40}{subsection.7.3.2}%
+\contentsline {subsection}{\numberline {7.3.3}Final agent training}{40}{subsection.7.3.3}%
+\contentsline {section}{\numberline {7.4}Diverzification}{40}{section.7.4}%
+\contentsline {subsection}{\numberline {7.4.1}Population policies difference rewards augmentation}{40}{subsection.7.4.1}%
+\contentsline {subsection}{\numberline {7.4.2}Population policies difference loss}{40}{subsection.7.4.2}%
+\contentsline {chapter}{Conclusion}{41}{chapter*.41}%
+\contentsline {chapter}{Bibliography}{42}{chapter*.42}%

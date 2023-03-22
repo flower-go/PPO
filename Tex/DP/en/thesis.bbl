@@ -1,4 +1,4 @@
-\begin{thebibliography}{26}
+\begin{thebibliography}{27}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -78,6 +78,12 @@ Jonathan Ho and Stefano Ermon.
 Sham~M. Kakade and John Langford.
 \newblock Approximately optimal approximate reinforcement learning.
 \newblock In \emph{International Conference on Machine Learning}, 2002.
+
+\bibitem[Knott et~al.(2021)Knott, Carroll, Devlin, Ciosek, Hofmann, Dragan, and
+  Shah]{knott2021evaluating}
+Paul Knott, Micah Carroll, Sam Devlin, Kamil Ciosek, Katja Hofmann, A.~D.
+  Dragan, and Rohin Shah.
+\newblock Evaluating the robustness of collaborative agents, 2021.
 
 \bibitem[Kullback(1959)]{KLDIV}
 Solomon Kullback.

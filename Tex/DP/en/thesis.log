@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.23)  21 MAR 2023 18:20
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.23)  22 MAR 2023 18:12
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -466,24 +466,45 @@ Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
 \ALG@tmplength=\skip85
 )
 Document Style - pseudocode environments for use with the `algorithmicx' style
-)
-Package hyperref Info: Option `unicode' set `true' on input line 105.
-Package hyperref Info: Option `breaklinks' set `true' on input line 106.
+) (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count303
+\lst@gtempboxa=\box63
+\lst@token=\toks34
+\lst@length=\count304
+\lst@currlwidth=\dimen175
+\lst@column=\count305
+\lst@pos=\count306
+\lst@lostspace=\dimen176
+\lst@width=\dimen177
+\lst@newlines=\count307
+\lst@lineno=\count308
+\lst@maxwidth=\dimen178
+ (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2020/03/24 1.8d (Carsten Heinz)
+\c@lstnumber=\count309
+\lst@skipnumbers=\count310
+\lst@framebox=\box64
+) (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2020/03/24 1.8d listings configuration
+))
+Package: listings 2020/03/24 1.8d (Carsten Heinz)
+Package hyperref Info: Option `unicode' set `true' on input line 106.
+Package hyperref Info: Option `breaklinks' set `true' on input line 107.
 
 
-LaTeX Warning: \include should only be used after \begin{document} on input line 109.
+LaTeX Warning: \include should only be used after \begin{document} on input line 110.
 
 (./macros.tex
-\c@thm=\count303
-\c@defn=\count304
+\c@thm=\count311
+\c@defn=\count312
 )
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 112.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 113.
  (/usr/share/texmf/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2022-01-12 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count305
-\l__pdf_internal_box=\box63
+\l__color_backend_stack_int=\count313
+\l__pdf_internal_box=\box65
 ) (./thesis.aux (./title.aux) (./preface.aux) (./chap01.aux) (./chap02.aux
 
 LaTeX Warning: Label `PPO' multiply defined.
@@ -491,44 +512,44 @@ LaTeX Warning: Label `PPO' multiply defined.
 ) (./chap03.aux) (./chap04.aux) (./chap05.aux) (./chap06.aux) (./chap07.aux) (./epilog.aux) (./bibliography.aux))
 \openout1 = `thesis.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 112.
-LaTeX Font Info:    ... okay on input line 112.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 112.
-LaTeX Font Info:    ... okay on input line 112.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 112.
-LaTeX Font Info:    ... okay on input line 112.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 112.
-LaTeX Font Info:    ... okay on input line 112.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 112.
-LaTeX Font Info:    ... okay on input line 112.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 112.
-LaTeX Font Info:    ... okay on input line 112.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 112.
-LaTeX Font Info:    ... okay on input line 112.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 112.
-LaTeX Font Info:    ... okay on input line 112.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 112.
-LaTeX Font Info:    ... okay on input line 112.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
  (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count306
-\scratchdimen=\dimen175
-\scratchbox=\box64
-\nofMPsegments=\count307
-\nofMParguments=\count308
-\everyMPshowfont=\toks34
-\MPscratchCnt=\count309
-\MPscratchDim=\dimen176
-\MPnumerator=\count310
-\makeMPintoPDFobject=\count311
-\everyMPtoPDFconversion=\toks35
+\scratchcounter=\count314
+\scratchdimen=\dimen179
+\scratchbox=\box66
+\nofMPsegments=\count315
+\nofMParguments=\count316
+\everyMPshowfont=\toks35
+\MPscratchCnt=\count317
+\MPscratchDim=\dimen180
+\MPnumerator=\count318
+\makeMPintoPDFobject=\count319
+\everyMPtoPDFconversion=\toks36
 ) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
  (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-Package hyperref Info: Link coloring OFF on input line 112.
+Package hyperref Info: Link coloring OFF on input line 113.
  (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
  (/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty
@@ -536,20 +557,21 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 ) (/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count312
+\c@section@level=\count320
 )
-LaTeX Info: Redefining \ref on input line 112.
-LaTeX Info: Redefining \pageref on input line 112.
-LaTeX Info: Redefining \nameref on input line 112.
+LaTeX Info: Redefining \ref on input line 113.
+LaTeX Info: Redefining \pageref on input line 113.
+LaTeX Info: Redefining \nameref on input line 113.
  (./thesis.out) (./thesis.out)
 \@outlinefile=\write5
 \openout5 = `thesis.out'.
 
+\c@lstlisting=\count321
 \openout2 = `title.aux'.
 
  (./title.tex
 Package hyperref Info: Option `pageanchor' set `false' on input line 6.
-<../img/logo-en.pdf, id=220, 506.4591pt x 156.49065pt>
+<../img/logo-en.pdf, id=208, 506.4591pt x 156.49065pt>
 File: ../img/logo-en.pdf Graphic file (type pdf)
 <use ../img/logo-en.pdf>
 Package pdftex.def Info: ../img/logo-en.pdf  used on input line 9.
@@ -615,7 +637,7 @@ LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 12
 (/usr/share/texmf/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-<rl_diagram_transparent_bg.png, id=331, 429.10312pt x 150.5625pt>
+<rl_diagram_transparent_bg.png, id=316, 429.10312pt x 150.5625pt>
 File: rl_diagram_transparent_bg.png Graphic file (type png)
 <use rl_diagram_transparent_bg.png>
 Package pdftex.def Info: rl_diagram_transparent_bg.png  used on input line 24.
@@ -684,12 +706,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 82--86
 
  (./chap04.tex
 Chapter 4.
-<../img/cramped_room_layout.png, id=607, 399.4925pt x 320.19624pt>
+<../img/cramped_room_layout.png, id=592, 399.4925pt x 320.19624pt>
 File: ../img/cramped_room_layout.png Graphic file (type png)
 <use ../img/cramped_room_layout.png>
 Package pdftex.def Info: ../img/cramped_room_layout.png  used on input line 24.
 (pdftex.def)             Requested size: 113.81102pt x 91.21779pt.
-<../img/asymmetric_advantages_layout.png, id=609, 720.6925pt x 399.4925pt>
+<../img/asymmetric_advantages_layout.png, id=594, 720.6925pt x 399.4925pt>
 File: ../img/asymmetric_advantages_layout.png Graphic file (type png)
 <use ../img/asymmetric_advantages_layout.png>
 Package pdftex.def Info: ../img/asymmetric_advantages_layout.png  used on input line 32.
@@ -700,17 +722,17 @@ Package pdftex.def Info: ../img/asymmetric_advantages_layout.png  used on input 
 
 
  <../img/cramped_room_layout.png>]
-<../img/coordination_ring_layout.png, id=619, 398.48875pt x 398.48875pt>
+<../img/coordination_ring_layout.png, id=604, 398.48875pt x 398.48875pt>
 File: ../img/coordination_ring_layout.png Graphic file (type png)
 <use ../img/coordination_ring_layout.png>
 Package pdftex.def Info: ../img/coordination_ring_layout.png  used on input line 39.
 (pdftex.def)             Requested size: 113.81102pt x 113.8076pt.
-<../img/forced_coordination_layout.png, id=621, 400.49625pt x 398.48875pt>
+<../img/forced_coordination_layout.png, id=606, 400.49625pt x 398.48875pt>
 File: ../img/forced_coordination_layout.png Graphic file (type png)
 <use ../img/forced_coordination_layout.png>
 Package pdftex.def Info: ../img/forced_coordination_layout.png  used on input line 46.
 (pdftex.def)             Requested size: 113.81102pt x 113.23604pt.
-<../img/counter_circuit_layout.png, id=623, 639.38875pt x 399.4925pt>
+<../img/counter_circuit_layout.png, id=608, 639.38875pt x 399.4925pt>
 File: ../img/counter_circuit_layout.png Graphic file (type png)
 <use ../img/counter_circuit_layout.png>
 Package pdftex.def Info: ../img/counter_circuit_layout.png  used on input line 54.
@@ -725,30 +747,38 @@ Chapter 5.
 
 
 
-]) [33] [34]
+] [33] [34]) [35]
 \openout2 = `chap06.aux'.
 
  (./chap06.tex
 Chapter 6.
-[35
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2020/03/24 1.8d listings language file
+) [36
 
 
 
 
-]) [36]
+] [37]
+<../img/MLP_OFF_DIAG_TEST.png, id=703, 462.528pt x 346.896pt>
+File: ../img/MLP_OFF_DIAG_TEST.png Graphic file (type png)
+<use ../img/MLP_OFF_DIAG_TEST.png>
+Package pdftex.def Info: ../img/MLP_OFF_DIAG_TEST.png  used on input line 68.
+(pdftex.def)             Requested size: 369.88582pt x 277.42719pt.
+) [38 <../img/MLP_OFF_DIAG_TEST.png>]
 \openout2 = `chap07.aux'.
 
  (./chap07.tex
 Chapter 7.
-) [37
+[39
 
 
 
 
-]
+]) [40]
 \openout2 = `epilog.aux'.
 
- (./epilog.tex) [38
+ (./epilog.tex) [41
 
 
 
@@ -761,31 +791,31 @@ Underfull \hbox (badness 10000) in paragraph at lines 47--50
 []\OT1/lmr/m/n/12 Deepmind, 2019.  URL []$\OT1/lmtt/m/n/12 https : / / www . deepmind . com / blog /
  []
 
-[39
+[42
 
 
 
 
-] [40])) [41] (./thesis.aux (./title.aux) (./preface.aux) (./chap01.aux) (./chap02.aux) (./chap03.aux) (./chap04.aux) (./chap05.aux) (./chap06.aux) (./chap07.aux) (./epilog.aux) (./bibliography.aux))
+] [43])) [44] (./thesis.aux (./title.aux) (./preface.aux) (./chap01.aux) (./chap02.aux) (./chap03.aux) (./chap04.aux) (./chap05.aux) (./chap06.aux) (./chap07.aux) (./epilog.aux) (./bibliography.aux))
 
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: DA3B429D7492DFD6149F89587F465F4A;8843.
+(rerunfilecheck)             Checksum: BA3490266BD27CA6EE61EF3F38ABBD37;8256.
  ) 
 Here is how much of TeX's memory you used:
- 16965 strings out of 479342
- 264197 string characters out of 5869178
- 544610 words of memory out of 5000000
- 34389 multiletter control sequences out of 15000+600000
- 521143 words of font info for 65 fonts, out of 8000000 for 9000
+ 18735 strings out of 479342
+ 287758 string characters out of 5869178
+ 751700 words of memory out of 5000000
+ 36130 multiletter control sequences out of 15000+600000
+ 524086 words of font info for 66 fonts, out of 8000000 for 9000
  473 hyphenation exceptions out of 8191
  77i,24n,79p,533b,2377s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rmtt.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx8.pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi6.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi8.pfb></usr/share/texmf/fonts/type1/public/lm/lmmib10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy6.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on thesis.pdf (45 pages, 686617 bytes).
+{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rmtt.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx8.pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi6.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi8.pfb></usr/share/texmf/fonts/type1/public/lm/lmmib10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy6.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on thesis.pdf (48 pages, 744499 bytes).
 PDF statistics:
- 873 PDF objects out of 1000 (max. 8388607)
- 759 compressed objects within 8 object streams
- 223 named destinations out of 1000 (max. 500000)
- 508 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 898 PDF objects out of 1000 (max. 8388607)
+ 776 compressed objects within 8 object streams
+ 234 named destinations out of 1000 (max. 500000)
+ 495 words of extra memory for PDF output out of 10000 (max. 10000000)
 

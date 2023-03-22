@@ -1,5 +1,35 @@
 \chapter{Our work - Contribution}
 
+\section{Idea}
+In this chapter, we propose a novel approach to injecting explicit diversification into agent behavior.
+Although the traditional population-based methods discussed in the previous chapter were not effective enough to add the necessary diversification to the population, we try to use them in a slightly different way.
+
+We will transform population learning into an incremental process, where only newly added agents are learned.
+This process is designed to be quite general with respect to the potentially pre-existing set of autonomous agents.
+
+The building process will start with a population of whatever pre-trained agents are available, no matter what the source of agents is.
+Consequently, a new agent is learned with respect to the previous population by using some diversification techniques.
+After the agent is trained to cooperate with individual agents within the existing population while maintaining its diversity, it is added to the fixed population and the next agent can be trained.
+
+By fixing the previously trained agent, we effectively solve the problem of non-stationarity, since no two agent policies are changed at the same time.
+By embedding sampled partners from the population into the environment, we can consider the environment as a single agent from the point of view of the agent being trained.
+However, despite the fact that the original overcooked environment is deterministic from the point of view of the transition function, by embedding partners whose policies will be mostly stochastic into the environment, the transition function becomes stochastic from the point of view of the trained agent.
+The same applies to the reward function.
+Since part of our proposed diversification methods involve reward augmentation based on the agent's policy, the environment's reward function will no longer be stationary throughout training due to the learning policy.
+
+{\color{blue} Po prostudovani a sepsani MARL kapitoly mi pripada, ze muj pristup popsany vyse je vlastne hrozne slaby, obzvlaste tim, ze trenuju ciste reaktivni agenty bez jakekoliv pameti (uvazuji jen soucasnou CNN reprezentaci stavu, bez RNN, bez predeslych akci partnera, bez historie predchozich stavu),
+tim vlastne ani nejsem schopny komplexne zachytit nejakou high-level strategii partnera, namisto toho se proste ucim jak se nejlepe (robustne?) zachovat v jednom konkretnim stavu vzhledem k potencialne vice moznych strategii, kterymi by se mohl partner v danem stavu ridit.
+Tim, ze CNN kompletne popisuje stav prostredi, tak ani nemam partial observability a vstup kritika jsem nijak nerozsiroval.
+Proste pripada mi, ze jsem v tom reseni nezahrnul moc zadne techniky popsane pro MAS.
+
+Pripada mi ze i tak ty experimenty ktere zkousim a navrhuju jsou zajimave, jen mi pripadaji takove vytrzene z toho MAS kontextu - ale o tom jsme si myslim minule bavili ze nevadi.
+}
+
+
+Diverse population can be thought of as domain randomization technique
+"Given just this, it is unclear what the agent should do: the optimal
+policy for the agent depends heavily on the human’s policy, which the agent has no control over"
+
 "From the perspective of game theory, we are interested
 in n-person games in which the players have a shared or joint
 utility function. In other words, any outcome of the game has

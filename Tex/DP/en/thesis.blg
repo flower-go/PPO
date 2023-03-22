@@ -20,45 +20,45 @@ Warning--entry type for "SpinningUpIntro" isn't style-file defined
 --line 107 of file bibliography.bib
 Warning--entry type for "Starcraft" isn't style-file defined
 --line 449 of file bibliography.bib
-You've used 26 entries,
+You've used 27 entries,
             2773 wiz_defined-function locations,
-            797 strings with 10542 characters,
-and the built_in function-call counts, 13382 in all, are:
-= -- 1105
-> -- 1050
+            800 strings with 10720 characters,
+and the built_in function-call counts, 13980 in all, are:
+= -- 1148
+> -- 1116
 < -- 15
-+ -- 357
-- -- 330
-* -- 1127
-:= -- 2116
-add.period$ -- 91
-call.type$ -- 26
-change.case$ -- 180
-chr.to.int$ -- 25
-cite$ -- 52
-duplicate$ -- 508
-empty$ -- 943
-format.name$ -- 362
-if$ -- 2762
++ -- 379
+- -- 351
+* -- 1183
+:= -- 2212
+add.period$ -- 93
+call.type$ -- 27
+change.case$ -- 190
+chr.to.int$ -- 26
+cite$ -- 54
+duplicate$ -- 524
+empty$ -- 976
+format.name$ -- 384
+if$ -- 2881
 int.to.chr$ -- 2
 int.to.str$ -- 1
 missing$ -- 16
-newline$ -- 148
-num.names$ -- 106
-pop$ -- 412
+newline$ -- 152
+num.names$ -- 110
+pop$ -- 436
 preamble$ -- 1
-purify$ -- 160
+purify$ -- 169
 quote$ -- 0
-skip$ -- 474
+skip$ -- 494
 stack$ -- 0
-substring$ -- 233
-swap$ -- 61
+substring$ -- 235
+swap$ -- 62
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 271
+type$ -- 282
 warning$ -- 0
-while$ -- 91
+while$ -- 94
 width$ -- 0
-write$ -- 355
+write$ -- 365
 (There were 3 warnings)

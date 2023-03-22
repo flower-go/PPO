@@ -1,42 +1,78 @@
 \chapter{Our work - Preparation}
+Before we get into our own experiments with training a robust agent, which will be main focus in the next chapter, we want to prepare our solution first and reimplement some of the aforementioned results regarding self-play agents.
 
-\section{Idea}
-In this chapter, we propose a novel approach to injecting explicit diversification into agent behavior.
-Although the traditional population-based methods discussed in the previous chapter were not effective enough to add the necessary diversification to the population, we try to use them in a slightly different way.
+\section{Framework}
+Writing all our code on top of the overcooked environment is not necessary as there already exist several frameworks implementing deep reinforcement learning algorithms.
+Although there are in general many more DRL frameworks that could be suitable for our purposes, most of related projects concerning overcooked environment utilized either library RLib or StableBaselines.
 
-We will transform population learning into an incremental process, where only newly added agents are learned.
-This process is designed to be quite general with respect to the potentially pre-existing set of autonomous agents.
+As authors themself say, RLlib offers support for production-level and highly distributed RL workloads.
+This framework is also suitable for multi-agent learning.
+The downside here is that it is not so much suitable for smaller projects and developing on a local machine, as there is lot of a overhead due to it's paralel capabilities towards cluster computing.
+I found the framework a bit intimidating and documentation a little confusing.
 
-The building process will start with a population of whatever pre-trained agents are available, no matter what the source of agents is.
-Consequently, a new agent is learned with respect to the previous population by using some diversification techniques.
-After the agent is trained to cooperate with individual agents within the existing population while maintaining its diversity, it is added to the fixed population and the next agent can be trained.
+Other option was the Stable baselines framework, which in my opinion offers a documentation that is clearer and easier to understand.
+Also, in my humble opinion, the code base structure is more transparent and basic API is very simple.
+To demonstrate its simplicity, once you have environment implementing standard RL OpenAI environment interface, you can perform whole training with default hyperparameters and policy represented by multi layered perceptron network using PPO algorithm as simply as follows:
+\begin{lstlisting}[language=Python]
+    env = make_vec_env("CartPole-v1", n_envs=4)
+    model = PPO("MlpPolicy", env, verbose=1)
+    model.learn(total_timesteps=25000)
 
-By fixing the previously trained agent, we effectively solve the problem of non-stationarity, since no two agent policies are changed at the same time.
-By embedding sampled partners from the population into the environment, we can consider the environment as a single agent from the point of view of the agent being trained.
-However, despite the fact that the original overcooked environment is deterministic from the point of view of the transition function, by embedding partners whose policies will be mostly stochastic into the environment, the transition function becomes stochastic from the point of view of the trained agent.
-The same applies to the reward function.
-Since part of our proposed diversification methods involve reward augmentation based on the agent's policy, the environment's reward function will no longer be stationary throughout training due to the learning policy.
+\end{lstlisting}
+The downside here is that the framework does not have native support for simultaneous multi agent learning.
 
-{\color{blue} Po prostudovani a sepsani MARL kapitoly mi pripada, ze muj pristup popsany vyse je vlastne hrozne slaby, obzvlaste tim, ze trenuju ciste reaktivni agenty bez jakekoliv pameti (uvazuji jen soucasnou CNN reprezentaci stavu, bez RNN, bez predeslych akci partnera, bez historie predchozich stavu),
-tim vlastne ani nejsem schopny komplexne zachytit nejakou high-level strategii partnera, namisto toho se proste ucim jak se nejlepe (robustne?) zachovat v jednom konkretnim stavu vzhledem k potencialne vice moznych strategii, kterymi by se mohl partner v danem stavu ridit.
-Tim, ze CNN kompletne popisuje stav prostredi, tak ani nemam partial observability a vstup kritika jsem nijak nerozsiroval.
-Proste pripada mi, ze jsem v tom reseni nezahrnul moc zadne techniky popsane pro MAS.
+\subsection{Modifications}
+After considering both frameworks and extent of our project we decided build our project withing the stable baselines framework.
+We will not cover all the details regarding our diverse population approach yet as there will be plenty of room for this in next chapter.
+Here we just want to mention few of the essential framework modification that have to be done in order to bend the framework toward our purposes.
 
-Pripada mi ze i tak ty experimenty ktere zkousim a navrhuju jsou zajimave, jen mi pripadaji takove vytrzene z toho MAS kontextu - ale o tom jsme si myslim minule bavili ze nevadi.
-}
+\subsubsection*{Embedding partner}
+First of all as it was already mentioned, stable baselines framework does not have support for multi agent learning.
+In our approach we will make slight simplification by theoretically transforming the environment from multi agent to single agent settings.
+Obviously we will not reduce the number of players in the environment.
+We will rather look at the situation from the point of view of the single agent that is being learned. 
+This way we can look at the environment as if the partner cook is just embedded as part of the system.
 
-\section{Utilized framework}
-\subsection*{Comparision of rllib and StableBaselines3}
-Rllib framework was used in original paper, however for our usages stable baselines seemed sufficient and reasonably easy to extend.
-Stable baselines has no explicit support of multi-agent environments.
-\subsection{Modifications of stable baselines}
-\par
-\textbf{CNN policy wrapper,}
-\textbf{Partner embedded into environment}
+And exactly the same modification has to be made to the framework.
+During one training run the partner is embeded as part of the environment and every iteration when the actions are being sampled.
+Action of trained agent are sampled normally as expected and actions of partner are sampled according to the policy of embedded partner.
+
+This mechanism allows us to use any partner sampling method (\ref{aiaicooperation}) including self-play where the same instance of parametrized policy as the one that is being learned is used.
+
+Resulting two actions are concatenated together and passed into the environment as expected.
+
+\subsubsection*{Convolution policy}
+By default stable baselines offers multiple types of parametrized policy representations including fully connected dense multi layered perceptron network (MLP) and convolutional neural network (CNN).
+However, regarding the CNN representation, when using this wrapper the framework expects the inputs to be strictly in some standard format of image (RGB, RGBD, GrayScale).
+Which is unfortunately accompanied by using unsufficient assumptions trhoughout the code base heuristially expecting the inputs in certain format.
+For instance function for detection if image space is in channels first format only checks if the first dimension is the smallest one.
+Which mistakenly returns true for some overcooked layouts using lossless state representation (\ref{StateRepresentation}) where width is smaller than both height and also the number of stacked masks.
+However, in lossless encoding masks are equivalent to channels and are represented by the last dimension.
+Authors could argue that with such state representation the inputs are not technically image therefore such sanity checks expecting images should not be used in the first place.
+However, this is the problematic part as I was unable to find if framework allows some options how to bypass these constraints.
+Eventually after disabling these assertions in certain critical places, the code managed to work with our convolutional representation flawlessly without any need of further modifications.  
+
+\subsubsection*{Loss and rewards augmentation}
+Lastly, two important aspects of our experiments will be augmentation of rewards and extending the objective loss function.
+These modifications are not really related solely to stable baselines as these modification would have to be made no matter the chosen framework, we just want to mention it here to make modification list complete. 
+Fortunately, these modifications were also quite straightforward as both of these factor are nicely separated in transparent easily extandable places.
 
 \section{Self-play}
-\subsection{Training}
-\subsection{Results}
+Before diving into our experiments we wanted to make sure our solution is ready to be used with the environment.
+Therefore we decided to reimplement basic agent training using self-play (\ref{selfplayMethod}) and demonstrating it's supposedly poor cooperation abilities.
+
+
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics*[width=13cm]{../img/MLP_OFF_DIAG_TEST.png}
+    \caption{Self-play MLP cross play evaluation}
+    \medskip
+    \small 
+    Cross-play evaluation of 10 agents trained via self-play method on cramped\_room layout, where policy is parametrized by MLP
+
+\end{figure}
+
 
 \subsection{NN structure modification}
 

@@ -16,6 +16,12 @@ def heat_map(table, group_name, layout_name, deterministic=True, eval_env=""):
     ax.set_xticks(np.arange(len(table[0])))
     ax.set_yticks(np.arange(len(table)))
 
+    plt.xlabel("player 1 agent")
+    plt.ylabel("player 2 agent")
+
+    cbar = plt.colorbar(im)
+    cbar.set_label('Avg. cumulative reward')
+
     # Rotate the tick labels and set their alignment.
     plt.setp(ax.get_xticklabels(), rotation=45, ha="right",
              rotation_mode="anchor")
@@ -26,7 +32,7 @@ def heat_map(table, group_name, layout_name, deterministic=True, eval_env=""):
     #         text = ax.text(j, i, table[i, j],
     #                        ha="center", va="center", color="w")
 
-    ax.set_title(group_name)
+    # ax.set_title(group_name)
     fig.tight_layout()
     # plt.savefig(f"diverse_population/visualisation/{args['layout_name']}/coordination_ring.png")
     file_name = f"{os.environ['PROJDIR']}/diverse_population/visualisation/{layout_name}/" + group_name + ('' if deterministic else '_STOCH')
