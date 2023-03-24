@@ -59,28 +59,112 @@ Fortunately, these modifications were also quite straightforward as both of thes
 
 \section{Self-play}
 Before diving into our experiments we wanted to make sure our solution is ready to be used with the environment.
-Therefore we decided to reimplement basic agent training using self-play (\ref{selfplayMethod}) and demonstrating it's supposedly poor cooperation abilities.
+We expected as the reasonable setup to reimplement basic agent training using self-play (\ref{selfplayMethod}) and demonstrate it's supposedly poor cooperation abilities.
 
-
+\subsection*{Default setting}
+At first we started with easiest default settings.
+For initial experiments we chose to start with first layout cramped room (\ref{CrampedRoom}) using simplier of the two, partialy observable state representation (\ref{StateRepresentation}).
+As we recall this representation uses one dimension vector of features that is out of the box compatible with prefabriced stable baselines MLPPolicy wrapper which contains two shared hidden layers before separate layers for actor and critic are applied.
+Despite several attempts of hyperparameters tweaking we were unable to come close to the results of cooperation failure as reported (\ref{offDiagonalReport}).
+In all of our attemps different self-play agents managed to cooperate reasonably.
+While there were some pairs of agents that did not cooperate at all, this was rather rare when comapared to overall cross-play evaluation (figure \ref{MLPSPCrossPlay}).
+However, we believe that the problem of uncooperative behavior may be exacerbated by this evaluation method in some layouts more than in others, since different layouts present different challenges to cooperative behavior.
+To make matters worse, while we were able to obtain similar cooperative behavior in both Asymmetric advantages and Coordination ring layouts, the same training procedure failed completely on the remaining Forced coordination and Counter circuit layouts.
+Here the self-play training method was unable to learn how to perform the main task whatsoever.
 
 \begin{figure}[!ht]
     \centering
     \includegraphics*[width=13cm]{../img/MLP_OFF_DIAG_TEST.png}
     \caption{Self-play MLP cross play evaluation}
+    \label{MLPSPCrossPlay}
     \medskip
     \small 
     Cross-play evaluation of 10 agents trained via self-play method on cramped\_room layout, where policy is parametrized by MLP
 
 \end{figure}
 
+\subsection*{Lossless state representation}
+To both overcome this problem and also to make our experiments as relatable to previous related work as possible, we tried to adapt our solution as closely as possible to the settings used in previous work.
+We modified our solution based on the original overcooked environment project (\cite{carroll2020utility}) where specific settings is thoroughly described in appendix A.
+Instead of partial observable state representation the global lossless representation was applied.
+This implied the need to also modify the policy parametrization.
+Stable baselines framework offers prefabricated convolutional CNNPolicy wrapper.
+However, convolutional part of the network had to be manually modified to match the described structure.
+Additionally several PPO hyperparameters were also changed compared to default stable baselines PPO setting.
 
-\subsection{NN structure modification}
 
-\subsection{Hyperparameters random search}
+\subsection*{Hyperparameters search}
+With this adapted settings we tried same as previously to perform the self-play agent training on different layouts.
+On the basic Cramped room layout the training seemed to progess successfuly.
+Although when cross-play evaluated, similar pair-wise cooperative behavior was achieved.
+However, training was failing on all of the remaining layouts.
 
-\subsection{Randomization function correction}
+We performed hyperparameter search by executing the training process with several hundred random different hyperparameters to search for suitable configuration.
+With resulting configuration (table \ref{tab:hyperparameters-algo}) we were able to train self-plaing agent on all layouts.
+Unfortunately even this configuration is not absolutely stable.
+On more complex layouts such as Forced coordination and Counter circuit in some runs training fails to accomplish the main goal.
+In these cases agents always learn how to obtain partial rewards succesfully but fail to learn soup delivery.
+We suppose the combination of layout complexness and probable policy explotaince prevents the agent from experiencing the last task as often as needed for him to adapt such behavior.
+If this happens it is highly unlikable that the agent will discover soup delivery behavior once the time steps reach the partial reward shaping horizon.
+To take this fact into the account we perform preemptive divergent check at the $3\cdot10^6$ time step, where we measure average number of soups delivered during training.
+We found heuristically that the threshold of average soup reward of the value $3$ is sufficient to ensure that the agent will learn the main objective in the remaining training process.
 
 
+\begin{table}[htbp]
+    \small
+    \centering
+    \begin{tabular}{lll}
+      \toprule
+      \textbf{Name}                                & Originally proposed     & \textbf{Applied}         \\ \midrule
+      \textit{PPO Hyperparameters}     &                                   &                                   \\ \midrule            
+      Discount factor $\gamma$                     & $0.99$                            & $0.98$                            \\
+      GAE factor $\lambda$                         & $0.98$                            & $0.95$                            \\
+      Learning rate                                & $10^{-3}$                         & $4 \cdot 10^{-4}$                               \\
+      VF coefficient                               & $0.5$                             & $0.1$                             \\
+      PPO clipping                                 & $0.05$                            & $0.1$                             \\
+      Maximum gradient norm                        & $0.1$                             & $0.3$                             \\
+      Gradient steps per minibatch                 & $8$                               & $8$                               \\      
+      Minibatch size                               & $2000$                            & $2000$                            \\
+      Number of parallel environments              & $30$                              & $30$                              \\
+      Total timestemps                             & $6\cdot10^6$                      & $5.5 \cdot 10^6$                  \\            \\
+      Entropy bonus start coefficient              & $0.1$                             & $0.1$                             \\
+      Entropy bonus end coefficient                & $0.1$                             & $0.03$                            \\
+      Entropy bonus horizon                        & $1.5\cdot 10^6$                   & none                              \\
+      Preemptive divergent time step               & $3\cdot 10^6$                     & $3\cdot 10^6$                     \\
+      \midrule
+  
+      \textit{Environment settings}                &                                   &                                   \\ \midrule                                
+      Episode length                               & $400$                             & $400$                             \\
+      Soup delivery shared reward                  & $20$                              & $20$                              \\
+      Dish pickup partial reward                   & $3$                               & $3$                               \\
+      Onion pot placement partial reward           & $3$                               & $3$                               \\
+      Soup pickup partial reward                   & $5$                               & $5$                               \\
+      Partial reward shaping horizon               & $2.5\cdot 10^6$                   & $2.5\cdot 10^6$                   \\
+      Initial state player locations               & static                            & random                            \\
+     \bottomrule
+    \end{tabular}
+    \caption{Hyperparameters for self-play agent training on Cramped room layout}
+    \label{tab:hyperparameters-algo}
+  \end{table}
+  
 
 
+\subsection{Random state initialization}
+However there were still occuring on two particular layouts.
+On the Asymmetric advantages layout the resulting performance of trained agent were significantly worse than in presented results (\cite{carroll2020utility}).
+While on Forced coordination layout the training was converging to zero performance suspicially too often.
+We found out that there was a missing restriction on randomly sampled initial locations of agents, which allowed for the initial locations to be in same separated layout region.
+While this is not an issue in remaining layouts, it is important obstacle for the mentioned maps.
 
+In both Asymmetric advantages and Forced coordination layouts not all locations are reachable.
+As a consequence in Assymetric advantages the agent was forced to learn not to rely on advantageous cooperation from his partner coming from the partner's region advantage, but rather to learn how to operate within it's own region.
+And this has led to significantly lower performance value.
+
+In Forced coordination layout the situation was even worse as when both players were initially located in the same isolated region, no matter which one, they were unable to finish the soup.
+
+Lastly //TODO: remark on randomization could potentially battle the coordination problem as proposed in Robustness eval paper - find the reference
+This is not an issue as we performed the same training with initial locations fixed.
+
+\subsection{Focus on Forced coordination}
+This layout hits nice balance between layout complexness, cooperation needed, and off-diagional coordination problem detected
+TODO: post figure of 30 SP agents
