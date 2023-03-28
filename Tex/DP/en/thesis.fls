@@ -1199,6 +1199,11 @@ INPUT /usr/share/texmf/fonts/tfm/public/lm/rm-lmbx10.tfm
 INPUT /usr/share/texmf/fonts/tfm/public/lm/lmmib10.tfm
 INPUT /usr/share/texmf/fonts/tfm/public/lm/lmbsy10.tfm
 INPUT /usr/share/texmf/fonts/tfm/public/lm/rm-lmri10.tfm
+INPUT ../img/Forced_coordination_CNN_SP_CrossPlay.png
+INPUT ../img/Forced_coordination_CNN_SP_CrossPlay.png
+INPUT ../img/Forced_coordination_CNN_SP_CrossPlay.png
+INPUT ../img/Forced_coordination_CNN_SP_CrossPlay.png
+INPUT ../img/Forced_coordination_CNN_SP_CrossPlay.png
 INPUT ./chap07.tex
 INPUT ./chap07.tex
 INPUT ./chap07.tex

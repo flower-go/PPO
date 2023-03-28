@@ -36,28 +36,28 @@ Nevertheless, similar problem can occur even when two different agents trained i
 Common approach used in competetive setting is to introduce diversity through exposing trained agent to diverse set of partners during training phase.
 There are several frequently used methods for partner selection during training.
 
-\subsubsection*{Self-play}\label{selfplayMethod}
+\subsection{Self-play}\label{selfplayMethod}
 Self-play method was already mentioned, it is argubaly the simplest and most straightforward method for partner sampling.
 As the name suggest, the idea of this approach is that the agent that is currently being learned is paired during training with the copy of itself.
 This method does not introduce any kind of diversity into the learning process as it learns exclusively from it's own current policy.
 
-\subsubsection*{Partner Sampling}
+\subsection{Partner Sampling}
 Partner sampling is extension of the previous method. 
 However, Instead of playing solely with current policy, partner is sampled from previously periodically saved policies of this given training period.
 The diversity in this method comes from the theoretical point of view that previous policies correspond to different behaviors.
 
-\subsubsection*{Population-Based Training}
+\subsection{Population-Based Training}
 Population-Based Training method is based on evolutionary algorithm focusing on training hyperparameters and model selection.
 Population consists of agents parametrized by neural network and trained via DRL algorithm.
 During each iteration agents are drawn from the population and are being trained using the collected trajectories.
 Pair-wise results are recorded and at the end of the iteration the worst agents are replaced by a copy of best ones with their hyperparameter mutated.
 
-\subsubsection*{Pre-trained Partners}
+\subsection{Pre-trained Partners}
 Lastly, remaining often used method consists of using previously pre-trained partners.
 Diversity is here expected due to the fact that different runs of reinforcement learning algorithms often yield different agent behaviors.
 
 
-\subsubsection*{Result}\label{offDiagonalReport}
+\subsection{Result}\label{offDiagonalReport}
 Problem with fully cooperative games is that when agents are trained together they tend to exploit the common knowledge experienced during training, which often makes them unable to cooperate with unseen agents.
 It has been shown (\cite{10.1007/978-3-030-63823-8_46}) that this strongly holds for the first three mentioned methods, 
 where when performing cross-play evaluation of the set of different agents obtained by the same method, 
@@ -75,7 +75,7 @@ As noble as it sounds, it is quite complicated to define what agent behavior is 
 Obvious desirable goal is to come up with such trained agent that will be capable of cooperation with ideally all possible behaviors of it's partner.
 However, since it is difficult to come up with diverse set of agents for partner sampling during training, exactly the same holds also for the evaluation agents.
 
-\subsubsection*{Average performance}
+\subsection{Average performance}
 
 First obvious choice of evaluation metric could be to look at the average evaluation performance over the evaluation set of agents.
 Nevertheless, it is questionable whether this answers question of robustnes.
@@ -83,12 +83,12 @@ In one scenerio we could theoretically achieve result where our agent failed to 
 In another case we could achieve sort of medium performance with all of the evaluation agent set, where the cooperation does not fail completely but the performance is nowhere near the optimal values neither.
 However, in both cases the average evaluation performance reaches similar values.  
 
-\subsubsection*{Threshold performance}
+\subsection{Threshold performance}
 
 Another possible approach for the given layout could be to define our own threshold value that could practically be equivalent to some number of delivered soups.
 Evaluation metric could be then simply expressed in number of evaluation agents that managed to reach such threshold when paired with our trained agent.
 
-\subsubsection*{Edge case testing}
+\subsection{Edge case testing}
 The problem with previous metrics is that these are reasonable only in situation where the evaluation set of agent is complex enough in terms of behavior diversity, which also implies condition on sufficient size of such set. 
 However, creating evaluation set satisfying this condition is practically impossible.
 

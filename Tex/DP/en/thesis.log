@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.23)  24 MAR 2023 16:30
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.23)  28 MAR 2023 18:40
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -571,7 +571,7 @@ LaTeX Info: Redefining \nameref on input line 113.
 
  (./title.tex
 Package hyperref Info: Option `pageanchor' set `false' on input line 6.
-<../img/logo-en.pdf, id=203, 506.4591pt x 156.49065pt>
+<../img/logo-en.pdf, id=264, 506.4591pt x 156.49065pt>
 File: ../img/logo-en.pdf Graphic file (type pdf)
 <use ../img/logo-en.pdf>
 Package pdftex.def Info: ../img/logo-en.pdf  used on input line 9.
@@ -637,7 +637,7 @@ LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 12
 (/usr/share/texmf/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-<rl_diagram_transparent_bg.png, id=311, 429.10312pt x 150.5625pt>
+<rl_diagram_transparent_bg.png, id=387, 429.10312pt x 150.5625pt>
 File: rl_diagram_transparent_bg.png Graphic file (type png)
 <use rl_diagram_transparent_bg.png>
 Package pdftex.def Info: rl_diagram_transparent_bg.png  used on input line 24.
@@ -706,12 +706,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 82--86
 
  (./chap04.tex
 Chapter 4.
-<../img/cramped_room_layout.png, id=587, 399.4925pt x 320.19624pt>
+<../img/cramped_room_layout.png, id=662, 399.4925pt x 320.19624pt>
 File: ../img/cramped_room_layout.png Graphic file (type png)
 <use ../img/cramped_room_layout.png>
 Package pdftex.def Info: ../img/cramped_room_layout.png  used on input line 24.
 (pdftex.def)             Requested size: 113.81102pt x 91.21779pt.
-<../img/asymmetric_advantages_layout.png, id=589, 720.6925pt x 399.4925pt>
+<../img/asymmetric_advantages_layout.png, id=664, 720.6925pt x 399.4925pt>
 File: ../img/asymmetric_advantages_layout.png Graphic file (type png)
 <use ../img/asymmetric_advantages_layout.png>
 Package pdftex.def Info: ../img/asymmetric_advantages_layout.png  used on input line 32.
@@ -722,17 +722,17 @@ Package pdftex.def Info: ../img/asymmetric_advantages_layout.png  used on input 
 
 
  <../img/cramped_room_layout.png>]
-<../img/coordination_ring_layout.png, id=599, 398.48875pt x 398.48875pt>
+<../img/coordination_ring_layout.png, id=674, 398.48875pt x 398.48875pt>
 File: ../img/coordination_ring_layout.png Graphic file (type png)
 <use ../img/coordination_ring_layout.png>
 Package pdftex.def Info: ../img/coordination_ring_layout.png  used on input line 39.
 (pdftex.def)             Requested size: 113.81102pt x 113.8076pt.
-<../img/forced_coordination_layout.png, id=601, 400.49625pt x 398.48875pt>
+<../img/forced_coordination_layout.png, id=676, 400.49625pt x 398.48875pt>
 File: ../img/forced_coordination_layout.png Graphic file (type png)
 <use ../img/forced_coordination_layout.png>
 Package pdftex.def Info: ../img/forced_coordination_layout.png  used on input line 46.
 (pdftex.def)             Requested size: 113.81102pt x 113.23604pt.
-<../img/counter_circuit_layout.png, id=603, 639.38875pt x 399.4925pt>
+<../img/counter_circuit_layout.png, id=678, 639.38875pt x 399.4925pt>
 File: ../img/counter_circuit_layout.png Graphic file (type png)
 <use ../img/counter_circuit_layout.png>
 Package pdftex.def Info: ../img/counter_circuit_layout.png  used on input line 54.
@@ -760,28 +760,34 @@ File: lstlang1.sty 2020/03/24 1.8d listings language file
 
 
 ] [37]
-<../img/MLP_OFF_DIAG_TEST.png, id=702, 462.528pt x 346.896pt>
+<../img/MLP_OFF_DIAG_TEST.png, id=769, 462.528pt x 346.896pt>
 File: ../img/MLP_OFF_DIAG_TEST.png Graphic file (type png)
 <use ../img/MLP_OFF_DIAG_TEST.png>
-Package pdftex.def Info: ../img/MLP_OFF_DIAG_TEST.png  used on input line 77.
+Package pdftex.def Info: ../img/MLP_OFF_DIAG_TEST.png  used on input line 78.
 (pdftex.def)             Requested size: 369.88582pt x 277.42719pt.
  [38]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 116.
- [39 <../img/MLP_OFF_DIAG_TEST.png>] [40]) [41]
+(Font)              <10.95> on input line 119.
+ [39 <../img/MLP_OFF_DIAG_TEST.png>] [40]
+<../img/Forced_coordination_CNN_SP_CrossPlay.png, id=805, 433.62pt x 289.08pt>
+File: ../img/Forced_coordination_CNN_SP_CrossPlay.png Graphic file (type png)
+<use ../img/Forced_coordination_CNN_SP_CrossPlay.png>
+Package pdftex.def Info: ../img/Forced_coordination_CNN_SP_CrossPlay.png  used on input line 179.
+(pdftex.def)             Requested size: 398.33858pt x 265.57306pt.
+) [41] [42 <../img/Forced_coordination_CNN_SP_CrossPlay.png>]
 \openout2 = `chap07.aux'.
 
  (./chap07.tex
 Chapter 7.
-[42
+[43
 
 
 
 
-]) [43]
+] [44] [45]) [46]
 \openout2 = `epilog.aux'.
 
- (./epilog.tex) [44
+ (./epilog.tex) [47
 
 
 
@@ -794,31 +800,31 @@ Underfull \hbox (badness 10000) in paragraph at lines 47--50
 []\OT1/lmr/m/n/12 Deepmind, 2019.  URL []$\OT1/lmtt/m/n/12 https : / / www . deepmind . com / blog /
  []
 
-[45
+[48
 
 
 
 
-] [46])) [47] (./thesis.aux (./title.aux) (./preface.aux) (./chap01.aux) (./chap02.aux) (./chap03.aux) (./chap04.aux) (./chap05.aux) (./chap06.aux) (./chap07.aux) (./epilog.aux) (./bibliography.aux))
+] [49])) [50] (./thesis.aux (./title.aux) (./preface.aux) (./chap01.aux) (./chap02.aux) (./chap03.aux) (./chap04.aux) (./chap05.aux) (./chap06.aux) (./chap07.aux) (./epilog.aux) (./bibliography.aux))
 
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 7A937F550DF55802A69A9D674A486BD2;8031.
+(rerunfilecheck)             Checksum: 40E4A9D980C5990F439D1849B5D58C2F;10371.
  ) 
 Here is how much of TeX's memory you used:
- 18756 strings out of 479342
- 288031 string characters out of 5869178
- 751936 words of memory out of 5000000
- 36142 multiletter control sequences out of 15000+600000
+ 18795 strings out of 479342
+ 288900 string characters out of 5869178
+ 752177 words of memory out of 5000000
+ 36165 multiletter control sequences out of 15000+600000
  532979 words of font info for 74 fonts, out of 8000000 for 9000
  473 hyphenation exceptions out of 8191
  77i,24n,79p,533b,2377s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rmtt.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx8.pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi6.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi8.pfb></usr/share/texmf/fonts/type1/public/lm/lmmib10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb></usr/share/texmf/fonts/type1/public/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy6.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on thesis.pdf (51 pages, 798982 bytes).
+Output written on thesis.pdf (54 pages, 877783 bytes).
 PDF statistics:
- 936 PDF objects out of 1000 (max. 8388607)
- 804 compressed objects within 9 object streams
- 240 named destinations out of 1000 (max. 500000)
- 487 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1033 PDF objects out of 1200 (max. 8388607)
+ 895 compressed objects within 9 object streams
+ 255 named destinations out of 1000 (max. 500000)
+ 618 words of extra memory for PDF output out of 10000 (max. 10000000)
 

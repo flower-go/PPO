@@ -1,8 +1,77 @@
 \chapter{Our work - Contribution}
+In this chapter, we propose a novel approach to injecting explicit diversification into agent behavior through diverse population training.
+Previously mentioned traditional population-based methods were not effective enough to add the necessary diversification to the population.
+We try to use population training in slight different manner with our primary focus set on two important aspects.
+Firsty we try to face well known problems connected with multi agent system by changing our perspective towards single-agent settings and transforming to iterative process.
+And secondly we try to address the lack of explicit diversification in standard population-based learning methods by pursuing population policy diversification. 
+
+In following sections we attempt to walk through several different aspects of our population building approach.
+These parts can be seen as a soft guideline towards diverse population training algorithm which will be presented at the end of this chapter.
+
+\section{Multi agent settings}
+
+\subsection{Single-agent perspective}
+As we could have already seen (\ref{MAS}) multi agent systems can be much more intimidating to tackle down.
+One of the proposed suggestion was to try to simplify the sitatio by looking at the multi agent environment from the single-agent point of view where the goal is to learn joint policy.
+As discussed before, this is often impossible and mostly inpractical.
+
+Nevertheless we try to, in a sense, attempt to utilize similarly motivated approach.
+We propose single-agent learning approach where at any given time only one agent is being learned.
+Naturally we cannot simply ommitt the second player from the environment as we cannot deny the multi agent essence from the environment.
+We rather look at the environment as being instance of single-agent environment where the parnter is embedded and in a sense forms an integral part of the system.
+
+\subsection{Non-stationarity}
+We propose population training to be an iterative process where only one agent is being learned and only after its's training is finished he is included into the population.
+Once an agent is added into the population it's policy is fixed and no further updates are applied for the rest of population training process.
+Only agents used in environment embedding are the ones coming from the already trained population of agents.
+This claim this effectively solves the non-stationarity problem we encountered in multi agent settings as from the point of learning agent the behavior of its partners never changes.
+
+There is unfortunately downside to this approach.
+While previously the environment had its state transition function purely deterministic, now with the partner embedded into the system it becomes stochastic.
+Nonetheless, we hypothesize that this may also be in favor of the final robustness, since by experiencing stochastic state transitions, the agent could theoretically be more robust as a result, since it will have to learn how to behave in a more stochastic exploratory environment.
+
+\subsection{Population exploitance}
+We hypothesize that by utilizing iterative process with past agents being fixed it could also help with population exploitance.
+When set of agents are trained concurrently together they may all exploit their behavior towards shared experience.
+It could probably happen that the new agents might still try to overfit their behavior towards the population agents.
+However, by fixing previous past agents we try to break this relation at least from one side of the couple.
+We are optimistic that this, in conjunction with further diversification factors, will greatly reduce exploitation of the population.
+
+
+\section{Population diversification}
+A mere change in our perception towards single-agent settings would probably not be enough of an improvement towards agent robustness.
+Therefore we propose several ideas to promote population diversification.
+\subsection{Inicialization}
+To start with, inspired by original motivation behind all population-based methods, we follow the idea that populations should be in general always more diverse than single agent.
+Hence when utilized in training this diverse robustness should be passed onto the next learned agent.
+In order for this to be true the previous condition on non existence of population exploitance must hold.
+Additionaly we already proposed iterative training process where we suppose preexistence of some set of agents utilized for partner embeddeding.
+
+We propose that in order for other diversification factors to work we have to start with some initial population for partner embedding sampling that is already somewhat diverse.
+One could argue that if we had a method for creating such initial diverse population we would could just stop there and extend this population using such method.
+However, we do not see the perfect diversity and robustness of initial population to be crucial. 
+We rather expect the inital population to introduce somewhat mildly different set of behaviors just to give a resonable starting point for the rest of population training.
+
+\subsection{Policy diversification}
+We hypothesize that preexistence of diverse population is just a soft precondition.
+The see the main factor for robustness in diversification itself.
+
+We propose that the main ingredient behind our diversity building process lies in attempting to shift the behavior of each consequentially trained agent to be as different as possible from the behaviors in the existing population.
+
+\subsubsection{KL divergence}
+To emphasize the difference between two behaviors, we must first be able to measure it.
+There are arguably various possible ways how to express difference between two behaviors.
+Nevertheless since the agent behavior is represented by parametrized policy we suppose that one of the more straightforward methods could be to look at the difference between the two policy distributions.
+
+
+\subsubsection{Rewards augmentation}
+\subsubsection{Objective function augmentation}
+
+
+
 
 \section{Idea}
-In this chapter, we propose a novel approach to injecting explicit diversification into agent behavior.
-Although the traditional population-based methods discussed in the previous chapter were not effective enough to add the necessary diversification to the population, we try to use them in a slightly different way.
+
 
 We will transform population learning into an incremental process, where only newly added agents are learned.
 This process is designed to be quite general with respect to the potentially pre-existing set of autonomous agents.
