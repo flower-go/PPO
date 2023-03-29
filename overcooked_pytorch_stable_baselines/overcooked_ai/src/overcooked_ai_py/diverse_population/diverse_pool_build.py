@@ -22,7 +22,6 @@ from divergent_solution_exception import divergent_solution_exception
 os.environ['CUDA_VISIBLE_DEVICES'] = "0"
 
 
-EVAL_SET_SIZE = 30
 SP_EVAL_EXP_NAME = "SP_EVAL"
 
 
@@ -33,6 +32,7 @@ parser.add_argument("--trained_models", default=11, type=int, help="Number of mo
 parser.add_argument("--init_SP_agents", default=3, type=int, help="Number of self-play agents trained to initialize population.") #TODO: Default 3
 parser.add_argument("--eval_agents", default=30, type=int, help="Number of agents from evaluation set.") #TODO: Default 11
 parser.add_argument("--mode", default="POP", type=str, help="Mode of experiment: Self-play ('SP') or Population ('POP').") #TODO: set default POP
+parser.add_argument("--eval_mode", default="SP", type=str, help="Mode used by evak set: Self-play ('SP') or Population ('POP').") #TODO: set default SP
 parser.add_argument("--kl_diff_bonus_reward_coef", default=0.0, type=float, help="Coeficient for kl div population policies difference.")
 parser.add_argument("--kl_diff_bonus_reward_clip", default=0.0, type=float, help="")
 parser.add_argument("--kl_diff_loss_coef", default=0., type=float, help="Coeficient for cross-entropy loss of population policies.")
@@ -184,7 +184,6 @@ def train_final_model(directory, n, env, args):
 def get_eval_models(args, gym_env, mode):
     eval_args = copy.deepcopy(args)
     # eval_args.exp = args.eval_set_name
-    # eval_args.trained_models = EVAL_SET_SIZE
     # eval_args.mode = "SP"
 
 
@@ -273,7 +272,7 @@ if __name__ == "__main__":
             evals_name = args.eval_set_name
             group_name = models_name + "_X_" + evals_name
 
-            eval_models = get_eval_models(args, gym_env, mode="SP")
+            eval_models = get_eval_models(args, gym_env, mode=args.eval_mode)
 
             # models = models[args.init_SP_agents:]
             # eval_models = eval_models[args.init_SP_agents:]
@@ -284,7 +283,7 @@ if __name__ == "__main__":
         else:
             group_name = args.full_exp_name + "_X_" + args.full_exp_name
             eval_table = evaluator.evaluate(models, models, args.final_eval_games_per_worker, args.layout_name, group_name, eval_env = eval_env, mode=args.mode, deterministic=True)
-            evaluator.analyze(eval_table, mode="SP", verbose=1)
+            # evaluator.analyze(eval_table, mode="SP", verbose=1)
             heat_map(eval_table, group_name, args.layout_name, eval_env = eval_env, deterministic=True)
 
     # experiments = [
