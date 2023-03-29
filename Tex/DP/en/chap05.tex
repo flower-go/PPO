@@ -1,67 +1,66 @@
 \chapter{Related work}
 
-Common approach when dealing with two-player game is to train agent by confronting him with a set of other AI agents.
-This has been shown to perform impressively well against human experts in multiple complex games like Dota (\cite{DotaOpenFive}) or Starcraft (\cite{Starcraft}).
-The authors of overcooked environment believe (\cite{carroll2020utility}) that the distributional shift from AI training to Human evaluation is successful due to the fact that the nature of these environment is strongly competitive.
-This is ilustrated by the canonical case of a two-player zero-sum game.
-When humans take branch in search tree that is mistakenly suboptimal while being in the role of minimizer, this only increases the result for the maximizer.
+A common approach to two-player games is to train an agent by confronting it with a set of other AI agents.
+This has been shown to perform impressively well against human experts in several complex games such as Dota (\cite{DotaOpenFive}) or Starcraft (\cite{Starcraft}).
+The authors of the overcooked environment (\cite{carroll2020utility}) believe that the distributional shift from AI training to human evaluation is successful due to the fact that the nature of this environment is strongly competitive.
+This is illustrated by the canonical case of a two-player zero-sum game.
+If humans take a branch in the search tree that is inadvertently suboptimal while in the role of minimizer, this only increases the outcome for the maximizer.
 
-However, the situation is not this ideal in case of common-payoff games such as overcooked environment.
-If a self-play trained AI agent is paired with another sub-optimal partner the result can be abysmal. 
-In this case both agents play maximizing role in search tree. 
-When self-play AI agent is expecting it's sub-optimal partner to be the same agent, it can choose branches that lead to maximal common payoff.
-However, since sub-optimal partner may behave sub-optimally, it can choose by mistake some worse branches unforeseen by self-play agent, which can lead to way worse result.
-However, since common payoff is shared between the two agents, this is no longer advantage for the self-play maximizer agent.
-It rather causes failure for both agents.
+However, the situation is not so ideal in the case of common payoff games such as overcooked environment.
+If a self-play trained AI agent is paired with another sub-optimal partner, the result can be abysmal. 
+In this case, both agents play a maximizing role in the search tree. 
+If the self-play AI agent expects it's sub-optimal partner to be the same agent, it can choose branches that lead to maximum joint payoff.
+However, since the sub-optimal partner may behave sub-optimally, it may happen that it mistakenly chooses some worse branches that are unforeseen by the self-play agent, which may lead to a significantly worse result.
+However, since the common payoff is shared between the two agents, this is no longer an advantage for the self-play maximizing agent.
+Rather, it leads to failure for both agents.
 
 \section{Human cooperation}
-Most of the previous work in this area has focused on one of two types of coordination. 
-The first being coordination between a human and an AI partner. 
+Most previous work in this area has focused on one of two types of coordination. 
+The first is coordination between a human and an AI partner. 
 And second, focusing solely on the fully AI-driven pair.
 
 
 \par
 
 While perfect AI-human coordination is generally a more desirable goal to achieve in all sorts of domains, it will not be our main focus.  
-Several previous scientific papers have addressed this issue. A particularly noteworthy contribution is the article 
+Several previous scientific papers have addressed this issue. A particularly noteworthy contribution is the paper 
 On the Utility of Learning about Humans for Human-AI Coordination (\cite{carroll2020utility}). 
-They collected several human-human episodes and incorporated these experiences during training.
-These human data have been used to create human-based models using behavior cloning and Generative Adversarial Imitation Learning (\cite{Ho2016GenerativeAI}) and consequently incorporated to the training.
-One of the important conclusion was that when self-play and population-based agents were paired with human models the overall results were way worse than when paired with agents designed to play with human models.
-
+They collected several human-human episodes and incorporated these experiences into training.
+This human data was used to create human-based models using behavior cloning and Generative Adversarial Imitation Learning (\cite{Ho2016GenerativeAI}) and then incorporated into training.
+One of the important conclusions was that when self-play and population-based agents were paired with human models, the overall results were substantially worse than when paired with agents designed to play with human models.
 
 \section{AI-AI cooperation}\label{aiaicooperation}
-We already mentioned the problem when self-play agent is paired with sub-optimal (eg. human) partner.
-Nevertheless, similar problem can occur even when two different agents trained in self-play mode are paired together.
-Common approach used in competetive setting is to introduce diversity through exposing trained agent to diverse set of partners during training phase.
-There are several frequently used methods for partner selection during training.
+We have already mentioned the problem when a self-play agent is paired with a suboptimal (e.g. human) partner.
+However, a similar problem can also occur when two different agents trained in self-play mode are paired together.
+A common approach used in competitive settings is to introduce diversity by exposing the trained agent to a diverse set of partners during the training phase.
+There are several popular methods for partner selection during training.
 
 \subsection{Self-play}\label{selfplayMethod}
-Self-play method was already mentioned, it is argubaly the simplest and most straightforward method for partner sampling.
-As the name suggest, the idea of this approach is that the agent that is currently being learned is paired during training with the copy of itself.
-This method does not introduce any kind of diversity into the learning process as it learns exclusively from it's own current policy.
+The self-play method has already been mentioned, and it is arguably the simplest and most straightforward method for partner sampling.
+As the name indicates, the idea of this approach is that the agent currently being learned is paired with the copy of itself during training.
+This method doesn't introduce any kind of diversity into the learning process, as it only learns from its own current policy.
 
 \subsection{Partner Sampling}
-Partner sampling is extension of the previous method. 
-However, Instead of playing solely with current policy, partner is sampled from previously periodically saved policies of this given training period.
+Partner sampling is an extension of the previous method. 
+However, instead of playing only with the current policy, the partner is sampled from previously periodically saved policies of this given training period.
 The diversity in this method comes from the theoretical point of view that previous policies correspond to different behaviors.
 
 \subsection{Population-Based Training}
-Population-Based Training method is based on evolutionary algorithm focusing on training hyperparameters and model selection.
-Population consists of agents parametrized by neural network and trained via DRL algorithm.
-During each iteration agents are drawn from the population and are being trained using the collected trajectories.
-Pair-wise results are recorded and at the end of the iteration the worst agents are replaced by a copy of best ones with their hyperparameter mutated.
+The population-based training method is based on an evolutionary algorithm that focuses on hyperparameter training and model selection.
+The population consists of agents parameterized by a neural network and trained by a DRL algorithm.
+During each iteration, agents are drawn from the population and trained using the collected trajectories.
+Pair-wise results are recorded, and at the end of the iteration, the worst agents are replaced by a copy of the best agents with their hyperparameters mutated.
 
 \subsection{Pre-trained Partners}
-Lastly, remaining often used method consists of using previously pre-trained partners.
-Diversity is here expected due to the fact that different runs of reinforcement learning algorithms often yield different agent behaviors.
+Finally, a often employed method is to employ pre-trained partners.
+Diversity is expected here due to the fact that different runs of reinforcement learning algorithms often yield different agent behaviors.
 
 
 \subsection{Result}\label{offDiagonalReport}
-Problem with fully cooperative games is that when agents are trained together they tend to exploit the common knowledge experienced during training, which often makes them unable to cooperate with unseen agents.
-It has been shown (\cite{10.1007/978-3-030-63823-8_46}) that this strongly holds for the first three mentioned methods, 
-where when performing cross-play evaluation of the set of different agents obtained by the same method, 
-only such pair of agents that have been explicitly trained together, managed to perform well, while the remaining pairs failed.
+The problem with fully cooperative games is that when agents are trained together, they tend to exploit the common knowledge they have learned during training, which often makes them unable to cooperate with unseen agents.
+It has been shown (\cite{10.1007/978-3-030-63823-8_46}) that this is true for the first three methods mentioned, 
+where, when performing a cross-play evaluation of the set of different agents obtained by the same method, 
+only those pairs of agents that were explicitly trained together performed well, while the remaining pairs failed.
 
 {\color{blue} Nemam si tady od nich z toho clanku pujcit primo ty obrazky ukazujici ten SP off-diagonal failure, abych se na to pak mohl vizualne odkazat ve svych experimentech? 
 Nebo krast obrazky se nedela?}
@@ -69,34 +68,35 @@ The authors conclude with results showing that incorporating different pre-train
 
 
 \section{Problem of robustness}
-Another important problem regarding common-payoff is performance evaluation of the trained agents.
-As discussed already, we cannot rely solely on training performance, no matter what metric was chosen, as training set of agents exploit shared knowledge thus making the training performance appear excelent.
-As noble as it sounds, it is quite complicated to define what agent behavior is actually robust.
-Obvious desirable goal is to come up with such trained agent that will be capable of cooperation with ideally all possible behaviors of it's partner.
-However, since it is difficult to come up with diverse set of agents for partner sampling during training, exactly the same holds also for the evaluation agents.
+Another important issue related to common payoff is evaluating the performance of trained agents.
+As discussed earlier, we cannot rely on training performance alone, no matter what metric is chosen, because training sets of agents exploit shared knowledge and thus make training performance appear excellent.
+As noble as it sounds, it is quite complicated to define which agent behavior is actually robust.
+Obviously, it's a desirable goal to create a trained agent that can cooperate well with all possible behaviors of its partner.
+However, since it is difficult to come up with a diverse set of agents for partner sampling during training, the same is true for evaluation agents.
 
 \subsection{Average performance}
 
-First obvious choice of evaluation metric could be to look at the average evaluation performance over the evaluation set of agents.
-Nevertheless, it is questionable whether this answers question of robustnes.
-In one scenerio we could theoretically achieve result where our agent failed to cooperate with half of evaluation agents completely while performing excelently with other half.
-In another case we could achieve sort of medium performance with all of the evaluation agent set, where the cooperation does not fail completely but the performance is nowhere near the optimal values neither.
-However, in both cases the average evaluation performance reaches similar values.  
+The first obvious choice of evaluation metric could be to look at the average evaluation performance over the evaluation set of agents.
+It is questionable, though, whether this answers the question of robustness.
+In one scenario, we could theoretically achieve a result where our agent fully fails to cooperate with half of the evaluation agents, while performing excellently with the other half.
+In another case, we could achieve some kind of intermediate performance with the whole set of evaluators, where cooperation does not fail completely, but performance is also nowhere near the optimal values.
+In both cases, the average evaluation performance reaches similar values. 
 
 \subsection{Threshold performance}
 
-Another possible approach for the given layout could be to define our own threshold value that could practically be equivalent to some number of delivered soups.
-Evaluation metric could be then simply expressed in number of evaluation agents that managed to reach such threshold when paired with our trained agent.
+Another possible approach for the given layout could be to define our own threshold, which could be practically equivalent to a certain number of delivered soups.
+The evaluation metric could then simply be expressed in terms of the number of evaluation agents that managed to reach such a threshold when paired with our trained agent.
 
 \subsection{Edge case testing}
-The problem with previous metrics is that these are reasonable only in situation where the evaluation set of agent is complex enough in terms of behavior diversity, which also implies condition on sufficient size of such set. 
-However, creating evaluation set satisfying this condition is practically impossible.
+The problem with previous metrics is that they are reasonable only in a situation where the agent's evaluation set is complex enough in terms of behavioral diversity, which also implies a condition on the sufficient size of such a set. 
+However, creating an evaluation set that satisfies this condition is practically impossible.
 
-Rather than trying to create such evaluation set and evaluate whole episodes in effort to test cooperation on the run, we could break down the interesting cooperation challenging situation into seperate tests (\cite{knott2021evaluating}).
-Suddenly our thinking about robustness shifts from looking at the cooperation from the point of result of entire episode to just separate small modular situations where desired correct behavior of both agents can be described.
-This approach is inspired by unit testing in software development where even though the program behaves correctly in vast majority of cases it can still produce undesirable reaction in edge cases.
+Instead of trying to construct such an evaluation set and trying to evaluate whole episodes in an effort to test cooperation on the run, we could break the interesting cooperation-challenging situation into a number of separate tests (\cite{knott2021evaluating}).
+Suddenly, our thinking about robustness shifts from looking at cooperation from the point of view of the outcome of the entire episode to just separate small modular situations where the desired correct behavior of both agents can be described.
+This approach is inspired by unit testing in software development, where even if the program behaves correctly in the vast majority of cases, it can still produce undesirable responses in edge cases.
 
-Similarly to unit test we can define wide set of situations (eg. instances of overcooked environment states) and pair them with set of acceptable consequent behavior of agents which can be classified as robust reaction.
-Evaluation using such metric can then be expressed as number of passed tests.
 
-However, this evaluation metric has also several challenges as these edge cases have to be designed manually, in many scenarios it is difficult to say with certainty what is the correct expected behavior, and lastly, similar to unit testing in software development, there is never enough defined edge cases to cover all of the possible situations.
+Similar to unit testing, we can define a wide set of situations (e.g., instances of overcooked environment states) and pair them with a set of acceptable consequent behaviors of agents that can be labeled as robust response.
+Evaluation using such a metric can then be expressed as the number of tests that have passed.
+
+However, there are several challenges with this metric as these edge cases require manual design, in many scenarios it is also difficult to know with certainty what the correct expected behavior is, and finally, similar to unit testing in software development, there are never enough defined edge cases to cover all possible situations.

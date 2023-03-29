@@ -1,77 +1,77 @@
 \chapter{Our work - Preparation}
-Before we get into our own experiments with training a robust agent, which will be main focus in the next chapter, we want to prepare our solution first and reimplement some of the previously mentioned results regarding self-play agents.
+Before we get into our own experiments with training a robust agent, which will be the main focus of the next chapter, we want to prepare our solution first and reimplement some of the previously mentioned results regarding self-play agents.
 
 \section{Framework}
-Writing all our code on top of the overcooked environment from the scratch is not necessary as there already exist several frameworks implementing deep reinforcement learning algorithms.
-Although there are in general many more DRL frameworks that could be suitable for our purposes, most of related projects concerning overcooked environment previously utilized either library RLib or StableBaselines.
+Writing all of our code on top of the overcooked environment from scratch is not necessary, as there are already several frameworks that implement deep reinforcement learning algorithms.
+Although in general there are many more DRL frameworks that could be suitable for our purposes, most related projects using the overcooked environment have so far used either the RLib library or Stable Baselines.
 
-As authors themself say, RLlib offers support for production-level and highly distributed RL workloads.
+As the authors themselves say, RLlib provides support for production-level and highly distributed RL workloads.
 This framework is also suitable for multi-agent learning.
-The downside here is that it is not so much suitable for smaller projects and developing on a local machine, as there is lot of a overhead due to it's paralel capabilities towards cluster computing.
-I personaly found the framework a bit intimidating and documentation a little confusing.
+The downside here is that it is less suitable for smaller projects and development on a local machine, as there is a fair amount of overhead due to it's parallelization capabilities towards cluster computing.
+Personally, I found the framework a bit intimidating and the documentation a bit confusing.
 
-Other option was the Stable baselines framework, which in my opinion offers a documentation that is clearer and easier to understand.
-Also, in my humble opinion, the code base structure is more transparent and basic API is very simple.
-To demonstrate its simplicity, once you have environment implementing standard RL OpenAI environment interface, you can perform whole training with default hyperparameters and policy represented by multi layered perceptron network using PPO algorithm as simply as follows:
+Another option was the Stable Baselines framework, which in my opinion offers documentation that is clearer and easier to understand.
+Also, in my humble opinion, the code base structure is more transparent and basic API is quite light.
+To demonstrate its simplicity, once you have an environment that implements the standard RL OpenAI environment interface, you can perform all training with default hyperparameters and policy represented by a multi-layer perceptron network using the PPO algorithm as a simple as follows:
 \begin{lstlisting}[language=Python]
     env = make_vec_env("CartPole-v1", n_envs=4)
     model = PPO("MlpPolicy", env, verbose=1)
     model.learn(total_timesteps=25000)
 
 \end{lstlisting}
-The downside here is that the framework does not have native support for simultaneous multi agent learning.
+The downside here is that the framework does not have native support for simultaneous multi-agent learning.
 
 \subsection{Modifications}
-After considering both frameworks and extent of our project we decided to build our project within the stable baselines framework.
-We will not cover all the details regarding our diverse population approach yet as there will be plenty of room for this in next chapter.
-Here we just want to mention few of the essential framework modification that had to be done in order to bend the framework toward our purposes.
+After considering both frameworks and the scope of our project, we decided to build our project within the Stable Baselines framework.
+We will not cover all the details of our diverse population approach, as there is plenty of room for this in the next chapter.
+Here, we just want to mention some of the major framework modifications that had to be carried out in order to bend the framework to suit our purposes.
 
 \subsubsection*{Embedding partner}
-First of all as it was already mentioned, stable baselines framework does not have support for multi agent learning.
-In our approach we will make slight simplification by theoretically transforming the environment from multi agent to single agent settings.
-Naturally we will not reduce the number of players in the environment.
-We will rather look at the situation from the point of view of the single agent that is being learned. 
-This way we can look at the environment as if the partner cook is just embedded as part of the system.
+First, as mentioned above, the Stable Baselines framework does not support multi-agent learning.
+In our approach, we will make a slight simplification by theoretically transforming the environment from a multi-agent to a single-agent setting.
+Of course, we will not reduce the number of agents in the environment, as it will still be multi-agent.
+Rather, we will look at the situation from the point of view of the single agent that is learning. 
+In this way, we can look at the environment as if the partner cook was only embedded as part of the system.
 
-And exactly the same modification has to be made to the framework.
-During one training run the partner is embeded as part of the environment and every step of the cycle the actions of the partner are being sampled.
-Action of trained agent are sampled standard way as expected while the actions of the partner cook are sampled according to the policy of embedded partner.
+And exactly the same change is necessary in the framework.
+During a training run, the partner is embedded as part of the environment, and at each step of the loop, the actions of the partner are sampled.
+The actions of the trained agent are sampled in the usual way, as expected, while the actions of the partner cook are sampled according to the policy of the embedded partner.
+The resulting two actions are concatenated and passed to the environment as expected.
+This mechanism allows us to use any partner sampling method (\ref{aiaicooperation}), including self-play, where the same instance of the parameterized policy is used as the one being learned.
 
-This mechanism allows us to use any partner sampling method (\ref{aiaicooperation}) including self-play where the same instance of parametrized policy as the one that is being learned is used.
 
-Resulting two actions are concatenated together and passed into the environment as expected.
 
 \subsubsection*{Convolution policy}
-By default, stable baselines offers several types of parameterization policy representations, including fully connected dense multi-layer perceptron (MLP) and convolutional neural network (CNN).
-However, regarding the CNN representation, when using this wrapper the framework expects the inputs to be strictly in some standard format of image (RGB, RGBD, GrayScale).
-Which is unfortunately accompanied by using unsufficient assumptions trhoughout the code base heuristially expecting the inputs in certain format.
-For instance function for detection if image space is in channels first format only checks if the first dimension is the smallest one.
-Which mistakenly returns true for some overcooked layouts using lossless state representation (\ref{StateRepresentation}) where width is smaller than both height and definitely also the number of stacked masks.
-In lossless encoding masks are equivalent to channels and are represented by the last dimension.
-Authors could argue that with such state representation the inputs are not technically image therefore such sanity checks expecting images should not be used in the first place.
-However, this is the problematic part as I was unable to find if framework allows some options how to bypass these constraints.
-Eventually after disabling these assertions in certain critical places, the code managed to work with our convolutional representation flawlessly without any need of further modifications.  
+By default, Stable Baselines provides several types of parameterization policy representations, including fully connected dense multi-layer perceptron (MLP) and convolutional neural network (CNN).
+However, regarding the CNN representation, when using this wrapper, the framework expects the inputs to be strictly in a standard image format (RGB, RGBD, GrayScale).
+Unfortunately, this is accompanied by the use of inadequate assumptions throughout the code base, heuristically expecting the inputs to be in a certain format.
+For example, the function to detect if the image space is in the first format only checks if the first dimension is the smallest.
+This erroneously returns true for some overcooked layouts using lossless state representation (\ref{StateRepresentation}) where width is less than both height and definitely the number of stacked masks.
+In lossless encoding, masks are equivalent to channels and are represented by the last dimension.
+Authors might argue that with such a state representation, the inputs are technically not images, and therefore such sanity checks expecting images should not be used in the first place.
+However, this is the problematic part as I was unable to find out whether the framework allows some options to bypass these constraints.
+Eventually, after disabling these assertions in certain critical places, the code managed to work flawlessly with our convolutional representation without any further modifications.
 
 \subsubsection*{Loss and rewards augmentation}
-Lastly, two important aspects of our experiments will be augmentation of rewards and extending the objective loss function.
-These modifications are not really related solely to stable baselines as these modification would have to be made no matter the chosen framework, we just want to mention it here to make modification list complete. 
-Fortunately, these modifications were also quite straightforward as both of these factor are nicely separated in transparent easily extandable places.
+Finally, two important aspects of our experiments will revolve around augmenting rewards and extending the objective loss function.
+These modifications are not truly related to Stable Baselines specifically, as these would have to be made regardless of the framework chosen, we just want to mention them here to make the list of changes complete. 
+Fortunately, these modifications were also quite straightforward, as both of these elements are nicely separated in transparent, easily extensible locations.
 
 \section{Self-play}
-Before diving into our experiments we wanted to make sure our solution is ready to be used with the environment.
-As a reasonable setup, we'll start by reimplementing basic agent training using self-play (\ref{selfplayMethod}) and demonstrating its allegedly poor cooperation abilities.
+Before we dive into our experiments, we want to make sure that our solution is ready to be used with the environment.
+As a reasonable setup, we'll start by reimplementing basic agent training using self-play (\ref{selfplayMethod}) and try to demonstrate its allegedly poor cooperation abilities.
 
 
 \subsection*{Default setting}
-At first we started with easiest default settings.
-For initial experiments we chose to start with first layout cramped room (\ref{CrampedRoom}) using simplier of the two, partialy observable state representation (\ref{StateRepresentation}).
-As we recall this representation uses one dimension vector of features that is out of the box compatible with prefabriced stable baselines MLPPolicy wrapper which contains two shared hidden layers before separate layers for actor and critic are applied.
-Despite several attempts of hyperparameters tweaking we were unable to come close to the results of cooperation failure as reported (\ref{offDiagonalReport}).
-In all of our attemps different self-play agents managed to cooperate reasonably.
-While there were some pairs of agents that did not cooperate at all, this was rather rare when comapared to overall cross-play evaluation (figure \ref{MLPSPCrossPlay}).
-However, we believe that the problem of uncooperative behavior may be exacerbated by this evaluation method in some layouts more than in others, since different layouts present different challenges to cooperative behavior.
-To make matters worse, while we were able to obtain similar cooperative behavior in both Asymmetric advantages and Coordination ring layouts, the same training procedure failed completely on the remaining Forced coordination and Counter circuit layouts.
-Here the self-play training method was unable to learn how to perform the main task whatsoever.
+We started with the simplest default settings.
+For initial experiments we chose to start with the first layout Cramped Room (\ref{CrampedRoom}) using the more lightweight of the two, partially observable state representation (\ref{StateRepresentation}).
+As we recall, this representation uses a one-dimensional vector of features that is out-of-the-box compatible with prefabricated Stable Baselines MLPPolicy wrapper, which contains two shared hidden layers before separate layers for actor and critic are applied.
+Despite several attempts to tweak the hyperparameters, we were not able to come close to the reported results of cooperation failure (\ref{offDiagonalReport}).
+In all of our experiments, different self-playing agents managed to cooperate reasonably well.
+While there were some pairs of agents that did not cooperate at all, this was rather rare compared to the overall cross-play evaluation (Figure \ref{MLPSPCrossPlay}).
+However, we believe that the problem of uncooperative behavior may be exacerbated by this evaluation scheme in some layouts more than others, since different layouts present different challenges to cooperative behavior.
+To make matters worse, while we were able to obtain similar cooperative behavior in the Asymmetric Advantage and Coordination Ring layouts, the same training procedure failed completely in the remaining Forced Coordination and Counter Circuit layouts.
+Here, the self-play training procedure was unable to learn how to perform the main task at all.
 
 \begin{figure}[!ht]
     \centering
@@ -85,32 +85,32 @@ Here the self-play training method was unable to learn how to perform the main t
 \end{figure}
 
 \subsection*{Lossless state representation}
-To both overcome this problem and also to make our experiments as relatable to previous related work as possible, we tried to adapt our solution as closely as possible to the settings used in previous work.
-We modified our solution based on the original overcooked environment project (\cite{carroll2020utility}) where specific settings is thoroughly described in appendix A.
-Instead of partial observable state representation the global lossless representation was applied.
-This implied the need to also modify the policy parametrization.
-Stable baselines framework offers prefabricated convolutional CNNPolicy wrapper.
-However, convolutional part of the network had to be manually modified to match the described structure. {\color{blue} mam se poustet do detailniho popisu zmen, nebo staci ze jsem zminil appendix A, kde to lze dohledat?}
-Additionally several PPO hyperparameters were also changed compared to default stable baselines PPO setting.
+To both overcome this problem and make our experiments as relatable as can be to previous related work, we tried to adapt our solution as closely as possible to the settings used in previous work.
+We modified our solution based on the original overcooked environment project (\cite{carroll2020utility}), whose specific settings are described in detail in Appendix A.
+Instead of the partially observable state representation, the global lossless representation was adopted.
+This implied the need to change the policy parameterization as well.
+The Stable Baselines framework provides a prefabricated convolutional CNN policy wrapper.
+However, the convolutional part of the network had to be manually modified to match the described structure. {\color{blue} mam se poustet do detailniho popisu zmen, nebo staci ze jsem zminil appendix A, kde to lze dohledat?}
+In addition, several PPO hyperparameters have been changed compared to the default stable baseline PPO setting.
 
 
 \subsection*{Hyperparameters search}
-With this adapted settings we tried same as previously to perform the self-play agent training on different layouts.
-On the basic Cramped room layout the training seemed to progess successfuly.
-Although when cross-play evaluated, similar pair-wise cooperative behavior as with previous state representation was achieved.
-However, training was failing on all of the remaining layouts.
+With these settings adjusted, we attempted to run the self-play agent training on all layouts as before.
+On the basic Cramped room layout, the training seemed to progress successfully.
+However, when cross-play was evaluated, similar pairwise cooperative behavior was achieved as in the previous state representation.
+However, training failed on all other layouts.
 
-We performed hyperparameter search by executing the training process with several hundred random different hyperparameters to search for suitable stable configuration.
-With resulting configuration (table \ref{tab:hyperparameters-algo}) we were able to train self-plaing agent on all layouts.
+We performed hyperparameter search by running the training process with several hundred randomly different hyperparameters to find a suitable stable configuration.
+With the resulting configuration (table \ref{tab:hyperparameters-algo}) we were able to train a self-play agent on all layouts in most of the runs.
 
 \subsection*{Preemptive divergent check}
-Unfortunately even this configuration is not absolutely stable.
-In some runs, training on more complex layouts such as Forced coordination and Counter circuit fails to achieve the main goal.
-In these cases agents always learn how to obtain partial rewards succesfully but fail to learn final soup delivery.
-We suppose the combination of layout complexness and probable policy explotaince prevents the agent from experiencing the last part of the task as often as needed for him to adapt such behavior.
-If this happens it is highly unlikable that the agent will discover soup delivery behavior once the time steps reach the partial reward shaping horizon.
-To take this fact into the account we perform preemptive divergent check at the $3\cdot10^6$ time step, where we measure average number of soups delivered during training.
-We found heuristically that the threshold of average soup reward of the value $3$ is sufficient to ensure that the agent will learn the main objective in the remaining training process.
+Unfortunately, even this configuration is not completely stable.
+In some runs, training on more complex layouts such as Forced Coordination and Counter Circuit fails to achieve the main goal.
+In these cases, the agents always learn how to successfully acquire partial rewards by performing the subtasks, but fail to learn the final soup delivery.
+We suspect that the combination of layout complexity and likely policy exploitation prevents the agent from experiencing the last part of the task as often as necessary to adapt such behavior.
+If this is the case, it is highly unlikely that the agent will discover the soup delivery behavior once the time steps reach the partial reward shaping horizon.
+To account for this fact, we perform a preemptive divergence check at the $3\cdot10^6$ time step, where we measure the average number of soups delivered during training.
+We have heuristically found that the average soup reward threshold of $3$ over the collected episodes is sufficient to ensure that the agent will learn the main goal in the remaining training process.
 
 
 \begin{table}[htbp]
@@ -153,26 +153,26 @@ We found heuristically that the threshold of average soup reward of the value $3
 
 
 \subsection{Random state initialization}
-Despite these modification there were still some problem occuring on two particular layouts.
-On the Asymmetric advantages layout the resulting performance of trained agent was significantly worse than in presented results (\cite{carroll2020utility}).
-While on the Forced coordination layout, training converged to zero performance suspiciously too often.
-We found out that there was a missing restriction on sampled initial locations of agents, which allowed for the initial locations to be in same isolated layout region.
-While this is not an issue in remaining layouts, it is important obstacle for the mentioned maps.
+Despite these adjustments, there remained problems on two particular layouts.
+On the Asymmetric Advantages layout, the resulting performance of the trained agent was significantly worse than in the presented results (\cite{carroll2020utility}).
+Whereas on the Forced Coordination layout, training converged to zero performance suspiciously often.
+We found that there was a missing constraint on the sampled initial positions of the agents, which allowed the initial positions to be in the same isolated layout region.
+While this is not a problem for the remaining layouts, it is an important obstacle for the aforementioned maps.
 
-In both Asymmetric advantages and Forced coordination layouts not all locations are globally reachable.
-As a consequence in Assymetric advantages the agent was forced to learn not to rely on advantageous cooperation from his partner utilizing it's region advantage, but rather to learn how to operate within it's own region.
-And this has led to significantly lower performance value.
+In both Asymmetric Advantages and Forced Coordination layouts, not all locations are globally reachable.
+As a result, in Assymetric Advantages, the agent was forced to learn how to operate within its own region, rather than relying on beneficial cooperation from its partner using its region advantage.
+And this led to a significantly lower performance value.
 
-In Forced coordination layout the situation was even worse as when both players were initially located in the same isolated region they were unable to finish the soup.
+In the Forced Coordination layout, the situation was even worse, because if both players started in the same isolated region, they would not be able to finish the soup at all.
 
-Lastly authors (\cite{knott2021evaluating}) believe that introducing random initial states can lead to better robustness, which could be an explanation for our better measured cross-play cooperation.
-Nevertheless we ran the same training with fixed initial positions and results were moreless the same.
+Lastly, the authors (\cite{knott2021evaluating}) believe that introducing random initial states can lead to better robustness, which could be an explanation for our better measured cross-play cooperation.
+Nevertheless, we ran the same training with fixed initial positions and the results were moreless the same.
 
 \subsection{Focus on Forced coordination}
-With all of the so far gathered observations we can tell that there are vast differences among different layouts. 
-Therefore for our futher experimenting we limit our focus primarily to one specific layout.
-We believe that the layout Forced coordination offers great balance between complexness and also stresses the importance of cooperation which is the main point of our interest.
-Furthermore this layout shows signs of cooperation problem resembling the reported result (\ref{offDiagonalReport}) when different self-play agents are evaluated using cross-play (\ref{ForcedCoordinationCNNSPCrossPlay}).
+With all the observations we have made thus far, we can state that there are vast differences between the different layouts. 
+Therefore, for our subsequent experiments, we are primarily limiting our attention to one particular layout.
+We believe that the Forced Coordination layout provides a good balance between complexity and also emphasizes the importance of cooperation, which is the main point of our interest.
+Furthermore, this layout shows signs of a cooperation problem that resembles the reported result (\ref{offDiagonalReport}) when different self-play agents are evaluated using cross-play (\ref{ForcedCoordinationCNNSPCrossPlay}).
 
 \begin{figure}[!ht]
   \centering

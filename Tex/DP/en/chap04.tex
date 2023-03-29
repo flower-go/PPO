@@ -1,29 +1,29 @@
 \chapter{Overcooked environment}
 
 \section{Overcooked game}
-Before we get into our problems with cooperation let us first examine the environment. 
-We will be working with environment based on popular cooking video game \url{https://ghosttowngames.com/overcooked/}.
-Overcooked is multiplayer cooperative game where the goal is to work in a kitchen as a team with partner cooks and prepare together various dishes within limited time.
-However, the game is dynamic to a great extent. In many maps the kitchen itself is not static and may be changing on a run. 
-Moreover, random events such as pots catching fire add to the chaos. The challenge lies in coordination with rest of the team and dividing subtasks efficiently.
+Before we get into our problems with cooperation, let us first examine the environment. 
+We will work with an environment based on a popular cooking video game (\cite{OvercookedGame}).
+Overcooked is a multiplayer cooperative game where the goal is to work in a kitchen as a team with partner cooks and prepare various dishes together within a limited time.
+However, the game is highly dynamic. In many maps, the kitchen itself is not static and can change during a run. 
+Random events such as pots catching fire add to the chaos. The challenge is to coordinate with the rest of the team and divide up subtasks efficiently.
 
 \par
-The aforementioned game was simplified and reimplemented to simpler environment \url{https://github.com/HumanCompatibleAI/overcooked_ai} to serve a purpose of scientific common ground for studying multi agent cooperation in somehwat complex settings.
-Lot of additional features of original game were removed and remained only essential coordination aspects.
-In its simplest form, environment is taking place in small static kitchen layout where only available recipe is onion soup which can be prepared by putting three onions in a pot and waiting for given time period.
-Somewhere in the kitchen there is unlimited source of onions and dish dispenser, where player can grab a dish to carry cooked onion soup in to the counter.
-Team of cooks is rewarded as team by abstract reward of value 20 every time cooked soup is delivered to the counter. 
-It may seem that the task is quite straightforward. However, players face problems on multiple levels.
+The aforementioned game was simplified and reimplemented in a simpler environment (\cite{OvercookedImplementation}) to serve a purpose of scientific common ground for studying multi-agent cooperation in somehow complex settings.
+Many additional features of the original game were removed, leaving only essential coordination aspects.
+In its simplest form, the environment takes place in a small static kitchen layout, where the only available recipe is onion soup, which can be prepared by putting three onions into a pot and waiting for a given period of time.
+Somewhere in the kitchen there is an unlimited source of onions and a dish dispenser where the player can grab a dish to carry cooked onion soup to the counter.
+The team of cooks is rewarded as a team by an abstract reward of value 20 every time cooked soup is delivered to the counter. 
+It may seem like a simple task. However, players face problems on several levels.
 
 \section{Basic layouts}\label{layouts}
-Although the Overcooked implementation has its own generator that can be used to generate new random kitchen layouts, the majority of the related scientific work has so far experimented with a fixed set of predefined layouts, where each of them capture some important aspect of coordination.
+Although the Overcooked implementation has its own generator that can be used to generate new random kitchen layouts, most of the related scientific work to date has experimented with a fixed set of predefined layouts, each of which captures some important aspect of coordination.
 
 \par 
-\subsection*{Cramped room}\label{CrampedRoom}
+\subsection*{Cramped Room}\label{CrampedRoom}
 \begin{center}
     \includegraphics*[width=4cm]{../img/cramped_room_layout.png}
 \end{center}
-Cramped room as a name suggests represents cramped kitchen layout where all important places are relatively easy to reach. Challenge lies in low level coordination of movement with the other partner as there is no spare room.
+Cramped Room, as the name suggests, represents a cramped kitchen layout where all the important places are relatively easy to reach. The challenge lies in the low level of coordination of movement with the other partner, as there is no free space around.
 
     
 
@@ -31,36 +31,36 @@ Cramped room as a name suggests represents cramped kitchen layout where all impo
 \begin{center}
     \includegraphics*[width=6cm]{../img/asymmetric_advantages_layout.png}
 \end{center}
-In Assymetric advantages both players are located in separated regions where each region is fully self-sustaining. However, each region has better potential for specific subtask. 
-And it is only when both players make the most of their own region's potential that the maximal shared efficacy is reached.
+In Assymetric Advantage, both players are in separate regions where each region is completely self-sufficient. However, each region has better potential for a specific subtask. 
+And only when both players make the best use of their own region's potential, the maximum joint efficiency is achieved.
 
-\subsection*{Coordination ring}
+\subsection*{Coordination Ring}
 \begin{center}
     \includegraphics*[width=4cm]{../img/coordination_ring_layout.png}
 \end{center}
-The Coordination ring is another example of a layout where clever coordination is required as the only possible movement around the kitchen is along a narrow circular path that can be used in a given direction.
-For example, if one player decides to move in clockwise direction, the other player would automatically get stuck if persuing counter-clockwise movement.
+The Coordination Ring is another example of a layout that requires skillful coordination, as the only possible movement around the kitchen is along a narrow circular path that can be used in only one direction.
+For example, if one player chooses to move in a clockwise direction, the other player would automatically get stuck if they tried to move in a counterclockwise direction.
 
-\subsection*{Forced coordination}
+\subsection*{Forced Coordination}
 \begin{center}
     \includegraphics*[width=4cm]{../img/forced_coordination_layout.png}
 \end{center}
-Forced coordination kitchen layout is significantly different from others. 
-In this layout, each player is located in a separate region where neither player has all the resources necessary to prepare a complete onion soup. 
-Thus, players are forced to cooperate with each other with the resources they have.
+The Forced Coordination kitchen layout is quite different from the others. 
+In this layout, each player is located in an isolated region where no player has all the resources necessary to prepare a complete onion soup alone. 
+Thus, players are forced to cooperate with each other using the resources they have at their disposal.
 
-\subsection*{Counter circuit}
+\subsection*{Counter Circuit}
 \begin{center}
     \includegraphics*[width=6cm]{../img/counter_circuit_layout.png}
 \end{center}
-In the last layout, the situation may look similar to the coordination ring. However, in this case, carrying onions around the entire kitchen is highly suboptimal no matter which direction the players choose. 
+In the last layout, the situation may look similar to the Coordination Ring. In this case, however, carrying onions around the entire kitchen is highly suboptimal no matter which direction the players choose. 
 To deliver onions efficiently, players must pass them over the counter to shorten the distance. 
-However, the cooks still need to decide who will be responsible for bringing the plates. 
+However, the cooks still need to decide who is responsible for bringing the plates.
 
 
 \section{Environment description}
 \subsection{Action space}
-Action space is quite trivial as it contains only essential actions needed to operate within this environment.
+The action space is quite trivial, since it contains only the essential actions needed to operate in this environment.
 \begin{itemize}
     \item Go north
     \item Go south
@@ -71,52 +71,52 @@ Action space is quite trivial as it contains only essential actions needed to op
 \end{itemize}
 
 \subsection{State representation}\label{StateRepresentation}
-There are two state representation functions prefabricated by the authors, namely \texttt{featurize\_state} and \texttt{lossless\_state\_encoding}.
+There are two state representation functions predefined by the authors, namely \texttt{featurize\_state} and \texttt{lossless\_state\_encoding}.
 
-First of the two extracts manually designed features into the single dimension vector of ones and zeroes. 
-These features can be interpreted as partial observable representation of the environment state as majority of features are computed in relation to the closest point of interest.
-For instance only closest source locations of onions and dishes related to current player location are included, which results in loss of global information about whole layout. 
+The first of the two extracts manually designed features into a one-dimensional vector of ones and zeros. 
+These features can be interpreted as a partial observable representation of the environment state, as the majority of features are computed in relation to the nearest point of interest.
+For example, only the closest source locations of onions and dishes related to the player's current location are included, resulting in the loss of global information about the entire layout.
 
-Second of the mentioned state representation, as the name suggests, provides lossless global information about environment state.
-As in previous case, variables about environment are also represented by ones and zeros. 
-However, contrary to previous function, resulting representation is not a single dimension vector.
-Result is formed by stacked masks, where each mask represents some feature of the environment in the form of two dimension vector corresponding to layout width and height.
-For instance, the mask representing player $i$ location is vector of shape $(width, height)$ filled with zeroes on all positions except for the value one at coordinates where player $i$ is located.
-Similarly the mask of the same shape representing onion sources is filled with zeroes and on all coordinates where there is an onion source in the environment there are ones instead.
-We can see that this representation goes beyond the closest locations and provide global informations.
+The second state representation, as the name suggests, provides lossless global information about the state of the environment.
+As in the previous case, environment variables are also represented by ones and zeros. 
+However, unlike the previous function, the resulting representation is not a one-dimensional vector.
+The result is formed by stacked masks, where each mask represents some feature of the environment in the form of a two-dimensional vector corresponding to the layout width and height.
+For instance, the mask representing the location of player $i$ is a vector of shape $(width, height)$ filled with zeros at all positions except for the value one at the coordinates where player $i$ is located.
+Similarly, the mask of the same shape representing onion sources is filled with zeros, and at all coordinates where there is an onion source in the environment, there are ones instead.
+We can see that this representation goes beyond the nearest locations and provides global information.
 
 \subsection{Rewards}
-As we already said in the introduction, the environment is purely cooperative in a sense that players share the common reward of value 20 every time a soup is delivered to counter location.
+As we said in the introduction, the environment is purely cooperative in the sense that players share the common reward of value 20 each time a soup is delivered to the counter location.
 And this reward is player independent. 
-The cycle of the environment is virtually infinite as there is no a priori terminal state. 
-Hence it could be theoretically possible to easily obtain cummulative sum reward of infinity.
-This is prevented be setting finite time horizon that is set by a convention to the limit of 400 steps.
-This way it makes sense to compare the results of different runs.
+The cycle of the environment is virtually infinite, since there is no a priori end state. 
+Thus, it would be theoretically easy to get a cumulative sum reward of infinity.
+This is prevented by setting a finite time horizon, which by convention is set to the limit of 400 steps.
+With this constraint, it makes sense to compare the results of different runs.
 
-Apart from the common reward for delivering soups, there can be utilized player-dependent partial rewards that are not considered in overall cummulative sum of rewards.
-These rewards are utilized mostly for learning purposes of the agents as especially on some particular maps it is extremly unlikely that by following initially random policy whole process of soup making including delivery will be completed.
+In addition to the general reward for delivering soup, there may be player-dependent partial rewards that are not accounted for in the total sum of rewards.
+These rewards are mainly used for learning purposes of the agents, since especially on some particular maps it is highly unlikely that by following the initially random policy the whole process of soup making including delivery will be completed.
 Using predefined partial rewards
 \begin{itemize}
-    \item Dish pickup reward - dish is picked in usefull situation, eg. pot is ready or cooking
+    \item Dish pickup reward - Dish is picked in useful situation, e.g. pot is ready or cooking.
     \item Soup pickup reward 
-    \item Placement in pot reward - usefull ingredience is added to the pot, in our setting only onion soup recipe is used, so this corresponds to the action where onion was put in the pot
+    \item Placement in pot reward - Useful ingredient is added to the pot, in our setting only onion soup recipe is used, so this corresponds to the action where onion was added to the pot.
 \end{itemize}
 allows agents to learn subtasks first.
-It is important to eventually ignore these partial rewards during training, as agents could focus on these subtasks and ignore the main goal thus failing the main task whatsoever.
+It is important to eventually ignore these partial rewards during training, as agents could focus on these subtasks and ignore the main goal thus failing the main task altogether.
 This is usually implemented by linearly decreasing the weight of partial rewards over some finite time horizon.
 
 
 \subsection{Initial state}
-As there were two functions predefined by the authors to represent the environment state, there are also two ways how the initial state of the environment can be created.
+As there are two functions predefined by the authors to represent the state of the environment, there are also two ways to create the initial state of the environment.
 
-First of the two uses fixed layout initial player locations, which always create identical initial state including both players initial locations.
-However, learning single agent by always setting him in same initial location will probably cause him to fail when initially placed in second location.
-For this reason the $player\_index$ is introduced to specify which agent is interpreted as player number one and player two.
-This index is being randomized every time the environment resets, this way it is ensured that agent encounters both starting locations during learning.
-Using this index introduces a mild chaos into the environment as multiple parts of environment control must adress the problem of the index and both actions and state observations must be switched to correct order, which makes it a bit opaque.
-We suppose that this kind of initial state is suitable for some sort of benchmarking where the initial conditions are always the same.
+The first of the two uses fixed layout initial player locations, which always creates an identical initial state including both players' initial locations.
+However, learning a single agent by always placing it in the same initial location will likely cause it to fail when starting in the opposite location.
+For this reason, $player\_index$ is introduced to specify which agent is interpreted as player number one and player number two.
+This index is randomized every time the environment is reset, ensuring that the agent encounters both starting locations during learning.
+Using this index introduces a minor chaos into the environment, as various parts of the environment control have to address the player index problem, and both actions and state observations have to be switched to the correct order, making it a bit opaque.
+We assume that this kind of initial state is suitable for some kind of benchmarking where the initial conditions are always the same.
 
-However, in our experiments we utilize the second approach to state initialization, where initial locations are always sampled randomly for both players.
-We claim, that this is in agreement with our intuition as robust cooperative agents should be able cooperate well no matter their starting position, which has been partially demonstrated (\cite{knott2021evaluating}).
-However, this might come along with the cost of decreased average performance.
-Apart from random locations, the randomized initialization function offers also probabilty threshold argument that can be used to randomly initialize some random objects within the environment.
+In our experiments, however, we use the second approach to state initialization, where initial positions are always randomly sampled for both players.
+We claim that this is consistent with our intuition, since robustly cooperative agents should be able to cooperate well regardless of their initial position, which has been partially demonstrated (\cite{knott2021evaluating}).
+However, this may come at the cost of reduced average performance.
+Besides random positions, the randomized initialization function also provides a probability threshold argument that can be used to randomly initialize some additional random objects in the environment.

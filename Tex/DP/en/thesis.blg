@@ -20,45 +20,50 @@ Warning--entry type for "SpinningUpIntro" isn't style-file defined
 --line 107 of file bibliography.bib
 Warning--entry type for "Starcraft" isn't style-file defined
 --line 449 of file bibliography.bib
-You've used 27 entries,
+Warning--entry type for "OvercookedGame" isn't style-file defined
+--line 504 of file bibliography.bib
+Warning--entry type for "OvercookedImplementation" isn't style-file defined
+--line 514 of file bibliography.bib
+Warning--empty year in OvercookedImplementation
+You've used 29 entries,
             2773 wiz_defined-function locations,
-            800 strings with 10720 characters,
-and the built_in function-call counts, 13980 in all, are:
-= -- 1148
-> -- 1116
-< -- 15
-+ -- 379
-- -- 351
-* -- 1183
-:= -- 2212
-add.period$ -- 93
-call.type$ -- 27
-change.case$ -- 190
-chr.to.int$ -- 26
-cite$ -- 54
-duplicate$ -- 524
-empty$ -- 976
-format.name$ -- 384
-if$ -- 2881
+            808 strings with 10913 characters,
+and the built_in function-call counts, 14549 in all, are:
+= -- 1193
+> -- 1136
+< -- 17
++ -- 387
+- -- 357
+* -- 1213
+:= -- 2295
+add.period$ -- 97
+call.type$ -- 29
+change.case$ -- 196
+chr.to.int$ -- 28
+cite$ -- 59
+duplicate$ -- 554
+empty$ -- 1040
+format.name$ -- 392
+if$ -- 3002
 int.to.chr$ -- 2
 int.to.str$ -- 1
 missing$ -- 16
-newline$ -- 152
-num.names$ -- 110
-pop$ -- 436
+newline$ -- 160
+num.names$ -- 118
+pop$ -- 460
 preamble$ -- 1
-purify$ -- 169
+purify$ -- 175
 quote$ -- 0
-skip$ -- 494
+skip$ -- 527
 stack$ -- 0
-substring$ -- 235
-swap$ -- 62
+substring$ -- 239
+swap$ -- 64
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 282
-warning$ -- 0
-while$ -- 94
+type$ -- 304
+warning$ -- 1
+while$ -- 100
 width$ -- 0
-write$ -- 365
-(There were 3 warnings)
+write$ -- 384
+(There were 6 warnings)
