@@ -54,14 +54,19 @@ We rather expect the inital population to introduce somewhat mildly different se
 
 \subsection{Policy diversification}
 We hypothesize that preexistence of diverse population is just a soft precondition.
-The see the main factor for robustness in diversification itself.
-
 We propose that the main ingredient behind our diversity building process lies in attempting to shift the behavior of each consequentially trained agent to be as different as possible from the behaviors in the existing population.
+Since sampled population partners are embedded into the environment we can look at this approach as domain randomization technique.
 
 \subsubsection{KL divergence}
 To emphasize the difference between two behaviors, we must first be able to measure it.
-There are arguably various possible ways how to express difference between two behaviors.
-Nevertheless since the agent behavior is represented by parametrized policy we suppose that one of the more straightforward methods could be to look at the difference between the two policy distributions.
+There are arguably various possible ways how to express difference between two behaviors including methods related methods discussed in evaluation approaches (\ref{RobustnessEvaluation}).
+Nevertheless since the agent behavior is represented by parametrized policy we suppose that one of the more straightforward methods for low-level difference could be to look at the difference between the two policy distributions.
+
+When measuring the distance of the probabilty distribution the Kullback-Leibler divergence (\cite{KLDivergence}) often comes in mind.
+
+\[
+    D_{KL}(P||Q) = \sum_{x \in X}P(x)\log\left(\frac{P(x)}{Q(x)}\right)
+\]
 
 
 \subsubsection{Rewards augmentation}

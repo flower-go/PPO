@@ -61,7 +61,7 @@
 \contentsline {subsection}{\numberline {7.5.2}population partner sampling during training}{46}{subsection.7.5.2}%
 \contentsline {subsection}{\numberline {7.5.3}Final agent training}{46}{subsection.7.5.3}%
 \contentsline {section}{\numberline {7.6}Diverzification}{46}{section.7.6}%
-\contentsline {subsection}{\numberline {7.6.1}Population policies difference rewards augmentation}{46}{subsection.7.6.1}%
-\contentsline {subsection}{\numberline {7.6.2}Population policies difference loss}{46}{subsection.7.6.2}%
-\contentsline {chapter}{Conclusion}{47}{chapter*.40}%
-\contentsline {chapter}{Bibliography}{48}{chapter*.41}%
+\contentsline {subsection}{\numberline {7.6.1}Population policies difference rewards augmentation}{47}{subsection.7.6.1}%
+\contentsline {subsection}{\numberline {7.6.2}Population policies difference loss}{47}{subsection.7.6.2}%
+\contentsline {chapter}{Conclusion}{48}{chapter*.40}%
+\contentsline {chapter}{Bibliography}{49}{chapter*.41}%

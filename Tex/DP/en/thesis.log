@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.23)  29 MAR 2023 14:45
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.23)  29 MAR 2023 18:17
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -784,10 +784,10 @@ Chapter 7.
 
 
 
-] [44] [45]) [46]
+] [44] [45]) [46] [47]
 \openout2 = `epilog.aux'.
 
- (./epilog.tex) [47
+ (./epilog.tex) [48
 
 
 
@@ -796,16 +796,16 @@ Chapter 7.
 \openout2 = `bibliography.aux'.
 
  (./bibliography.tex (./thesis.bbl
-Underfull \hbox (badness 10000) in paragraph at lines 51--54
+Underfull \hbox (badness 10000) in paragraph at lines 56--59
 []\OT1/lmr/m/n/12 Deepmind, 2019.  URL []$\OT1/lmtt/m/n/12 https : / / www . deepmind . com / blog /
  []
 
-[48
+[49
 
 
 
 
-] [49])) [50] (./thesis.aux (./title.aux) (./preface.aux) (./chap01.aux) (./chap02.aux) (./chap03.aux) (./chap04.aux) (./chap05.aux) (./chap06.aux) (./chap07.aux) (./epilog.aux) (./bibliography.aux))
+] [50])) [51] (./thesis.aux (./title.aux) (./preface.aux) (./chap01.aux) (./chap02.aux) (./chap03.aux) (./chap04.aux) (./chap05.aux) (./chap06.aux) (./chap07.aux) (./epilog.aux) (./bibliography.aux))
 
 LaTeX Warning: There were multiply-defined labels.
 
@@ -813,18 +813,18 @@ Package rerunfilecheck Info: File `thesis.out' has not changed.
 (rerunfilecheck)             Checksum: 40E4A9D980C5990F439D1849B5D58C2F;10371.
  ) 
 Here is how much of TeX's memory you used:
- 18804 strings out of 479342
- 289118 string characters out of 5869178
- 754107 words of memory out of 5000000
- 36172 multiletter control sequences out of 15000+600000
+ 18810 strings out of 479342
+ 289224 string characters out of 5869178
+ 754175 words of memory out of 5000000
+ 36176 multiletter control sequences out of 15000+600000
  532979 words of font info for 74 fonts, out of 8000000 for 9000
  473 hyphenation exceptions out of 8191
  77i,24n,79p,533b,2377s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rmtt.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx8.pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi6.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi8.pfb></usr/share/texmf/fonts/type1/public/lm/lmmib10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb></usr/share/texmf/fonts/type1/public/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy6.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on thesis.pdf (54 pages, 880583 bytes).
+Output written on thesis.pdf (55 pages, 883425 bytes).
 PDF statistics:
- 1041 PDF objects out of 1200 (max. 8388607)
- 902 compressed objects within 10 object streams
- 257 named destinations out of 1000 (max. 500000)
+ 1052 PDF objects out of 1200 (max. 8388607)
+ 912 compressed objects within 10 object streams
+ 259 named destinations out of 1000 (max. 500000)
  618 words of extra memory for PDF output out of 10000 (max. 10000000)
 

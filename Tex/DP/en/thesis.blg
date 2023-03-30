@@ -24,46 +24,50 @@ Warning--entry type for "OvercookedGame" isn't style-file defined
 --line 504 of file bibliography.bib
 Warning--entry type for "OvercookedImplementation" isn't style-file defined
 --line 514 of file bibliography.bib
+Warning--entry type for "KLDivergence" isn't style-file defined
+--line 524 of file bibliography.bib
+Warning--to sort, need author or key in KLDivergence
+Warning--empty year in KLDivergence
 Warning--empty year in OvercookedImplementation
-You've used 29 entries,
+You've used 30 entries,
             2773 wiz_defined-function locations,
-            808 strings with 10913 characters,
-and the built_in function-call counts, 14549 in all, are:
-= -- 1193
+            812 strings with 11029 characters,
+and the built_in function-call counts, 14789 in all, are:
+= -- 1216
 > -- 1136
 < -- 17
-+ -- 387
++ -- 388
 - -- 357
-* -- 1213
-:= -- 2295
-add.period$ -- 97
-call.type$ -- 29
-change.case$ -- 196
-chr.to.int$ -- 28
-cite$ -- 59
-duplicate$ -- 554
-empty$ -- 1040
+* -- 1229
+:= -- 2314
+add.period$ -- 99
+call.type$ -- 30
+change.case$ -- 199
+chr.to.int$ -- 29
+cite$ -- 64
+duplicate$ -- 569
+empty$ -- 1075
 format.name$ -- 392
-if$ -- 3002
+if$ -- 3061
 int.to.chr$ -- 2
 int.to.str$ -- 1
 missing$ -- 16
-newline$ -- 160
+newline$ -- 164
 num.names$ -- 118
-pop$ -- 460
+pop$ -- 474
 preamble$ -- 1
-purify$ -- 175
+purify$ -- 177
 quote$ -- 0
-skip$ -- 527
+skip$ -- 541
 stack$ -- 0
-substring$ -- 239
-swap$ -- 64
+substring$ -- 242
+swap$ -- 65
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 304
-warning$ -- 1
+type$ -- 315
+warning$ -- 3
 while$ -- 100
 width$ -- 0
-write$ -- 384
-(There were 6 warnings)
+write$ -- 393
+(There were 9 warnings)
