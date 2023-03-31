@@ -54,14 +54,9 @@
 \contentsline {subsubsection}{KL divergence}{45}{section*.37}%
 \contentsline {subsubsection}{Rewards augmentation}{45}{section*.38}%
 \contentsline {subsubsection}{Objective function augmentation}{45}{section*.39}%
-\contentsline {section}{\numberline {7.3}Idea}{45}{section.7.3}%
-\contentsline {section}{\numberline {7.4}Our definition(s?) of robustness}{46}{section.7.4}%
-\contentsline {section}{\numberline {7.5}Population construction}{46}{section.7.5}%
-\contentsline {subsection}{\numberline {7.5.1}SP agents initialization}{46}{subsection.7.5.1}%
-\contentsline {subsection}{\numberline {7.5.2}population partner sampling during training}{46}{subsection.7.5.2}%
-\contentsline {subsection}{\numberline {7.5.3}Final agent training}{46}{subsection.7.5.3}%
-\contentsline {section}{\numberline {7.6}Diverzification}{46}{section.7.6}%
-\contentsline {subsection}{\numberline {7.6.1}Population policies difference rewards augmentation}{47}{subsection.7.6.1}%
-\contentsline {subsection}{\numberline {7.6.2}Population policies difference loss}{47}{subsection.7.6.2}%
-\contentsline {chapter}{Conclusion}{48}{chapter*.40}%
-\contentsline {chapter}{Bibliography}{49}{chapter*.41}%
+\contentsline {subsubsection}{Initial experiments visualised}{45}{section*.40}%
+\contentsline {subsubsection}{Average cummulative reward evaluation}{46}{section*.41}%
+\contentsline {subsubsection}{Ordered average cummulative reward evaluation}{47}{section*.42}%
+\contentsline {subsubsection}{Frame stacking experiments}{47}{section*.43}%
+\contentsline {chapter}{Conclusion}{52}{chapter*.44}%
+\contentsline {chapter}{Bibliography}{53}{chapter*.45}%
