@@ -70,75 +70,202 @@ When measuring the distance of the probabilty distribution the Kullback-Leibler 
 
 
 \subsubsection{Rewards augmentation}
+TODO:
 \subsubsection{Objective function augmentation}
+TODO:
+
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics*[width=14cm]{../img/Forced_coordination_CNN_POP_NO_DIF(2).png}
+
+    \caption{CNN Population with no diversification cross play evaluation}
+    \label{CNNPopNoDiffBestInitFixation}
+    \medskip
+    \small 
+    5 populations trained using different seeds with no additional diversification cross-play evaluated against Self-play evaluation set
+
+\end{figure}
+
+\subsubsection{Initial experiments visualised}
+
+After initial experiment (figure \ref{CNNPopNoDiffBestInitFixation}) where population was trained we can see that first three self-play agents used for initialization of population play important role.
+In three seeds (10,11,13) initial population strongly represents one set of behaviors and lacks enough diversity.
+As a result as agent training progresses during population building, agents learn to fixate solely on this kind of behavior as it promises maximal available outcome and ignore other types of behaviors.
+
+To confront this issue we propose two suggestion.
+Firstly, in this initial experiments first three trained self-play agents were selected for population inicialization automatically.
+However, it can happen, as can be seen mostly in experiments performed on seed values 10 and 11, that several of agents can actually represent same type of behavior thus forcing the rest of the population to be strongly biased towards it.
+We instead propose that first five self-play agents will be trained and then evaluated with the evaluation set.
+And finally out of these five three will be selected such three agents that these are both successful and also pair-wise different as much as possible.
+
+And secondly, during training all available agents from current population are present at each training epoch as they are equally distributed among 30 parallel environments.
+This guarantes that the dominant type of behavior from population initialization is always represented during training, which enables newly trained agent to move towards this kind of behavior.
+Instead we propose not to sample all agents from current population, but rather sample only few of them to give chance to ommitt the dominant and allow trained agent to focus on the remaining types.
+After performing simplifed experiment we concluded with suitable value three for number of sampled partners.  
+
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics*[width=14cm]{../img/SimpleCnnExperimentsAvg.png}
+
+    \caption{Average cummulative reward of final agents}
+    \label{AvgCummulativeRewardEvaluated}
+    \medskip
+    \small 
+    Average cummulative reward of the two final agents trained in last phase of the population building.
+    Includes values also for cross-play evaluation of self-play evaluation set for reference. 
+
+\end{figure}
+
+\subsubsection{Average cummulative reward evaluation}
+
+As discussed in previous chapters (\ref{RobustnessEvaluation}) performing evaluation of acquired population using usual methods is not very intuitive. 
+When standard average cummulative reward metric is used (figure \ref{AvgCummulativeRewardEvaluated}) there are no apparent improvements and results vary a lot which we believe could be attributed to two factors.
+Firstly, as we just discussed, the average cummulative rewards of initial populations vary also a lot when evaluated against self-play evaluation set.
+And secondly, even when final population agents are trained there is no guarante, that will not end up in some suboptimal local optima with respect to current population training.
+
+
+\subsubsection{Ordered average cummulative reward evaluation}
+When agents are ordered by the evaluation with other agents it shows significant improvement in terms of early mild cooperation (\ref{SimpleCNNOrderedAvg}). 
+Results are even more amplified when not looking at average case, but rather at 0.15 quantile (figure \ref{SimpleCNNOrderedAvg0.15Q}).
+{\color{blue} This might be interpreted as looking at worse case cooperation? In a sense that our final agent is able to cooperate to extent of cca 80 shared rewards with way wider set of evaluation agents? }
+
+Sometimes even in the middle of population there can be already agents the behave nicely (\ref{FSTuple4thOrderedAvg})
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics*[width=13cm]{../img/SimpleCNNOrderedAvg.png}
+
+    \caption{Average cummulative reward of final agents}
+    \label{SimpleCNNOrderedAvg}
+    \medskip
+    \small 
+    Average cummulative reward of the two final agents trained in last phase of the population building.
+    Includes values also for cross-play evaluation of self-play evaluation set for reference. 
+    Average, 0.25Q, 0.75Q
+
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics*[width=13cm]{../img/SimpleCNNOrderedAvg0.15Q.png}
+
+    \caption{Average cummulative reward of final agents, 0.15quantile}
+    \label{SimpleCNNOrderedAvg0.15Q}
+    \medskip
+    \small 
+    Average cummulative reward of the two final agents trained in last phase of the population building.
+    Includes values also for cross-play evaluation of self-play evaluation set for reference. 
+    0.15Q, Min, 0.3Q
+
+\end{figure}
+
+
+\subsubsection{Frame stacking experiments}
+TODO: two variants
+
+Looks like temporal feature made even basic self-play agent a bit more cooperative (figure \ref{FSVariantsOrderedAvg}).
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics*[width=13cm]{../img/FSVariantsOrderedAvg.png}
+
+    \caption{Average cummulative reward of final agents}
+    \label{FSVariantsOrderedAvg}
+    \medskip
+    \small 
+    Average cummulative reward of all agents from evaluation set.
+    All three types of self-play agent designs included.
+
+    Average, 0.25Q, 0.75Q
+
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics*[width=13cm]{../img/FSTuple4thOrderedAvg.png}
+
+    \caption{Average cummulative reward of 4th agent within the population part}
+    \label{FSTuple4thOrderedAvg}
+    \medskip
+    \small 
+    Average cummulative reward of 4th agent from population.
+    Using tuple frame stacking mechanism
+
+    Average, 0.25Q, 0.75Q
+
+\end{figure}
 
 
 
 
-\section{Idea}
 
 
-We will transform population learning into an incremental process, where only newly added agents are learned.
-This process is designed to be quite general with respect to the potentially pre-existing set of autonomous agents.
-
-The building process will start with a population of whatever pre-trained agents are available, no matter what the source of agents is.
-Consequently, a new agent is learned with respect to the previous population by using some diversification techniques.
-After the agent is trained to cooperate with individual agents within the existing population while maintaining its diversity, it is added to the fixed population and the next agent can be trained.
-
-By fixing the previously trained agent, we effectively solve the problem of non-stationarity, since no two agent policies are changed at the same time.
-By embedding sampled partners from the population into the environment, we can consider the environment as a single agent from the point of view of the agent being trained.
-However, despite the fact that the original overcooked environment is deterministic from the point of view of the transition function, by embedding partners whose policies will be mostly stochastic into the environment, the transition function becomes stochastic from the point of view of the trained agent.
-The same applies to the reward function.
-Since part of our proposed diversification methods involve reward augmentation based on the agent's policy, the environment's reward function will no longer be stationary throughout training due to the learning policy.
-
-{\color{blue} Po prostudovani a sepsani MARL kapitoly mi pripada, ze muj pristup popsany vyse je vlastne hrozne slaby, obzvlaste tim, ze trenuju ciste reaktivni agenty bez jakekoliv pameti (uvazuji jen soucasnou CNN reprezentaci stavu, bez RNN, bez predeslych akci partnera, bez historie predchozich stavu),
-tim vlastne ani nejsem schopny komplexne zachytit nejakou high-level strategii partnera, namisto toho se proste ucim jak se nejlepe (robustne?) zachovat v jednom konkretnim stavu vzhledem k potencialne vice moznych strategii, kterymi by se mohl partner v danem stavu ridit.
-Tim, ze CNN kompletne popisuje stav prostredi, tak ani nemam partial observability a vstup kritika jsem nijak nerozsiroval.
-Proste pripada mi, ze jsem v tom reseni nezahrnul moc zadne techniky popsane pro MAS.
-
-Pripada mi ze i tak ty experimenty ktere zkousim a navrhuju jsou zajimave, jen mi pripadaji takove vytrzene z toho MAS kontextu - ale o tom jsme si myslim minule bavili ze nevadi.
-}
+% \section{Idea}
 
 
-Diverse population can be thought of as domain randomization technique
-"Given just this, it is unclear what the agent should do: the optimal
-policy for the agent depends heavily on the human’s policy, which the agent has no control over"
+% We will transform population learning into an incremental process, where only newly added agents are learned.
+% This process is designed to be quite general with respect to the potentially pre-existing set of autonomous agents.
 
-"From the perspective of game theory, we are interested
-in n-person games in which the players have a shared or joint
-utility function. In other words, any outcome of the game has
-equal value for all players. Assuming the game is fully co-
-operative in this sense, many of the interesting problems in
-cooperative game theory (such as coalition formation and ne-
-gotiation) disappear. Rather it becomes more like a standard
-(one-player) decision problem, where the collection of n play-
-ers can be viewed as a single player trying to optimize its be-
-havior against nature." 
+% The building process will start with a population of whatever pre-trained agents are available, no matter what the source of agents is.
+% Consequently, a new agent is learned with respect to the previous population by using some diversification techniques.
+% After the agent is trained to cooperate with individual agents within the existing population while maintaining its diversity, it is added to the fixed population and the next agent can be trained.
 
-"Solutions to the coordination problem can be divided into
-three general classes, those based on communication, those
-based on convention and those based on learning"
+% By fixing the previously trained agent, we effectively solve the problem of non-stationarity, since no two agent policies are changed at the same time.
+% By embedding sampled partners from the population into the environment, we can consider the environment as a single agent from the point of view of the agent being trained.
+% However, despite the fact that the original overcooked environment is deterministic from the point of view of the transition function, by embedding partners whose policies will be mostly stochastic into the environment, the transition function becomes stochastic from the point of view of the trained agent.
+% The same applies to the reward function.
+% Since part of our proposed diversification methods involve reward augmentation based on the agent's policy, the environment's reward function will no longer be stationary throughout training due to the learning policy.
 
-Convention probably does not make sense as we have ad hoc partner
-Craig Boutilie 1996
+% {\color{blue} Po prostudovani a sepsani MARL kapitoly mi pripada, ze muj pristup popsany vyse je vlastne hrozne slaby, obzvlaste tim, ze trenuju ciste reaktivni agenty bez jakekoliv pameti (uvazuji jen soucasnou CNN reprezentaci stavu, bez RNN, bez predeslych akci partnera, bez historie predchozich stavu),
+% tim vlastne ani nejsem schopny komplexne zachytit nejakou high-level strategii partnera, namisto toho se proste ucim jak se nejlepe (robustne?) zachovat v jednom konkretnim stavu vzhledem k potencialne vice moznych strategii, kterymi by se mohl partner v danem stavu ridit.
+% Tim, ze CNN kompletne popisuje stav prostredi, tak ani nemam partial observability a vstup kritika jsem nijak nerozsiroval.
+% Proste pripada mi, ze jsem v tom reseni nezahrnul moc zadne techniky popsane pro MAS.
 
-\section{Our definition(s?) of robustness}
-Probably just average of pair results (non diagonal in case of same sets).
-Maybe percentage of pairs who surpassed some threshold reward?
+% Pripada mi ze i tak ty experimenty ktere zkousim a navrhuju jsou zajimave, jen mi pripadaji takove vytrzene z toho MAS kontextu - ale o tom jsme si myslim minule bavili ze nevadi.
+% }
 
-\section{Population construction}
 
-\subsection{SP agents initialization}
-\textbf{One agent is not enough?}
+% Diverse population can be thought of as domain randomization technique
+% "Given just this, it is unclear what the agent should do: the optimal
+% policy for the agent depends heavily on the human’s policy, which the agent has no control over"
 
-\subsection{population partner sampling during training}
-\textbf{See if playing with whole population at once differs from one random partner for episode}
+% "From the perspective of game theory, we are interested
+% in n-person games in which the players have a shared or joint
+% utility function. In other words, any outcome of the game has
+% equal value for all players. Assuming the game is fully co-
+% operative in this sense, many of the interesting problems in
+% cooperative game theory (such as coalition formation and ne-
+% gotiation) disappear. Rather it becomes more like a standard
+% (one-player) decision problem, where the collection of n play-
+% ers can be viewed as a single player trying to optimize its be-
+% havior against nature." 
 
-\subsection{Final agent training}
+% "Solutions to the coordination problem can be divided into
+% three general classes, those based on communication, those
+% based on convention and those based on learning"
 
-\section{Diverzification}
-\textbf{maximize kl divergence among population partners policies}
+% Convention probably does not make sense as we have ad hoc partner
+% Craig Boutilie 1996
 
-\subsection{Population policies difference rewards augmentation}
+% \section{Our definition(s?) of robustness}
+% Probably just average of pair results (non diagonal in case of same sets).
+% Maybe percentage of pairs who surpassed some threshold reward?
 
-\subsection{Population policies difference loss}
+% \section{Population construction}
+
+% \subsection{SP agents initialization}
+% \textbf{One agent is not enough?}
+
+% \subsection{population partner sampling during training}
+% \textbf{See if playing with whole population at once differs from one random partner for episode}
+
+% \subsection{Final agent training}
+
+% \section{Diverzification}
+% \textbf{maximize kl divergence among population partners policies}
+
+% \subsection{Population policies difference rewards augmentation}
+ 
+% \subsection{Population policies difference loss}
