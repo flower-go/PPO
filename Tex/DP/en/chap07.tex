@@ -52,14 +52,14 @@ One could argue that if we had a method for creating such initial diverse popula
 However, we do not see the perfect diversity and robustness of initial population to be crucial. 
 We rather expect the inital population to introduce somewhat mildly different set of behaviors just to give a resonable starting point for the rest of population training.
 
-\subsection{Policy diversification}
+\subsection{KL divergence}
 We hypothesize that preexistence of diverse population is just a soft precondition.
 We propose that the main ingredient behind our diversity building process lies in attempting to shift the behavior of each consequentially trained agent to be as different as possible from the behaviors in the existing population.
 Since sampled population partners are embedded into the environment we can look at this approach as domain randomization technique.
 
-\subsubsection{KL divergence}
+
 To emphasize the difference between two behaviors, we must first be able to measure it.
-There are arguably various possible ways how to express difference between two behaviors including methods related methods discussed in evaluation approaches (\ref{RobustnessEvaluation}).
+There are arguably various possible ways how to express difference between two behaviors including methods discussed in evaluation approaches (\ref{RobustnessEvaluation}).
 Nevertheless since the agent behavior is represented by parametrized policy we suppose that one of the more straightforward methods for low-level difference could be to look at the difference between the two policy distributions.
 
 When measuring the distance of the probabilty distribution the Kullback-Leibler divergence (\cite{KLDivergence}) often comes in mind.
@@ -68,11 +68,45 @@ When measuring the distance of the probabilty distribution the Kullback-Leibler 
     D_{KL}(P||Q) = \sum_{x \in X}P(x)\log\left(\frac{P(x)}{Q(x)}\right)
 \]
 
+Although it is not a metric since it is not symmetric in the two distributions and also it does not satify the triangle inequality, we can still utilize it as we are mostly interested in relative distribution differences rather than absolute values.
+We propose idea of incorporating maximization of KL divergence as a tool to differentiate new agents from the ones that are already contained in the population.
 
-\subsubsection{Rewards augmentation}
-TODO:
-\subsubsection{Objective function augmentation}
-TODO:
+We suggest that there are two different suitable ways how to incorporate KL divergence maximization into the process.
+Firstly, KL divergence between policy that is currently being trained and the policies in the population can be used during episode sampling by interpreting it as another additional partial reward based on a current state of the environment.
+And secondly, similar approach can be applied on the level of PPO objective function where another additional objective term based on maximization of KL divergence can be added.
+
+It may seem that these two approaches might have the same effect.
+However, we believe that they work in a slightly different manner.
+When applied in the PPO objective the term is trying to differentiate current policy no matter the current state of the environment.
+While applying the KL divergence bonus as partial reward based on the state might work as a exploration enhancing technique since it should push the agent to visit more the states where it's current policy differs the most which could potentially lead to state trajectories that have not been seen by the agents in the population.   
+
+\subsubsection{KL divergence coefficients}
+Applying the absolute value of KL divergence the way it is calculated using the formula would not work in our favor as we have to consider the values range with regard to the environment properties.
+KL divergence is non negative but it can easily reach values of infinity when not bounded.
+Additionaly we need to consider suitable multiplicative coefficient to scale the values to reasonable values.
+
+When new parametrized policy $p$ is initialized it produces the probability distribution that is close to uniform.
+Having sampled several already trained self-play agents and evaluated in same initial states we obatined specialized policies yielding the probability distributions $q_1, q_2, q_3$.
+
+
+\begin{table}[htbp]
+    \small
+    \centering
+    \begin{tabular}{lll}
+      \toprule
+      \                                & Probability distribution     & $D_{KL}(p||q)$         \\ \midrule
+      \textit{p}     &                                   &                                   \\ \midrule            
+      $q_1$                     & $0.99$                            & $0.98$                            \\
+      $q_2$                         & $0.98$                            & $0.95$                            \\
+      $q_3$                                & $10^{-3}$                         & $4 \cdot 10^{-4}$                               \\
+      
+     \bottomrule
+    \end{tabular}
+    \caption{Hyperparameters for self-play agent training on Cramped room layout}
+    \label{tab:KLDiv-coefiicents}
+  \end{table}
+
+
 
 
 \begin{figure}[!ht]
@@ -131,11 +165,11 @@ When agents are ordered by the evaluation with other agents it shows significant
 Results are even more amplified when not looking at average case, but rather at 0.15 quantile (figure \ref{SimpleCNNOrderedAvg0.15Q}).
 {\color{blue} This might be interpreted as looking at worse case cooperation? In a sense that our final agent is able to cooperate to extent of cca 80 shared rewards with way wider set of evaluation agents? }
 
-Sometimes even in the middle of population there can be already agents the behave nicely (\ref{FSTuple4thOrderedAvg})
+Sometimes even in the middle of population there can be already agents that behave nicely (\ref{FSTuple4thOrderedAvg})
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics*[width=13cm]{../img/SimpleCNNOrderedAvg.png}
+    \includegraphics*[width=10cm]{../img/SimpleCNNOrderedAvg.png}
 
     \caption{Average cummulative reward of final agents}
     \label{SimpleCNNOrderedAvg}
@@ -149,7 +183,7 @@ Sometimes even in the middle of population there can be already agents the behav
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics*[width=13cm]{../img/SimpleCNNOrderedAvg0.15Q.png}
+    \includegraphics*[width=10cm]{../img/SimpleCNNOrderedAvg0.15Q.png}
 
     \caption{Average cummulative reward of final agents, 0.15quantile}
     \label{SimpleCNNOrderedAvg0.15Q}
@@ -169,7 +203,7 @@ Looks like temporal feature made even basic self-play agent a bit more cooperati
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics*[width=13cm]{../img/FSVariantsOrderedAvg.png}
+    \includegraphics*[width=10cm]{../img/FSVariantsOrderedAvg.png}
 
     \caption{Average cummulative reward of final agents}
     \label{FSVariantsOrderedAvg}
@@ -184,20 +218,62 @@ Looks like temporal feature made even basic self-play agent a bit more cooperati
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics*[width=13cm]{../img/FSTuple4thOrderedAvg.png}
+    \includegraphics*[width=10cm]{../img/FSTuple4thOrderedAvg.png}
 
     \caption{Average cummulative reward of 4th agent within the population part}
     \label{FSTuple4thOrderedAvg}
     \medskip
     \small 
     Average cummulative reward of 4th agent from population.
-    Using tuple frame stacking mechanism
+    Using tuple frame stacking mechanism.
+    Sometime the final pop agent is not the best one.
 
     Average, 0.25Q, 0.75Q
 
 \end{figure}
 
 
+\subsection{Populations evaluation}
+In here we will not evaluate agents against self-play agents, but evaluate final population agents against each other among different experiments settings.
+(Simple CNN \ref{FinalPopFinalPopSimpleCnnAvg}). (FS Channels \ref{FinalPopFinalPopFsChannelsAvg}). (FS Tuple \ref{FinalPopFinalPopFsTupleAvg})
+\begin{figure}[!ht]
+    \centering
+    \includegraphics*[width=10cm]{../img/FinalPopFinalPopSimpleCnnAvg.png}
+
+    \caption{Evaluation of final population agent using simple CNN}
+    \label{FinalPopFinalPopSimpleCnnAvg}
+    \medskip
+    \small 
+
+    Average, 0.25Q, 0.75Q
+
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics*[width=10cm]{../img/FinalPopFinalPopFsChannelsAvg.png}
+
+    \caption{Evaluation of final population agent using channels frame stacking}
+    \label{FinalPopFinalPopFsChannelsAvg}
+    \medskip
+    \small 
+
+    Average, 0.25Q, 0.75Q
+
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics*[width=10cm]{../img/FinalPopFinalPopFsTupleAvg.png}
+
+    \caption{Evaluation of final population agent using tuple frame stacking}
+    \label{FinalPopFinalPopFsTupleAvg}
+    \medskip
+    \small 
+
+    Average, 0.25Q, 0.75Q
+
+\end{figure}
 
 
 

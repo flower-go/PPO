@@ -50,13 +50,12 @@
 \contentsline {subsection}{\numberline {7.1.3}Population exploitance}{44}{subsection.7.1.3}%
 \contentsline {section}{\numberline {7.2}Population diversification}{44}{section.7.2}%
 \contentsline {subsection}{\numberline {7.2.1}Inicialization}{44}{subsection.7.2.1}%
-\contentsline {subsection}{\numberline {7.2.2}Policy diversification}{44}{subsection.7.2.2}%
-\contentsline {subsubsection}{KL divergence}{45}{section*.37}%
-\contentsline {subsubsection}{Rewards augmentation}{45}{section*.38}%
-\contentsline {subsubsection}{Objective function augmentation}{45}{section*.39}%
-\contentsline {subsubsection}{Initial experiments visualised}{45}{section*.40}%
-\contentsline {subsubsection}{Average cummulative reward evaluation}{46}{section*.41}%
-\contentsline {subsubsection}{Ordered average cummulative reward evaluation}{47}{section*.42}%
-\contentsline {subsubsection}{Frame stacking experiments}{47}{section*.43}%
-\contentsline {chapter}{Conclusion}{52}{chapter*.44}%
-\contentsline {chapter}{Bibliography}{53}{chapter*.45}%
+\contentsline {subsection}{\numberline {7.2.2}KL divergence}{44}{subsection.7.2.2}%
+\contentsline {subsubsection}{KL divergence coefficients}{45}{section*.37}%
+\contentsline {subsubsection}{Initial experiments visualised}{45}{section*.38}%
+\contentsline {subsubsection}{Average cummulative reward evaluation}{46}{section*.39}%
+\contentsline {subsubsection}{Ordered average cummulative reward evaluation}{46}{section*.40}%
+\contentsline {subsubsection}{Frame stacking experiments}{48}{section*.41}%
+\contentsline {subsection}{\numberline {7.2.3}Populations evaluation}{48}{subsection.7.2.3}%
+\contentsline {chapter}{Conclusion}{53}{chapter*.42}%
+\contentsline {chapter}{Bibliography}{54}{chapter*.43}%
