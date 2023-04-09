@@ -8,7 +8,7 @@ And secondly we try to address the lack of explicit diversification in standard 
 In following sections we attempt to walk through several different aspects of our population building approach.
 These parts can be seen as a soft guideline towards diverse population training algorithm which will be presented at the end of this chapter.
 
-\section{Multi agent settings}
+\section{Multi agent setting simplification}
 
 \subsection{Single-agent perspective}
 As we could have already seen (\ref{MAS}) multi agent systems can be much more intimidating to tackle down.
@@ -38,7 +38,7 @@ However, by fixing previous past agents we try to break this relation at least f
 We are optimistic that this, in conjunction with further diversification factors, will greatly reduce exploitation of the population.
 
 
-\section{Population diversification}
+\section{Population building}
 A mere change in our perception towards single-agent settings would probably not be enough of an improvement towards agent robustness.
 Therefore we propose several ideas to promote population diversification.
 \subsection{Inicialization}
@@ -69,7 +69,7 @@ When measuring the distance of the probabilty distribution the Kullback-Leibler 
 \]
 
 Although it is not a metric since it is not symmetric in the two distributions and also it does not satify the triangle inequality, we can still utilize it as we are mostly interested in relative distribution differences rather than absolute values.
-We propose idea of incorporating maximization of KL divergence as a tool to differentiate new agents from the ones that are already contained in the population.
+We propose idea of incorporating maximization of KL divergence as a tool to differentiate new agents from the ones that are already contained in the population by taking the average of KL divergence of trained policy and policies from population.
 
 We suggest that there are two different suitable ways how to incorporate KL divergence maximization into the process.
 Firstly, KL divergence between policy that is currently being trained and the policies in the population can be used during episode sampling by interpreting it as another additional partial reward based on a current state of the environment.
@@ -81,12 +81,12 @@ When applied in the PPO objective the term is trying to differentiate current po
 While applying the KL divergence bonus as partial reward based on the state might work as a exploration enhancing technique since it should push the agent to visit more the states where it's current policy differs the most which could potentially lead to state trajectories that have not been seen by the agents in the population.   
 
 \subsubsection{KL divergence coefficients}
-Applying the absolute value of KL divergence the way it is calculated using the formula would not work in our favor as we have to consider the values range with regard to the environment properties.
+Applying the absolute value of KL divergence the way it is calculated using the formula would not work in our favor as we have to consider the value ranges with regard to the environment properties.
 KL divergence is non negative but it can easily reach values of infinity when not bounded.
-Additionaly we need to consider suitable multiplicative coefficient to scale the values to reasonable values.
+Additionaly we need to consider suitable multiplicative coefficient to scale the values to reasonable range.
 
 When new parametrized policy $p$ is initialized it produces the probability distribution that is close to uniform.
-Having sampled several already trained self-play agents and evaluated in same initial states we obatined specialized policies yielding the probability distributions $q_1, q_2, q_3$.
+Having sampled several already trained self-play agents and evaluated in same initial states we obatined specialized policies yielding the probability distributions $q_1, q_2, q_3$ (see table \ref{tab:KLDiv-distributions}).
 
 
 \begin{table}[htbp]
@@ -95,19 +95,78 @@ Having sampled several already trained self-play agents and evaluated in same in
     \begin{tabular}{lll}
       \toprule
       \                                & Probability distribution     & $D_{KL}(p||q)$         \\ \midrule
-      \textit{p}     &                                   &                                   \\ \midrule            
-      $q_1$                     & $0.99$                            & $0.98$                            \\
-      $q_2$                         & $0.98$                            & $0.95$                            \\
-      $q_3$                                & $10^{-3}$                         & $4 \cdot 10^{-4}$                               \\
+      \textit{p}     &$[0.1679, 0.1647, 0.1644, 0.1663, 0.1713, 0.1654]$                                   &                                   \\ \midrule            
+      $q_1$                     & $[0.0336, 0.0729, 0.0467, 0.5419, 0.1431, 0.1617]$                            & $0.449$                            \\
+      $q_2$                         & $[0.0453, 0.1906, 0.1270, 0.2221, 0.0942, 0.3207]$                            & $0.183$                            \\
+      $q_3$                                & $[0.1875, 0.1851, 0.1663, 0.1369, 0.1414, 0.1828]$                         & $0.009$                               \\
       
      \bottomrule
     \end{tabular}
-    \caption{Hyperparameters for self-play agent training on Cramped room layout}
+    \caption{KL divergence values ilustrated on trained policies on same random inital state}
+    \label{tab:KLDiv-distributions}
+\end{table}
+
+These values of KL divergence can give us an idea about the absolute values when new policies are compared to already trained agents.
+We believe that probability distributions $p$ a $q_1$ are different enough in terms of what we are trying to achieve when training population of diverse agents.
+By considering the absolute value of KL divergence of these two distributions we try to derive suitable KL divergence coefficent for loss and reward augmentation. 
+
+We hypothesize that KL divergence term which we add to PPO objective should have comparable weight as the entropy bonus (recall \ref{PPO}) as this bonus is also designed only to be mild exploratory pressure rather than main objective.
+Entropy in early stage of training corresponds to uniform probability distribution which yields absolute values of $1.8$. 
+This combined with entropy bonus start coefficient of $0.1$ (hypereparameters table \ref{tab:hyperparameters-algo}) produces absolute values of cca $0.18$.
+At the final stage when policy is already trained the entropy usually decreases to absolute values of around $1.2$ which when combined with entropy bonus end coefficent of $0.03$ produces final value of $0.036$.
+
+As far as reward augmentation is considered we believe that when all KL divergence bonus are summed throughout the 400 steps of episode it should correspond only to fraction of what can be obtained by following main objective of soup deliverence.
+We propose to design such reward clipping in equivalence to the number of soups delivered ($0.5$, $1$, $1.5$ (R$0$, R$1$, R$2$, respectively)).
+
+After performing several trivial experiments we concluded with following experiment settings (table \ref{tab:KLDiv-coefiicents}) that we want to evaluate during our following experiments.
+
+
+
+\begin{table}[htbp]
+    \small
+    \centering
+    \begin{tabular}{lllll}
+      \toprule
+      Experiment Name        & Reward coefficent     & Reward clip  & Loss coefficent  & Loss clip          \\ \midrule
+
+      No divers.     & $0.0$     & $0.0$   & $0.0$     & $0.0$                        \\\midrule  
+      R$0$     & $0.08$     & $0.025$   & $0$     & $0$                        \\
+      R$1$     & $0.15$     & $0.05$   & $0$     & $0$                        \\
+      R$2$     & $0.1$     & $0.075$   & $0$     & $0$                        \\\midrule
+      L$0$     & $0$     & $0$   & $0.08$     & $0.03$                        \\
+      L$1$     & $0$     & $0$   & $0.12$     & $0.07$                        \\      
+      L$2$     & $0$     & $0$   & $0.1$     & $0.15$                        \\\midrule      
+      R$0$L$0$     & $0.08$     & $0.02$   & $0.08$     & $0.02$                        \\
+      R$1$L$1$     & $0.1$     & $0.04$   & $0.1$     & $0.03$                        \\
+      
+     \bottomrule
+    \end{tabular}
+    \caption{Summary of experiments utilizing KL divergence}
     \label{tab:KLDiv-coefiicents}
-  \end{table}
+\end{table}
 
 
+\subsection{Population structure}
+Finally, we need to provide description of entire proposed population building process.
+We have already dealt with population inicialization where we proposed how the inital agents could be constructed and we also designed diversification tools to enhance the behavioral diversity of the population.
 
+However, our ultimate goal is to provide a procedure that produces final agent or set of final agents that should be robust and highly cooperative.
+By applying diversifying techniques we effectively train agents that are not fully optimizing towards main objective but their performance can be degraded due to diversification. 
+
+After having trained several diversified population agents we propose to train final agents by exposing them to already built population but ommiting the diversification pressures.
+We propose to train first final agent by exposing him with population containing also the agents that were part of inicialization
+and then train second agent using same population only with initial agent excluded.
+
+To make sure the final agents have enough space to learn how to cooperate with entire population we extend the number of training timesteps to the factor of $1.5$.
+
+
+\section{Simple convolution experiments}
+
+\subsubsection{Initial experiments visualised}
+
+After initial population training experiment (figure \ref{CNNPopNoDiffBestInitFixation}) we can see that first three self-play agents used for initialization of population play important role.
+In three seeds (10,11,13) initial population apparently strongly represents same one set of behaviors and lacks diversity towards other behaviors.
+As a result as agent training progresses during population building, agents learn to fixate solely on this kind of behavior as it promises maximal available outcome and ignore other types of behaviors.
 
 \begin{figure}[!ht]
     \centering
@@ -121,22 +180,14 @@ Having sampled several already trained self-play agents and evaluated in same in
 
 \end{figure}
 
-\subsubsection{Initial experiments visualised}
+To confront this issue we propose two suggestions.
+Firstly, in these initial experiments first three trained self-play agents were selected for population inicialization automatically.
+We instead propose performing initial population agent selection manually by first training five self-play agents, evaluating them using any kind of evaluation method (in our case evaluating them with other set of self-play agents) and finally out of these five selecting such three agents that are both successful and also pair-wise different as much as possible.
 
-After initial experiment (figure \ref{CNNPopNoDiffBestInitFixation}) where population was trained we can see that first three self-play agents used for initialization of population play important role.
-In three seeds (10,11,13) initial population strongly represents one set of behaviors and lacks enough diversity.
-As a result as agent training progresses during population building, agents learn to fixate solely on this kind of behavior as it promises maximal available outcome and ignore other types of behaviors.
-
-To confront this issue we propose two suggestion.
-Firstly, in this initial experiments first three trained self-play agents were selected for population inicialization automatically.
-However, it can happen, as can be seen mostly in experiments performed on seed values 10 and 11, that several of agents can actually represent same type of behavior thus forcing the rest of the population to be strongly biased towards it.
-We instead propose that first five self-play agents will be trained and then evaluated with the evaluation set.
-And finally out of these five three will be selected such three agents that these are both successful and also pair-wise different as much as possible.
-
-And secondly, during training all available agents from current population are present at each training epoch as they are equally distributed among 30 parallel environments.
-This guarantes that the dominant type of behavior from population initialization is always represented during training, which enables newly trained agent to move towards this kind of behavior.
-Instead we propose not to sample all agents from current population, but rather sample only few of them to give chance to ommitt the dominant and allow trained agent to focus on the remaining types.
-After performing simplifed experiment we concluded with suitable value three for number of sampled partners.  
+And secondly, during training all available agents from current population were present at each training epoch as these were equally distributed among 30 parallel environments.
+This guarantes that the dominant type of behavior from population initialization was always present during training, which enabled newly trained agent to move towards this kind of behavior.
+Instead we propose not to sample all agents from current population, but rather sample only few of them to give chance to ommitt the dominant ones and allow trained agent to focus also on the remaining types.
+After performing simplifed experiment we concluded with suitable value three for the number of sampled partners.  
 
 
 \begin{figure}[!ht]
@@ -155,9 +206,9 @@ After performing simplifed experiment we concluded with suitable value three for
 \subsubsection{Average cummulative reward evaluation}
 
 As discussed in previous chapters (\ref{RobustnessEvaluation}) performing evaluation of acquired population using usual methods is not very intuitive. 
-When standard average cummulative reward metric is used (figure \ref{AvgCummulativeRewardEvaluated}) there are no apparent improvements and results vary a lot which we believe could be attributed to two factors.
-Firstly, as we just discussed, the average cummulative rewards of initial populations vary also a lot when evaluated against self-play evaluation set.
-And secondly, even when final population agents are trained there is no guarante, that will not end up in some suboptimal local optima with respect to current population training.
+When standard average cummulative reward metric was used (figure \ref{AvgCummulativeRewardEvaluated}) there were just mild improvements achieved compared to self-play agents however results varied a lot which we believe could be attributed to two factors.
+Firstly, as we just discussed, the average cummulative rewards of initial populations also vary a lot when evaluated against self-play evaluation set.
+And secondly, even when final population agents are trained there is no guarante, that they will not end up in some suboptimal local optima with respect to current population.
 
 
 \subsubsection{Ordered average cummulative reward evaluation}
@@ -171,7 +222,7 @@ Sometimes even in the middle of population there can be already agents that beha
     \centering
     \includegraphics*[width=10cm]{../img/SimpleCNNOrderedAvg.png}
 
-    \caption{Average cummulative reward of final agents}
+    \caption{Average cummulative reward of final agents ordered by evaluation results}
     \label{SimpleCNNOrderedAvg}
     \medskip
     \small 
