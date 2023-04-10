@@ -166,17 +166,17 @@ To make sure the final agents have enough space to learn how to cooperate with e
 
 After initial population training experiment (figure \ref{CNNPopNoDiffBestInitFixation}) we can see that first three self-play agents used for initialization of population play important role.
 In three seeds (10,11,13) initial population apparently strongly represents same one set of behaviors and lacks diversity towards other behaviors.
-As a result as agent training progresses during population building, agents learn to fixate solely on this kind of behavior as it promises maximal available outcome and ignore other types of behaviors.
+It appears that as population training progresses, agents learn to fixate solely on this kind of behavior as it promises maximal available outcome and ignore other types of behaviors.
 
 \begin{figure}[!ht]
     \centering
     \includegraphics*[width=14cm]{../img/Forced_coordination_CNN_POP_NO_DIF(2).png}
 
-    \caption{CNN Population with no diversification cross play evaluation}
+    \caption{Diversity free populations cross-play evaluation}
     \label{CNNPopNoDiffBestInitFixation}
     \medskip
     \small 
-    5 populations trained using different seeds with no additional diversification cross-play evaluated against Self-play evaluation set
+    Cross play evaluation of five populations trained with no diversification pressures against self-play agents
 
 \end{figure}
 
@@ -185,8 +185,8 @@ Firstly, in these initial experiments first three trained self-play agents were 
 We instead propose performing initial population agent selection manually by first training five self-play agents, evaluating them using any kind of evaluation method (in our case evaluating them with other set of self-play agents) and finally out of these five selecting such three agents that are both successful and also pair-wise different as much as possible.
 
 And secondly, during training all available agents from current population were present at each training epoch as these were equally distributed among 30 parallel environments.
-This guarantes that the dominant type of behavior from population initialization was always present during training, which enabled newly trained agent to move towards this kind of behavior.
-Instead we propose not to sample all agents from current population, but rather sample only few of them to give chance to ommitt the dominant ones and allow trained agent to focus also on the remaining types.
+This guarantes that the dominant type of behavior from population initialization was always present during training, which allowed newly trained agent to move towards this kind of behavior.
+Instead we propose not to sample all agents from current population, but rather sample only few to give chance of omitting the dominant ones and allow trained agent to focus also on the remaining types.
 After performing simplifed experiment we concluded with suitable value three for the number of sampled partners.  
 
 
@@ -203,52 +203,146 @@ After performing simplifed experiment we concluded with suitable value three for
 
 \end{figure}
 
-\subsubsection{Average cummulative reward evaluation}
+\subsubsection{Average outcome evaluation}
 
-As discussed in previous chapters (\ref{RobustnessEvaluation}) performing evaluation of acquired population using usual methods is not very intuitive. 
-When standard average cummulative reward metric was used (figure \ref{AvgCummulativeRewardEvaluated}) there were just mild improvements achieved compared to self-play agents however results varied a lot which we believe could be attributed to two factors.
-Firstly, as we just discussed, the average cummulative rewards of initial populations also vary a lot when evaluated against self-play evaluation set.
+As discussed in previous chapters (\ref{RobustnessEvaluation}) performing evaluation of obtained population using usual methods is not very intuitive. 
+When overall cross-play average outcome metric is used (figure \ref{AvgCummulativeRewardEvaluated}) there are just mild improvements achieved compared to self-play agents, however results vary a lot which we believe could be attributed to two factors.
+Firstly, as we just discussed, the overall cross-play average outcome of agents in the population inicializations also vary a lot among different seeds.
 And secondly, even when final population agents are trained there is no guarante, that they will not end up in some suboptimal local optima with respect to current population.
 
 
-\subsubsection{Ordered average cummulative reward evaluation}
-When agents are ordered by the evaluation with other agents it shows significant improvement in terms of early mild cooperation (\ref{SimpleCNNOrderedAvg}). 
-Results are even more amplified when not looking at average case, but rather at 0.15 quantile (figure \ref{SimpleCNNOrderedAvg0.15Q}).
-{\color{blue} This might be interpreted as looking at worse case cooperation? In a sense that our final agent is able to cooperate to extent of cca 80 shared rewards with way wider set of evaluation agents? }
+\subsubsection{Ordered average outcome evaluation}
+We propose to use a different metric for evaluating final population agents.
+After evaluating the cross-play results, we propose to order them in ascending order.
+By using this ordering, we lose the information about the variety of specific pairs cooperation in terms of whether different agents managed to cooperate with different set of evaluation agents.
+On the other hand, this gives us an idea of how many evaluation agents the evaluated agents are able to cooperate with at a specific cooperation level.
 
-Sometimes even in the middle of population there can be already agents that behave nicely (\ref{FSTuple4thOrderedAvg})
+When using this evaluation metric and taking average over results from three different seeds we can see an apparent difference in cooperation curve (see figure \ref{SimpleCNNOrderedAvg}).
+Looking at cooperation level with outcome value of 20 we can see that all agents from all of different experiment settings managed to cooperate with much wider set of evaluation self-play agents.
+Similar results can be seen also at cooperation level with value of approximately 120.
+The most important change in curve progression can be seen at final part of ordered results, where results of self-play agents start to catch up and overcome results of diversified population agents.
+We believe that this result is expected as the final part of self-play results corresponds to pair-wise result of self-play agents with similar learned strategy, which should yield strong cooperative outcome.
 
 \begin{figure}[!ht]
     \centering
     \includegraphics*[width=10cm]{../img/SimpleCNNOrderedAvg.png}
 
-    \caption{Average cummulative reward of final agents ordered by evaluation results}
+    \caption{Average, ordered cross-play outcomes}
     \label{SimpleCNNOrderedAvg}
     \medskip
     \small 
-    Average cummulative reward of the two final agents trained in last phase of the population building.
-    Includes values also for cross-play evaluation of self-play evaluation set for reference. 
-    Average, 0.25Q, 0.75Q
+    Average of ordered results of cross-play evaluation of best population final agents against self-play agents.
+    Includes values also for cross-play evaluation of self-play evaluation agent set for reference, where same agent pairs are ommited.
+    (Average, 0.25Q, 0.75Q)
 
 \end{figure}
+
+Another interesting results can be seen when applying the same evaluation metric, but rather than looking at the average result, the $0.15$ quantile is used.
+By lowering the quantile we are looking at worse case cooperation results obtained on different seeds.
+Looking at visualied results (figure \ref{SimpleCNNOrderedAvg0.15Q}) we can see that in worse case there were far less self-play agents that managed to cooperate with other agents at cooperation level value of at least 80.
+This result might be considered as an argument towards cooperative abilities of our approach as it shows greater robustness with other agents at lower, yet reasonable cooperation level.
+
+
 
 \begin{figure}[!ht]
     \centering
     \includegraphics*[width=10cm]{../img/SimpleCNNOrderedAvg0.15Q.png}
 
-    \caption{Average cummulative reward of final agents, 0.15quantile}
+    \caption{0.15 Quantile, ordered cross-play outcomes}
     \label{SimpleCNNOrderedAvg0.15Q}
     \medskip
     \small 
-    Average cummulative reward of the two final agents trained in last phase of the population building.
-    Includes values also for cross-play evaluation of self-play evaluation set for reference. 
+    0.15 quantile of ordered results of cross-play evaluation of best population final agents against self-play agents.
+    Includes values also for cross-play evaluation of self-play evaluation agent set for reference, where same agent pairs are ommited.
     0.15Q, Min, 0.3Q
 
 \end{figure}
 
+\newpage
 
-\subsubsection{Frame stacking experiments}
-TODO: two variants
+
+\section{Frame stacking}
+After performing initial experiments and observing visualized pair-wise results with self-play agents set we often witnessed final agent results which were both unable to cooperate well with dominant behavior from population initialization agents but also unable to learn how to cooperate with rest of behavior types.
+As a consequence we started to doubt if our agent architecture potential capabilities are not limited.
+
+So far we tried to expose our new agent to various potentially different kind of behaviors represented by the previous population agents in an attempt to teach him to be capable of cooperation with each of them.
+In other words we are trying to learn such policy that best responds best to all previous policies.
+
+However, we claim that this might not be possible when agent have to decide its policy solely based on a current single state of the environment.
+To ilustrate an easiest counterexample, we can think any kind of situation where agents get stucked by repeating same actions which results in same state as before.
+By looking solely at such particular state we cannot be certain if agents are stucked because we do not know what action is our partner going to do.
+However, if we expect our partner to do some action that when combined with our action will lead to some unstucked state, while possibly our agent is expecting us to attempt to do the same, we effectively end up stucked.
+
+To overcome this problem we propose that utilizing some kind of temporal features about previous states is necessary.
+
+TODO: continue here
+
+
+
+
+
+
+
+
+
+
+\subsection{Channels}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics*[width=10cm]{../img/FSChannelsOrderedAvg.png}
+
+    \caption{Average cummulative reward of final agents ordered by evaluation results}
+    \label{FSChannelsOrderedAvg}
+    \medskip
+    \small 
+    Average cummulative reward of the best final agent using channels extension for temporal features.    
+    (Average, 0.25Q, 0.75Q)
+
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics*[width=10cm]{../img/FSChannelsOrderedQ15.png}
+
+    \caption{Average cummulative reward of final agents, 0.15quantile}
+    \label{FSChannelsOrderedQ15}
+    \medskip
+    \small 
+    Average cummulative reward of the best final agent using tuple of last state frames for temporal features.
+    (0.15Q, Min, 0.3Q)
+
+\end{figure}
+
+\newpage
+
+\subsection{Tuple}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics*[width=10cm]{../img/FSTupleOrderedAvg.png}
+
+    \caption{Average cummulative reward of final agents ordered by evaluation results}
+    \label{FSTupleOrderedAvg}
+    \medskip
+    \small 
+    Average cummulative reward of the best final agent using channels extension for temporal features.    
+    (Average, 0.25Q, 0.75Q)
+
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics*[width=10cm]{../img/FSTupleOrderedQ15.png}
+
+    \caption{Average cummulative reward of final agents, 0.15quantile}
+    \label{FSTupleOrderedQ15}
+    \medskip
+    \small 
+    Average cummulative reward of the best final agent using tuple of last state frames for temporal features.
+    (0.15Q, Min, 0.3Q)
+
+\end{figure}
 
 Looks like temporal feature made even basic self-play agent a bit more cooperative (figure \ref{FSVariantsOrderedAvg}).
 
@@ -267,24 +361,8 @@ Looks like temporal feature made even basic self-play agent a bit more cooperati
 
 \end{figure}
 
-\begin{figure}[!ht]
-    \centering
-    \includegraphics*[width=10cm]{../img/FSTuple4thOrderedAvg.png}
 
-    \caption{Average cummulative reward of 4th agent within the population part}
-    \label{FSTuple4thOrderedAvg}
-    \medskip
-    \small 
-    Average cummulative reward of 4th agent from population.
-    Using tuple frame stacking mechanism.
-    Sometime the final pop agent is not the best one.
-
-    Average, 0.25Q, 0.75Q
-
-\end{figure}
-
-
-\subsection{Populations evaluation}
+\section{Population evaluation}
 In here we will not evaluate agents against self-play agents, but evaluate final population agents against each other among different experiments settings.
 (Simple CNN \ref{FinalPopFinalPopSimpleCnnAvg}). (FS Channels \ref{FinalPopFinalPopFsChannelsAvg}). (FS Tuple \ref{FinalPopFinalPopFsTupleAvg})
 \begin{figure}[!ht]
@@ -323,6 +401,98 @@ In here we will not evaluate agents against self-play agents, but evaluate final
     \small 
 
     Average, 0.25Q, 0.75Q
+
+\end{figure}
+
+\newpage
+
+\section{Other layouts}
+\subsection{Cramped room}
+\begin{figure}[!ht]
+    \centering
+    \includegraphics*[width=8cm]{../img/CrampedRoomFSVariantsOrderedAvg.png}
+
+    \caption{Average cummulative reward of final agents}
+    \label{CrampedRoomFSVariantsOrderedAvg}
+    \medskip
+    \small 
+    Average cummulative reward of all agents from evaluation set.
+    All three types of self-play agent designs included.
+
+    Average, 0.25Q, 0.75Q
+
+\end{figure}
+
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics*[width=8cm]{../img/CrampedRoomFSChannelsOrdered15Q.png}
+
+    \caption{Average cummulative reward of final agents ordered by evaluation results}
+    \label{CrampedRoomFSChannelsOrdered15Q}
+    \medskip
+    \small 
+    Average cummulative reward of the best final agent using channels extension for temporal features.    
+    (Average, 0.25Q, 0.75Q)
+
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics*[width=8cm]{../img/CrampedRoomFSTupleOrdered15Q.png}
+
+    \caption{Average cummulative reward of final agents, 0.15quantile}
+    \label{CrampedRoomFSTupleOrdered15Q}
+    \medskip
+    \small 
+    Average cummulative reward of the best final agent using tuple of last state frames for temporal features.
+    (0.15Q, Min, 0.3Q)
+
+\end{figure}
+
+\newpage
+
+\subsection{Counter circuit}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics*[width=8cm]{../img/CounterCircuitFSVariantsOrderedAvg.png}
+
+    \caption{Average cummulative reward of final agents}
+    \label{CounterCircuitFSVariantsOrderedAvg}
+    \medskip
+    \small 
+    Average cummulative reward of all agents from evaluation set.
+    All three types of self-play agent designs included.
+
+    Average, 0.25Q, 0.75Q
+
+\end{figure}
+
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics*[width=8cm]{../img/CounterCircuitFSChannelsOrderedQ15.png}
+
+    \caption{Average cummulative reward of final agents ordered by evaluation results}
+    \label{CounterCircuitFSChannelsOrderedQ15}
+    \medskip
+    \small 
+    Average cummulative reward of the best final agent using channels extension for temporal features.    
+    (Average, 0.25Q, 0.75Q)
+
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics*[width=8cm]{../img/CounterCircuitFSTupleOrderedQ15.png}
+
+    \caption{Average cummulative reward of final agents, 0.15quantile}
+    \label{CounterCircuitFSTupleOrderedQ15}
+    \medskip
+    \small 
+    Average cummulative reward of the best final agent using tuple of last state frames for temporal features.
+    (0.15Q, Min, 0.3Q)
 
 \end{figure}
 

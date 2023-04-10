@@ -55,9 +55,14 @@
 \contentsline {subsection}{\numberline {7.2.3}Population structure}{47}{subsection.7.2.3}%
 \contentsline {section}{\numberline {7.3}Simple convolution experiments}{47}{section.7.3}%
 \contentsline {subsubsection}{Initial experiments visualised}{47}{section*.38}%
-\contentsline {subsubsection}{Average cummulative reward evaluation}{48}{section*.39}%
-\contentsline {subsubsection}{Ordered average cummulative reward evaluation}{49}{section*.40}%
-\contentsline {subsubsection}{Frame stacking experiments}{49}{section*.41}%
-\contentsline {subsection}{\numberline {7.3.1}Populations evaluation}{51}{subsection.7.3.1}%
-\contentsline {chapter}{Conclusion}{54}{chapter*.42}%
-\contentsline {chapter}{Bibliography}{55}{chapter*.43}%
+\contentsline {subsubsection}{Average outcome evaluation}{48}{section*.39}%
+\contentsline {subsubsection}{Ordered average outcome evaluation}{49}{section*.40}%
+\contentsline {section}{\numberline {7.4}Frame stacking}{51}{section.7.4}%
+\contentsline {subsection}{\numberline {7.4.1}Channels}{52}{subsection.7.4.1}%
+\contentsline {subsection}{\numberline {7.4.2}Tuple}{53}{subsection.7.4.2}%
+\contentsline {section}{\numberline {7.5}Population evaluation}{54}{section.7.5}%
+\contentsline {section}{\numberline {7.6}Other layouts}{55}{section.7.6}%
+\contentsline {subsection}{\numberline {7.6.1}Cramped room}{55}{subsection.7.6.1}%
+\contentsline {subsection}{\numberline {7.6.2}Counter circuit}{56}{subsection.7.6.2}%
+\contentsline {chapter}{Conclusion}{59}{chapter*.41}%
+\contentsline {chapter}{Bibliography}{60}{chapter*.42}%
