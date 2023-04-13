@@ -44,25 +44,26 @@
 \contentsline {subsection}{\numberline {6.2.1}Random state initialization}{41}{subsection.6.2.1}%
 \contentsline {subsection}{\numberline {6.2.2}Focus on Forced coordination}{41}{subsection.6.2.2}%
 \contentsline {chapter}{\numberline {7}Our work - Contribution}{43}{chapter.7}%
-\contentsline {section}{\numberline {7.1}Multi agent setting simplification}{43}{section.7.1}%
+\contentsline {section}{\numberline {7.1}Multi-agent setting simplification}{43}{section.7.1}%
 \contentsline {subsection}{\numberline {7.1.1}Single-agent perspective}{43}{subsection.7.1.1}%
 \contentsline {subsection}{\numberline {7.1.2}Non-stationarity}{43}{subsection.7.1.2}%
-\contentsline {subsection}{\numberline {7.1.3}Population exploitance}{44}{subsection.7.1.3}%
+\contentsline {subsection}{\numberline {7.1.3}Population exploitation}{44}{subsection.7.1.3}%
 \contentsline {section}{\numberline {7.2}Population building}{44}{section.7.2}%
 \contentsline {subsection}{\numberline {7.2.1}Inicialization}{44}{subsection.7.2.1}%
 \contentsline {subsection}{\numberline {7.2.2}KL divergence}{44}{subsection.7.2.2}%
 \contentsline {subsubsection}{KL divergence coefficients}{45}{section*.37}%
-\contentsline {subsection}{\numberline {7.2.3}Population structure}{47}{subsection.7.2.3}%
+\contentsline {subsection}{\numberline {7.2.3}Population structure}{46}{subsection.7.2.3}%
 \contentsline {section}{\numberline {7.3}Simple convolution experiments}{47}{section.7.3}%
 \contentsline {subsubsection}{Initial experiments visualised}{47}{section*.38}%
-\contentsline {subsubsection}{Average outcome evaluation}{48}{section*.39}%
+\contentsline {subsubsection}{Average outcome evaluation}{47}{section*.39}%
 \contentsline {subsubsection}{Ordered average outcome evaluation}{49}{section*.40}%
 \contentsline {section}{\numberline {7.4}Frame stacking}{51}{section.7.4}%
 \contentsline {subsection}{\numberline {7.4.1}Channels}{52}{subsection.7.4.1}%
-\contentsline {subsection}{\numberline {7.4.2}Tuple}{53}{subsection.7.4.2}%
-\contentsline {section}{\numberline {7.5}Population evaluation}{54}{section.7.5}%
-\contentsline {section}{\numberline {7.6}Other layouts}{55}{section.7.6}%
-\contentsline {subsection}{\numberline {7.6.1}Cramped room}{55}{subsection.7.6.1}%
-\contentsline {subsection}{\numberline {7.6.2}Counter circuit}{56}{subsection.7.6.2}%
-\contentsline {chapter}{Conclusion}{59}{chapter*.41}%
-\contentsline {chapter}{Bibliography}{60}{chapter*.42}%
+\contentsline {subsection}{\numberline {7.4.2}States tuple}{53}{subsection.7.4.2}%
+\contentsline {subsection}{\numberline {7.4.3}Comparison}{55}{subsection.7.4.3}%
+\contentsline {section}{\numberline {7.5}Population evaluation}{56}{section.7.5}%
+\contentsline {section}{\numberline {7.6}Other layouts}{58}{section.7.6}%
+\contentsline {subsection}{\numberline {7.6.1}Cramped Room}{59}{subsection.7.6.1}%
+\contentsline {subsection}{\numberline {7.6.2}Counter circuit}{60}{subsection.7.6.2}%
+\contentsline {chapter}{Conclusion}{63}{chapter*.41}%
+\contentsline {chapter}{Bibliography}{64}{chapter*.42}%

@@ -1,92 +1,92 @@
 \chapter{Our work - Contribution}
-In this chapter, we propose a novel approach to injecting explicit diversification into agent behavior through diverse population training.
-Previously mentioned traditional population-based methods were not effective enough to add the necessary diversification to the population.
-We try to use population training in slight different manner with our primary focus set on two important aspects.
-Firsty we try to face well known problems connected with multi agent system by changing our perspective towards single-agent settings and transforming to iterative process.
-And secondly we try to address the lack of explicit diversification in standard population-based learning methods by pursuing population policy diversification. 
+In this chapter, we propose a novel approach to introduce explicit diversification into agent behavior by training diverse populations.
+The traditional population-based methods mentioned above were not effective enough to add the necessary diversification to the population.
+We try to use population training in a slightly different way, focusing on two important aspects.
+First, we try to address well-known problems associated with multi-agent systems by changing our perspective to single-agent settings and transforming to an iterative process.
+And second, we try to address the lack of explicit diversification in standard population-based learning methods by pursuing population policy diversification.
 
-In following sections we attempt to walk through several different aspects of our population building approach.
-These parts can be seen as a soft guideline towards diverse population training algorithm which will be presented at the end of this chapter.
+In the following sections, we describe several different aspects of our population building approach.
+These parts can be seen as a soft guide to the diverse population training algorithm that will be presented at the end of this chapter.
 
-\section{Multi agent setting simplification}
+\section{Multi-agent setting simplification}
 
 \subsection{Single-agent perspective}
-As we could have already seen (\ref{MAS}) multi agent systems can be much more intimidating to tackle down.
-One of the proposed suggestion was to try to simplify the sitatio by looking at the multi agent environment from the single-agent point of view where the goal is to learn joint policy.
-As discussed before, this is often impossible and mostly inpractical.
+As we have already seen (chapter \ref{MAS}), multi-agent systems can be much more intimidating to tackle.
+One of the suggestions was to try to simplify the situation by looking at the multi-agent environment from a single-agent point of view, where the goal is to learn a common policy.
+As discussed above, this is often impossible and mostly impractical.
 
-Nevertheless we try to, in a sense, attempt to utilize similarly motivated approach.
-We propose single-agent learning approach where at any given time only one agent is being learned.
-Naturally we cannot simply ommitt the second player from the environment as we cannot deny the multi agent essence from the environment.
-We rather look at the environment as being instance of single-agent environment where the parnter is embedded and in a sense forms an integral part of the system.
+Nevertheless, in a sense, we try to use a similarly motivated approach.
+We propose a single-agent learning approach, where only one agent is learned at a time.
+Of course, we cannot simply ommit the other agent from the environment because we cannot deny the multi-agent nature of the environment.
+Rather, we consider the environment as an instance of a single-agent environment in which the partner is embedded and in some sense forms an integral part of the system.
 
 \subsection{Non-stationarity}
-We propose population training to be an iterative process where only one agent is being learned and only after its's training is finished he is included into the population.
-Once an agent is added into the population it's policy is fixed and no further updates are applied for the rest of population training process.
-Only agents used in environment embedding are the ones coming from the already trained population of agents.
-This claim this effectively solves the non-stationarity problem we encountered in multi agent settings as from the point of learning agent the behavior of its partners never changes.
+We propose population training as an iterative process where only one agent is trained and only after its training is complete is it added to the population.
+Once an agent is added to the population, it's policy is fixed and no further updates are applied for the rest of the population training process.
+Only agents from the already trained population are used in the environment embedding.
+We claim that this effectively solves the non-stationarity problem we encountered in multi-agent settings, since from the point of agent learning, the behavior of its partners never changes.
 
-There is unfortunately downside to this approach.
-While previously the environment had its state transition function purely deterministic, now with the partner embedded into the system it becomes stochastic.
-Nonetheless, we hypothesize that this may also be in favor of the final robustness, since by experiencing stochastic state transitions, the agent could theoretically be more robust as a result, since it will have to learn how to behave in a more stochastic exploratory environment.
+Unfortunately, there is a downside to this approach.
+While before the environment had a purely deterministic state transition function, now with the partner embedded in the system it becomes stochastic.
+However, we hypothesize that this may also be beneficial for the final robustness, since by experiencing stochastic state transitions, the agent could theoretically be more robust as a result, since it will have to learn how to behave in a more stochastic exploratory environment.
 
-\subsection{Population exploitance}
-We hypothesize that by utilizing iterative process with past agents being fixed it could also help with population exploitance.
-When set of agents are trained concurrently together they may all exploit their behavior towards shared experience.
-It could probably happen that the new agents might still try to overfit their behavior towards the population agents.
-However, by fixing previous past agents we try to break this relation at least from one side of the couple.
-We are optimistic that this, in conjunction with further diversification factors, will greatly reduce exploitation of the population.
+\subsection{Population exploitation}
+We hypothesize that by using an iterative process where past agents are fixed, it could also help with population exploitation.
+If a set of agents is trained together at the same time, they can all exploit their behavior towards the shared experience.
+It is likely that the new agents will still try to overfit their behavior to the population agents.
+However, by fixing the previous past agents, we try to break this relationship from at least one side of the pair.
+We are optimistic that this, combined with other diversification factors, will greatly reduce exploitation of the population.
 
 
 \section{Population building}
-A mere change in our perception towards single-agent settings would probably not be enough of an improvement towards agent robustness.
-Therefore we propose several ideas to promote population diversification.
+A mere change in our perception of single-agent settings would probably not be enough to improve agent robustness.
+Therefore, we propose several ideas to promote population diversification.
 \subsection{Inicialization}
-To start with, inspired by original motivation behind all population-based methods, we follow the idea that populations should be in general always more diverse than single agent.
-Hence when utilized in training this diverse robustness should be passed onto the next learned agent.
-In order for this to be true the previous condition on non existence of population exploitance must hold.
-Additionaly we already proposed iterative training process where we suppose preexistence of some set of agents utilized for partner embeddeding.
+First, inspired by the original motivation behind all population-based methods, we follow the idea that populations in general should always be more diverse than a single agent.
+Thus, when utilized in training, this diverse robustness should be passed on to the next learned agent.
+In order for this to be true, the previous condition about the non-existence of population exploitation must hold.
+Additionally, we have already proposed an iterative training process where we assume the pre-existence of a set of agents used for partner embedding.
 
-We propose that in order for other diversification factors to work we have to start with some initial population for partner embedding sampling that is already somewhat diverse.
-One could argue that if we had a method for creating such initial diverse population we could just stop there and extend this population using such method.
-However, we do not see the perfect diversity and robustness of initial population to be crucial. 
-We rather expect the inital population to introduce somewhat mildly different set of behaviors just to give a resonable starting point for the rest of population training.
+We propose that in order for other diversification factors to work, we need to start with an initial population for partner embedding sampling that is already somewhat diverse.
+One could argue that if we had a method for creating such a diverse initial population, we could just stop there and expand that population using such a method.
+However, we do not consider perfect diversity and robustness of the initial population to be critical. 
+Rather, we expect the initial population to introduce a slightly different set of behaviors just to provide a reasonable starting point for the rest of the population training.
 
 \subsection{KL divergence}
-We hypothesize that preexistence of diverse population is just a soft precondition.
-We propose that the main ingredient behind our diversity building process lies in attempting to shift the behavior of each consequentially trained agent to be as different as possible from the behaviors in the existing population.
-Since sampled population partners are embedded into the environment we can look at this approach as domain randomization technique.
+We hypothesize that the pre-existence of a diverse population is only a soft constraint.
+We propose that the main ingredient behind our diversity building process lies in attempting to shift the behavior of each successively trained agent to be as different as possible from the behaviors in the existing population.
+Since the sampled population partners are embedded in the environment, we can think of this approach as a domain randomization technique.
 
 
 To emphasize the difference between two behaviors, we must first be able to measure it.
-There are arguably various possible ways how to express difference between two behaviors including methods discussed in evaluation approaches (\ref{RobustnessEvaluation}).
-Nevertheless since the agent behavior is represented by parametrized policy we suppose that one of the more straightforward methods for low-level difference could be to look at the difference between the two policy distributions.
+There are arguably several possible ways to express the difference between two behaviors, including methods discussed in evaluation approaches (\ref{RobustnessEvaluation}).
+However, since the agent's behavior is represented by a parameterized policy, we suppose that one of the more straightforward methods for low-level difference might be to look at the difference between the two policy distributions.
 
-When measuring the distance of the probabilty distribution the Kullback-Leibler divergence (\cite{KLDivergence}) often comes in mind.
+The Kullback-Leibler divergence (\cite{KLDivergence}) often comes to mind when measuring the distance between probability distributions.
 
 \[
     D_{KL}(P||Q) = \sum_{x \in X}P(x)\log\left(\frac{P(x)}{Q(x)}\right)
 \]
 
-Although it is not a metric since it is not symmetric in the two distributions and also it does not satify the triangle inequality, we can still utilize it as we are mostly interested in relative distribution differences rather than absolute values.
-We propose idea of incorporating maximization of KL divergence as a tool to differentiate new agents from the ones that are already contained in the population by taking the average of KL divergence of trained policy and policies from population.
+Although it is not a metric since it is not symmetric in the two distributions and it does not satisfy the triangle inequality, we can still utilize it since we mostly are interested in relative distribution differences rather than absolute values.
+We propose the idea of incorporating the maximization of the KL divergence as a tool to differentiate new agents from those already contained in the population by taking the average of the KL divergence of the trained policy and the policies from the population.
 
-We suggest that there are two different suitable ways how to incorporate KL divergence maximization into the process.
-Firstly, KL divergence between policy that is currently being trained and the policies in the population can be used during episode sampling by interpreting it as another additional partial reward based on a current state of the environment.
-And secondly, similar approach can be applied on the level of PPO objective function where another additional objective term based on maximization of KL divergence can be added.
+We propose that there are two different appropriate ways to incorporate KL divergence maximization into the process.
+First, KL divergence between the currently trained policy and the policies in the population can be used during episode sampling by interpreting it as another additional partial reward based on a current state of the environment.
+And second, a similar approach can be applied at the level of the PPO objective function, where another additional term based on maximizing the KL divergence can be added.
 
-It may seem that these two approaches might have the same effect.
-However, we believe that they work in a slightly different manner.
-When applied in the PPO objective the term is trying to differentiate current policy no matter the current state of the environment.
-While applying the KL divergence bonus as partial reward based on the state might work as a exploration enhancing technique since it should push the agent to visit more the states where it's current policy differs the most which could potentially lead to state trajectories that have not been seen by the agents in the population.   
+It may seem that these two approaches have the same effect.
+However, we believe they work in slightly different ways.
+When applied in the PPO objective, the term attempts to differentiate current policy regardless of the current state of the environment.
+While applying the KL divergence bonus as a partial reward based on state might work as an exploration-enhancing technique since it should push the agent to visit more often the states where its current policy differs the most, potentially leading to state trajectories that agents in the population have not seen.
 
 \subsubsection{KL divergence coefficients}
-Applying the absolute value of KL divergence the way it is calculated using the formula would not work in our favor as we have to consider the value ranges with regard to the environment properties.
-KL divergence is non negative but it can easily reach values of infinity when not bounded.
-Additionaly we need to consider suitable multiplicative coefficient to scale the values to reasonable range.
+Applying the absolute value of the KL divergence, as calculated by the formula, would not work in our favor, since we have to consider the value ranges with respect to the environmental properties.
+The KL divergence is not negative, but it can easily reach infinity ({\color{blue} jde to od nuly do nekonecna}) if it is not bounded.
+Additionally, we need to consider a suitable multiplicative coefficient to scale the values to a reasonable range.
 
-When new parametrized policy $p$ is initialized it produces the probability distribution that is close to uniform.
-Having sampled several already trained self-play agents and evaluated in same initial states we obatined specialized policies yielding the probability distributions $q_1, q_2, q_3$ (see table \ref{tab:KLDiv-distributions}).
+When a new parameterized policy $p$ is initialized, it produces the probability distribution that is close to uniform.
+After sampling several already trained self-play agents and evaluating them in the same initial states, we obtained specialized policies yielding the probability distributions $q_1, q_2, q_3$ (see table \ref{tab:KLDiv-distributions}).
 
 
 \begin{table}[htbp]
@@ -106,19 +106,19 @@ Having sampled several already trained self-play agents and evaluated in same in
     \label{tab:KLDiv-distributions}
 \end{table}
 
-These values of KL divergence can give us an idea about the absolute values when new policies are compared to already trained agents.
-We believe that probability distributions $p$ a $q_1$ are different enough in terms of what we are trying to achieve when training population of diverse agents.
-By considering the absolute value of KL divergence of these two distributions we try to derive suitable KL divergence coefficent for loss and reward augmentation. 
+These values of KL divergence can give us an idea of the absolute values when new policies are compared to already trained agents.
+We believe that the probability distributions $p$ and $q_1$ are different enough in terms of what we are trying to achieve when training a population of diverse agents.
+By considering the absolute value of the KL divergence of these two distributions, we try to derive appropriate KL divergence coefficients for loss and reward augmentation.
 
-We hypothesize that KL divergence term which we add to PPO objective should have comparable weight as the entropy bonus (recall \ref{PPO}) as this bonus is also designed only to be mild exploratory pressure rather than main objective.
-Entropy in early stage of training corresponds to uniform probability distribution which yields absolute values of $1.8$. 
-This combined with entropy bonus start coefficient of $0.1$ (hypereparameters table \ref{tab:hyperparameters-algo}) produces absolute values of cca $0.18$.
-At the final stage when policy is already trained the entropy usually decreases to absolute values of around $1.2$ which when combined with entropy bonus end coefficent of $0.03$ produces final value of $0.036$.
+We hypothesize that the KL divergence term, which we add to the PPO objective, should have comparable weight to the entropy bonus (recall \ref{PPO}), as this bonus is also designed to be a mild exploratory pressure rather than a main objective.
+Entropy in the early stages of training corresponds to a uniform probability distribution, yielding absolute values of $1.8$. 
+This combined with the initial entropy bonus coefficient of $0.1$ (hyperparameter table \ref{tab:hyperparameters-algo}) yields absolute values of cca $0.18$.
+In the final stage, when the policy is already trained, the entropy usually decreases to absolute values of about $1.2$, which combined with the entropy bonus end coefficient of $0.03$ produces a final value of $0.036$.
 
-As far as reward augmentation is considered we believe that when all KL divergence bonus are summed throughout the 400 steps of episode it should correspond only to fraction of what can be obtained by following main objective of soup deliverence.
+As far as reward augmentation is considered, we believe that when all KL divergence bonuses are summed over the 400 steps of the episode, they should correspond to only a fraction of what can be obtained by following the main objective of soup delivery.
 We propose to design such reward clipping in equivalence to the number of soups delivered ($0.5$, $1$, $1.5$ (R$0$, R$1$, R$2$, respectively)).
 
-After performing several trivial experiments we concluded with following experiment settings (table \ref{tab:KLDiv-coefiicents}) that we want to evaluate during our following experiments.
+After performing some trivial experiments, we came up with the following experiment settings (table \ref{tab:KLDiv-coefiicents}), which we want to evaluate in our following experiments.
 
 
 
@@ -147,26 +147,26 @@ After performing several trivial experiments we concluded with following experim
 
 
 \subsection{Population structure}
-Finally, we need to provide description of entire proposed population building process.
-We have already dealt with population inicialization where we proposed how the inital agents could be constructed and we also designed diversification tools to enhance the behavioral diversity of the population.
+Finally, we need to provide a description of the entire proposed population building process.
+We have already dealt with population initialization, where we proposed how the initial agents could be constructed, and we also designed diversification tools to enhance the behavioral diversity of the population.
 
-However, our ultimate goal is to provide a procedure that produces final agent or set of final agents that should be robust and highly cooperative.
-By applying diversifying techniques we effectively train agents that are not fully optimizing towards main objective but their performance can be degraded due to diversification. 
+However, our ultimate goal is to provide a procedure that produces a final agent or set of final agents that should be robust and highly cooperative.
+By applying diversification techniques, we effectively train agents that do not fully optimize towards the main objective, but their performance may be degraded due to diversification.
 
-After having trained several diversified population agents we propose to train final agents by exposing them to already built population but ommiting the diversification pressures.
-We propose to train first final agent by exposing him with population containing also the agents that were part of inicialization
-and then train second agent using same population only with initial agent excluded.
+After training several diversified population agents, we propose to train final agents by exposing them to the already built population, but without the diversification pressure.
+We propose to train the first final agent by exposing it to a population that includes the agents that were part of the initialization.
+and then train the second agent with the same population, but without the initial agents.
 
-To make sure the final agents have enough space to learn how to cooperate with entire population we extend the number of training timesteps to the factor of $1.5$.
+To ensure that the final agents have enough space to learn how to cooperate with the entire population, we increase the number of training time steps by a factor of $1.5$.
 
 
 \section{Simple convolution experiments}
 
 \subsubsection{Initial experiments visualised}
 
-After initial population training experiment (figure \ref{CNNPopNoDiffBestInitFixation}) we can see that first three self-play agents used for initialization of population play important role.
-In three seeds (10,11,13) initial population apparently strongly represents same one set of behaviors and lacks diversity towards other behaviors.
-It appears that as population training progresses, agents learn to fixate solely on this kind of behavior as it promises maximal available outcome and ignore other types of behaviors.
+After the initial population training experiment (Figure \ref{CNNPopNoDiffBestInitFixation}), we can see that the first three self-playing agents used to initialize the population play an important role.
+In three seeds (10,11,13) the initial population seems to represent strongly the same one set of behaviors and lacks diversity towards other behaviors.
+It seems that as population training progresses, agents learn to fixate only on this type of behavior, as it promises maximum available outcome, and ignore other types of behaviors.
 
 \begin{figure}[!ht]
     \centering
@@ -180,14 +180,14 @@ It appears that as population training progresses, agents learn to fixate solely
 
 \end{figure}
 
-To confront this issue we propose two suggestions.
-Firstly, in these initial experiments first three trained self-play agents were selected for population inicialization automatically.
-We instead propose performing initial population agent selection manually by first training five self-play agents, evaluating them using any kind of evaluation method (in our case evaluating them with other set of self-play agents) and finally out of these five selecting such three agents that are both successful and also pair-wise different as much as possible.
+To address this issue, we propose two suggestions.
+First, in these initial experiments, the first three trained self-play agents were automatically selected for population initialization.
+Instead, we propose to perform the initial population agent selection manually by first training five self-play agents, evaluating them with any kind of evaluation method (in our case evaluating them with another set of self-play agents), and finally selecting from these five such {\color{blue} TODO: proc ne?} three agents that are both successful and also pairwise different as much as possible.
 
-And secondly, during training all available agents from current population were present at each training epoch as these were equally distributed among 30 parallel environments.
-This guarantes that the dominant type of behavior from population initialization was always present during training, which allowed newly trained agent to move towards this kind of behavior.
-Instead we propose not to sample all agents from current population, but rather sample only few to give chance of omitting the dominant ones and allow trained agent to focus also on the remaining types.
-After performing simplifed experiment we concluded with suitable value three for the number of sampled partners.  
+And second, during training, all available agents from the current population were present at each training epoch, as they were equally distributed across 30 parallel environments.
+This guarantees that the dominant type of behavior from the population initialization was always present during training, which allowed newly trained agents to move towards this type of behavior.
+Alternatively, we propose not to sample all agents from the current population, but to sample only a few to give a chance to omit the dominant ones and allow the trained agent to focus also on the remaining types.
+After performing a simplified experiment, we concluded with a suitable value of three for the number of sampled partners. 
 
 
 \begin{figure}[!ht]
@@ -205,23 +205,24 @@ After performing simplifed experiment we concluded with suitable value three for
 
 \subsubsection{Average outcome evaluation}
 
-As discussed in previous chapters (\ref{RobustnessEvaluation}) performing evaluation of obtained population using usual methods is not very intuitive. 
-When overall cross-play average outcome metric is used (figure \ref{AvgCummulativeRewardEvaluated}) there are just mild improvements achieved compared to self-play agents, however results vary a lot which we believe could be attributed to two factors.
-Firstly, as we just discussed, the overall cross-play average outcome of agents in the population inicializations also vary a lot among different seeds.
-And secondly, even when final population agents are trained there is no guarante, that they will not end up in some suboptimal local optima with respect to current population.
+As discussed in previous chapters (section \ref{RobustnessEvaluation}), it is not very intuitive to perform the evaluation of the obtained population using the usual methods. 
+When the overall cross-play average outcome metric is used (Figure \ref{AvgCummulativeRewardEvaluated}), there are only slight improvements over self-play agents, but the results vary widely, which we believe is due to two factors.
+First, as we just discussed, the overall cross-play average score of agents in the population initializations also varies a lot between different seeds.
+And second, even when the final population agents are trained, there is no guarantee that they will not end up in some suboptimal local optima with respect to the current population.
 
 
-\subsubsection{Ordered average outcome evaluation}
-We propose to use a different metric for evaluating final population agents.
-After evaluating the cross-play results, we propose to order them in ascending order.
-By using this ordering, we lose the information about the variety of specific pairs cooperation in terms of whether different agents managed to cooperate with different set of evaluation agents.
-On the other hand, this gives us an idea of how many evaluation agents the evaluated agents are able to cooperate with at a specific cooperation level.
+\subsubsection{Ordered average outcome evaluation}\label{OrderedEvaluation}
+We propose to use a different metric to evaluate the final population of agents.
+After evaluating the cross-play results, we suggest to order them in ascending order.
+By using this ordering, we lose the information about the variety of specific pairwise cooperation in terms of whether different agents managed to cooperate with different set of evaluation agents.
+On the other hand, this gives us an idea of how many evaluation agents our evaluated agents are able to cooperate with at a specific cooperation level.
+For this evaluation metric, the best of the two final population agents is used.
 
-When using this evaluation metric and taking average over results from three different seeds we can see an apparent difference in cooperation curve (see figure \ref{SimpleCNNOrderedAvg}).
-Looking at cooperation level with outcome value of 20 we can see that all agents from all of different experiment settings managed to cooperate with much wider set of evaluation self-play agents.
-Similar results can be seen also at cooperation level with value of approximately 120.
-The most important change in curve progression can be seen at final part of ordered results, where results of self-play agents start to catch up and overcome results of diversified population agents.
-We believe that this result is expected as the final part of self-play results corresponds to pair-wise result of self-play agents with similar learned strategy, which should yield strong cooperative outcome.
+Using this evaluation metric and averaging over the results of three different seeds, we can see an evident difference in the cooperation curve (see figure \ref{SimpleCNNOrderedAvg}).
+Looking at the cooperation level with an outcome value of 20, we can see that all agents from all different experiment settings managed to cooperate with a much larger set of evaluation self-play agents.
+Similar results can be seen at the cooperation level with a value of about 120.
+The most important change in the curve progression can be seen in the last part of the ordered results, where the self-play agents start to catch up and overcome the results of the diversified population agents.
+We believe that this result is expected, since the final part of the results corresponds to the pairwise result of self-play agents with similar learned strategy, which should lead to a strong cooperative result.
 
 \begin{figure}[!ht]
     \centering
@@ -237,10 +238,10 @@ We believe that this result is expected as the final part of self-play results c
 
 \end{figure}
 
-Another interesting results can be seen when applying the same evaluation metric, but rather than looking at the average result, the $0.15$ quantile is used.
-By lowering the quantile we are looking at worse case cooperation results obtained on different seeds.
-Looking at visualied results (figure \ref{SimpleCNNOrderedAvg0.15Q}) we can see that in worse case there were far less self-play agents that managed to cooperate with other agents at cooperation level value of at least 80.
-This result might be considered as an argument towards cooperative abilities of our approach as it shows greater robustness with other agents at lower, yet reasonable cooperation level.
+Another interesting result can be seen if we apply the same metric, but instead of considering the average result, we consider the $0.15$ quantile value.
+By lowering the quantile, we are looking at the worse case cooperation results obtained on different seeds.
+Looking at the visualized results (Figure \ref{SimpleCNNOrderedAvg0.15Q}), we can see that in the worse case there were far fewer self-play agents that managed to cooperate with other agents at a cooperation level value of at least 80.
+This result can be seen as an argument for the cooperative capabilities of our approach, since it shows greater robustness with other agents at lower, but reasonable, cooperation levels.
 
 
 
@@ -262,31 +263,41 @@ This result might be considered as an argument towards cooperative abilities of 
 
 
 \section{Frame stacking}
-After performing initial experiments and observing visualized pair-wise results with self-play agents set we often witnessed final agent results which were both unable to cooperate well with dominant behavior from population initialization agents but also unable to learn how to cooperate with rest of behavior types.
-As a consequence we started to doubt if our agent architecture potential capabilities are not limited.
+After performing initial experiments and observing visualized pair-wise results with a set of self-play agents, we often witnessed final agent results that were both unable to cooperate well with the dominant behavior of population initialization agents, but also unable to learn how to cooperate with the remaining behavior types.
+As a result, we questioned whether the potential capabilities of our agent architecture were not limited.
 
-So far we tried to expose our new agent to various potentially different kind of behaviors represented by the previous population agents in an attempt to teach him to be capable of cooperation with each of them.
-In other words we are trying to learn such policy that best responds best to all previous policies.
+So far, we have tried to expose our new agent to various potentially different types of behaviors represented by the previous population agents, in an attempt to teach it to be capable of cooperating with each of them.
+In other words, we are trying to learn a policy that responds best to all previous policies.
 
-However, we claim that this might not be possible when agent have to decide its policy solely based on a current single state of the environment.
-To ilustrate an easiest counterexample, we can think any kind of situation where agents get stucked by repeating same actions which results in same state as before.
-By looking solely at such particular state we cannot be certain if agents are stucked because we do not know what action is our partner going to do.
-However, if we expect our partner to do some action that when combined with our action will lead to some unstucked state, while possibly our agent is expecting us to attempt to do the same, we effectively end up stucked.
+However, we claim that this might not be possible if the agent has to decide its policy based on a single current state of the environment only.
+To illustrate a simple counterexample, we can think of any kind of situation where agents get stuck by repeating the same actions, resulting in the same state as before.
+By considering only such a particular state, we cannot be certain whether agents are stuck since we do not know what action our partner will take.
+However, if we expect our partner to do an action that, when combined with our action, will lead to a non-stuck state, while our agent may expect us to try to do the same, then we are effectively stuck.
 
-To overcome this problem we propose that utilizing some kind of temporal features about previous states is necessary.
+Similarly, we believe that our partner's understanding of the current high-level goal can be significantly improved if its several previous steps are available.
 
-TODO: continue here
-
-
-
-
-
-
-
-
+To solve this problem, we propose that using some kind of temporal features about previous states is necessary.
+We try to propose two slightly different modifications incorporating temporal features that we will try to use in the rest of our experiments.
+While we could arguably wish to preserve the entire history of our partner's behavior, we believe that this leads to a significantly more difficult problem where we are trying to model our partner at a much higher level of complexity.
+We seek to find a middle ground by considering only a limited number.
+Inspired by similar approach applied in successful Atari AI project (\cite{Atari}), we assume that considering the last four states for temporal features should be sufficient for our goal.
 
 
 \subsection{Channels}
+The first of our two approaches is based on extending the global lossless state representation (see section \ref{StateRepresentation}).
+The 22 channels in this representation can generally be divided into three groups.
+The first group consists of constant values describing the physical properties of the given kitchen layout. 
+This includes layout terrain, source locations of onions and dishes, and also pot and dispenser locations.
+The next group consists of locations of currently existing items such as onions, dishes and soups.
+And lastly, state consists of mask representing player's location and orientation.
+
+We therefore introduce the idea of extending the current state representation by appending only the player location and orientation masks from the previous three states.
+Appending the static layout information channels from the previous states does not add any new information, as they are already present in the current state representation.
+Furthermore, we also omit the information about the current instances of objects from the previous states, since these can be inferred in terms of important temporal features by combining their current state, which is present in the current state representation, with the information about the past movements of the agents.
+
+Since there are five channels describing an agent's position and orientation, by including information about the last three previous states, we arrive at our final state representation consisting of 52 channels.
+
+While we are aware that this state representation construction does not follow the same pattern as the original representation, since in the original representation there were no temporal relations between different channels, we are hopeful that the network will be able to develop such a representation.
 
 \begin{figure}[!ht]
     \centering
@@ -296,7 +307,7 @@ TODO: continue here
     \label{FSChannelsOrderedAvg}
     \medskip
     \small 
-    Average cummulative reward of the best final agent using channels extension for temporal features.    
+    Average cummulative reward of the best final agent using channels frame stacking extension for temporal features.    
     (Average, 0.25Q, 0.75Q)
 
 \end{figure}
@@ -309,14 +320,33 @@ TODO: continue here
     \label{FSChannelsOrderedQ15}
     \medskip
     \small 
-    Average cummulative reward of the best final agent using tuple of last state frames for temporal features.
+    Average cummulative reward of the best final agent using channels frame stacking extension for temporal features. 
     (0.15Q, Min, 0.3Q)
 
 \end{figure}
 
 \newpage
 
-\subsection{Tuple}
+\subsection{States tuple}
+In our second design, we rely on the idea that the initial convolutional part of the network needs to learn how to extract state feature representation that hopefully could be reused for previous states without significant modifications.
+Therefore, instead of modifying the state representation as we did in the previous case, we always store three previous lossless state representations without any changes and we slightly modify the network architecture.
+The input of the network will now consist of a tuple of four most recent states, including the current state.
+
+For all states of the tuple, the state representation is passed into the shared convolutional block of the same architecture as before.
+However, we add an additional shared small dense layer after the convolutional block, which is applied to each part of the tuple input that corresponds to one of the previous states.
+Only then are all four vector parts concatenated back together before being passed to the shared hidden layers as before.
+
+The size of the additional dense layer is intentionally smaller.
+First, the idea is to extract only those features that, when combined with the same features from other previous states, can construct the temporal information.
+Second, we want to limit the throughput of global state information through this part of the computational graph.
+
+Note that this additional layer is not applied to the part of the tuple input corresponding to the current state.
+Therefore, this part of the computation graph is still responsible for computing the overall complex state representation as before.
+
+Note also that both the convolutional block and the additional dense layer are shared for different parts of the input.
+The goal is not to train the modules responsible for a particular task multiple times.
+The convolutional block should be able to learn such general feature extraction that should be invariant to the particular single input state.
+Similarly, we assume that the additional features of the dense layer should be time-invariant, and the construction of the temporal features should be the responsibility of the following dense layer working with concatenated results.
 
 \begin{figure}[!ht]
     \centering
@@ -326,7 +356,7 @@ TODO: continue here
     \label{FSTupleOrderedAvg}
     \medskip
     \small 
-    Average cummulative reward of the best final agent using channels extension for temporal features.    
+    Average cummulative reward of the best final agent using tuple frame stacking extension for temporal features.    
     (Average, 0.25Q, 0.75Q)
 
 \end{figure}
@@ -339,13 +369,22 @@ TODO: continue here
     \label{FSTupleOrderedQ15}
     \medskip
     \small 
-    Average cummulative reward of the best final agent using tuple of last state frames for temporal features.
+    Average cummulative reward of the best final agent using tuple frame stacking extension for temporal features.    
     (0.15Q, Min, 0.3Q)
 
 \end{figure}
 
-Looks like temporal feature made even basic self-play agent a bit more cooperative (figure \ref{FSVariantsOrderedAvg}).
+\subsection{Comparison}
+After implementing these temporal features modifications, we performed the same series of diversity population building experiments as before with the simple single-state convolutional representation.
+Trained population agents are always evaluated against self-play agents trained with the same frame stacking modifications, eliminating any potential advantages.
+In addition, in the initial phase of the experiments, the diversity combination R$1$L$1$ (see table \ref{tab:KLDiv-coefiicents}) was both problematic in terms of learning, as the training diverged more often than in other settings, and also achieved significantly worse cooperation results (see evaluations \ref{SimpleCNNOrderedAvg}, \ref{SimpleCNNOrderedAvg0.15Q}).
+Therefore, for the following experiments we added another slightly weaker combination of parameters R$0$L$0$.
 
+Using the same evaluation scheme as before (see description \ref{OrderedEvaluation}), the ordered evaluation results of the population training did not turn out to be as better for the channels frame stacking technique as it was for the simple CNN approach (see figure \ref{FSChannelsOrderedAvg}).
+Similarly, the improvement is debatable for the tuple frame stacking variant (Figure \ref{FSChannelsOrderedAvg}).
+Nevertheless, we argue that for several experimental settings (No divers, R$0$, R$2$, and L$0$) the improvements can be demonstrated at lower values of the average cumulative reward.
+
+However, it is important to mention the comparison of the different sets of self-play agents (Figure \ref{FSVariantsOrderedAvg}).
 \begin{figure}[!ht]
     \centering
     \includegraphics*[width=10cm]{../img/FSVariantsOrderedAvg.png}
@@ -360,11 +399,36 @@ Looks like temporal feature made even basic self-play agent a bit more cooperati
     Average, 0.25Q, 0.75Q
 
 \end{figure}
+This comparison shows that the self-play agents using temporal features managed to cooperate at a lower level of cooperation with a significantly larger set of agents.
+On the one hand, this is a great result, since with these extensions even simple self-play agents became better at cooperating.
+On the other hand, the improvement in cooperation seems to be less noticeable in our population training.
+
+While the results seem rather bland for the average value of the ordered scores, it still holds that the population training approach shows significant improvement when considering the $0.15$ quantile value.
+Here (figures \ref{FSChannelsOrderedQ15}, \ref{FSTupleOrderedQ15}) the population agents managed to vastly outperform the self-play agents.
+
 
 
 \section{Population evaluation}
-In here we will not evaluate agents against self-play agents, but evaluate final population agents against each other among different experiments settings.
-(Simple CNN \ref{FinalPopFinalPopSimpleCnnAvg}). (FS Channels \ref{FinalPopFinalPopFsChannelsAvg}). (FS Tuple \ref{FinalPopFinalPopFsTupleAvg})
+So far, we have measured how well our trained population agents perform when paired with self-play agents and compared this measure to how well self-play agents perform when paired with other self-play agents.
+However, this evaluation approach may favor self-play agents because they have the theoretical advantage of being trained with the same learning technique.
+
+To make the comparison of these two training methods more fair, instead of evaluating final population agents against different self-play agents, we will now evaluate them against other final population agents from different diversity experiments.
+In previous experiments, we considered the best of the two final population agents according to their cross-play results with the self-play set.
+However, in the vast majority of cases, the best agent was the one that was trained with the agent training set, which included all agents from the population initialization.
+Therefore, for the following evaluation we will always consider the first of the final agents.
+
+Our evaluated set in the following experiment will consist of one final agent for each diverse population experiment configuration and for each seed, giving us a total of 27 agents for frame stacking extensions (and 40 for original simple CNN agents).
+We compute the cross-play evaluation matrix for all pairs and group the results by the rows corresponding to the same diversity experiment. 
+We then order these results in the same way as in the previous experiments.
+
+With this evaluation setting, our population-trained agents were able to significantly outperform the cooperation performance of the self-play agents when using both the original simple convolutional and channel frame stacking representations (Figures \ref{FinalPopFinalPopSimpleCnnAvg}, \ref{FinalPopFinalPopFsChannelsAvg}).
+The most significant improvement can be seen in the ability to cooperate with a much wider set of agents.
+Some, albeit very low, level of cooperation was achieved with almost all of the paired agents.
+
+Unfortunately, the results were not as convincing for the tuple temporal extensions (Figure \ref{FinalPopFinalPopFsTupleAvg}).
+
+
+{\color{blue} TODO: Jeste me napada ze jsou ty vysledky asi zkreslene, protoze vlastne pro jeden seed ale jine parametry experimentu byla populace inicalizovana stejne, tedy vychazeli ze stejnych zakladnich chovani, tj. vzdy 9 z 27 agentu vychazelo ze stejneho zdroje}
 \begin{figure}[!ht]
     \centering
     \includegraphics*[width=10cm]{../img/FinalPopFinalPopSimpleCnnAvg.png}
@@ -373,7 +437,7 @@ In here we will not evaluate agents against self-play agents, but evaluate final
     \label{FinalPopFinalPopSimpleCnnAvg}
     \medskip
     \small 
-
+    Diversity experiments final population agents trained with simple convolutional state representation against final population agents from different experiments. 
     Average, 0.25Q, 0.75Q
 
 \end{figure}
@@ -386,7 +450,7 @@ In here we will not evaluate agents against self-play agents, but evaluate final
     \label{FinalPopFinalPopFsChannelsAvg}
     \medskip
     \small 
-
+    Diversity experiments final population agents trained with channel frame stacking representation against final population agents from different experiments.
     Average, 0.25Q, 0.75Q
 
 \end{figure}
@@ -399,7 +463,7 @@ In here we will not evaluate agents against self-play agents, but evaluate final
     \label{FinalPopFinalPopFsTupleAvg}
     \medskip
     \small 
-
+    Diversity experiments final population agents trained with tuple frame stacking representation against final population agents from different experiments.
     Average, 0.25Q, 0.75Q
 
 \end{figure}
@@ -407,7 +471,19 @@ In here we will not evaluate agents against self-play agents, but evaluate final
 \newpage
 
 \section{Other layouts}
-\subsection{Cramped room}
+So far, all of our observations and experiments have revolved around the same Forced Coordination layout.
+In the following section, we examine the smaller set of similar experiments on two other layouts.
+First, we demonstrate the difference in the cooperation of self-playing agents with respect to temporal features.
+And second, we try to apply our diversity population generation method.
+
+
+
+\subsection{Cramped Room}
+On this layout, we can see (Figure \ref{CrampedRoomFSVariantsOrderedAvg}) that adding temporal features had a huge impact on the overall performance of the self-play agents, both in terms of the level of cooperation with other agents and in terms of the maximum common outcome reached.
+This may be explained by the characteristics of this cramped layout, as observing the last partner's locations can greatly help in predicting the partner's movement pattern.
+
+While our diverse population showed some signs of improvement in most of our experiment settings when using the tuple frame stacking representation (Figure \ref{CrampedRoomFSTupleOrdered15Q}), there was no improvement for the channel frame stacking representation (Figure \ref{CrampedRoomFSChannelsOrdered15Q}), where many of the experiment settings even showed worse performance.
+
 \begin{figure}[!ht]
     \centering
     \includegraphics*[width=8cm]{../img/CrampedRoomFSVariantsOrderedAvg.png}
@@ -416,7 +492,7 @@ In here we will not evaluate agents against self-play agents, but evaluate final
     \label{CrampedRoomFSVariantsOrderedAvg}
     \medskip
     \small 
-    Average cummulative reward of all agents from evaluation set.
+    Average cummulative reward on the Cramped room layout of all self-play agents.
     All three types of self-play agent designs included.
 
     Average, 0.25Q, 0.75Q
@@ -432,7 +508,7 @@ In here we will not evaluate agents against self-play agents, but evaluate final
     \label{CrampedRoomFSChannelsOrdered15Q}
     \medskip
     \small 
-    Average cummulative reward of the best final agent using channels extension for temporal features.    
+    Average cummulative reward on the Cramped room layout of the best final agent using channels extension for temporal features.    
     (Average, 0.25Q, 0.75Q)
 
 \end{figure}
@@ -445,7 +521,7 @@ In here we will not evaluate agents against self-play agents, but evaluate final
     \label{CrampedRoomFSTupleOrdered15Q}
     \medskip
     \small 
-    Average cummulative reward of the best final agent using tuple of last state frames for temporal features.
+    Average cummulative reward on the Cramped room layout of the best final agents evaluated against self-play agents using tuple frame stacking for temporal features.
     (0.15Q, Min, 0.3Q)
 
 \end{figure}
@@ -453,6 +529,14 @@ In here we will not evaluate agents against self-play agents, but evaluate final
 \newpage
 
 \subsection{Counter circuit}
+Similarly, the application of temporal features had a significant impact on the Counter Circuit layout(Figure \ref{CounterCircuitFSVariantsOrderedAvg}).
+Interestingly, the evaluation curve of channels and tuple is different. 
+It seems that the use of the channels frame stacking representation makes agents cooperative with virtually all other agents at a non-significantly low level of cooperation.
+However, at some point the increase in cooperation level is outperformed by a states tuple representation.
+
+On this layout, the diversity population method managed to outperform the self-play agents in most of the experiment settings (Figures \ref {CounterCircuitFSChannelsOrderedQ15}, \ref {CounterCircuitFSTupleOrderedQ15}).
+However, we cannot say that the improvement is very convincing, as the cooperation failed noticeably in a few experimental settings.
+
 
 \begin{figure}[!ht]
     \centering
@@ -462,7 +546,7 @@ In here we will not evaluate agents against self-play agents, but evaluate final
     \label{CounterCircuitFSVariantsOrderedAvg}
     \medskip
     \small 
-    Average cummulative reward of all agents from evaluation set.
+    Average cummulative reward on the Counter circuit layout of all self-play agents.
     All three types of self-play agent designs included.
 
     Average, 0.25Q, 0.75Q
@@ -478,7 +562,7 @@ In here we will not evaluate agents against self-play agents, but evaluate final
     \label{CounterCircuitFSChannelsOrderedQ15}
     \medskip
     \small 
-    Average cummulative reward of the best final agent using channels extension for temporal features.    
+    Average cummulative reward on the Counter circuit layout of the best final agent using channels extension for temporal features.    
     (Average, 0.25Q, 0.75Q)
 
 \end{figure}
@@ -491,7 +575,7 @@ In here we will not evaluate agents against self-play agents, but evaluate final
     \label{CounterCircuitFSTupleOrderedQ15}
     \medskip
     \small 
-    Average cummulative reward of the best final agent using tuple of last state frames for temporal features.
+    Average cummulative reward on the Counter circuit layout of the best final agents evaluated against self-play agents using tuple frame stacking for temporal features.
     (0.15Q, Min, 0.3Q)
 
 \end{figure}
