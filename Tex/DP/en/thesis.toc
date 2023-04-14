@@ -64,6 +64,7 @@
 \contentsline {section}{\numberline {7.5}Population evaluation}{56}{section.7.5}%
 \contentsline {section}{\numberline {7.6}Other layouts}{58}{section.7.6}%
 \contentsline {subsection}{\numberline {7.6.1}Cramped Room}{59}{subsection.7.6.1}%
-\contentsline {subsection}{\numberline {7.6.2}Counter circuit}{60}{subsection.7.6.2}%
+\contentsline {subsection}{\numberline {7.6.2}Counter Circuit}{60}{subsection.7.6.2}%
+\contentsline {section}{\numberline {7.7}Conclusion}{61}{section.7.7}%
 \contentsline {chapter}{Conclusion}{63}{chapter*.41}%
 \contentsline {chapter}{Bibliography}{64}{chapter*.42}%

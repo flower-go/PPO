@@ -528,7 +528,7 @@ While our diverse population showed some signs of improvement in most of our exp
 
 \newpage
 
-\subsection{Counter circuit}
+\subsection{Counter Circuit}
 Similarly, the application of temporal features had a significant impact on the Counter Circuit layout(Figure \ref{CounterCircuitFSVariantsOrderedAvg}).
 Interestingly, the evaluation curve of channels and tuple is different. 
 It seems that the use of the channels frame stacking representation makes agents cooperative with virtually all other agents at a non-significantly low level of cooperation.
@@ -563,7 +563,7 @@ However, we cannot say that the improvement is very convincing, as the cooperati
     \medskip
     \small 
     Average cummulative reward on the Counter circuit layout of the best final agent using channels extension for temporal features.    
-    (Average, 0.25Q, 0.75Q)
+    (0.15Q, Min, 0.3Q)
 
 \end{figure}
 
@@ -579,6 +579,41 @@ However, we cannot say that the improvement is very convincing, as the cooperati
     (0.15Q, Min, 0.3Q)
 
 \end{figure}
+
+
+
+\section{Conclusion}
+
+After having performed several experiments on few different kitchen layouts we try to conclude with resulting observations.
+
+The most influencial improvement of cooperative capabilities was the usage of temporal features.
+In our evaluation experiments even self-play trained agent showed great improvement with other self-play agents when extended by recent state frames informations.
+We believe this result is intuitive since even during self-play training due to the stochastic policy sampling agents may experience different sub trajectories leading to similarly good results.
+When they have several previous states at their disposal they should have better predicting capabilities about its partner current sub-goal.
+
+We believe that our idea of incremental diverse population building made even further slight improvement in majority of our experiments.
+However, as we discussed in introductory chapters (Section \ref{RobustnessEvaluation}), chosing right method for cooperation evaluation is another problem on its own.
+
+For us the chosen condition of cooperation measure was looking at order of pairwise reached comoon outcomes and considering worse (0.15 quantile value) case value.
+Under this settings majority of all our experiments showed great coordination improvement on lower cooperation level.
+
+The agents trained using our proposed diverse population building process managed to cooperate with much wider set of other agents, although at the cost of significantly reduced maximal outcome.
+In order to state the final verdict about this outcome the results must be confronted with the desired definition of cooperation.
+In our opinion the production of agents that are capable of somewhat reasonable level of cooperation with wider set of unknown agents is a step in a right direction.
+And the fact that our results showed this form of cooperation capabilities at 0.15 quantile of all performed evaluations shows great conistency of our method.
+
+While our population building approach showed improvement in most of the experiments settings we are unfortunately unable to conclude any stable observations regarding diversive parameters.
+
+{\color{blue}TODO: No divers. most stable variant}
+{\color{blue}TODO: Even no diversification managed to cooperate with some agent that population inicialization could not}
+
+ 
+
+
+
+
+
+
 
 
 
