@@ -1,7 +1,7 @@
 \chapter*{Introduction}
 \addcontentsline{toc}{chapter}{Introduction}
 
-In recent years, people have witnessed rapid progress in artificial intelligence (AI) in all kinds of fields. 
+In recent years, people have witnessed rapid progress in artificial intelligence in all kinds of fields. 
 Beating world champions at chess or Go is no longer a problem for AI models. 
 The same pattern can be seen in more recent popular games such as Dota (\cite{DotaOpenFive}) or Starcraft, where even great human-AI team cooperation behavior has been achieved.
 However, all of these examples share the common trait of being competitive.
@@ -26,12 +26,15 @@ We illustrate problems with multi-agent training, where changes in one agent aff
 Finally, some single-agent variants of reinforcement learning algorithms are extended to multi-agent settings, where we mention the important aspects of these extensions.
 
 
-We will use a simplified cooperative cooking environment based on the popular video game Overcooked, where two partners are forced to coordinate a shared task of cooking and delivering soup to a customer.
+For our experiments we will use a simplified cooperative cooking environment based on the popular video game Overcooked, where two partners are forced to coordinate a shared task of cooking and delivering soup to a customer.
 We will familiarize ourselves with several different kitchen layouts, as each layout may offer different cooperative obstacles.
 Here we summarize what approaches have been tested in related work with respect to ad hoc agent cooperation.
 We mention the problem of defining the robustness of agent cooperation and different possible definitions of robustness.
 
 And in the last part of this work, we prepare our working environment by modifying the stable-baselines3 library designed for reinforcement learning algorithms.
-We try to reimplement some methods of previously related work regarding the problem of ad hoc coordination in AI-AI settings, both for verification purposes and also for building us an evaluation tool for our experiments.
-And finally, we propose a diversification method for building a population of agents that are designed to try to differentiate their behavior from those they have encountered in the training population.
-After tuning and optimizing our experiments on a selected kitchen layout, we then evaluate our approach on some of the remaining layouts.
+We try to reimplement some results of previously related work regarding the problem of ad hoc coordination in AI-AI settings, both for verification purposes and also for building us an evaluation tool for our experiments.
+
+Finally, for the main goals of this work will attempt to design novel diversifying approach for generating cooperative agents.
+We will revisit the problem of robust cooperation evaluation and evaluate our agents for their cooperative abilities.
+And finally, we will verify the robustness of our method by evaluating it on other layouts.
+

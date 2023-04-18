@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.23)  14 APR 2023 12:42
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.23)  18 APR 2023 17:02
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -625,10 +625,10 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
  [2]
 \openout2 = `preface.aux'.
 
- (./preface.tex) [3
+ (./preface.tex [3
 
 
-] [4]
+]) [4]
 \openout2 = `chap01.aux'.
 
  (./chap01.tex
@@ -838,17 +838,17 @@ Package pdftex.def Info: ../img/FSVariantsOrderedAvg.png  used on input line 390
 <../img/FinalPopFinalPopSimpleCnnAvg.png, id=971, 462.528pt x 346.896pt>
 File: ../img/FinalPopFinalPopSimpleCnnAvg.png Graphic file (type png)
 <use ../img/FinalPopFinalPopSimpleCnnAvg.png>
-Package pdftex.def Info: ../img/FinalPopFinalPopSimpleCnnAvg.png  used on input line 434.
+Package pdftex.def Info: ../img/FinalPopFinalPopSimpleCnnAvg.png  used on input line 433.
 (pdftex.def)             Requested size: 284.52756pt x 213.40593pt.
 <../img/FinalPopFinalPopFsChannelsAvg.png, id=973, 462.528pt x 346.896pt>
 File: ../img/FinalPopFinalPopFsChannelsAvg.png Graphic file (type png)
 <use ../img/FinalPopFinalPopFsChannelsAvg.png>
-Package pdftex.def Info: ../img/FinalPopFinalPopFsChannelsAvg.png  used on input line 447.
+Package pdftex.def Info: ../img/FinalPopFinalPopFsChannelsAvg.png  used on input line 446.
 (pdftex.def)             Requested size: 284.52756pt x 213.40593pt.
 <../img/FinalPopFinalPopFsTupleAvg.png, id=975, 462.528pt x 346.896pt>
 File: ../img/FinalPopFinalPopFsTupleAvg.png Graphic file (type png)
 <use ../img/FinalPopFinalPopFsTupleAvg.png>
-Package pdftex.def Info: ../img/FinalPopFinalPopFsTupleAvg.png  used on input line 460.
+Package pdftex.def Info: ../img/FinalPopFinalPopFsTupleAvg.png  used on input line 459.
 (pdftex.def)             Requested size: 284.52756pt x 213.40593pt.
  [57 <../img/FinalPopFinalPopSimpleCnnAvg.png>] [58 <../img/FinalPopFinalPopFsChannelsAvg.png> <../img/FinalPopFinalPopFsTupleAvg.png>]
 <../img/CrampedRoomFSVariantsOrderedAvg.png, id=998, 462.528pt x 346.896pt>
@@ -870,22 +870,23 @@ Package pdftex.def Info: ../img/CrampedRoomFSTupleOrdered15Q.png  used on input 
 <../img/CounterCircuitFSVariantsOrderedAvg.png, id=1016, 462.528pt x 346.896pt>
 File: ../img/CounterCircuitFSVariantsOrderedAvg.png Graphic file (type png)
 <use ../img/CounterCircuitFSVariantsOrderedAvg.png>
-Package pdftex.def Info: ../img/CounterCircuitFSVariantsOrderedAvg.png  used on input line 543.
+Package pdftex.def Info: ../img/CounterCircuitFSVariantsOrderedAvg.png  used on input line 542.
 (pdftex.def)             Requested size: 227.62204pt x 170.71628pt.
-<../img/CounterCircuitFSChannelsOrderedQ15.png, id=1018, 462.528pt x 346.896pt>
+ [60 <../img/CrampedRoomFSChannelsOrdered15Q.png> <../img/CrampedRoomFSTupleOrdered15Q.png>]
+<../img/CounterCircuitFSChannelsOrderedQ15.png, id=1029, 462.528pt x 346.896pt>
 File: ../img/CounterCircuitFSChannelsOrderedQ15.png Graphic file (type png)
 <use ../img/CounterCircuitFSChannelsOrderedQ15.png>
-Package pdftex.def Info: ../img/CounterCircuitFSChannelsOrderedQ15.png  used on input line 559.
+Package pdftex.def Info: ../img/CounterCircuitFSChannelsOrderedQ15.png  used on input line 558.
 (pdftex.def)             Requested size: 227.62204pt x 170.71628pt.
-<../img/CounterCircuitFSTupleOrderedQ15.png, id=1020, 462.528pt x 346.896pt>
+<../img/CounterCircuitFSTupleOrderedQ15.png, id=1031, 462.528pt x 346.896pt>
 File: ../img/CounterCircuitFSTupleOrderedQ15.png Graphic file (type png)
 <use ../img/CounterCircuitFSTupleOrderedQ15.png>
-Package pdftex.def Info: ../img/CounterCircuitFSTupleOrderedQ15.png  used on input line 572.
+Package pdftex.def Info: ../img/CounterCircuitFSTupleOrderedQ15.png  used on input line 571.
 (pdftex.def)             Requested size: 227.62204pt x 170.71628pt.
- [60 <../img/CrampedRoomFSChannelsOrdered15Q.png> <../img/CrampedRoomFSTupleOrdered15Q.png>] [61 <../img/CounterCircuitFSVariantsOrderedAvg.png> <../img/CounterCircuitFSChannelsOrderedQ15.png>]) [62 <../img/CounterCircuitFSTupleOrderedQ15.png>]
+ [61 <../img/CounterCircuitFSVariantsOrderedAvg.png> <../img/CounterCircuitFSChannelsOrderedQ15.png>] [62 <../img/CounterCircuitFSTupleOrderedQ15.png>]) [63] [64]
 \openout2 = `epilog.aux'.
 
- (./epilog.tex) [63
+ (./epilog.tex) [65
 
 
 
@@ -898,31 +899,31 @@ Underfull \hbox (badness 10000) in paragraph at lines 56--59
 []\OT1/lmr/m/n/12 Deepmind, 2019.  URL []$\OT1/lmtt/m/n/12 https : / / www . deepmind . com / blog /
  []
 
-[64
+[66
 
 
 
 
-] [65])) [66] (./thesis.aux (./title.aux) (./preface.aux) (./chap01.aux) (./chap02.aux) (./chap03.aux) (./chap04.aux) (./chap05.aux) (./chap06.aux) (./chap07.aux) (./epilog.aux) (./bibliography.aux))
+] [67])) [68] (./thesis.aux (./title.aux) (./preface.aux) (./chap01.aux) (./chap02.aux) (./chap03.aux) (./chap04.aux) (./chap05.aux) (./chap06.aux) (./chap07.aux) (./epilog.aux) (./bibliography.aux))
 
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 1DC8BD4A42C430CED39674CC27F2A078;10037.
+(rerunfilecheck)             Checksum: 962BEA984575B2A8F8237FC5B6FF5396;10041.
  ) 
 Here is how much of TeX's memory you used:
- 18997 strings out of 479342
- 295317 string characters out of 5869178
- 755907 words of memory out of 5000000
- 36307 multiletter control sequences out of 15000+600000
+ 19007 strings out of 479342
+ 295488 string characters out of 5869178
+ 759101 words of memory out of 5000000
+ 36314 multiletter control sequences out of 15000+600000
  532979 words of font info for 74 fonts, out of 8000000 for 9000
  473 hyphenation exceptions out of 8191
- 77i,24n,79p,533b,2377s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 77i,24n,79p,743b,2377s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rmtt.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx8.pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi6.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi8.pfb></usr/share/texmf/fonts/type1/public/lm/lmmib10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb></usr/share/texmf/fonts/type1/public/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy6.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on thesis.pdf (70 pages, 5059120 bytes).
+Output written on thesis.pdf (72 pages, 5060357 bytes).
 PDF statistics:
- 1256 PDF objects out of 1440 (max. 8388607)
- 1046 compressed objects within 11 object streams
- 297 named destinations out of 1000 (max. 500000)
+ 1284 PDF objects out of 1440 (max. 8388607)
+ 1072 compressed objects within 11 object streams
+ 300 named destinations out of 1000 (max. 500000)
  832 words of extra memory for PDF output out of 10000 (max. 10000000)
 

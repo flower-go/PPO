@@ -1,4 +1,4 @@
-\chapter{Our work - Contribution}
+\chapter{Diverse population building}\label{DiversePopulationMethodChapter}
 In this chapter, we propose a novel approach to introduce explicit diversification into agent behavior by training diverse populations.
 The traditional population-based methods mentioned above were not effective enough to add the necessary diversification to the population.
 We try to use population training in a slightly different way, focusing on two important aspects.
@@ -228,7 +228,7 @@ We believe that this result is expected, since the final part of the results cor
     \centering
     \includegraphics*[width=10cm]{../img/SimpleCNNOrderedAvg.png}
 
-    \caption{Average, ordered cross-play outcomes}
+    \caption{Forced coordination: Simple CNN, Average, ordered averaged cross-play of population final agents vs self-play agents}
     \label{SimpleCNNOrderedAvg}
     \medskip
     \small 
@@ -238,7 +238,7 @@ We believe that this result is expected, since the final part of the results cor
 
 \end{figure}
 
-Another interesting result can be seen if we apply the same metric, but instead of considering the average result, we consider the $0.15$ quantile value.
+Probably more interesting result can be seen if we apply the same metric, but instead of considering the average result, we focus on the $0.15$ quantile value.
 By lowering the quantile, we are looking at the worse case cooperation results obtained on different seeds.
 Looking at the visualized results (Figure \ref{SimpleCNNOrderedAvg0.15Q}), we can see that in the worse case there were far fewer self-play agents that managed to cooperate with other agents at a cooperation level value of at least 80.
 This result can be seen as an argument for the cooperative capabilities of our approach, since it shows greater robustness with other agents at lower, but reasonable, cooperation levels.
@@ -249,13 +249,13 @@ This result can be seen as an argument for the cooperative capabilities of our a
     \centering
     \includegraphics*[width=10cm]{../img/SimpleCNNOrderedAvg0.15Q.png}
 
-    \caption{0.15 Quantile, ordered cross-play outcomes}
+    \caption{Forced coordination: Simple CNN, 0.15 quantile, ordered averaged cross-play of population final agents vs self-play agents}
     \label{SimpleCNNOrderedAvg0.15Q}
     \medskip
     \small 
     0.15 quantile of ordered results of cross-play evaluation of best population final agents against self-play agents.
     Includes values also for cross-play evaluation of self-play evaluation agent set for reference, where same agent pairs are ommited.
-    0.15Q, Min, 0.3Q
+    (0.15Q, Min, 0.3Q)
 
 \end{figure}
 
@@ -279,7 +279,7 @@ Similarly, we believe that our partner's understanding of the current high-level
 To solve this problem, we propose that using some kind of temporal features about previous states is necessary.
 We try to propose two slightly different modifications incorporating temporal features that we will try to use in the rest of our experiments.
 While we could arguably wish to preserve the entire history of our partner's behavior, we believe that this leads to a significantly more difficult problem where we are trying to model our partner at a much higher level of complexity.
-We seek to find a middle ground by considering only a limited number.
+We seek to find a middle ground by considering only a limited history.
 Inspired by similar approach applied in successful Atari AI project (\cite{Atari}), we assume that considering the last four states for temporal features should be sufficient for our goal.
 
 
@@ -291,19 +291,19 @@ This includes layout terrain, source locations of onions and dishes, and also po
 The next group consists of locations of currently existing items such as onions, dishes and soups.
 And lastly, state consists of mask representing player's location and orientation.
 
-We therefore introduce the idea of extending the current state representation by appending only the player location and orientation masks from the previous three states.
+We introduce the idea of extending the current state representation by appending only the player location and orientation masks from the previous three states.
 Appending the static layout information channels from the previous states does not add any new information, as they are already present in the current state representation.
 Furthermore, we also omit the information about the current instances of objects from the previous states, since these can be inferred in terms of important temporal features by combining their current state, which is present in the current state representation, with the information about the past movements of the agents.
 
 Since there are five channels describing an agent's position and orientation, by including information about the last three previous states, we arrive at our final state representation consisting of 52 channels.
 
-While we are aware that this state representation construction does not follow the same pattern as the original representation, since in the original representation there were no temporal relations between different channels, we are hopeful that the network will be able to develop such a representation.
+While we are aware that this state representation construction does not follow the same pattern as the original representation, since in the original representation there were no temporal relations between different channels, we are hopeful that the network will be able to develop such a representation on its own.
 
 \begin{figure}[!ht]
     \centering
     \includegraphics*[width=10cm]{../img/FSChannelsOrderedAvg.png}
 
-    \caption{Average cummulative reward of final agents ordered by evaluation results}
+    \caption{Forced coordination: FS Channels, Average, ordered averaged cross-play of population final agents vs self-play agents}
     \label{FSChannelsOrderedAvg}
     \medskip
     \small 
@@ -315,8 +315,8 @@ While we are aware that this state representation construction does not follow t
 \begin{figure}[!ht]
     \centering
     \includegraphics*[width=10cm]{../img/FSChannelsOrderedQ15.png}
-
-    \caption{Average cummulative reward of final agents, 0.15quantile}
+    
+    \caption{Forced coordination: FS Channels, 0.15 quantile, ordered averaged cross-play of population final agents vs self-play agents}
     \label{FSChannelsOrderedQ15}
     \medskip
     \small 
@@ -333,7 +333,7 @@ Therefore, instead of modifying the state representation as we did in the previo
 The input of the network will now consist of a tuple of four most recent states, including the current state.
 
 For all states of the tuple, the state representation is passed into the shared convolutional block of the same architecture as before.
-However, we add an additional shared small dense layer after the convolutional block, which is applied to each part of the tuple input that corresponds to one of the previous states.
+However, we add an additional shared small dense layer after the convolutional block, which is applied to each part that corresponds to one of the previous states.
 Only then are all four vector parts concatenated back together before being passed to the shared hidden layers as before.
 
 The size of the additional dense layer is intentionally smaller.
@@ -352,7 +352,7 @@ Similarly, we assume that the additional features of the dense layer should be t
     \centering
     \includegraphics*[width=10cm]{../img/FSTupleOrderedAvg.png}
 
-    \caption{Average cummulative reward of final agents ordered by evaluation results}
+    \caption{Forced coordination: FS Tuple, Average, ordered averaged cross-play of population final agents vs self-play agents}
     \label{FSTupleOrderedAvg}
     \medskip
     \small 
@@ -365,7 +365,7 @@ Similarly, we assume that the additional features of the dense layer should be t
     \centering
     \includegraphics*[width=10cm]{../img/FSTupleOrderedQ15.png}
 
-    \caption{Average cummulative reward of final agents, 0.15quantile}
+    \caption{Forced coordination: FS Tuple, 0.15 quantile, ordered averaged cross-play of population final agents vs self-play agents}
     \label{FSTupleOrderedQ15}
     \medskip
     \small 
@@ -381,7 +381,7 @@ In addition, in the initial phase of the experiments, the diversity combination 
 Therefore, for the following experiments we added another slightly weaker combination of parameters R$0$L$0$.
 
 Using the same evaluation scheme as before (see description \ref{OrderedEvaluation}), the ordered evaluation results of the population training did not turn out to be as better for the channels frame stacking technique as it was for the simple CNN approach (see figure \ref{FSChannelsOrderedAvg}).
-Similarly, the improvement is debatable for the tuple frame stacking variant (Figure \ref{FSChannelsOrderedAvg}).
+Similarly, the improvement is debatable for the tuple frame stacking variant (Figure \ref{FSTupleOrderedAvg}).
 Nevertheless, we argue that for several experimental settings (No divers, R$0$, R$2$, and L$0$) the improvements can be demonstrated at lower values of the average cumulative reward.
 
 However, it is important to mention the comparison of the different sets of self-play agents (Figure \ref{FSVariantsOrderedAvg}).
@@ -389,14 +389,13 @@ However, it is important to mention the comparison of the different sets of self
     \centering
     \includegraphics*[width=10cm]{../img/FSVariantsOrderedAvg.png}
 
-    \caption{Average cummulative reward of final agents}
+    \caption{Forced coordination: Average, ordered averaged cross-play of self-play agents (Simple CNN, FS Channels, FS Tuple)}
     \label{FSVariantsOrderedAvg}
     \medskip
     \small 
     Average cummulative reward of all agents from evaluation set.
     All three types of self-play agent designs included.
-
-    Average, 0.25Q, 0.75Q
+    (Average, 0.25Q, 0.75Q)
 
 \end{figure}
 This comparison shows that the self-play agents using temporal features managed to cooperate at a lower level of cooperation with a significantly larger set of agents.
@@ -415,9 +414,10 @@ However, this evaluation approach may favor self-play agents because they have t
 To make the comparison of these two training methods more fair, instead of evaluating final population agents against different self-play agents, we will now evaluate them against other final population agents from different diversity experiments.
 In previous experiments, we considered the best of the two final population agents according to their cross-play results with the self-play set.
 However, in the vast majority of cases, the best agent was the one that was trained with the agent training set, which included all agents from the population initialization.
-Therefore, for the following evaluation we will always consider the first of the final agents.
+Therefore, for the following evaluation we will always consider the first of the two final agents.
 
 Our evaluated set in the following experiment will consist of one final agent for each diverse population experiment configuration and for each seed, giving us a total of 27 agents for frame stacking extensions (and 40 for original simple CNN agents).
+However we will omit such pairs from different configurations that started with same population inicialization agents as these might have significant advantage in common experience. 
 We compute the cross-play evaluation matrix for all pairs and group the results by the rows corresponding to the same diversity experiment. 
 We then order these results in the same way as in the previous experiments.
 
@@ -428,17 +428,16 @@ Some, albeit very low, level of cooperation was achieved with almost all of the 
 Unfortunately, the results were not as convincing for the tuple temporal extensions (Figure \ref{FinalPopFinalPopFsTupleAvg}).
 
 
-{\color{blue} TODO: Jeste me napada ze jsou ty vysledky asi zkreslene, protoze vlastne pro jeden seed ale jine parametry experimentu byla populace inicalizovana stejne, tedy vychazeli ze stejnych zakladnich chovani, tj. vzdy 9 z 27 agentu vychazelo ze stejneho zdroje}
 \begin{figure}[!ht]
     \centering
     \includegraphics*[width=10cm]{../img/FinalPopFinalPopSimpleCnnAvg.png}
 
-    \caption{Evaluation of final population agent using simple CNN}
+    \caption{Forced coordination: Simple CNN, Average, ordered averaged cross-play of population final agents}
     \label{FinalPopFinalPopSimpleCnnAvg}
     \medskip
     \small 
-    Diversity experiments final population agents trained with simple convolutional state representation against final population agents from different experiments. 
-    Average, 0.25Q, 0.75Q
+    Diversity experiments final population agents trained with simple convolutional state representation against final population agents from different experiments.
+    (Average, 0.25Q, 0.75Q)
 
 \end{figure}
 
@@ -446,12 +445,12 @@ Unfortunately, the results were not as convincing for the tuple temporal extensi
     \centering
     \includegraphics*[width=10cm]{../img/FinalPopFinalPopFsChannelsAvg.png}
 
-    \caption{Evaluation of final population agent using channels frame stacking}
+    \caption{Forced coordination: FS Channels, Average, ordered averaged cross-play of population final agents}
     \label{FinalPopFinalPopFsChannelsAvg}
     \medskip
     \small 
     Diversity experiments final population agents trained with channel frame stacking representation against final population agents from different experiments.
-    Average, 0.25Q, 0.75Q
+    (Average, 0.25Q, 0.75Q)
 
 \end{figure}
 
@@ -459,12 +458,13 @@ Unfortunately, the results were not as convincing for the tuple temporal extensi
     \centering
     \includegraphics*[width=10cm]{../img/FinalPopFinalPopFsTupleAvg.png}
 
-    \caption{Evaluation of final population agent using tuple frame stacking}
+    \caption{Forced coordination: FS Tuple, Average, ordered averaged cross-play of population final agents}
     \label{FinalPopFinalPopFsTupleAvg}
     \medskip
     \small 
     Diversity experiments final population agents trained with tuple frame stacking representation against final population agents from different experiments.
-    Average, 0.25Q, 0.75Q
+    (Average, 0.25Q, 0.75Q)
+
 
 \end{figure}
 
@@ -474,13 +474,13 @@ Unfortunately, the results were not as convincing for the tuple temporal extensi
 So far, all of our observations and experiments have revolved around the same Forced Coordination layout.
 In the following section, we examine the smaller set of similar experiments on two other layouts.
 First, we demonstrate the difference in the cooperation of self-playing agents with respect to temporal features.
-And second, we try to apply our diversity population generation method.
+And second, we try to apply our diversity population building method.
 
 
 
 \subsection{Cramped Room}
-On this layout, we can see (Figure \ref{CrampedRoomFSVariantsOrderedAvg}) that adding temporal features had a huge impact on the overall performance of the self-play agents, both in terms of the level of cooperation with other agents and in terms of the maximum common outcome reached.
-This may be explained by the characteristics of this cramped layout, as observing the last partner's locations can greatly help in predicting the partner's movement pattern.
+On this layout, we can see (Figure \ref{CrampedRoomFSVariantsOrderedAvg}) that adding temporal features using the channel extension had a positive impact on the overall performance of the self-play agents, both in terms of the level of cooperation with other agents and in terms of the maximum common outcome reached.
+However, tuple temporal features did not provide a significant improvement.
 
 While our diverse population showed some signs of improvement in most of our experiment settings when using the tuple frame stacking representation (Figure \ref{CrampedRoomFSTupleOrdered15Q}), there was no improvement for the channel frame stacking representation (Figure \ref{CrampedRoomFSChannelsOrdered15Q}), where many of the experiment settings even showed worse performance.
 
@@ -488,14 +488,14 @@ While our diverse population showed some signs of improvement in most of our exp
     \centering
     \includegraphics*[width=8cm]{../img/CrampedRoomFSVariantsOrderedAvg.png}
 
-    \caption{Average cummulative reward of final agents}
+    \caption{Cramped room: Average, ordered averaged cross-play of self-play agents (Simple CNN, FS Channels, FS Tuple)}
     \label{CrampedRoomFSVariantsOrderedAvg}
     \medskip
     \small 
     Average cummulative reward on the Cramped room layout of all self-play agents.
     All three types of self-play agent designs included.
 
-    Average, 0.25Q, 0.75Q
+    (Average, 0.25Q, 0.75Q)
 
 \end{figure}
 
@@ -504,12 +504,12 @@ While our diverse population showed some signs of improvement in most of our exp
     \centering
     \includegraphics*[width=8cm]{../img/CrampedRoomFSChannelsOrdered15Q.png}
 
-    \caption{Average cummulative reward of final agents ordered by evaluation results}
+    \caption{Cramped room: FS Channels, 0.15 quantile, ordered averaged cross-play of population final agents}
     \label{CrampedRoomFSChannelsOrdered15Q}
     \medskip
     \small 
     Average cummulative reward on the Cramped room layout of the best final agent using channels extension for temporal features.    
-    (Average, 0.25Q, 0.75Q)
+    (0.15Q, Min, 0.3Q)
 
 \end{figure}
 
@@ -517,7 +517,7 @@ While our diverse population showed some signs of improvement in most of our exp
     \centering
     \includegraphics*[width=8cm]{../img/CrampedRoomFSTupleOrdered15Q.png}
 
-    \caption{Average cummulative reward of final agents, 0.15quantile}
+    \caption{Cramped room: FS Tuple, 0.15 quantile, ordered averaged cross-play of population final agents}
     \label{CrampedRoomFSTupleOrdered15Q}
     \medskip
     \small 
@@ -529,27 +529,26 @@ While our diverse population showed some signs of improvement in most of our exp
 \newpage
 
 \subsection{Counter Circuit}
-Similarly, the application of temporal features had a significant impact on the Counter Circuit layout(Figure \ref{CounterCircuitFSVariantsOrderedAvg}).
+The application of temporal features had a significant impact on the Counter Circuit layout(Figure \ref{CounterCircuitFSVariantsOrderedAvg}) with both temporal features variants.
 Interestingly, the evaluation curve of channels and tuple is different. 
-It seems that the use of the channels frame stacking representation makes agents cooperative with virtually all other agents at a non-significantly low level of cooperation.
-However, at some point the increase in cooperation level is outperformed by a states tuple representation.
+It seems that the use of the channels frame stacking representation here causes agents to cooperate with virtually all other agents at a non-significantly low level of cooperation, while at some point the increase in cooperation level is outperformed by a states tuple representation.
 
 On this layout, the diversity population method managed to outperform the self-play agents in most of the experiment settings (Figures \ref {CounterCircuitFSChannelsOrderedQ15}, \ref {CounterCircuitFSTupleOrderedQ15}).
-However, we cannot say that the improvement is very convincing, as the cooperation failed noticeably in a few experimental settings.
+However, we cannot say that the improvement is very convincing, as in both variants the cooperation failed noticeably on two particular settings. 
 
 
 \begin{figure}[!ht]
     \centering
     \includegraphics*[width=8cm]{../img/CounterCircuitFSVariantsOrderedAvg.png}
 
-    \caption{Average cummulative reward of final agents}
+    \caption{Counter circuit: Average, ordered averaged cross-play of self-play agents (Simple CNN, FS Channels, FS Tuple)}
     \label{CounterCircuitFSVariantsOrderedAvg}
     \medskip
     \small 
     Average cummulative reward on the Counter circuit layout of all self-play agents.
     All three types of self-play agent designs included.
 
-    Average, 0.25Q, 0.75Q
+    (Average, 0.25Q, 0.75Q)
 
 \end{figure}
 
@@ -558,7 +557,7 @@ However, we cannot say that the improvement is very convincing, as the cooperati
     \centering
     \includegraphics*[width=8cm]{../img/CounterCircuitFSChannelsOrderedQ15.png}
 
-    \caption{Average cummulative reward of final agents ordered by evaluation results}
+    \caption{Counter circuit: FS Channels, 0.15 quantile, ordered averaged cross-play of population final agents}
     \label{CounterCircuitFSChannelsOrderedQ15}
     \medskip
     \small 
@@ -571,7 +570,7 @@ However, we cannot say that the improvement is very convincing, as the cooperati
     \centering
     \includegraphics*[width=8cm]{../img/CounterCircuitFSTupleOrderedQ15.png}
 
-    \caption{Average cummulative reward of final agents, 0.15quantile}
+    \caption{Counter circuit: FS Tuple, 0.15 quantile, ordered averaged cross-play of population final agents}
     \label{CounterCircuitFSTupleOrderedQ15}
     \medskip
     \small 
@@ -582,106 +581,76 @@ However, we cannot say that the improvement is very convincing, as the cooperati
 
 
 
-\section{Conclusion}
+\section{Results remarks}
 
-After having performed several experiments on few different kitchen layouts we try to conclude with resulting observations.
+After conducting multiple experiments on several different kitchen layouts, we try to summarize the resulting observations.
 
-The most influencial improvement of cooperative capabilities was the usage of temporal features.
-In our evaluation experiments even self-play trained agent showed great improvement with other self-play agents when extended by recent state frames informations.
-We believe this result is intuitive since even during self-play training due to the stochastic policy sampling agents may experience different sub trajectories leading to similarly good results.
-When they have several previous states at their disposal they should have better predicting capabilities about its partner current sub-goal.
+The main improvement in cooperative capabilities was the use of temporal features.
+In our evaluation experiments, even a self-play trained agent showed great improvement with other self-play agents when extended by recent state frames information.
+We believe this result is intuitive, since even during self-play training, due to the stochastic policy sampling, agents may experience different sub-trajectories leading to similarly good results.
+If they have several previous states, they should be better able to predict their partner's current subgoal.
 
-We believe that our idea of incremental diverse population building made even further slight improvement in majority of our experiments.
-However, as we discussed in introductory chapters (Section \ref{RobustnessEvaluation}), chosing right method for cooperation evaluation is another problem on its own.
+We believe that our idea of incrementally building diverse populations has slightly improved the majority of our experiments.
+However, as we discussed in the introductory chapters (section \ref{RobustnessEvaluation}), choosing the right method for cooperation evaluation is another problem in itself.
 
-For us the chosen condition of cooperation measure was looking at order of pairwise reached comoon outcomes and considering worse (0.15 quantile value) case value.
-Under this settings majority of all our experiments showed great coordination improvement on lower cooperation level.
-
-The agents trained using our proposed diverse population building process managed to cooperate with much wider set of other agents, although at the cost of significantly reduced maximal outcome.
-In order to state the final verdict about this outcome the results must be confronted with the desired definition of cooperation.
-In our opinion the production of agents that are capable of somewhat reasonable level of cooperation with wider set of unknown agents is a step in a right direction.
-And the fact that our results showed this form of cooperation capabilities at 0.15 quantile of all performed evaluations shows great conistency of our method.
-
-While our population building approach showed improvement in most of the experiments settings we are unfortunately unable to conclude any stable observations regarding diversive parameters.
-
-{\color{blue}TODO: No divers. most stable variant}
-{\color{blue}TODO: Even no diversification managed to cooperate with some agent that population inicialization could not}
-
- 
+For us, the chosen condition of the cooperation measure was to look at the order of the pairwise achieved common results and to consider the worse case (0.15 quantile value).
+Under this condition, the majority of our experiments exhibited significant coordination improvement at lower cooperation levels.
+Agents trained with our proposed diverse population generation process were able to cooperate with a much larger set of other agents, albeit at the cost of a significantly reduced maximum outcome.
+To make a final judgment about this finding, the results must be confronted with the desired definition of cooperation.
+In our opinion, producing agents capable of some reasonable level of cooperation with a larger set of unknown agents is a step in the right direction.
+And the fact that our results showed this form of cooperation ability in 0.15 quantile of all evaluations performed indicates the robustness of our method.
 
 
+While our population building approach showed on average an improvement in most of the experiment settings, it is questionable what exact experiment configuration should be considered as the most appropriate one, as for all of them we can find some of the evaluations performed where the results were not very convincing.
+We try to display the overall results in the following table (Table \ref{tab:exp_settings_results}), where we summarize all 0.15 quantile subresults from previous experiments (Figures \ref{SimpleCNNOrderedAvg0.15Q}, \ref{FSChannelsOrderedQ15}, \ref{FSTupleOrderedQ15}, \ref{CrampedRoomFSChannelsOrdered15Q}, \ref{CrampedRoomFSTupleOrdered15Q}, \ref{CounterCircuitFSChannelsOrderedQ15}, \ref{CounterCircuitFSTupleOrderedQ15}, and also final population agent cross-evaluation results \ref{FinalPopFinalPopSimpleCnnAvg} \ref{FinalPopFinalPopFsChannelsAvg} \ref{FinalPopFinalPopFsTupleAvg}, where the 0.15 quantile is considered instead of the mean).
+\begin{table}[tbp]
+    \small
+    \centering
+    \begin{tabular}{l|llllll|l}
+      \toprule
+      Experiment Name        & $0.5$     & $0.6$  & $0.7$  & $0.8$  & $0.9$  & $1.0$ & Average          \\ \midrule
+      SP           & $0.021$ & $0.027$ & $0.048$ & $0.149$ & $0.337$ & $0.805$ & $0.231$   \\\midrule
 
+      No divers.   & $0.120$ & $0.136$ & $0.246$ & $0.382$ & $0.420$ & $0.603$ & $0.318$ \\\midrule
+      R$0$         & $0.094$ & $0.151$ & $0.242$ & $0.272$ & $0.349$ & $0.516$ & $0.271$ \\
+      R$1$         & $0.104$ & $0.149$ & $0.209$ & $0.317$ & $0.429$ & $0.567$ & $0.296$ \\
+      R$2$         & $0.058$ & $0.113$ & $0.188$ & $0.306$ & $0.387$ & $0.542$ & $0.266$ \\\midrule
+      L$0$         & $0.072$ & $0.149$ & $0.227$ & $0.319$ & $0.458$ & $0.642$ & $0.311$  \\
+      L$1$         & $0.067$ & $0.106$ & $0.177$ & $0.217$ & $0.287$ & $0.495$ & $0.225$  \\
+      L$2$         & $0.090$ & $0.140$ & $0.223$ & $0.353$ & $0.370$ & $0.551$ & $0.288$  \\\midrule
+      R$0$L$0$     & $0.072$ & $0.111$ & $0.155$ & $0.221$ & $0.334$ & $0.522$ & $0.236$  \\
+      R$1$L$1$     & $0.046$ & $0.098$ & $0.139$ & $0.251$ & $0.362$ & $0.556$ & $0.242$  \\
+      
+      
+     \bottomrule
+    \end{tabular}
+    \caption{Summary of results across all performed experiments}
+    \label{tab:exp_settings_results}
+    \small
+    This table shows results at interesting points (50\%, 60\%, 70\%, 80\%, 90\%, 100\%) of all ordered cross-play evaluations.    
+\end{table}
+We examine interesting points of the ordered scores (50\%, 60\%, 70\%, 80\%, 90\%, 100\%) where the difference between self-play and population agents is most visible.
+Since the sub-results originate from different layouts where the maximum possible outcome value also differs, we try to normalize them by dividing the values of the sub-results by the maximum outcome obtained by self-play agents on each corresponding layout.
 
+Examining the results in the table, we can conclude with a few further observations.
+As discussed earlier, in all experiment settings our population of final agents significantly outperform the self-play agents in terms of cooperation with up to 90\% of the evaluation agents, albeit at a lower level of cooperation.
 
+From the point of view of specific KL Divergence diversification, the worst results were found when both reward and goal were increased (R$0$L$0$, R$1$L$1$).
+It seems that using both diversifying pressures for a given parameter size has a rather negative effect on the overall cooperation.
+If we focus on each of the diversifying techniques separately, the results are less consistent.
+It often happens that the order of results of two particular settings is different when looking at two different evaluation points, which makes it difficult to formulate a final statement about the findings.
 
+However, in our opinion, all three variants of reward augmentation yielded more stable results with smaller deviations.
+Reasonable performance was achieved on two weaker variants (R$0$ and R$1$), while the strongest variant (R$2$) showed slightly deteriorating results.
 
+More deviations were shown in experiments where the KL divergence term was used in the objective function.
+The first and third variants (L$0$, L$2$) performed very well, while the second variant (L$1$) seems to be abysmal.
+However, the relationship between the proposed variants of the loss augmentation experiment is a somewhat more complicated one, since the ratio between the loss coefficient and the loss clipping varies a lot. 
+It is difficult to say if this variation is just caused by some statistical error or if this particular setting is actually so detrimental to the overall cooperation.
 
-
-
-% \section{Idea}
-
-
-% We will transform population learning into an incremental process, where only newly added agents are learned.
-% This process is designed to be quite general with respect to the potentially pre-existing set of autonomous agents.
-
-% The building process will start with a population of whatever pre-trained agents are available, no matter what the source of agents is.
-% Consequently, a new agent is learned with respect to the previous population by using some diversification techniques.
-% After the agent is trained to cooperate with individual agents within the existing population while maintaining its diversity, it is added to the fixed population and the next agent can be trained.
-
-% By fixing the previously trained agent, we effectively solve the problem of non-stationarity, since no two agent policies are changed at the same time.
-% By embedding sampled partners from the population into the environment, we can consider the environment as a single agent from the point of view of the agent being trained.
-% However, despite the fact that the original overcooked environment is deterministic from the point of view of the transition function, by embedding partners whose policies will be mostly stochastic into the environment, the transition function becomes stochastic from the point of view of the trained agent.
-% The same applies to the reward function.
-% Since part of our proposed diversification methods involve reward augmentation based on the agent's policy, the environment's reward function will no longer be stationary throughout training due to the learning policy.
-
-% {\color{blue} Po prostudovani a sepsani MARL kapitoly mi pripada, ze muj pristup popsany vyse je vlastne hrozne slaby, obzvlaste tim, ze trenuju ciste reaktivni agenty bez jakekoliv pameti (uvazuji jen soucasnou CNN reprezentaci stavu, bez RNN, bez predeslych akci partnera, bez historie predchozich stavu),
-% tim vlastne ani nejsem schopny komplexne zachytit nejakou high-level strategii partnera, namisto toho se proste ucim jak se nejlepe (robustne?) zachovat v jednom konkretnim stavu vzhledem k potencialne vice moznych strategii, kterymi by se mohl partner v danem stavu ridit.
-% Tim, ze CNN kompletne popisuje stav prostredi, tak ani nemam partial observability a vstup kritika jsem nijak nerozsiroval.
-% Proste pripada mi, ze jsem v tom reseni nezahrnul moc zadne techniky popsane pro MAS.
-
-% Pripada mi ze i tak ty experimenty ktere zkousim a navrhuju jsou zajimave, jen mi pripadaji takove vytrzene z toho MAS kontextu - ale o tom jsme si myslim minule bavili ze nevadi.
-% }
-
-
-% Diverse population can be thought of as domain randomization technique
-% "Given just this, it is unclear what the agent should do: the optimal
-% policy for the agent depends heavily on the human’s policy, which the agent has no control over"
-
-% "From the perspective of game theory, we are interested
-% in n-person games in which the players have a shared or joint
-% utility function. In other words, any outcome of the game has
-% equal value for all players. Assuming the game is fully co-
-% operative in this sense, many of the interesting problems in
-% cooperative game theory (such as coalition formation and ne-
-% gotiation) disappear. Rather it becomes more like a standard
-% (one-player) decision problem, where the collection of n play-
-% ers can be viewed as a single player trying to optimize its be-
-% havior against nature." 
-
-% "Solutions to the coordination problem can be divided into
-% three general classes, those based on communication, those
-% based on convention and those based on learning"
-
-% Convention probably does not make sense as we have ad hoc partner
-% Craig Boutilie 1996
-
-% \section{Our definition(s?) of robustness}
-% Probably just average of pair results (non diagonal in case of same sets).
-% Maybe percentage of pairs who surpassed some threshold reward?
-
-% \section{Population construction}
-
-% \subsection{SP agents initialization}
-% \textbf{One agent is not enough?}
-
-% \subsection{population partner sampling during training}
-% \textbf{See if playing with whole population at once differs from one random partner for episode}
-
-% \subsection{Final agent training}
-
-% \section{Diverzification}
-% \textbf{maximize kl divergence among population partners policies}
-
-% \subsection{Population policies difference rewards augmentation}
- 
-% \subsection{Population policies difference loss}
+Nevertheless, it seems that the best overall configuration is the one without any diversity pressure, where the only source of diversity is the stochastic sampling of trajectories by previous partners.
+In all of our previous evaluations, we have mainly focused on the number of evaluation agents we are able to cooperate with, while ignoring the question of cooperation diversity.
+However, one of our original motivations for diverse population building was to discover new diverse behaviors that could lead to cooperation with agents with different types of behavior.
+If we take a step back to our initial trials (Figure \ref{CNNPopNoDiffBestInitFixation}), we can see that this has indeed been partially achieved, even in settings where no other diversification is employed.
+On all but the first seed we can find evidence of agents that were able to cooperate with some of the evaluation self-play agents that none from the population initialization could.
+Unfortunately, this does not occur as often as we would hope, and such new behavior is rarely captured in the behavior of the final population agent.  
