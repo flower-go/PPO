@@ -10,11 +10,9 @@ projdir = os.environ["PROJDIR"]
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src")
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines/stable-baselines3")
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines")
-# print(sys.path)
-# exit()
+
 from stable_baselines3.ppo.ppo import PPO
 from overcooked_ai.src.overcooked_ai_py.mdp.overcooked_env import OvercookedGridworld, OvercookedEnv, get_vectorized_gym_env
-from datetime import datetime
 from experiments_params import set_layout_params
 from visualisation.visualisation import heat_map
 from evaluation.evaluation import Evaluator
@@ -82,8 +80,6 @@ parser.add_argument("--seed", default=42, type=int, help="Random seed.")
 
 
 args = parser.parse_args([] if "__file__" not in globals() else None)
-
-
 
 import numpy as np
 random.seed(args.seed)
