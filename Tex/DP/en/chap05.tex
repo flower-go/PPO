@@ -2,11 +2,11 @@
 
 A common approach to two-player games is to train an agent by confronting it with a set of other AI agents.
 This has been shown to perform impressively well against human experts in several complex games such as Dota (\cite{DotaOpenFive}) or Starcraft (\cite{Starcraft}).
-The authors of the overcooked environment (\cite{carroll2020utility}) believe that the distributional shift from AI training to human evaluation is successful due to the fact that the nature of this environment is strongly competitive.
+The authors of the Overcooked environment (\cite{carroll2020utility}) believe that the distributional shift from AI training to human evaluation is successful due to the fact that the nature of this environment is strongly competitive.
 This is illustrated by the canonical case of a two-player zero-sum game.
 If humans take a branch in the search tree that is inadvertently suboptimal while in the role of minimizer, this only increases the outcome for the maximizer.
 
-However, the situation is not so ideal in the case of common payoff games such as overcooked environment.
+However, the situation is not so ideal in the case of common payoff games such as the Overcooked environment.
 If a self-play trained AI agent is paired with another sub-optimal partner, the result can be abysmal. 
 In this case, both agents play a maximizing role in the search tree. 
 If the self-play AI agent expects it's sub-optimal partner to be the same agent, it can choose branches that lead to maximum joint payoff.
@@ -16,8 +16,7 @@ Rather, it leads to failure for both agents.
 
 \section{Human cooperation}
 Most previous work in this area has focused on one of two types of coordination. 
-The first is coordination between a human and an AI partner. 
-And second, focusing solely on the fully AI-driven pair.
+One is coordination between a human and an AI partner, and the other focuses solely on the fully AI-driven pair.
 
 
 \par
@@ -37,13 +36,13 @@ There are several popular methods for partner selection during training.
 
 \subsection{Self-play}\label{selfplayMethod}
 The self-play method has already been mentioned, and it is arguably the simplest and most straightforward method for partner sampling.
-As the name indicates, the idea of this approach is that the agent currently being learned is paired with the copy of itself during training.
+As the name indicates, the idea of this approach is that the agent currently being trained is paired with the copy of itself during training.
 This method doesn't introduce any kind of diversity into the learning process, as it only learns from its own current policy.
 
 \subsection{Partner Sampling}
 Partner sampling is an extension of the previous method. 
 However, instead of playing only with the current policy, the partner is sampled from previously periodically saved policies of this given training period.
-The diversity in this method comes from the theoretical point of view that previous policies correspond to different behaviors.
+The diversity in this method comes from the idea that previous policies correspond to different behaviors.
 
 \subsection{Population-Based Training}
 The population-based training method is based on an evolutionary algorithm that focuses on hyperparameter training and model selection.
@@ -52,7 +51,7 @@ During each iteration, agents are drawn from the population and trained using th
 Pair-wise results are recorded, and at the end of the iteration, the worst agents are replaced by a copy of the best agents with their hyperparameters mutated.
 
 \subsection{Pre-trained Partners}
-Finally, a often employed method is to employ pre-trained partners.
+Finally, an often employed method is to use pre-trained partners.
 Diversity is expected here due to the fact that different runs of reinforcement learning algorithms often yield different agent behaviors.
 
 
@@ -62,8 +61,6 @@ It has been shown (\cite{10.1007/978-3-030-63823-8_46}) that this is true for th
 where, when performing a cross-play evaluation of the set of different agents obtained by the same method, 
 only those pairs of agents that were explicitly trained together performed well, while the remaining pairs failed.
 
-{\color{blue} Nemam si tady od nich z toho clanku pujcit primo ty obrazky ukazujici ten SP off-diagonal failure, abych se na to pak mohl vizualne odkazat ve svych experimentech? 
-Nebo krast obrazky se nedela?}
 The authors conclude with results showing that incorporating different pre-trained agents for training robust agents was significantly more successful than other methods.
 
 

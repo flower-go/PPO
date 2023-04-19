@@ -19,55 +19,55 @@ Warning--entry type for "DotaOpenFive" isn't style-file defined
 Warning--entry type for "SpinningUpIntro" isn't style-file defined
 --line 107 of file bibliography.bib
 Warning--entry type for "Starcraft" isn't style-file defined
---line 449 of file bibliography.bib
+--line 489 of file bibliography.bib
 Warning--entry type for "OvercookedGame" isn't style-file defined
---line 504 of file bibliography.bib
+--line 544 of file bibliography.bib
 Warning--entry type for "OvercookedImplementation" isn't style-file defined
---line 514 of file bibliography.bib
+--line 554 of file bibliography.bib
 Warning--entry type for "KLDivergence" isn't style-file defined
---line 524 of file bibliography.bib
+--line 564 of file bibliography.bib
 Warning--to sort, need author or key in KLDivergence
 Warning--empty year in KLDivergence
 Warning--empty year in OvercookedImplementation
-You've used 30 entries,
+You've used 33 entries,
             2773 wiz_defined-function locations,
-            812 strings with 11029 characters,
-and the built_in function-call counts, 14789 in all, are:
-= -- 1216
-> -- 1136
-< -- 17
-+ -- 388
-- -- 357
-* -- 1229
-:= -- 2314
-add.period$ -- 99
-call.type$ -- 30
-change.case$ -- 199
-chr.to.int$ -- 29
-cite$ -- 64
-duplicate$ -- 569
-empty$ -- 1075
-format.name$ -- 392
-if$ -- 3061
+            827 strings with 11741 characters,
+and the built_in function-call counts, 16773 in all, are:
+= -- 1362
+> -- 1368
+< -- 18
++ -- 466
+- -- 432
+* -- 1417
+:= -- 2649
+add.period$ -- 107
+call.type$ -- 33
+change.case$ -- 232
+chr.to.int$ -- 32
+cite$ -- 70
+duplicate$ -- 617
+empty$ -- 1163
+format.name$ -- 470
+if$ -- 3446
 int.to.chr$ -- 2
 int.to.str$ -- 1
 missing$ -- 16
-newline$ -- 164
-num.names$ -- 118
-pop$ -- 474
+newline$ -- 178
+num.names$ -- 130
+pop$ -- 547
 preamble$ -- 1
-purify$ -- 177
+purify$ -- 208
 quote$ -- 0
-skip$ -- 541
+skip$ -- 602
 stack$ -- 0
-substring$ -- 242
-swap$ -- 65
+substring$ -- 248
+swap$ -- 68
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 315
+type$ -- 348
 warning$ -- 3
-while$ -- 100
+while$ -- 109
 width$ -- 0
-write$ -- 393
+write$ -- 428
 (There were 9 warnings)

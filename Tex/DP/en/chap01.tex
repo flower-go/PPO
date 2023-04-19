@@ -7,34 +7,33 @@ The following pages are inspired by the introduction to reinforcement learning a
 \section{Markov decision process}
 \subsection*{Definition}
 
-\label{MDP} \textbf{Markov Decision Process} is tuple $\langle S, A, R, P, \rho_0\rangle$, where
+\label{MDP} \textbf{Markov Decision Process} is a tuple $\langle S, A, R, P, \rho_0\rangle$, where
 \begin{itemize}
     \item $S$ is the set of all valid states,
     \item $A$ is the set of all valid actions,
     \item $R: S \times A \times S \rightarrow \mathbb{R}$ is the reward function, with $r_t=R(s_t, a_t,s_{t+1})$ being reward obtained when transitioning from state $s_t$ to $s_{t+1}$ using action $a_t$.
-    \item $P: S \times A \rightarrow \mathcal{P}(S)$ is the transition probabilty function, where $P(s_{t+1}|s_t, a_t)$ is probability of transition from state $s_t$ to $s_{t+1}$ after taking action $a_t$. 
+    \item $P: S \times A \rightarrow \mathcal{P}(S)$ is the transition function, where $P(s_{t+1}|s_t, a_t)$ is probability of transition from state $s_t$ to $s_{t+1}$ after taking action $a_t$. 
     \item $\rho_0$ is starting state distribution.
 \end{itemize}
 The name Markov comes from the fact that the system satisfies the Markov property, which states that the history of previous states has no effect on the next state and that only the current state is considered for state transitions.
 
 \section{Single-agent environment}
 Having defined the mathematical model of the environment, let's review the related concepts.
-The whole problem of reinforcement learning (RL) can be best described by the following visualization.
+The whole problem of reinforcement learning (RL) can be best described by the following visualization (\cite{SpinningUpIntro}).
 
-\includegraphics*[width=12cm]{rl_diagram_transparent_bg.png}
+\includegraphics*[width=12cm]{rl_diagram_transparent_bg.png}\label{RLDiagram}
 
 Environment represents a kind of world with its internal rules and properties. 
-The agent is then an entity that exists within this world, observes \textbf{state s} of the world, decides to react with \textbf{action a} on the basis of this state, and receives \textbf{reward r} as a consequence of this action.
+The agent is then an entity that exists within this world, observes \textbf{state} $s$ of the world, decides to react with \textbf{action} $a$ on the basis of this state, and receives \textbf{reward} $r$ as a consequence of this action.
 The entire mechanism of this environment can then be broken down into these cycles of states, actions, and rewards.
 The goal of an agent is to interact with the environment in such a way as to maximize its cumulative reward.
 
 
 
 \subsection*{Observability}
-State s contains all information about environment at given time. 
-However, in some environment agent can perceive only \textbf{observation o} where some information about environment can be missing.
-In this case we say that environment is \textbf{partially observable} as opposed to \textbf{fully observable} environment where agent has all information available at it's observation.
-Nevertheless, this problem is more related to multi-agent environments discussed in the next chapter and not so much to single-agent settings.
+State $s$ contains all information about environment at given time. 
+However, in some environment agent can perceive only \textbf{observation} $o$ where some information about environment can be missing.
+In this case we say that environment is \textbf{partially observable} as opposed to \textbf{fully observable} environment where agent has all information available at its observation.
 
 \subsection*{Actions and policies}
 Environments can also differ in terms of what actions are possible within a given world.
@@ -127,7 +126,7 @@ The most important theorem for us is the reformulation of Bellman's equations fo
 \end{align*}
 
 As we will see in the next section. 
-The first RL algorithm will be a straightforward application of the Bellman equation for optimal policy.
+The first described RL algorithm will be a straightforward application of the Bellman equation for optimal policy.
 
 \subsection*{Advantage function}
 Now that we've spent a few sections defining functions for the absolute value of actions or state-action pairs, it's worth considering relative value as well.

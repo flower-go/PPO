@@ -13,14 +13,15 @@ Nevertheless, we will mostly focus on environments that are fully cooperative, m
 
 With this setting we can extend the definition from the MDP section \ref{MDP}:
 \subsection*{Definition}
-\textbf{Multiagent Markov Decision Process}(\cite{MMDP})is a tuple 
+\textbf{Multiagent Markov Decision Process}(\cite{MMDP}): \\
+is a tuple 
 $\langle n, S, \mathcal{A}, T, R\rangle$
 \begin{itemize}
     \item $n$ is the number of agents
     \item $S$ is the set of all valid states,
     \item $\mathcal{A} $ is the set of joint actions
     \item $T: S \times \mathcal{A} \times S \rightarrow [0,1]$ is the transition function
-    \item $R: S  \rightarrow \mathbb{R}$ is a real-valued reward function, where reward determined by the reward function $R(s)$ is received by the the entire collection of agents, or alternatively, all agents receive the same reward.
+    \item $R: S  \rightarrow \mathbb{R}$ is a real-valued reward function, where reward determined by the reward function $R(s)$ is received by the entire collection of agents, or alternatively, all agents receive the same reward.
 
 \end{itemize}
 
@@ -32,7 +33,8 @@ In general, the world can be of high complexity, and combined with limited senso
 Therefore, we extend our model definition to include the concept of partial observability.
 
 \subsection*{Definition}
-\textbf{Decentralized partially observable Markov decision process} (Dec-POMDP, \cite{DecPOMDP}) is tuple
+\textbf{Decentralized partially observable Markov decision process} (\cite{DecPOMDP}):
+is tuple
 $\langle n, S, \mathcal{A}, P, R, \mathcal{O}, O, h, b^0\rangle$ where,
 \begin{itemize}
     \item $n$ is the number of agents
@@ -72,20 +74,23 @@ Given the joint utility function, it is useful to think of the collection of age
 The problem with treating MMDP as a standard MDP where actions are distributed lies in coordination.
 In general, there are several different optimal joint policies.
 However, even if all agents choose their individual policies according to some optimal policy, there is no guarantee that they all pick from the same optimal joint policy.
-Such a final joint policy may be nowhere near the optimal one, and most likely even produce significantly worse performance.
+Such a final joint policy may be nowhere near the optimal one, and way likely produce significantly worse performance.
 In theory, there are two simple ways to ensure optimal coordination.
-First, there could exist a central control mechanism \ref{CentralScheme} that can compute the joint policy and then communicate the result actions to all individual agents.
+First, there could exist a central control mechanism (Section \ref{CentralScheme}) that can compute the joint policy and then communicate the result actions to all individual agents.
 Or second, each agent can communicate its choice of individual policy to the others.
 However, neither of these approaches are feasible in the real application.
 
 \subsection{Nash Equilibria}
-Alternatively, we can look at the MMDP from the perspective of an n-person game. 
+Alternatively, we can look at the MMDP from the perspective of an $n$-person game. 
 Then the problem of determining an optimal joint policy can be viewed as a problem of optimal equilibrium selection.
-A Nash equilibrium (\cite{NASH}) for a $\boldsymbol{\pi}^*$ can be defined as:\linebreak
-A set of policies $\pi^*$ is a Nash equilibrium if:
+% A Nash equilibrium (\cite{NASH}) for a set of policies $\boldsymbol{\pi}^*$ can be defined as:\linebreak
+A set of policies $\pi^*$ is a Nash equilibrium (\cite{NASH}) if:
 \[
-    \forall i \in n, \forall \pi^i: J(\boldsymbol{\pi}^{*-i}, \pi^{*i}) \ge J(\boldsymbol{\pi}^{*-i}, \pi^i)
+    \forall i \in n, \forall \pi^i: J(\boldsymbol{\pi}^{*-i}, \pi^{*i}) \ge J(\boldsymbol{\pi}^{*-i}, \pi^i),
 \]
+where the
+\[{\pi}^{-i}
+\] is joint-policy without the policy for agent $i$.
 
 However, not all Nash equilibria are optimal joint policies, as some may have lower utility than others.
 This makes multi-agent environments more sensitive to convergence to local suboptimal policies, as the only way to escape such an equilibrium is through coordinated modifications of all individual policies.
@@ -126,7 +131,7 @@ In other words, we want to make the training process as simple and accurate as p
 Once the agents are deployed, they again depend solely on their local observations.
 
 This learning scheme is often used in RL algorithms where both actors and critics are employed.
-For example, this is reflected in the PPO \ref{PPO} algorithms mentioned above.
+For example, this is reflected in the PPO (Algotihm \ref{PPOAlgorithm}).
 During training, both actor and critic are trained in parallel, and the value estimate obtained by the critic can be used to provide more accurate information about the real value of the given state, making the actor's policy update more stable and accurate.
 Once training is complete, the agents, provided with local observations, are asked to take action based solely on the actor.
 
@@ -148,32 +153,21 @@ However, in a multi-agent setting, we lose the theoretical basis that promises c
 Having extended our mathematical model to settings that satisfy the conditions for a multi-agent environment, we can continue with a brief mention of the multi-agent variants of reinforcement learning algorithms discussed in the previous chapter.
 \subsection*{MADDPG}
 The first of the algorithms mentioned is the Multi Agent Deep Deterministic Policy Gradient (MADDPG, \cite{MADDPG}) algorithm.
-The authors extend DDPG (briefly mentioned in \ref{QPlusPolicy}) by using centralized learning with decentralized execution.
+The authors extend DDPG (briefly mentioned in section \ref{QPlusPolicy}) by using centralized learning with decentralized execution.
 To address the problem of non-stationarity, the authors propose sampling from the ensemble of policies for each agent to obtain more robust multi-agent policies.
-This algorithm has been extensively experimented in academia with respect to multi-agent coordination environments.
+This algorithm has been extensively tested in academia with respect to multi-agent coordination environments.
 \subsection*{MAPPO}
-Finally, we want to mention the recent success in the form of Multi Agent Proximal Policy Optimization (MAPPO, \cite{MAPPO}) variant of the PPO \ref{PPO} algorithm.
+Finally, we want to mention the recent success in the form of Multi Agent Proximal Policy Optimization (MAPPO, \cite{MAPPO}) variant of the PPO (Algorithm \ref{PPOAlgorithm}).
 The authors revisit the use of PPO in multi-agent settings.
 In recent years, MADDPG has usually been the first choice of algorithm when dealing with multi-agent environments, leaving PPO ommitted.
 The authors hypothesize that this is due to two reasons: first, the belief that PPO is less sample-efficient than off-policy methods, and second, the fact that common implementation and hyperparameter tuning techniques when using PPO in single-agent settings often do not yield strong performance when transferred to multi-agent settings.
 
-The authors propose five important changes with respect to adaptation to multi-agent settings.
-\begin{itemize}
-    \item Value normalization: \newline 
-    employing value normalization using Generalized Advantage Estimation (\cite{GAE}) 
-    
-    \item Input Representation to Value Function: \newline 
-    enhanced global state with agent-specific features are used for critic, where such representation does not have substantially higher dimension
-
-    \item Training Data Usage: \newline
-    using smaller amount of trainig epochs to avoid non-stationarity problem and not splitting data to mini-batches to make policy update more accurate
-
-    \item PPO Clipping: \newline
-    maintain a clipping ratio $\epsilon$ under $0.2$, within this range, tune $\epsilon$ as trade-off between training stability and fast convergence
-
-    \item PPO Batch Size: \newline
-    utilize a large batch size
-\end{itemize}
+The authors propose five important changes regarding adaptation to multi-agent settings.
+First, they suggest using value normalization with Generalized Advantage Estimation (\cite{GAE}) to stabilize training.
+As far as state representation is concerned, they suggest augmenting the global state for the critic with agent-specific features if such a representation does not have a substantially higher dimension.
+To address the problem of non-stationarity, it is suggested to use a small number of training epochs in combination with not splitting the data into mini-batches to make the policy update more accurate.
+Regarding the clipping ratio $\epsilon$ the authors propose to keep the value below $0.2$ and within this range $\epsilon$ should be tuned for the trade-off between training stability and fast convergence.
+Finally, it is recommended to use a large batch size.
 
 Using these five concepts, they were able to achieve comparable or superior results to off-policy algorithms on several benchmark frameworks without any other domain or structural modifications.
 

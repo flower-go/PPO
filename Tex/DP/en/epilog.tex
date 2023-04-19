@@ -1,38 +1,37 @@
 \chapter*{Conclusion}
 
-We started this thesis by briefly introducing the reinforcement learning and its extenstion to multi-agent environments (Chapters \ref{IntroductionChapter}, \ref{RLChapter} and \ref{MAS}).
+We began this thesis with a brief introduction to reinforcement learning and its extension to multi-agent environments (Chapters \ref{IntroductionChapter}, \ref{RLChapter}, and \ref{MAS}).
 
-We then progressed with providing description of simplified fully cooperative multi-agent cooking game environment (Chapter \ref{OvercookedChapter}) which we worked with to study the cooperative capabilites of trained agents. 
-Subsequently, we tried to reimplement few results based on related previous work (Chapters \ref{RelatedWorkChapter} and \ref{BackgroundChapter}), where we attempted to demonstrate allegedly poor cooperative abilities of self-play trained agents, which later became a solid baselines for our experiments.
+We then proceeded to provide a description of a simplified fully cooperative multi-agent cooking game environment (Chapter \ref{OvercookedChapter}), which we worked with in the rest of our thesis to study the cooperative capabilities of trained agents. 
+Subsequently, we tried to reimplement some results based on related previous work ( Chapters \ref{RelatedWorkChapter} and \ref{BackgroundChapter}), where we tried to demonstrate allegedly poor cooperative abilities of self-play trained agents, which later became a solid baseline for our experiments.
 
-We later introduced our own novel approach for diverse population building method (Chapter \ref{DiversePopulationMethodChapter}).
-Here we tried to simplify the multi-agent environment towards single-agent perspective by effectively introducing domain randomization technique.
-Apart from this randomization we tried to induce even more diversity into the population by incorporating KL divergence bonuses to enhance the differences between the population agents.
-With such designed settings we executed several different experiments to evaluate cooperative capabilites and robustness of such method. 
+Later, we introduced our own novel iterative approach of the diverse population method (Chapter \ref{DiversePopulationMethodChapter}).
+Here we tried to simplify the multi-agent environment towards a single-agent perspective by effectively introducing domain randomization technique.
+Apart from this randomization, we tried to induce even more diversity into the population by incorporating KL divergence bonuses to enhance the differences between the behaviors of the population agents.
+With such designed settings, we conducted several different experiments to evaluate the cooperative capabilities and robustness of such a method.
 
-Here we revisited the problem of evaluation of cooperation, where we demonstrated that taking into consideration only an overall mean is not sufficient metric.
-Instead we proposed to first perform cross-play evaluation of evaluated agents against evaluation set and then order these results in an ascending order and study the whole progression of such ordering.
+Here we revisited the problem of cooperation evaluation, where we demonstrated that considering only an overall mean is not a sufficient metric.
+Instead, we proposed to first perform a cross-play evaluation of the evaluated agents against the evaluation set, and then to arrange these results in an ascending order, and to study the whole progression of such an order.
 
-With the addition of considering lower 0.15 quantile value of results we were able to fulfill the goals that we have set for ourselfs in the beginning and demonstrated robust cooperative abilities with much wider set of agents compared to self-play agents.
-However, while our agents were able to cooperate with significantly wider set of agents, this came with a cost of decreased level of cooperation as our agents were not able to reach such high outcomes as self-play agents.
-Nevertheless we believe that such shift can be considered as an improvement in cooperation abilities since we believe it is more desirable to have an agent capable of decent cooperation with much wider types of agents behaviors then having a specialized agent who can reach outstanding results only with limited type of partner behavior.
-
-We were able to improve the cooperation of agents slightly even further by extending the information available to the agents by incorporation the temporal information about previous states of the environment.
-
-With a
+With the addition of considering the lower 0.15 quantile of results, we were able to meet our initial goals and demonstrate robust cooperation with a much larger set of agents compared to self-play agents.
+However, while our agents were able to cooperate with a considerably broader set of self-play agents, this came at the cost of a lower yet still reasonable level of cooperation, as our agents were not able to achieve as high outcomes as self-play agents.
+Nevertheless, we believe that such a shift can be seen as an improvement in cooperation abilities, since we assume that it is more desirable to have an agent capable of reasonable cooperation with much wider types of agent behaviors than to have a specialized agent that can only achieve excellent results with limited types of partner behaviors.
 
 
+We were then able to slightly improve the cooperation of the agents by extending the information available to the agents by incorporating the temporal information about previous states of the environment.
+After proposing two variants of such extension, we evaluated different agents trained with our method against each other, where in combination of channels temporal information extension our agents showed tremendous results both in cooperating with a wide range of other agents and also managed to come close to the maximum result similar to that of self-play agents.
+With this result, we claim that our method shows an overall improvement in robustness over self-play training.
 
+After applying all of these ideas and improvements to one particular layout where we were able to get an apparent improvement in cooperation, we tried to evaluate our method on two other layouts.
+The improvements on these layouts were not as significant as we had hoped, but we think it still proved that our method is consistent and thus transferable to other settings.
 
-So far it looks that our method works if we set threshold for cooperation to smaller value (cca 70 shared reward) and look for 0.30 quantil.
+While we believe that the idea of using KL divergence as a tool to promote diversity is a useful one, when we tried to evaluate all the experiments performed, we were disappointingly unable to derive any generally appropriate parameters for such diversification.
+We conclude by claiming that the best results were obtained when our iterative population-building process was used without any additional diversity-promoting tools.
+Therefore, we believe that simple domain randomization by sampling previous stochastic population partners alone was the most successful diversification technique after all.
 
+After gathering all our results, we suggest that future work could further study the effect of better population initialization, as we were limited to only three somewhat diverse agent behaviors.
+Additionally, it seemed to us that the success of our approach was more dependent on the diversity of the initial population than we expected.
+Similarly, we suggest that it might be beneficial to focus more on prioritizing sampled population partners to force even more robust cooperation with as many partner behaviors as possible, since in our experiments we only sampled our partners uniformly.
 
-TODO: Even when no diversification was applied, it managed in some cases to learn to cooperate with some self-play agents that none from pop init could.
-
-While populatino agents are more cooperative at lower level, there are still quite a lot self-play agents that our trained agents cannot cooperate with.
-Lack of prioritization of population sampling
-
-
-{\color{blue}TODO: what should go in here?}
 
 \addcontentsline{toc}{chapter}{Conclusion}

@@ -95,13 +95,12 @@ With this constraint, it makes sense to compare the results of different runs.
 
 In addition to the general reward for delivering soup, there may be player-dependent partial rewards that are not accounted for in the total sum of rewards.
 These rewards are mainly used for learning purposes of the agents, since especially on some particular maps it is highly unlikely that by following the initially random policy the whole process of soup making including delivery will be completed.
-Using predefined partial rewards
+There are several predefined partial rewards:
 \begin{itemize}
     \item Dish pickup reward - Dish is picked in useful situation, e.g. pot is ready or cooking.
     \item Soup pickup reward 
     \item Placement in pot reward - Useful ingredient is added to the pot, in our setting only onion soup recipe is used, so this corresponds to the action where onion was added to the pot.
 \end{itemize}
-allows agents to learn subtasks first.
 It is important to eventually ignore these partial rewards during training, as agents could focus on these subtasks and ignore the main goal thus failing the main task altogether.
 This is usually implemented by linearly decreasing the weight of partial rewards over some finite time horizon.
 
@@ -109,7 +108,7 @@ This is usually implemented by linearly decreasing the weight of partial rewards
 \subsection{Initial state}
 As there are two functions predefined by the authors to represent the state of the environment, there are also two ways to create the initial state of the environment.
 
-The first of the two uses fixed layout initial player locations, which always creates an identical initial state including both players' initial locations.
+The first of these uses fixed initialization, which always creates an identical initial state, including the initial locations of both players.
 However, learning a single agent by always placing it in the same initial location will likely cause it to fail when starting in the opposite location.
 For this reason, $player\_index$ is introduced to specify which agent is interpreted as player number one and player number two.
 This index is randomized every time the environment is reset, ensuring that the agent encounters both starting locations during learning.

@@ -1,4 +1,4 @@
-\begin{thebibliography}{30}
+\begin{thebibliography}{33}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -82,6 +82,16 @@ Matteo Hessel, Joseph Modayil, Hado van Hasselt, Tom Schaul, Georg Ostrovski,
 \newblock Rainbow: Combining improvements in deep reinforcement learning, 2017.
 \newblock URL \url{https://arxiv.org/abs/1710.02298}.
 
+\bibitem[Hill et~al.(2018)Hill, Raffin, Ernestus, Gleave, Kanervisto, Traore,
+  Dhariwal, Hesse, Klimov, Nichol, Plappert, Radford, Schulman, Sidor, and
+  Wu]{stable-baselines}
+Ashley Hill, Antonin Raffin, Maximilian Ernestus, Adam Gleave, Anssi
+  Kanervisto, Rene Traore, Prafulla Dhariwal, Christopher Hesse, Oleg Klimov,
+  Alex Nichol, Matthias Plappert, Alec Radford, John Schulman, Szymon Sidor,
+  and Yuhuai Wu.
+\newblock Stable baselines.
+\newblock \url{https://github.com/hill-a/stable-baselines}, 2018.
+
 \bibitem[Ho and Ermon(2016)]{Ho2016GenerativeAI}
 Jonathan Ho and Stefano Ermon.
 \newblock Generative adversarial imitation learning.
@@ -102,6 +112,12 @@ Paul Knott, Micah Carroll, Sam Devlin, Kamil Ciosek, Katja Hofmann, A.~D.
 Solomon Kullback.
 \newblock \emph{Information Theory and Statistics}.
 \newblock Wiley, New York, 1959.
+
+\bibitem[Liang et~al.(2018)Liang, Liaw, Moritz, Nishihara, Fox, Goldberg,
+  Gonzalez, Jordan, and Stoica]{liang2018rllib}
+Eric Liang, Richard Liaw, Philipp Moritz, Robert Nishihara, Roy Fox, Ken
+  Goldberg, Joseph~E. Gonzalez, Michael~I. Jordan, and Ion Stoica.
+\newblock Rllib: Abstractions for distributed reinforcement learning, 2018.
 
 \bibitem[Lillicrap et~al.(2015)Lillicrap, Hunt, Pritzel, Heess, Erez, Tassa,
   Silver, and Wierstra]{DDPG}
@@ -186,6 +202,11 @@ L.~S. Shapley.
 Richard~S Sutton and Andrew~G Barto.
 \newblock \emph{Reinforcement learning: An introduction}.
 \newblock MIT press, 2018.
+
+\bibitem[Watkins(1989)]{Watkins:89}
+C.~J. C.~H. Watkins.
+\newblock \emph{Learning from Delayed Rewards}.
+\newblock PhD thesis, King's College, Oxford, 1989.
 
 \bibitem[Williams(1992)]{EntropyRegularization}
 Ronald~J. Williams.
