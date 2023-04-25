@@ -173,36 +173,22 @@ class OnPolicyAlgorithm(BaseAlgorithm):
         obs = self.initialize_obs(obs)
         other_agent_obs = self.initialize_obs(other_agent_obs)
 
-
-        # if self.args.frame_stacking > 1:
-        #     obs = np.array([[single_obs for _ in range(self.args.frame_stacking)] for single_obs in obs])
-        #     other_agent_obs = np.array([[single_other_agent_obs for _ in range(self.args.frame_stacking)] for single_other_agent_obs in other_agent_obs])
-
         while n_steps < n_rollout_steps:
             if self.use_sde and self.sde_sample_freq > 0 and n_steps % self.sde_sample_freq == 0:
                 # Sample a new noise matrix
                 self.policy.reset_noise(env.num_envs)
 
             with th.no_grad():
-                # Convert to pytorch tensor or to TensorDict
-                # obs = np.array([entry["both_agent_obs"][0] for entry in self._last_obs])
-                # obs_tensor = obs_as_tensor(obs, self.device)
-
                 obs = self.update_obs(obs, np.array([entry["both_agent_obs"][0] for entry in self._last_obs]))
                 obs_tensor = obs_as_tensor(obs, self.device)
                 actions, values, log_probs = self.policy(obs_tensor)
-
-                # from pytorch_model_summary import summary
-                # summary(self.policy, obs_tensor, print_summary=True, show_hierarchical=True, max_depth=10, )
-
-                # other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self._last_obs])
                 other_agent_obs = self.update_obs(other_agent_obs, np.array([entry["both_agent_obs"][1] for entry in self._last_obs]))
                 if self.env.population_mode:
                     other_agent_actions = []
 
                     ind_start = 0
+                    #Actions are sampled according to the sampled environment partners from population
                     for (pop_chunk, other_agent_model) in self.split_pop_indices(train=True):
-                        #TODO: solve action concatenation for frame_stacking
                         other_obs = other_agent_obs[ind_start:ind_start+pop_chunk]
                         ind_start+=pop_chunk
                         other_agent_a, _ = other_agent_model.policy.predict(other_obs, deterministic=self.args.partner_action_deterministic) # TODO: should population agents play argmax during training?
@@ -215,7 +201,6 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                     other_agent_actions = other_agent_actions.cpu().numpy()
 
             actions = actions.cpu().numpy()
-
             joint_action = [(actions[i], other_agent_actions[i]) for i in range(len(actions))]
 
             # Rescale and perform action
@@ -228,8 +213,6 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
             agent_shaped_r = [info["shaped_r_by_agent"][info["policy_agent_idx"]] for info in infos]
 
-
-
             if self.env.population_mode:
                 if self.args.delay_shared_reward:
                     rewards = (1 - self.shaped_r_coef_horizon) * rewards
@@ -237,14 +220,13 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             else:
                 rewards = rewards + self.shaped_r_coef_horizon * np.array(agent_shaped_r)
 
+            #Reward augmentation based on KL divergence between current and population policies
             if self.env.population_mode and self.args.kl_diff_bonus_reward_coef > 0:
                 with th.no_grad():
                     kl_divs = []
-                    # actions_dist_logits = self.policy.get_distribution(obs_tensor).distribution.logits.cpu()
                     actions_dist_logits = self.policy.get_distribution(obs_tensor).distribution.logits
 
                     for ind in self.env.population:
-                        # pop_ind_actions_dist_logits = ind.policy.get_distribution(obs_tensor).distribution.logits.cpu()
                         pop_ind_actions_dist_logits = ind.policy.get_distribution(obs_tensor).distribution.logits
                         diff = kl_diff_reward_loss(actions_dist_logits, pop_ind_actions_dist_logits)
                         diff = th.sum(diff, dim=1)
@@ -334,11 +316,16 @@ class OnPolicyAlgorithm(BaseAlgorithm):
         callback.on_training_start(locals(), globals())
         self.shaped_r_coef_horizon = 1
         self.kl_diff_bonus_reward_coef = args.kl_diff_bonus_reward_coef
+
+        #Best policy model is kept during training
         best_model = self.policy
         best_model_eval_val = -1
 
         while self.num_timesteps < total_timesteps:
 
+            #Population is shuffled on every start of new training iteration so that each trained partner is on average
+            #represented by same amount since size of population is not always integer divisible
+            #by the number of parallel environments
             if self.env.population_mode:
                 random.shuffle(self.env.population)
 
@@ -358,22 +345,13 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                     sparse_r_other_agent = safe_mean([ep_info["ep_game_stats"]["cumulative_sparse_rewards_by_agent"][ep_info["policy_agent_idx"]] for ep_info in self.ep_info_buffer])
                     print(f"checking for divergence - values: {sparse_r},{sparse_r_other_agent}")
 
+                    #If none of the agents managed to recieve on average at least episode outcome of value 3
+                    #the current training run is considered to be a failure and is stopped
                     if sparse_r < 3 and sparse_r_other_agent < 3:
                         print(
                             f"Divergent solution with sparse reward values for agents ({sparse_r}, {sparse_r_other_agent})")
                         raise divergent_solution_exception.divergent_solution_exception(
                             f"Divergent solution with sparse reward values for agents ({sparse_r}, {sparse_r_other_agent})")
-
-                    # if self.env.population_mode:
-                        #in population learning it can easily happen that the learned agent is being dominant in delivering completed soups
-                    #     if sparse_r < 3 and sparse_r_other_agent < 3:
-                    #         print(f"Divergent solution with sparse reward values for agents ({sparse_r}, {sparse_r_other_agent})")
-                    #         raise divergent_solution_exception.divergent_solution_exception(f"Divergent solution with sparse reward values for agents ({sparse_r}, {sparse_r_other_agent})")
-                    # else:
-                    #     # Neither of agents have managed to serve single plate of soup within first args["divergent_check_timestep"], models have likely converged to some bad local optima
-                    #     if sparse_r < 3 or sparse_r_other_agent < 3:
-                    #         print(f"Divergent solution with sparse reward values for agents ({sparse_r}, {sparse_r_other_agent})")
-                    #         raise divergent_solution_exception.divergent_solution_exception(f"Divergent solution with sparse reward values for agents ({sparse_r}, {sparse_r_other_agent})")
 
             if continue_training is False:
                 break
@@ -405,19 +383,29 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             self.train()
 
 
+            #Evaluation
             evaluate = self.num_timesteps > args.training_percent_start_eval * args.total_timesteps
             if evaluate and args.eval_interval is not None and iteration % args.eval_interval == 0:
                 evaluation_avg_rewards_per_episode = self.evaluate_env()
                 print(evaluation_avg_rewards_per_episode)
                 eval_values = [evaluation_avg_rewards_per_episode]
+
+                #Looking for model with at least 98% result of current best
                 if evaluation_avg_rewards_per_episode > 0.98 * best_model_eval_val:
+
+                    #If found further reevaluation is performed to get more accurate results
                     for _ in range(args.evals_num_to_threshold):
                         eval_values.append(self.evaluate_env())
+
+                    #If 98% threshold of previously best model still holds we accept current model as the best
+                    #since we are interested in models that are trained longer
+
                     if np.mean(eval_values) > 0.98 * best_model_eval_val:
                         print(f"found better model with value {np.mean(eval_values)}")
                         best_model_eval_val = np.mean(eval_values)
                         best_model = copy.deepcopy(self.policy)
 
+                #If threshold for layout solving is reached we return current model
                 if evaluation_avg_rewards_per_episode > args.eval_stop_threshold:
                     print(f"evaluation result over {args.eval_stop_threshold} detected, continuing with further evaluation")
                     eval_values = [evaluation_avg_rewards_per_episode]
@@ -425,10 +413,10 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                         eval_values.append(self.evaluate_env())
 
                     print(f"evaluation result after re-evaluation: {np.mean(eval_values)}")
-                    # if np.mean(eval_values) > args.eval_stop_threshold:
-                    #     print("found good solution, terminating training")
-                    #     self.logger.record("evaluation_rollout/avg_ep_rew_sum", np.mean(eval_values))
-                    #     break
+                    if np.mean(eval_values) > args.eval_stop_threshold:
+                        print("found good solution, terminating training")
+                        self.logger.record("evaluation_rollout/avg_ep_rew_sum", np.mean(eval_values))
+                        break
                 else:
                     self.logger.record("evaluation_rollout/avg_ep_rew_sum", evaluation_avg_rewards_per_episode)
 
@@ -443,11 +431,17 @@ class OnPolicyAlgorithm(BaseAlgorithm):
         return state_dicts, []
 
     def anneal_learning_parameters(self):
+        """
+        Entropy bonus and partial reward coeficients are being linearly annealed
+        """
         if self.args:
             self.ent_coef = max(self.args.ent_coef_end,self.args.ent_coef_start - (self.num_timesteps / self.args.ent_coef_horizon) * (self.args.ent_coef_start - self.args.ent_coef_end))
             self.shaped_r_coef_horizon = max(0, 1 - (self.num_timesteps / self.args.shaped_r_coef_horizon))
 
     def evaluate_env(self):
+        """
+        Model is evaluated (self-play of population mode)
+        """
         evaluation_rewards = []
 
         self._last_obs = self.env.reset()
@@ -459,23 +453,17 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
         for _ in range(400):
             with th.no_grad():
-                # Convert to pytorch tensor or to TensorDict
                 obs = self.update_obs(obs, np.array([entry["both_agent_obs"][0] for entry in self._last_obs]))
-                # obs = np.array([entry["both_agent_obs"][0] for entry in self._last_obs])
-                # obs_tensor = obs_as_tensor(obs, self.device)
-                actions, _= self.policy.predict(obs, deterministic=True) #Good result argmaxing => probably good result stochastic, other way not necesarily true
-
+                actions, _= self.policy.predict(obs, deterministic=True)
 
                 other_agent_obs = self.update_obs(other_agent_obs, np.array([entry["both_agent_obs"][1] for entry in self._last_obs]))
-                # other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self._last_obs])
                 if self.env.population_mode:
                     other_agent_actions = []
                     ind_start = 0
                     for (pop_chunk, other_agent_model) in self.split_pop_indices():
                         other_obs = other_agent_obs[ind_start:ind_start+pop_chunk]
                         ind_start+=pop_chunk
-                        # other_agent_obs_tensor = obs_as_tensor(other_obs, self.device)
-                        other_agent_a, _ = other_agent_model.policy.predict(other_obs, deterministic=True) #Good result argmaxing => probably good result stochastic, other way not necesarily true
+                        other_agent_a, _ = other_agent_model.policy.predict(other_obs, deterministic=True)
                         other_agent_actions.append(other_agent_a)
 
                     other_agent_actions = np.concatenate(other_agent_actions)
@@ -513,16 +501,14 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
     def split_pop_indices(self, train=False):
         """
-        Current population will be evenly distributed into available parallel environments
-        This methods returns how many environments correspond to given individual from population
+        Current population will be evenly distributed into available parallel environments.
+        This methods returns list of tuples representing index of partner and number of environments he was assigned to.
+        Only args.n_sample_partners partners will be sampled from existing population.
         """
 
         sample_population = self.env.population
         if train and self.args.n_sample_partners > 0:
             sample_population = self.env.population[0:self.args.n_sample_partners]
-
-        # if train and self.args.n_sample_partners > 0:
-        #     sample_population = np.random.choice(self.env.population, size=self.args.n_sample_partners)
 
         indices = []
         remaining_pop_size = len(sample_population)
@@ -562,10 +548,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 data = [obs]
                 for _ in range(self.args.frame_stacking - 1):
                     data.append(obs[:,0:10,:,:])
-                # arr = [obs[:,0:10,:,:] for _ in range(self.args.frame_stacking)]
                 obs = np.concatenate(data, axis=1)
-
-
 
         return obs
 

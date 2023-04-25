@@ -1,9 +1,6 @@
-import copy
-
 import numpy as np
 import torch as th
 import os
-from stable_baselines3.common.utils import obs_as_tensor
 
 
 class Evaluator(object):
@@ -16,6 +13,10 @@ class Evaluator(object):
         self.venv.reset_times([i for i in range(args.num_workers)])
 
     def evaluate(self, agent_set_0, agent_set_1, num_games_per_worker = 2, layout_name = None, group_name = None, deterministic=True, eval_env="", mode="POP"):
+        """
+        Pairwise cross-evaluation is performed.
+        Result is saved for future straightforward loading.
+        """
         file_full_name = f"{os.environ['PROJDIR']}/diverse_population/evaluation/{layout_name}/" + group_name + ('' if deterministic else '_STOCH')
         file_full_name += eval_env
         try:
@@ -39,84 +40,12 @@ class Evaluator(object):
 
         return np.array(result_matrix)
 
-    def analyze(self, table, mode="POP", verbose=0):
-        best_agent = None
-        best_agent_avg = None
-        best_init_avg=None
-        init_avg=None
-        final_best_avg=None
-        best_pop_avg=None
-
-        if mode == "POP":
-            row_avgs = np.sum(table, axis=1) / table.shape[1]
-            best_init_avg = np.max(row_avgs[:self.args.init_SP_agents])
-            init_avg = np.mean(row_avgs[:self.args.init_SP_agents])
-            avg = np.mean(table[self.args.init_SP_agents:])
-            non_zero_avg = np.sum(table[self.args.init_SP_agents:][table[self.args.init_SP_agents:] > 0]) / table[self.args.init_SP_agents:][table[self.args.init_SP_agents:] > 0].size
-
-            final_best_avg = np.max(row_avgs[self.args.trained_models:])
-            best_pop_avg = np.max(row_avgs[self.args.init_SP_agents:self.args.trained_models])
-
-            above_threshold = (table[self.args.init_SP_agents:] > 40).sum(axis=1)
-            max_above_threshold = np.max(above_threshold)
-            avg_above_threshold = np.mean(above_threshold)
-
-
-            if verbose:
-                print(f"best init row average: {best_init_avg}")
-                print(f"init average: {init_avg}")
-
-                print(f"final best row average: {final_best_avg}")
-                # print(f"pop best row average: {best_pop_avg}")
-
-                print(f"max_above_threshold: {max_above_threshold}")
-
-                # print(f"mean SP part: {np.mean(table[:self.args.init_SP_agents])}")
-                # print(f"mean SP of non zeros: {np.sum(table[:self.args.init_SP_agents][table[:self.args.init_SP_agents] > 0]) / table[:self.args.init_SP_agents][table[:self.args.init_SP_agents] > 0].size}")
-                # print(f"zero SP ratio: {np.sum(table[:self.args.init_SP_agents] == 0.0) / table[:self.args.init_SP_agents].size}%")
-                # print(f"mean POP part: {avg}")
-                # print(f"mean POP of non zeros: {non_zero_avg}")
-                # print(f"zero POP ratio: {np.sum(table[self.args.init_SP_agents:] == 0.0) / table[self.args.init_SP_agents:].size}%")
-
-        else:
-            zero_diag = copy.deepcopy(table)
-            np.fill_diagonal(zero_diag, 0)
-            row_avgs = np.sum(table, axis=1) / table.shape[1]
-            best_agent = np.argmax(row_avgs)
-            best_agent_avg = np.max(row_avgs)
-
-            row_avgs = np.sum(zero_diag, axis=1) / zero_diag.shape[1]
-            best_agent = np.argmax(row_avgs)
-            best_agent_avg = np.max(row_avgs)
-
-            sorted = np.sort(row_avgs)
-            print(sorted)
-
-            above_threshold = (zero_diag > 40).sum(axis=1)
-            max_above_threshold = np.max(above_threshold)
-            avg_above_threshold = np.mean(above_threshold)
-
-            avg = np.mean(table[~np.eye(table.shape[0], dtype=bool)])
-            if verbose:
-                print(f"avg of diagonal: {np.mean(np.diagonal(table))}")
-                print(f"avg of NON-diagonal: {avg}")
-
-            non_zero_avg = None
-        return {
-            "best_agent": best_agent,
-            "best_agent_avg": best_agent_avg,
-            "avg": avg,
-            "non_zero_avg": non_zero_avg,
-            "best_init_avg": best_init_avg,
-            "init_avg": init_avg,
-            "final_best_avg": final_best_avg,
-            "best_pop_avg": best_pop_avg,
-            "max_above_threshold": max_above_threshold,
-            "avg_above_threshold": avg_above_threshold
-
-        }
-
     def eval_episodes(self, self_agent_model, other_agent_model, num_games_per_worker, deterministic=True):
+        """
+        Several environment episodes are evaluated for given pair of models.
+        Returns average outcome.
+        """
+
         evaluation_rewards = []
 
         for _ in range(num_games_per_worker):
@@ -124,19 +53,15 @@ class Evaluator(object):
             obs = np.array([entry["both_agent_obs"][0] for entry in self.venv._last_obs])
             other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self.venv._last_obs])
 
+            #Observations are modified according to currently used frame stacking method
             obs = self.initialize_obs(obs)
             other_agent_obs = self.initialize_obs(other_agent_obs)
 
-
-
             for _ in range(400):
                 with th.no_grad():
-                    # Convert to pytorch tensor or to TensorDict
-                    # obs = np.array([entry["both_agent_obs"][0] for entry in self.venv._last_obs])
                     obs = self.update_obs(obs, np.array([entry["both_agent_obs"][0] for entry in self.venv._last_obs]))
                     actions, _ = self_agent_model.policy.predict(obs, deterministic=deterministic)
 
-                    # other_agent_obs = np.array([entry["both_agent_obs"][1] for entry in self.venv._last_obs])
                     other_agent_obs = self.update_obs(other_agent_obs, np.array([entry["both_agent_obs"][1] for entry in self.venv._last_obs]))
                     other_agent_actions, _ = other_agent_model.policy.predict(other_agent_obs, deterministic=deterministic)
 
@@ -155,15 +80,11 @@ class Evaluator(object):
 
         return evaluation_avg_rewards_per_episode
 
-    # def update_obs(self, last_obs, obs):
-    #     if self.args.frame_stacking > 1:
-    #         last_obs = np.roll(last_obs, 1, axis=1)
-    #         last_obs[:,0] = obs
-    #         obs = last_obs
-    #
-    #     return obs
 
     def update_obs(self, last_obs, obs):
+        """
+        Current observations are appended to previous state representation using corresponding frame stacking method.
+        """
         obs = self.tranpose(obs)
 
         if self.args.frame_stacking > 1:
@@ -181,6 +102,9 @@ class Evaluator(object):
         return obs
 
     def initialize_obs(self, obs):
+        """
+        Initial observations are resctructured according to the applied frame stacking method.
+        """
         obs = self.tranpose(obs)
 
         if self.args.frame_stacking > 1:
@@ -188,18 +112,17 @@ class Evaluator(object):
                 # creates (B X Frames x C x W x H) observation
                 obs = np.array([[single_obs for _ in range(self.args.frame_stacking)] for single_obs in obs])
             else:
-                # creates (B x (C x Frames) x W x H) observation
+                # creates (B x (Frames * 10 + C) x W x H) observation
                 data = [obs]
                 for _ in range(self.args.frame_stacking - 1):
                     data.append(obs[:, 0:10, :, :])
-                # arr = [obs[:,0:10,:,:] for _ in range(self.args.frame_stacking)]
                 obs = np.concatenate(data, axis=1)
-
-
-
         return obs
 
     def tranpose(self, obs):
+        """
+        observations are transposed to channels-first format
+        """
         if len(obs.shape) == 5:
             obs = np.transpose(obs, (0, 1, 4, 2, 3))
         if len(obs.shape) == 4:

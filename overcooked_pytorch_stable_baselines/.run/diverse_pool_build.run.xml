@@ -14,7 +14,7 @@
     <option name="ADD_CONTENT_ROOTS" value="true" />
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <option name="SCRIPT_NAME" value="$PROJECT_DIR$/overcooked_ai/src/overcooked_ai_py/diverse_population/diverse_pool_build.py" />
-    <option name="PARAMETERS" value="--mode=&quot;SP&quot; --exp=&quot;cramped_room_vf_lower_POP_INIT_FS_CHANNELS&quot; --trained_models=12 --seed=46 --kl_diff_bonus_reward_coef=0.0 --kl_diff_bonus_reward_clip=0.0 --kl_diff_loss_coef=0.0 --kl_diff_loss_clip=0.0 --n_sample_partners=3 --init_SP_agents=12 --frame_stacking=4 --frame_stacking_mode=&quot;channels&quot; --tensorboard_log --layout_name=&quot;cramped_room&quot; --vf_coef=0.01 --ent_coef_end=0.0 --total_timesteps=2500000 --execute_final_eval --final_eval_games_per_worker=1" />
+    <option name="PARAMETERS" value="--mode=&quot;SP&quot; --exp=&quot;3FS_TUPLE_SP_EVAL&quot; --trained_models=30 --seed=48 --kl_diff_bonus_reward_coef=0.0 --kl_diff_bonus_reward_clip=0.0 --kl_diff_loss_coef=0.0 --kl_diff_loss_clip=0.0 --n_sample_partners=3 --init_SP_agents=30 --frame_stacking=1 --frame_stacking_mode=&quot;tuple&quot; --tensorboard_log --layout_name=&quot;cramped_room&quot; --total_timesteps=3000000 --eval_interval=6 --vf_coef=0.01 --ent_coef_horizon=500000 --training_percent_start_eval=0.3 --ent_coef_end=0.01" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <option name="EMULATE_TERMINAL" value="false" />
     <option name="MODULE_MODE" value="false" />

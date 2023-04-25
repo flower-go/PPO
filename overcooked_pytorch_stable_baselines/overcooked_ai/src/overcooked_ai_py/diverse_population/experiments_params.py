@@ -1,4 +1,7 @@
 def set_layout_params(args):
+    """
+    Layout specific parameters are set
+    """
     if args.layout_name == "coordination_ring":
         args.eval_stop_threshold = 185
 

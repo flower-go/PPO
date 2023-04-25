@@ -257,6 +257,7 @@ class PPO(OnPolicyAlgorithm):
                     actions_prob_dist = self.policy.get_distribution(rollout_data.observations).distribution.logits
 
                     kl_divs = []
+                    #KL divergence between current and population models policies is computed for every item of the batch
                     for ind in self.env.population:
                         pop_ind_actions_dist_logits = ind.policy.get_distribution(rollout_data.observations).distribution.logits
                         diff = th.nn.functional.kl_div(actions_prob_dist, pop_ind_actions_dist_logits, reduction="batchmean", log_target=True)
@@ -269,15 +270,6 @@ class PPO(OnPolicyAlgorithm):
 
                     loss = loss + pop_kl_diff_loss
                 kl_losses.append(pop_kl_diff_loss.item())
-
-
-
-
-
-
-
-
-
 
 
                 # Calculate approximate form of reverse KL Divergence for early stopping
