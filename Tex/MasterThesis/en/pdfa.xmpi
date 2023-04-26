@@ -62,13 +62,13 @@
   </rdf:Description> 
   <rdf:Description rdf:about="" xmlns:dc="http://purl.org/dc/elements/1.1/"> 
    <dc:format>application/pdf</dc:format> 
-   <dc:title><rdf:Alt><rdf:li xml:lang="x-default">Thesis title</rdf:li></rdf:Alt></dc:title>
-   <dc:creator><rdf:Seq><rdf:li>Name Surname</rdf:li></rdf:Seq></dc:creator>
+   <dc:title><rdf:Alt><rdf:li xml:lang="x-default">Cooperation with Unknown Agents in Multi-agent Environment</rdf:li></rdf:Alt></dc:title>
+   <dc:creator><rdf:Seq><rdf:li>Přemysl Bašta</rdf:li></rdf:Seq></dc:creator>
    <dc:publisher><rdf:Bag><rdf:li>Charles University</rdf:li></rdf:Bag></dc:publisher>
-   <dc:description><rdf:Alt><rdf:li xml:lang="x-default">Abstract of thesis</rdf:li></rdf:Alt></dc:description>
-   <dc:subject><rdf:Bag><rdf:li>keywords</rdf:li>
-     <rdf:li>more such</rdf:li>
-     <rdf:li>yet another</rdf:li></rdf:Bag></dc:subject>
+   <dc:description><rdf:Alt><rdf:li xml:lang="x-default">Over the past few decades, we have witnessed great successes in the field of deep and reinforcement learning. Great achievements have been made in many competitive settings, both in single-agent and multi-agent environments, where AI has managed to outperform human experts and even entire teams of human experts. However, the situation is much more difficult when cooperation is required in purely cooperative environments. We first give a brief overview of reinforcement learning theory and current state of the art algorithms. We then extend the theory to multi-agent systems, where several related issues are discussed. And finally, we propose novel approaches of agent training where we use a simplified multi-agent cooperative cooking game environment based on the popular game Overcooked, we attempt to train agents that are robust and capable of ad hoc agent cooperation.</rdf:li></rdf:Alt></dc:description>
+   <dc:subject><rdf:Bag><rdf:li>Reinforcement Learning</rdf:li>
+     <rdf:li>Multi-Agent Systems</rdf:li>
+     <rdf:li>Ad-hoc Cooperation</rdf:li></rdf:Bag></dc:subject>
   </rdf:Description> 
   <rdf:Description rdf:about="" xmlns:prism="http://prismstandard.org/namespaces/basic/2.2/"> 
   </rdf:Description> 
@@ -80,15 +80,15 @@
   </rdf:Description> 
   <rdf:Description rdf:about="" xmlns:xmp="http://ns.adobe.com/xap/1.0/"> 
    <xmp:CreatorTool>LaTeX with hyperref</xmp:CreatorTool> 
-   <xmp:ModifyDate>2023-04-26T11:29:23+02:00</xmp:ModifyDate> 
-   <xmp:CreateDate>2023-04-26T11:29:23+02:00</xmp:CreateDate> 
-   <xmp:MetadataDate>2023-04-26T11:29:23+02:00</xmp:MetadataDate> 
+   <xmp:ModifyDate>2023-04-26T17:56:52+02:00</xmp:ModifyDate> 
+   <xmp:CreateDate>2023-04-26T17:56:52+02:00</xmp:CreateDate> 
+   <xmp:MetadataDate>2023-04-26T17:56:52+02:00</xmp:MetadataDate> 
   </rdf:Description> 
   <rdf:Description rdf:about="" xmlns:xmpRights = "http://ns.adobe.com/xap/1.0/rights/"> 
   </rdf:Description> 
   <rdf:Description rdf:about="" xmlns:xmpMM="http://ns.adobe.com/xap/1.0/mm/"> 
    <xmpMM:DocumentID>uuid:C8CFC28F-88E1-7995-E9AD-F6D12EAD346B</xmpMM:DocumentID> 
-   <xmpMM:InstanceID>uuid:93E0524A-566B-4DA3-D42D-C2A4591B2834</xmpMM:InstanceID> 
+   <xmpMM:InstanceID>uuid:41BA7861-C9A8-9E30-726E-5DABD26F2C3A</xmpMM:InstanceID> 
   </rdf:Description> 
  </rdf:RDF> 
 </x:xmpmeta> 

@@ -19,9 +19,16 @@ The name Markov comes from the fact that the system satisfies the Markov propert
 
 \section{Single-agent environment}
 Having defined the mathematical model of the environment, let's review the related concepts.
-The whole problem of reinforcement learning (RL) can be best described by the following visualization (\cite{SpinningUpIntro}).
+The whole problem of reinforcement learning (RL) can be best described by the following visualization (Figure \ref{RLDiagram}).
 
-\includegraphics*[width=12cm]{rl_diagram_transparent_bg.png}\label{RLDiagram}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics*[width=12cm]{rl_diagram_transparent_bg.png}
+
+    \caption{Reinforcement learning diagram (Source: \cite{SpinningUpIntro})}
+
+\end{figure}\label{RLDiagram}
 
 Environment represents a kind of world with its internal rules and properties. 
 The agent is then an entity that exists within this world, observes \textbf{state} $s$ of the world, decides to react with \textbf{action} $a$ on the basis of this state, and receives \textbf{reward} $r$ as a consequence of this action.

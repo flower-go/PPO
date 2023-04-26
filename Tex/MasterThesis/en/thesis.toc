@@ -2,70 +2,70 @@
 \contentsline {chapter}{\numberline {1}Introduction to reinforcement learning}{5}{chapter.1}%
 \contentsline {section}{\numberline {1.1}Markov decision process}{5}{section.1.1}%
 \contentsline {section}{\numberline {1.2}Single-agent environment}{5}{section.1.2}%
-\contentsline {chapter}{\numberline {2}Reinforcement learning algorithms}{9}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Q-Learning}{9}{section.2.1}%
-\contentsline {section}{\numberline {2.2}Policy gradient methods}{12}{section.2.2}%
-\contentsline {subsection}{\numberline {2.2.1}Idea}{12}{subsection.2.2.1}%
-\contentsline {subsection}{\numberline {2.2.2}Policy Gradient Theorem}{12}{subsection.2.2.2}%
-\contentsline {subsection}{\numberline {2.2.3}Vanilla Policy Gradient}{13}{subsection.2.2.3}%
-\contentsline {subsection}{\numberline {2.2.4}Trust Region Policy Optimization}{14}{subsection.2.2.4}%
-\contentsline {subsection}{\numberline {2.2.5}Proximal Policy Optimization}{16}{subsection.2.2.5}%
-\contentsline {section}{\numberline {2.3}Q-Learning and Policy optimization}{19}{section.2.3}%
-\contentsline {chapter}{\numberline {3}Multi-agent environment}{20}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Multi-agent Markov Decision Process}{20}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Decentralized Partially Observable MDP}{20}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}Nash Equilibria}{22}{subsection.3.2.1}%
-\contentsline {section}{\numberline {3.3}Learning schemes}{22}{section.3.3}%
-\contentsline {section}{\numberline {3.4}Non-stationarity}{23}{section.3.4}%
-\contentsline {section}{\numberline {3.5}RL algorithms}{24}{section.3.5}%
-\contentsline {chapter}{\numberline {4}Overcooked environment}{26}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Overcooked game}{26}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Basic layouts}{26}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Environment description}{28}{section.4.3}%
-\contentsline {subsection}{\numberline {4.3.1}Action space}{28}{subsection.4.3.1}%
-\contentsline {subsection}{\numberline {4.3.2}State representation}{28}{subsection.4.3.2}%
-\contentsline {subsection}{\numberline {4.3.3}Rewards}{29}{subsection.4.3.3}%
-\contentsline {subsection}{\numberline {4.3.4}Initial state}{29}{subsection.4.3.4}%
-\contentsline {chapter}{\numberline {5}Related work}{31}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Human cooperation}{31}{section.5.1}%
-\contentsline {section}{\numberline {5.2}AI-AI cooperation}{31}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}Self-play}{32}{subsection.5.2.1}%
-\contentsline {subsection}{\numberline {5.2.2}Partner Sampling}{32}{subsection.5.2.2}%
-\contentsline {subsection}{\numberline {5.2.3}Population-Based Training}{32}{subsection.5.2.3}%
-\contentsline {subsection}{\numberline {5.2.4}Pre-trained Partners}{32}{subsection.5.2.4}%
-\contentsline {subsection}{\numberline {5.2.5}Result}{32}{subsection.5.2.5}%
-\contentsline {section}{\numberline {5.3}Problem of robustness}{33}{section.5.3}%
-\contentsline {subsection}{\numberline {5.3.1}Average performance}{33}{subsection.5.3.1}%
-\contentsline {subsection}{\numberline {5.3.2}Threshold performance}{33}{subsection.5.3.2}%
-\contentsline {subsection}{\numberline {5.3.3}Edge case testing}{33}{subsection.5.3.3}%
-\contentsline {chapter}{\numberline {6}Background work}{35}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Framework}{35}{section.6.1}%
-\contentsline {subsection}{\numberline {6.1.1}Modifications}{35}{subsection.6.1.1}%
-\contentsline {section}{\numberline {6.2}Self-play}{37}{section.6.2}%
-\contentsline {subsection}{\numberline {6.2.1}Random state initialization}{40}{subsection.6.2.1}%
-\contentsline {subsection}{\numberline {6.2.2}Focus on Forced coordination}{40}{subsection.6.2.2}%
-\contentsline {chapter}{\numberline {7}Diverse population building}{42}{chapter.7}%
-\contentsline {section}{\numberline {7.1}Multi-agent setting simplification}{42}{section.7.1}%
-\contentsline {subsection}{\numberline {7.1.1}Single-agent perspective}{42}{subsection.7.1.1}%
-\contentsline {subsection}{\numberline {7.1.2}Non-stationarity}{42}{subsection.7.1.2}%
-\contentsline {subsection}{\numberline {7.1.3}Population exploitation}{43}{subsection.7.1.3}%
-\contentsline {section}{\numberline {7.2}Population building}{43}{section.7.2}%
-\contentsline {subsection}{\numberline {7.2.1}Initialization}{43}{subsection.7.2.1}%
-\contentsline {subsection}{\numberline {7.2.2}KL divergence}{43}{subsection.7.2.2}%
-\contentsline {subsubsection}{KL divergence coefficients}{44}{section*.36}%
-\contentsline {subsection}{\numberline {7.2.3}Population structure}{45}{subsection.7.2.3}%
-\contentsline {section}{\numberline {7.3}Simple convolution experiments}{46}{section.7.3}%
-\contentsline {subsubsection}{Initial experiments visualised}{46}{section*.37}%
-\contentsline {subsubsection}{Average outcome evaluation}{48}{section*.38}%
-\contentsline {subsubsection}{Ordered average outcome evaluation}{48}{section*.39}%
-\contentsline {section}{\numberline {7.4}Frame stacking}{50}{section.7.4}%
-\contentsline {subsection}{\numberline {7.4.1}Channels}{51}{subsection.7.4.1}%
-\contentsline {subsection}{\numberline {7.4.2}States tuple}{52}{subsection.7.4.2}%
-\contentsline {subsection}{\numberline {7.4.3}Comparison}{54}{subsection.7.4.3}%
-\contentsline {section}{\numberline {7.5}Population evaluation}{55}{section.7.5}%
-\contentsline {section}{\numberline {7.6}Other layouts}{57}{section.7.6}%
-\contentsline {subsection}{\numberline {7.6.1}Cramped Room}{58}{subsection.7.6.1}%
-\contentsline {subsection}{\numberline {7.6.2}Counter Circuit}{59}{subsection.7.6.2}%
-\contentsline {section}{\numberline {7.7}Results remarks}{60}{section.7.7}%
-\contentsline {chapter}{Conclusion}{65}{chapter*.40}%
-\contentsline {chapter}{Bibliography}{66}{chapter*.41}%
+\contentsline {chapter}{\numberline {2}Reinforcement learning algorithms}{10}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Q-Learning}{10}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Policy gradient methods}{13}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Idea}{13}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Policy Gradient Theorem}{13}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Vanilla Policy Gradient}{14}{subsection.2.2.3}%
+\contentsline {subsection}{\numberline {2.2.4}Trust Region Policy Optimization}{15}{subsection.2.2.4}%
+\contentsline {subsection}{\numberline {2.2.5}Proximal Policy Optimization}{17}{subsection.2.2.5}%
+\contentsline {section}{\numberline {2.3}Q-Learning and Policy optimization}{20}{section.2.3}%
+\contentsline {chapter}{\numberline {3}Multi-agent environment}{21}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Multi-agent Markov Decision Process}{21}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Decentralized Partially Observable MDP}{21}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Nash Equilibria}{23}{subsection.3.2.1}%
+\contentsline {section}{\numberline {3.3}Learning schemes}{23}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Non-stationarity}{24}{section.3.4}%
+\contentsline {section}{\numberline {3.5}RL algorithms}{25}{section.3.5}%
+\contentsline {chapter}{\numberline {4}Overcooked environment}{27}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Overcooked game}{27}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Basic layouts}{27}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Environment description}{29}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Action space}{29}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}State representation}{29}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}Rewards}{30}{subsection.4.3.3}%
+\contentsline {subsection}{\numberline {4.3.4}Initial state}{30}{subsection.4.3.4}%
+\contentsline {chapter}{\numberline {5}Related work}{32}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Human cooperation}{32}{section.5.1}%
+\contentsline {section}{\numberline {5.2}AI-AI cooperation}{32}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Self-play}{33}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}Partner Sampling}{33}{subsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.2.3}Population-Based Training}{33}{subsection.5.2.3}%
+\contentsline {subsection}{\numberline {5.2.4}Pre-trained Partners}{33}{subsection.5.2.4}%
+\contentsline {subsection}{\numberline {5.2.5}Result}{33}{subsection.5.2.5}%
+\contentsline {section}{\numberline {5.3}Problem of robustness}{34}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Average performance}{34}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Threshold performance}{34}{subsection.5.3.2}%
+\contentsline {subsection}{\numberline {5.3.3}Edge case testing}{34}{subsection.5.3.3}%
+\contentsline {chapter}{\numberline {6}Tools and Baselines}{36}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Framework}{36}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}Modifications}{36}{subsection.6.1.1}%
+\contentsline {section}{\numberline {6.2}Self-play}{38}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}Random state initialization}{41}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}Focus on Forced coordination}{41}{subsection.6.2.2}%
+\contentsline {chapter}{\numberline {7}Diverse population building}{43}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Multi-agent setting simplification}{43}{section.7.1}%
+\contentsline {subsection}{\numberline {7.1.1}Single-agent perspective}{43}{subsection.7.1.1}%
+\contentsline {subsection}{\numberline {7.1.2}Non-stationarity}{43}{subsection.7.1.2}%
+\contentsline {subsection}{\numberline {7.1.3}Population exploitation}{44}{subsection.7.1.3}%
+\contentsline {section}{\numberline {7.2}Population building}{44}{section.7.2}%
+\contentsline {subsection}{\numberline {7.2.1}Initialization}{44}{subsection.7.2.1}%
+\contentsline {subsection}{\numberline {7.2.2}KL divergence}{44}{subsection.7.2.2}%
+\contentsline {subsubsection}{KL divergence coefficients}{45}{section*.36}%
+\contentsline {subsection}{\numberline {7.2.3}Population structure}{47}{subsection.7.2.3}%
+\contentsline {section}{\numberline {7.3}Simple convolution experiments}{47}{section.7.3}%
+\contentsline {subsubsection}{Initial experiments visualised}{47}{section*.37}%
+\contentsline {subsubsection}{Average outcome evaluation}{49}{section*.38}%
+\contentsline {subsubsection}{Ordered average outcome evaluation}{49}{section*.39}%
+\contentsline {section}{\numberline {7.4}Frame stacking}{52}{section.7.4}%
+\contentsline {subsection}{\numberline {7.4.1}Channels}{52}{subsection.7.4.1}%
+\contentsline {subsection}{\numberline {7.4.2}States tuple}{54}{subsection.7.4.2}%
+\contentsline {subsection}{\numberline {7.4.3}Comparison}{56}{subsection.7.4.3}%
+\contentsline {section}{\numberline {7.5}Population evaluation}{57}{section.7.5}%
+\contentsline {section}{\numberline {7.6}Other layouts}{58}{section.7.6}%
+\contentsline {subsection}{\numberline {7.6.1}Cramped Room}{59}{subsection.7.6.1}%
+\contentsline {subsection}{\numberline {7.6.2}Counter Circuit}{60}{subsection.7.6.2}%
+\contentsline {section}{\numberline {7.7}Results remarks}{61}{section.7.7}%
+\contentsline {chapter}{Conclusion}{66}{chapter*.40}%
+\contentsline {chapter}{Bibliography}{67}{chapter*.41}%
