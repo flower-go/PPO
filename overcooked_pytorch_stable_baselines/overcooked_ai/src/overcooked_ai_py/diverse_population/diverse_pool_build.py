@@ -46,7 +46,8 @@ parser.add_argument("--frame_stacking_mode", default="channels", type=str, help=
 
 parser.add_argument("--partner_action_deterministic", default=False, action="store_true", help="Whether trained partners from population play argmax for episodes sampling")
 parser.add_argument("--random_switch_start_pos", default=False, action="store_true", help="Whether initial player locations are switched")
-parser.add_argument("--rnd_obj_prob_thresh_env", default=0.0, type=float, help="Random object generation probability on environment reset")
+parser.add_argument("--rnd_obj_prob_thresh_env", default=0.0, type=float, help="Random object generation probability of environment on environment reset")
+parser.add_argument("--rnd_obj_prob_thresh_agent", default=0.0, type=float, help="Random object generation probability during training on environment reset")
 parser.add_argument("--static_start", default=False, action="store_true", help="Initial positions are the same on every reset")
 
 # Now moreless fixed training hyperparameters
