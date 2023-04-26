@@ -3,7 +3,7 @@
 We began this thesis with a brief introduction to reinforcement learning and its extension to multi-agent environments (Chapters \ref{IntroductionChapter}, \ref{RLChapter}, and \ref{MAS}).
 
 We then proceeded to provide a description of a simplified fully cooperative multi-agent cooking game environment (Chapter \ref{OvercookedChapter}), which we worked with in the rest of our thesis to study the cooperative capabilities of trained agents. 
-Subsequently, we tried to reimplement some results based on related previous work ( Chapters \ref{RelatedWorkChapter} and \ref{BackgroundChapter}), where we tried to demonstrate allegedly poor cooperative abilities of self-play trained agents, which later became a solid baseline for our experiments.
+Subsequently, we tried to reimplement some results based on related previous work (Chapters \ref{RelatedWorkChapter} and \ref{BackgroundChapter}), where we tried to demonstrate allegedly poor cooperative abilities of self-play trained agents, which later became a solid baseline for our experiments.
 
 Later, we introduced our own novel iterative approach of the diverse population method (Chapter \ref{DiversePopulationMethodChapter}).
 Here we tried to simplify the multi-agent environment towards a single-agent perspective by effectively introducing domain randomization technique.
@@ -19,11 +19,12 @@ Nevertheless, we believe that such a shift can be seen as an improvement in coop
 
 
 We were then able to slightly improve the cooperation of the agents by extending the information available to the agents by incorporating the temporal information about previous states of the environment.
-After proposing two variants of such extension, we evaluated different agents trained with our method against each other, where in combination of channels temporal information extension our agents showed tremendous results both in cooperating with a wide range of other agents and also managed to come close to the maximum result similar to that of self-play agents.
+After proposing two variants of such extension, we evaluated different agents trained with our method against each other, where in combination of temporal information extension our agents showed tremendous results both in cooperating with a wide range of other agents and also managed to come close to the maximum result similar to that of self-play agents.
 With this result, we claim that our method shows an overall improvement in robustness over self-play training.
 
 After applying all of these ideas and improvements to one particular layout where we were able to get an apparent improvement in cooperation, we tried to evaluate our method on two other layouts.
-The improvements on these layouts were not as significant as we had hoped, but we think it still proved that our method is consistent and thus transferable to other settings.
+The improvements on these layouts were not as significant as we had hoped, especially on the Cramped Room layout, which seems to be a layout where agents have no evident problem with pairwise cooperation.
+On this layout, even using only tuple temporal features made the agents significantly more cooperative, and our diverse method failed to improve on this achieved cooperation.
 
 While we believe that the idea of using KL divergence as a tool to promote diversity is a useful one, when we tried to evaluate all the experiments performed, we were disappointingly unable to derive any generally appropriate parameters for such diversification.
 We conclude by claiming that the best results were obtained when our iterative population-building process was used without any additional diversity-promoting tools.

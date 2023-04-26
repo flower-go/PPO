@@ -96,11 +96,50 @@ In addition, several PPO hyperparameters have been changed compared to the defau
 
 \subsection*{Hyperparameters search}
 With these settings adjusted, we attempted to run the self-play agent training on all layouts as before.
-On the basic Cramped room layout, training seemed to progress successfully, and even when cross-play evaluation was performed, pairwise cooperation failures began to occur more frequently.
+On the basic Cramped room layout, training seemed to progress successfully, but pairwise cooperation failures were still very rare.
 Unfortunately, training with these settings failed on all other layouts.
 
 We performed hyperparameter search by running the training process with several hundred randomly chosen sets of hyperparameters to find a suitable stable configuration.
 With the resulting configuration (Table \ref{tab:hyperparameters-algo}) we were able to train a self-play agent on all layouts in most of the runs.
+There is only one exception to the table, where we use the value $0.01$ for the VF coefficient on the Cramped room layout.
+Without this change, the training was still successful, but the overall outcome of the trained agents was generally lower.
+
+\begin{table}[htbp]
+  \small
+  \centering
+  \begin{tabular}{lll}
+    \toprule
+    \textbf{Name}                                & Originally proposed     & \textbf{Applied}         \\ \midrule
+    \textit{PPO Hyperparameters}     &                                   &                                   \\ \midrule            
+    Discount factor $\gamma$                     & $0.99$                            & $0.98$                            \\
+    GAE factor $\lambda$                         & $0.98$                            & $0.95$                            \\
+    Learning rate                                & $10^{-3}$                         & $4 \cdot 10^{-4}$                               \\
+    VF coefficient                               & $0.5$                             & $0.1$                             \\
+    PPO clipping                                 & $0.05$                            & $0.1$                             \\
+    Maximum gradient norm                        & $0.1$                             & $0.3$                             \\
+    Gradient steps per minibatch                 & $8$                               & $8$                               \\      
+    Minibatch size                               & $2000$                            & $2000$                            \\
+    Number of parallel environments              & $30$                              & $30$                              \\
+    Total timestemps                             & $6\cdot10^6$                      & $5.5 \cdot 10^6$                  \\            \\
+    Entropy bonus start coefficient              & $0.1$                             & $0.1$                             \\
+    Entropy bonus end coefficient                & $0.1$                             & $0.03$                            \\
+    Entropy bonus horizon                        & none                              & $1.5\cdot 10^6$                   \\
+    Preemptive divergent time step               & $3\cdot 10^6$                     & $3\cdot 10^6$                     \\
+    \midrule
+
+    \textit{Environment settings}                &                                   &                                   \\ \midrule                                
+    Episode length                               & $400$                             & $400$                             \\
+    Soup delivery shared reward                  & $20$                              & $20$                              \\
+    Dish pickup partial reward                   & $3$                               & $3$                               \\
+    Onion pot placement partial reward           & $3$                               & $3$                               \\
+    Soup pickup partial reward                   & $5$                               & $5$                               \\
+    Partial reward shaping horizon               & $2.5\cdot 10^6$                   & $2.5\cdot 10^6$                   \\
+    Initial state player locations               & static                            & random                            \\
+   \bottomrule
+  \end{tabular}
+  \caption{Hyperparameters for self-play agent training on Cramped room layout}
+  \label{tab:hyperparameters-algo}
+\end{table}
 
 \subsection*{Preemptive divergent check}
 Unfortunately, even this configuration is not completely stable.
@@ -112,42 +151,7 @@ To account for this fact, we perform a preemptive divergence check at the $3\cdo
 We have heuristically found that the average soup reward threshold of $3$ over the collected episodes is sufficient to ensure that the agent will learn the main goal in the remaining training process.
 
 
-\begin{table}[htbp]
-    \small
-    \centering
-    \begin{tabular}{lll}
-      \toprule
-      \textbf{Name}                                & Originally proposed     & \textbf{Applied}         \\ \midrule
-      \textit{PPO Hyperparameters}     &                                   &                                   \\ \midrule            
-      Discount factor $\gamma$                     & $0.99$                            & $0.98$                            \\
-      GAE factor $\lambda$                         & $0.98$                            & $0.95$                            \\
-      Learning rate                                & $10^{-3}$                         & $4 \cdot 10^{-4}$                               \\
-      VF coefficient                               & $0.5$                             & $0.1$                             \\
-      PPO clipping                                 & $0.05$                            & $0.1$                             \\
-      Maximum gradient norm                        & $0.1$                             & $0.3$                             \\
-      Gradient steps per minibatch                 & $8$                               & $8$                               \\      
-      Minibatch size                               & $2000$                            & $2000$                            \\
-      Number of parallel environments              & $30$                              & $30$                              \\
-      Total timestemps                             & $6\cdot10^6$                      & $5.5 \cdot 10^6$                  \\            \\
-      Entropy bonus start coefficient              & $0.1$                             & $0.1$                             \\
-      Entropy bonus end coefficient                & $0.1$                             & $0.03$                            \\
-      Entropy bonus horizon                        & none                              & $1.5\cdot 10^6$                   \\
-      Preemptive divergent time step               & $3\cdot 10^6$                     & $3\cdot 10^6$                     \\
-      \midrule
-  
-      \textit{Environment settings}                &                                   &                                   \\ \midrule                                
-      Episode length                               & $400$                             & $400$                             \\
-      Soup delivery shared reward                  & $20$                              & $20$                              \\
-      Dish pickup partial reward                   & $3$                               & $3$                               \\
-      Onion pot placement partial reward           & $3$                               & $3$                               \\
-      Soup pickup partial reward                   & $5$                               & $5$                               \\
-      Partial reward shaping horizon               & $2.5\cdot 10^6$                   & $2.5\cdot 10^6$                   \\
-      Initial state player locations               & static                            & random                            \\
-     \bottomrule
-    \end{tabular}
-    \caption{Hyperparameters for self-play agent training on Cramped room layout}
-    \label{tab:hyperparameters-algo}
-  \end{table}
+
   
 
 
