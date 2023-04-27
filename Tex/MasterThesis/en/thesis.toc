@@ -53,11 +53,11 @@
 \contentsline {subsection}{\numberline {7.2.1}Initialization}{44}{subsection.7.2.1}%
 \contentsline {subsection}{\numberline {7.2.2}KL divergence}{44}{subsection.7.2.2}%
 \contentsline {subsubsection}{KL divergence coefficients}{45}{section*.36}%
-\contentsline {subsection}{\numberline {7.2.3}Population structure}{47}{subsection.7.2.3}%
+\contentsline {subsection}{\numberline {7.2.3}Population structure}{46}{subsection.7.2.3}%
 \contentsline {section}{\numberline {7.3}Simple convolution experiments}{47}{section.7.3}%
 \contentsline {subsubsection}{Initial experiments visualised}{47}{section*.37}%
 \contentsline {subsubsection}{Average outcome evaluation}{49}{section*.38}%
-\contentsline {subsubsection}{Ordered average outcome evaluation}{49}{section*.39}%
+\contentsline {subsubsection}{Ordered average outcome evaluation}{50}{section*.39}%
 \contentsline {section}{\numberline {7.4}Frame stacking}{52}{section.7.4}%
 \contentsline {subsection}{\numberline {7.4.1}Channels}{52}{subsection.7.4.1}%
 \contentsline {subsection}{\numberline {7.4.2}States tuple}{54}{subsection.7.4.2}%

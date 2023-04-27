@@ -19,55 +19,51 @@ Warning--entry type for "DotaOpenFive" isn't style-file defined
 Warning--entry type for "SpinningUpIntro" isn't style-file defined
 --line 107 of file bibliography.bib
 Warning--entry type for "Starcraft" isn't style-file defined
---line 489 of file bibliography.bib
+--line 490 of file bibliography.bib
 Warning--entry type for "OvercookedGame" isn't style-file defined
---line 544 of file bibliography.bib
+--line 560 of file bibliography.bib
 Warning--entry type for "OvercookedImplementation" isn't style-file defined
---line 554 of file bibliography.bib
-Warning--entry type for "KLDivergence" isn't style-file defined
---line 564 of file bibliography.bib
-Warning--to sort, need author or key in KLDivergence
-Warning--empty year in KLDivergence
+--line 570 of file bibliography.bib
 Warning--empty year in OvercookedImplementation
 You've used 33 entries,
             2773 wiz_defined-function locations,
-            827 strings with 11741 characters,
-and the built_in function-call counts, 16773 in all, are:
-= -- 1362
-> -- 1368
-< -- 18
-+ -- 466
-- -- 432
-* -- 1417
-:= -- 2649
-add.period$ -- 107
+            844 strings with 12472 characters,
+and the built_in function-call counts, 17220 in all, are:
+= -- 1414
+> -- 1406
+< -- 21
++ -- 477
+- -- 443
+* -- 1475
+:= -- 2745
+add.period$ -- 117
 call.type$ -- 33
-change.case$ -- 232
+change.case$ -- 234
 chr.to.int$ -- 32
-cite$ -- 70
-duplicate$ -- 617
-empty$ -- 1163
-format.name$ -- 470
-if$ -- 3446
+cite$ -- 67
+duplicate$ -- 623
+empty$ -- 1170
+format.name$ -- 484
+if$ -- 3529
 int.to.chr$ -- 2
 int.to.str$ -- 1
-missing$ -- 16
-newline$ -- 178
-num.names$ -- 130
-pop$ -- 547
+missing$ -- 17
+newline$ -- 187
+num.names$ -- 136
+pop$ -- 530
 preamble$ -- 1
-purify$ -- 208
+purify$ -- 210
 quote$ -- 0
-skip$ -- 602
+skip$ -- 604
 stack$ -- 0
-substring$ -- 248
-swap$ -- 68
-text.length$ -- 2
+substring$ -- 272
+swap$ -- 71
+text.length$ -- 4
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 348
-warning$ -- 3
-while$ -- 109
+warning$ -- 1
+while$ -- 115
 width$ -- 0
-write$ -- 428
-(There were 9 warnings)
+write$ -- 451
+(There were 6 warnings)

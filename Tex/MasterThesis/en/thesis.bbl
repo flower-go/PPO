@@ -5,11 +5,6 @@
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 
-\bibitem[KLD()]{KLDivergence}
-Kullback leibler divergence.
-\newblock URL
-  \url{https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence}.
-
 \bibitem[Achiam(2018)]{SpinningUpIntro}
 Josh Achiam, 2018.
 \newblock URL \url{https://spinningup.openai.com/en/latest/}.
@@ -41,16 +36,23 @@ Micah Carroll, Rohin Shah, Mark~K. Ho, Thomas~L. Griffiths, Sanjit~A. Seshia,
   Pieter Abbeel, and Anca Dragan.
 \newblock On the utility of learning about humans for human-ai coordination,
   2020.
+\newblock URL \url{https://arxiv.org/abs/1910.05789}.
 
 \bibitem[Charakorn et~al.(2020)Charakorn, Manoonpong, and
   Dilokthanakul]{10.1007/978-3-030-63823-8_46}
 Rujikorn Charakorn, Poramate Manoonpong, and Nat Dilokthanakul.
 \newblock Investigating partner diversification methods in cooperative
   multi-agent deep reinforcement learning.
-\newblock In Haiqin Yang, Kitsuchart Pasupa, Andrew Chi-Sing Leung, James~T.
-  Kwok, Jonathan~H. Chan, and Irwin King, editors, \emph{Neural Information
-  Processing}, pages 395--402, Cham, 2020. Springer International Publishing.
-\newblock ISBN 978-3-030-63823-8.
+\newblock In Haiqin Yang, Kitsuchart Pasupa, {Andrew Chi-Sing} Leung, {James
+  T.} Kwok, {Jonathan H.} Chan, and Irwin King, editors, \emph{Neural
+  Information Processing. 27th International Conference, ICONIP 2020, Bangkok,
+  Thailand, November 18–22, 2020, Proceedings, Part V}, volume~5 of
+  \emph{Communications in Computer and Information Science}, pages 395--402,
+  United States, 2020. Springer Science+Business Media.
+\newblock ISBN 9783030638221.
+\newblock \doi{10.1007/978-3-030-63823-8_46}.
+\newblock 27th International Conference on Neural Information Processing,
+  ICONIP 2020 ; Conference date: 18-11-2020 Through 22-11-2020.
 
 \bibitem[Deepmind(2019)]{Starcraft}
 Deepmind, 2019.
@@ -95,7 +97,11 @@ Ashley Hill, Antonin Raffin, Maximilian Ernestus, Adam Gleave, Anssi
 \bibitem[Ho and Ermon(2016)]{Ho2016GenerativeAI}
 Jonathan Ho and Stefano Ermon.
 \newblock Generative adversarial imitation learning.
-\newblock In \emph{NIPS}, 2016.
+\newblock In D.~Lee, M.~Sugiyama, U.~Luxburg, I.~Guyon, and R.~Garnett,
+  editors, \emph{Advances in Neural Information Processing Systems}, volume~29.
+  Curran Associates, Inc., 2016.
+\newblock URL
+  \url{https://proceedings.neurips.cc/paper_files/paper/2016/file/cc7e2b878868cbae992d1fb743995d8f-Paper.pdf}.
 
 \bibitem[Kakade and Langford(2002)]{CPI}
 Sham~M. Kakade and John Langford.
@@ -107,6 +113,15 @@ Sham~M. Kakade and John Langford.
 Paul Knott, Micah Carroll, Sam Devlin, Kamil Ciosek, Katja Hofmann, A.~D.
   Dragan, and Rohin Shah.
 \newblock Evaluating the robustness of collaborative agents, 2021.
+\newblock URL \url{https://arxiv.org/abs/2101.05507}.
+
+\bibitem[Kullback and Leibler(1951)]{KLDivergence}
+S.~Kullback and R.~A. Leibler.
+\newblock {On Information and Sufficiency}.
+\newblock \emph{The Annals of Mathematical Statistics}, 22\penalty0
+  (1):\penalty0 79 -- 86, 1951.
+\newblock \doi{10.1214/aoms/1177729694}.
+\newblock URL \url{https://doi.org/10.1214/aoms/1177729694}.
 
 \bibitem[Kullback(1959)]{KLDIV}
 Solomon Kullback.
@@ -118,6 +133,7 @@ Solomon Kullback.
 Eric Liang, Richard Liaw, Philipp Moritz, Robert Nishihara, Roy Fox, Ken
   Goldberg, Joseph~E. Gonzalez, Michael~I. Jordan, and Ion Stoica.
 \newblock Rllib: Abstractions for distributed reinforcement learning, 2018.
+\newblock URL \url{https://arxiv.org/abs/1712.09381}.
 
 \bibitem[Lillicrap et~al.(2015)Lillicrap, Hunt, Pritzel, Heess, Erez, Tassa,
   Silver, and Wierstra]{DDPG}
@@ -145,7 +161,7 @@ Volodymyr Mnih, Koray Kavukcuoglu, David Silver, Andrei Rusu, Joel Veness, Marc
 
 \bibitem[Nash(1950)]{NASH}
 John~F. Nash.
-\newblock Equilibrium points in <i>n</i>-person games.
+\newblock Equilibrium points in n-person games.
 \newblock \emph{Proceedings of the National Academy of Sciences}, 36\penalty0
   (1):\penalty0 48--49, 1950.
 \newblock \doi{10.1073/pnas.36.1.48}.

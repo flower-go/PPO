@@ -337,6 +337,8 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             # Divergent solution check
             if args.divergent_check_timestep is not None:
                 check_timestep = args.divergent_check_timestep
+
+                #In population training, check can be done sooner
                 if self.env.population_mode:
                     check_timestep = check_timestep * 0.7
 

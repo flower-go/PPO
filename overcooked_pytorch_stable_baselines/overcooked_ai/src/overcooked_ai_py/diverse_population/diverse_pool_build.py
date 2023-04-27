@@ -93,7 +93,6 @@ def load_or_train_models(args, env):
     env.population_mode = False
     for n in range(args.trained_models):
         model = load_or_train_model(directory, n, env, args)
-
         models.append(model)
         env.population.append(model)
 
@@ -101,10 +100,13 @@ def load_or_train_models(args, env):
         if (n + 1) >= args.init_SP_agents:
             env.population_mode = args.mode == "POP"
 
+    #At the end of the population training two more final agents are trained
     if args.mode == "POP":
+        #First final agents is trained with all previos population agents
         final_model = train_final_model(directory, n+1, env, args)
         models.append(final_model)
 
+        #Second final agent is trained without the initial self-play agents
         env.population = models[args.init_SP_agents:-1]
         final_model = train_final_model(directory, n+2, env, args)
         models.append(final_model)
@@ -158,7 +160,8 @@ def train_model(n, env, args):
                         policy_kwargs={"features_extractor_kwargs": {"frame_stacking": args.frame_stacking, "frame_stacking_mode": args.frame_stacking_mode}, "normalize_images": False }
                         )
             model.custom_id = n
-            # Initially, the environment partner is a copy of itself
+            # Initially, the environment partner is a copy of itself (self-play)
+            # If population mode is detected, this will change during training
             env.other_agent_model = model
             num_steps = args.total_timesteps
             model.learn(num_steps, args=args, reset_num_timesteps=False)
@@ -212,7 +215,6 @@ def get_name(name, args, sp=False, extended=False):
     Builds experiment name based on give parameters.
     """
     full_name = name
-    # if sp or full_name == SP_EVAL_EXP_NAME:
     if sp:
         pass
     else:
@@ -249,7 +251,7 @@ overcooked_env = OvercookedEnv.from_mdp(mdp, horizon=400)
 
 if __name__ == "__main__":
 
-    # State representaion and reseting functions set
+    # State representaion and environment reset functions set
     feature_fn = lambda _, state: overcooked_env.lossless_state_encoding_mdp(state, debug=False)
     start_state_fn = mdp.get_random_start_state_fn(random_start_pos=True, # TODO: set Default True
                                                    rnd_obj_prob_thresh = args.rnd_obj_prob_thresh_env,# TODO: set Default args.rnd_obj_prob_thresh_env,
@@ -273,7 +275,7 @@ if __name__ == "__main__":
 
 
     set_layout_params(args)
-    args.full_exp_name = get_name(args.exp, args, sp=args.mode=="SP")
+    args.full_exp_name = get_name(args.exp, args, sp=args.mode == "SP")
 
     #Models training
     models = load_or_train_models(args, gym_env)
@@ -299,40 +301,4 @@ if __name__ == "__main__":
             group_name = args.full_exp_name + "_X_" + args.full_exp_name
             eval_table = evaluator.evaluate(models, models, args.final_eval_games_per_worker, args.layout_name, group_name, eval_env = eval_env, mode=args.mode, deterministic=True)
             heat_map(eval_table, group_name, args.layout_name, eval_env = eval_env, deterministic=True)
-
-    # experiments = [
-    #     (0.0, 0.0, 0.0, 0.0),
-    #
-    #     (0.08, 0.025, 0.0, 0.0),
-    #     (0.15, 0.05, 0.0, 0.0),
-    #     (0.1, 0.075, 0.0, 0.0),
-    #
-    #     (0.0, 0.0, 0.08, 0.03),
-    #     (0.0, 0.0, 0.12, 0.07),
-    #     (0.0, 0.0, 0.1, 0.15),
-    #
-    #     # (0.08, 0.02, 0.08, 0.02),
-    #     (0.1, 0.05, 0.1, 0.05)
-    # ]
-    # labels = ["0","R0","R1","R2","L0","L1","L2","R0L0","R1L1"]
-    #
-    # pop_final_models = []
-    # for exp_setting in experiments:
-    #     (BR_coef, BR_clip, L_coef, L_clip) = exp_setting
-    #     eval_args = copy.deepcopy(args)
-    #     for exp_num in range(1, 6):
-    #         eval_args.exp = f"POP_SMALL{exp_num}"
-    #         eval_args.kl_diff_bonus_reward_coef = BR_coef
-    #         eval_args.kl_diff_bonus_reward_clip = BR_clip
-    #         eval_args.kl_diff_loss_coef = L_coef
-    #         eval_args.kl_diff_loss_clip = L_clip
-    #
-    #         eval_args.full_exp_name = get_name(eval_args.exp, eval_args, sp=eval_args.mode == "SP")
-    #         models = load_or_train_models(eval_args, gym_env)
-    #
-    #         pop_final_models.append(models[11])
-    #
-    # eval_table = evaluator.evaluate(pop_final_models, pop_final_models, eval_args.final_eval_games_per_worker, eval_args.layout_name,
-    #                                 "SIMPLE_POP_FINALS", eval_env="", mode=eval_args.mode)
-
 

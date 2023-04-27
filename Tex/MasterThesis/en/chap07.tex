@@ -9,6 +9,9 @@ In the following sections, we describe several different aspects of our populati
 
 The first series of experiments will be conducted on a pre-selected Forced Coordination layout, where we will gather important observations before evaluating our final approaches on two additional layouts.
 
+The latest source code of our solution and discussed experiments can be found in the following repository:
+\url{https://github.com/PremekBasta/PPO}
+
 
 \section{Multi-agent setting simplification}
 
@@ -230,7 +233,7 @@ We believe that this result is expected, since the final part of the results cor
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics*[width=10cm]{../img/SimpleCNNOrderedAvg.png}
+    \includegraphics*[width=11cm]{../img/SimpleCNNOrderedAvg.png}
 
     \caption{Forced coordination: Simple CNN, Average, ordered averaged cross-play of population final agents vs self-play agents}
     \label{SimpleCNNOrderedAvg}
@@ -251,7 +254,7 @@ This result can be seen as an argument for the cooperative capabilities of our a
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics*[width=10cm]{../img/SimpleCNNOrderedAvg0.15Q.png}
+    \includegraphics*[width=11cm]{../img/SimpleCNNOrderedAvg0.15Q.png}
 
     \caption{Forced coordination: Simple CNN, 0.15 quantile, ordered averaged cross-play of population final agents vs self-play agents}
     \label{SimpleCNNOrderedAvg0.15Q}
@@ -485,7 +488,8 @@ And second, we try to apply our diversity population building method.
 On this layout, we can see (Figure \ref{CrampedRoomFSVariantsOrderedAvg}) that adding temporal features using the tuple extension had a positive impact on the overall performance of the self-play agents in terms of the level of cooperation with other agents.
 However, channels temporal features did not provide a significant improvement.
 
-While our diverse population showed great signs of improvement in most of our experiment settings when using the channels frame stacking representation (Figure \ref{CrampedRoomFSChannelsOrdered15Q}), there was no improvement for the tuple frame stacking representation (Figure \ref{CrampedRoomFSTupleOrdered15Q}), where most of the experiment settings even showed worse performance.
+While our diverse population showed great signs of improvement in most of our experiment settings when using the channels frame stacking representation (Figure \ref{CrampedRoomFSChannelsOrdered15Q}), there was no overall improvement for the tuple frame stacking representation (Figure \ref{CrampedRoomFSTupleOrdered15Q}), where most of the experiment settings even showed worse performance.
+The only exception was the experiment variant R$1$L$1$, which showed a great improvement in terms of cooperation with a larger set of agents. 
 
 However, the problem with this layout, as discussed earlier, is that the failure of pairwise cooperation between different self-play agents is almost nonexistent.
 In our evaluation set of self-play agents, there were few agents that managed to cooperate with all other agents in the set at a high level of cooperation.
@@ -511,7 +515,7 @@ We hypothesize that our diversity approach will not show much improvement on lay
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics*[width=8cm]{../img/CrampedRoomFSChannelsOrdered15Q.png}
+    \includegraphics*[width=9cm]{../img/CrampedRoomFSChannelsOrdered15Q.png}
 
     \caption{Cramped room: FS Channels, 0.15 quantile, ordered averaged cross-play of population final agents}
     \label{CrampedRoomFSChannelsOrdered15Q}
@@ -524,7 +528,7 @@ We hypothesize that our diversity approach will not show much improvement on lay
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics*[width=8cm]{../img/CrampedRoomFSTupleOrdered15Q.png}
+    \includegraphics*[width=9cm]{../img/CrampedRoomFSTupleOrdered15Q.png}
 
     \caption{Cramped room: FS Tuple, 0.15 quantile, ordered averaged cross-play of population final agents}
     \label{CrampedRoomFSTupleOrdered15Q}
@@ -658,7 +662,16 @@ The first and third variants (L$0$, L$2$) performed reasonably well, while the s
 However, the relationship between the proposed variants of the loss augmentation experiment is a somewhat more complicated one, since the ratio between the loss coefficient and the loss clipping varies a lot. 
 It is difficult to say if this variation is just caused by some statistical error or if this particular setting is actually so detrimental to the overall cooperation.
 
-Nevertheless, it seems that the best overall configuration is the one without any diversity pressure, where the only source of diversity is the stochastic sampling of trajectories by previous partners.
+While it may seem that overall the best results were obtained when no diversification was used, if we take a look at almost any particular experiment performed, we can find some specialized diversification variant that worked better.
+For each of the reward augmentation variants we can find evidence of better performance than the no diversification variant in the following experiments (Figures \ref{SimpleCNNOrderedAvg}, \ref{SimpleCNNOrderedAvg0.15Q}, \ref{FSChannelsOrderedAvg}, \ref{FSChannelsOrderedQ15}, \ref{CounterCircuitFSChannelsOrderedQ15}).
+Additionally, for a reward augmentation variant R$1$, we see an extraordinary improvement with the simple convolutional state representation when our final agents were evaluated against each other (Figure \ref{FinalPopFinalPopSimpleCnnQ15}). 
+
+Similarly, for each objective term augmentation variant, we can find cases where the results were better (Figure \ref{FSChannelsOrderedAvg}, \ref{FSChannelsOrderedQ15}, \ref{FSTupleOrderedQ15}, \ref{FinalPopFinalPopFsChannelsQ15}, \ref{FinalPopFinalPopFsTupleQ15}, \ref{CrampedRoomFSChannelsOrdered15Q}, \ref{CounterCircuitFSChannelsOrderedQ15}).
+
+Interestingly, while the strongest diversification variant R$1$L$1$ has the worst result in terms of table results (Table \ref{tab:exp_settings_results}), it was the only variant that managed to outperform the diversity-free variant on the Cramped Room layout using tuple temporal information (Figure \ref{CrampedRoomFSTupleOrdered15Q}).
+
+
+Nevertheless, it appears that even the configuration with no diversity pressure, where the only source of diversity is stochastic sampling of the trajectories of previous partners, performs relatively well.
 In all of our previous evaluations, we have mainly focused on the number of evaluation agents we are able to cooperate with, while ignoring the question of cooperation diversity.
 However, one of our original motivations for diverse population building was to discover new diverse behaviors that could lead to cooperation with agents with different types of behavior.
 If we take a step back to our initial trials (Figure \ref{CNNPopNoDiffBestInitFixation}), we can see that this has indeed been partially achieved, even in settings where no other diversification is employed.

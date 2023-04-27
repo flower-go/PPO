@@ -33,9 +33,9 @@ echo $layout_name
 
 echo $frame_stacking
 echo $frame_stacking_mode
+echo $vf_coef
 
-
-python diverse_population/diverse_pool_build.py --layout_name=$layout_name --trained_models=$trained_models --mode=$mode --eval_mode=$eval_mode --exp=$exp --base_eval_name=$base_eval_name --eval_set_name=$eval_set_name --eval_agents=$eval_agents --init_SP_agents=$init_SP_agents --kl_diff_loss_coef=$kl_diff_loss_coef --kl_diff_loss_clip=$kl_diff_loss_clip --kl_diff_bonus_reward_coef=$kl_diff_bonus_reward_coef --kl_diff_bonus_reward_clip=$kl_diff_bonus_reward_clip --seed=$seed --n_sample_partners=$n_sample_partners --execute_final_eval --final_eval_games_per_worker=$final_eval_games_per_worker --rnd_obj_prob_thresh_env=$rnd_obj_prob_thresh_env --frame_stacking=$frame_stacking --frame_stacking_mode=$frame_stacking_mode > "$SCRATCHDIR"/out.txt 2> "$SCRATCHDIR"/err.txt
+python diverse_population/diverse_pool_build.py --layout_name=$layout_name --trained_models=$trained_models --mode=$mode --eval_mode=$eval_mode --exp=$exp --base_eval_name=$base_eval_name --eval_set_name=$eval_set_name --eval_agents=$eval_agents --init_SP_agents=$init_SP_agents --kl_diff_loss_coef=$kl_diff_loss_coef --kl_diff_loss_clip=$kl_diff_loss_clip --kl_diff_bonus_reward_coef=$kl_diff_bonus_reward_coef --kl_diff_bonus_reward_clip=$kl_diff_bonus_reward_clip --seed=$seed --n_sample_partners=$n_sample_partners --execute_final_eval --final_eval_games_per_worker=$final_eval_games_per_worker --rnd_obj_prob_thresh_env=$rnd_obj_prob_thresh_env --frame_stacking=$frame_stacking --frame_stacking_mode=$frame_stacking_mode --vf_coef=$vf_coef > "$SCRATCHDIR"/out.txt 2> "$SCRATCHDIR"/err.txt
 
 cp "$SCRATCHDIR"/out.txt /storage/plzen1/home/premek_basta/results/_out.txt
 

@@ -155,8 +155,6 @@ class NatureCNN(BaseFeaturesExtractor):
         #PBa - frame stacking
         if self._frame_stacking > 1 and self._frame_stacking_mode == "tuple":
             stacked_frames = self.cnn(observations[:,0])
-            # for i in range(1, self._frame_stacking):
-            #     stacked_frames = th.concatenate([stacked_frames, self.cnn(observations[:,i])], dim=1)
 
             for i in range(1, self._frame_stacking):
                 stacked_frames = th.concatenate([stacked_frames, self.frame_linear(self.cnn(observations[:,i]))], dim=1)

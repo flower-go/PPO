@@ -24,14 +24,16 @@ With this result, we claim that our method shows an overall improvement in robus
 
 After applying all of these ideas and improvements to one particular layout where we were able to get an apparent improvement in cooperation, we tried to evaluate our method on two other layouts.
 The improvements on these layouts were not as significant as we had hoped, especially on the Cramped Room layout, which seems to be a layout where agents have no evident problem with pairwise cooperation.
-On this layout, even using only tuple temporal features made the agents significantly more cooperative, and our diverse method failed to improve on this achieved cooperation.
+On this layout, even using only tuple temporal features made the agents significantly more cooperative, and our diverse method was able to improve on this achieved cooperation in only one particular configuration.
 
-While we believe that the idea of using KL divergence as a tool to promote diversity is a useful one, when we tried to evaluate all the experiments performed, we were disappointingly unable to derive any generally appropriate parameters for such diversification.
-We conclude by claiming that the best results were obtained when our iterative population-building process was used without any additional diversity-promoting tools.
-Therefore, we believe that simple domain randomization by sampling previous stochastic population partners alone was the most successful diversification technique after all.
+While we believe that the idea of using KL divergence as a tool to promote diversity is a useful one, since almost all configurations were the dominant ones in some experiments, when we attempted to evaluate all the experiments performed, we were unable to derive generally appropriate parameters for such diversification.
+In future work, more experiments could be conducted in different environments to further infer the effects of specific diversity configurations.
 
-After gathering all our results, we suggest that future work could further study the effect of better population initialization, as we were limited to only three somewhat diverse agent behaviors.
-Additionally, it seemed to us that the success of our approach was more dependent on the diversity of the initial population than we expected.
+Nevertheless, we conclude by claiming that our iterative population-building process showed some improvement in cooperation even when used without applying any additional diversity-promoting tools.
+Therefore, we believe that even simple domain randomization by sampling previous stochastic population partners alone is a reasonable diversification technique after all.
+
+After summarizing all of our results, we suggest that future work could further investigate the effect of better population initialization, as we were limited to only three somewhat diverse agent behaviors.
+In addition, it seemed to us that the success of our approach was more dependent on the diversity of the initial population than we expected.
 Similarly, we suggest that it might be beneficial to focus more on prioritizing sampled population partners to force even more robust cooperation with as many partner behaviors as possible, since in our experiments we only sampled our partners uniformly.
 
 

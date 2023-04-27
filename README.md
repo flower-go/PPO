@@ -1,6 +1,6 @@
 # Cooperation with Unknown Agents in Multi-agent Overcooked Environment
 
-This git repository serves the purpose of studying cooperation of artificial agents in multi agent cooking environment.
+This git repository (https://github.com/PremekBasta/PPO) serves the purpose of studying cooperation of artificial agents in multi agent cooking environment.
 All of our experiments and findings are discussed in a detail in master thesis that is part of this project (Tex/MasterThesis).
 
 The codebase for this project is inside folder overcooked_pytorch_stable_baselines, where two main components can be found.

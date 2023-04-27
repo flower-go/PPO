@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.23)  26 APR 2023 17:56
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.23)  27 APR 2023 09:52
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -756,10 +756,10 @@ Chapter 7.
 
 
 ] [44] [45] [46]
-<../img/Forced_coordination_CNN_POP_NO_DIF(2).png, id=890, 578.16pt x 867.24pt>
+<../img/Forced_coordination_CNN_POP_NO_DIF(2).png, id=892, 578.16pt x 867.24pt>
 File: ../img/Forced_coordination_CNN_POP_NO_DIF(2).png Graphic file (type png)
 <use ../img/Forced_coordination_CNN_POP_NO_DIF(2).png>
-Package pdftex.def Info: ../img/Forced_coordination_CNN_POP_NO_DIF(2).png  used on input line 176.
+Package pdftex.def Info: ../img/Forced_coordination_CNN_POP_NO_DIF(2).png  used on input line 179.
 (pdftex.def)             Requested size: 412.56496pt x 618.84125pt.
  [47]
 
@@ -769,98 +769,98 @@ LaTeX Warning: Text page 48 contains only floats.
 Overfull \vbox (3.88733pt too high) has occurred while \output is active []
 
  [48 <../img/Forced_coordination_CNN_POP_NO_DIF(2).png>]
-<../img/SimpleCnnExperimentsAvg.png, id=904, 462.528pt x 346.896pt>
+<../img/SimpleCnnExperimentsAvg.png, id=906, 462.528pt x 346.896pt>
 File: ../img/SimpleCnnExperimentsAvg.png Graphic file (type png)
 <use ../img/SimpleCnnExperimentsAvg.png>
-Package pdftex.def Info: ../img/SimpleCnnExperimentsAvg.png  used on input line 198.
+Package pdftex.def Info: ../img/SimpleCnnExperimentsAvg.png  used on input line 201.
 (pdftex.def)             Requested size: 398.33858pt x 298.76936pt.
  [49 <../img/SimpleCnnExperimentsAvg.png>]
-<../img/SimpleCNNOrderedAvg.png, id=918, 462.528pt x 346.896pt>
+<../img/SimpleCNNOrderedAvg.png, id=919, 462.528pt x 346.896pt>
 File: ../img/SimpleCNNOrderedAvg.png Graphic file (type png)
 <use ../img/SimpleCNNOrderedAvg.png>
-Package pdftex.def Info: ../img/SimpleCNNOrderedAvg.png  used on input line 233.
-(pdftex.def)             Requested size: 284.52756pt x 213.40593pt.
-<../img/SimpleCNNOrderedAvg0.15Q.png, id=921, 462.528pt x 346.896pt>
+Package pdftex.def Info: ../img/SimpleCNNOrderedAvg.png  used on input line 236.
+(pdftex.def)             Requested size: 312.9803pt x 234.74811pt.
+ [50 <../img/SimpleCNNOrderedAvg.png>]
+<../img/SimpleCNNOrderedAvg0.15Q.png, id=930, 462.528pt x 346.896pt>
 File: ../img/SimpleCNNOrderedAvg0.15Q.png Graphic file (type png)
 <use ../img/SimpleCNNOrderedAvg0.15Q.png>
-Package pdftex.def Info: ../img/SimpleCNNOrderedAvg0.15Q.png  used on input line 254.
-(pdftex.def)             Requested size: 284.52756pt x 213.40593pt.
- [50 <../img/SimpleCNNOrderedAvg.png>] [51 <../img/SimpleCNNOrderedAvg0.15Q.png>] [52]
-<../img/FSChannelsOrderedAvg.png, id=945, 462.528pt x 346.896pt>
+Package pdftex.def Info: ../img/SimpleCNNOrderedAvg0.15Q.png  used on input line 257.
+(pdftex.def)             Requested size: 312.9803pt x 234.74811pt.
+ [51 <../img/SimpleCNNOrderedAvg0.15Q.png>] [52]
+<../img/FSChannelsOrderedAvg.png, id=947, 462.528pt x 346.896pt>
 File: ../img/FSChannelsOrderedAvg.png Graphic file (type png)
 <use ../img/FSChannelsOrderedAvg.png>
-Package pdftex.def Info: ../img/FSChannelsOrderedAvg.png  used on input line 308.
+Package pdftex.def Info: ../img/FSChannelsOrderedAvg.png  used on input line 311.
 (pdftex.def)             Requested size: 284.52756pt x 213.40593pt.
-<../img/FSChannelsOrderedQ15.png, id=947, 462.528pt x 346.896pt>
+<../img/FSChannelsOrderedQ15.png, id=949, 462.528pt x 346.896pt>
 File: ../img/FSChannelsOrderedQ15.png Graphic file (type png)
 <use ../img/FSChannelsOrderedQ15.png>
-Package pdftex.def Info: ../img/FSChannelsOrderedQ15.png  used on input line 321.
+Package pdftex.def Info: ../img/FSChannelsOrderedQ15.png  used on input line 324.
 (pdftex.def)             Requested size: 284.52756pt x 213.40593pt.
  [53 <../img/FSChannelsOrderedAvg.png>] [54 <../img/FSChannelsOrderedQ15.png>]
-<../img/FSTupleOrderedAvg.png, id=964, 462.528pt x 346.896pt>
+<../img/FSTupleOrderedAvg.png, id=966, 462.528pt x 346.896pt>
 File: ../img/FSTupleOrderedAvg.png Graphic file (type png)
 <use ../img/FSTupleOrderedAvg.png>
-Package pdftex.def Info: ../img/FSTupleOrderedAvg.png  used on input line 357.
+Package pdftex.def Info: ../img/FSTupleOrderedAvg.png  used on input line 360.
 (pdftex.def)             Requested size: 284.52756pt x 213.40593pt.
-<../img/FSTupleOrderedQ15.png, id=966, 462.528pt x 346.896pt>
+<../img/FSTupleOrderedQ15.png, id=968, 462.528pt x 346.896pt>
 File: ../img/FSTupleOrderedQ15.png Graphic file (type png)
 <use ../img/FSTupleOrderedQ15.png>
-Package pdftex.def Info: ../img/FSTupleOrderedQ15.png  used on input line 370.
+Package pdftex.def Info: ../img/FSTupleOrderedQ15.png  used on input line 373.
 (pdftex.def)             Requested size: 284.52756pt x 213.40593pt.
  [55 <../img/FSTupleOrderedAvg.png> <../img/FSTupleOrderedQ15.png>]
-<../img/FSVariantsOrderedAvg.png, id=985, 462.528pt x 346.896pt>
+<../img/FSVariantsOrderedAvg.png, id=987, 462.528pt x 346.896pt>
 File: ../img/FSVariantsOrderedAvg.png Graphic file (type png)
 <use ../img/FSVariantsOrderedAvg.png>
-Package pdftex.def Info: ../img/FSVariantsOrderedAvg.png  used on input line 394.
+Package pdftex.def Info: ../img/FSVariantsOrderedAvg.png  used on input line 397.
 (pdftex.def)             Requested size: 284.52756pt x 213.40593pt.
  [56 <../img/FSVariantsOrderedAvg.png>]
-<../img/FinalPopFinalPopSimpleCnnQ15.png, id=999, 462.528pt x 346.896pt>
+<../img/FinalPopFinalPopSimpleCnnQ15.png, id=1001, 462.528pt x 346.896pt>
 File: ../img/FinalPopFinalPopSimpleCnnQ15.png Graphic file (type png)
 <use ../img/FinalPopFinalPopSimpleCnnQ15.png>
-Package pdftex.def Info: ../img/FinalPopFinalPopSimpleCnnQ15.png  used on input line 436.
+Package pdftex.def Info: ../img/FinalPopFinalPopSimpleCnnQ15.png  used on input line 439.
 (pdftex.def)             Requested size: 284.52756pt x 213.40593pt.
-<../img/FinalPopFinalPopFsChannelsQ15.png, id=1001, 462.528pt x 346.896pt>
+<../img/FinalPopFinalPopFsChannelsQ15.png, id=1003, 462.528pt x 346.896pt>
 File: ../img/FinalPopFinalPopFsChannelsQ15.png Graphic file (type png)
 <use ../img/FinalPopFinalPopFsChannelsQ15.png>
-Package pdftex.def Info: ../img/FinalPopFinalPopFsChannelsQ15.png  used on input line 449.
+Package pdftex.def Info: ../img/FinalPopFinalPopFsChannelsQ15.png  used on input line 452.
 (pdftex.def)             Requested size: 284.52756pt x 213.40593pt.
-<../img/FinalPopFinalPopFsTupleQ15.png, id=1003, 462.528pt x 346.896pt>
+<../img/FinalPopFinalPopFsTupleQ15.png, id=1005, 462.528pt x 346.896pt>
 File: ../img/FinalPopFinalPopFsTupleQ15.png Graphic file (type png)
 <use ../img/FinalPopFinalPopFsTupleQ15.png>
-Package pdftex.def Info: ../img/FinalPopFinalPopFsTupleQ15.png  used on input line 462.
+Package pdftex.def Info: ../img/FinalPopFinalPopFsTupleQ15.png  used on input line 465.
 (pdftex.def)             Requested size: 284.52756pt x 213.40593pt.
  [57] [58 <../img/FinalPopFinalPopSimpleCnnQ15.png> <../img/FinalPopFinalPopFsChannelsQ15.png>]
-<../img/CrampedRoomFSVariantsOrderedAvg.png, id=1024, 462.528pt x 346.896pt>
+<../img/CrampedRoomFSVariantsOrderedAvg.png, id=1026, 462.528pt x 346.896pt>
 File: ../img/CrampedRoomFSVariantsOrderedAvg.png Graphic file (type png)
 <use ../img/CrampedRoomFSVariantsOrderedAvg.png>
-Package pdftex.def Info: ../img/CrampedRoomFSVariantsOrderedAvg.png  used on input line 498.
+Package pdftex.def Info: ../img/CrampedRoomFSVariantsOrderedAvg.png  used on input line 502.
 (pdftex.def)             Requested size: 227.62204pt x 170.71628pt.
-<../img/CrampedRoomFSChannelsOrdered15Q.png, id=1026, 462.528pt x 346.896pt>
+<../img/CrampedRoomFSChannelsOrdered15Q.png, id=1028, 462.528pt x 346.896pt>
 File: ../img/CrampedRoomFSChannelsOrdered15Q.png Graphic file (type png)
 <use ../img/CrampedRoomFSChannelsOrdered15Q.png>
-Package pdftex.def Info: ../img/CrampedRoomFSChannelsOrdered15Q.png  used on input line 514.
-(pdftex.def)             Requested size: 227.62204pt x 170.71628pt.
-<../img/CrampedRoomFSTupleOrdered15Q.png, id=1028, 462.528pt x 346.896pt>
+Package pdftex.def Info: ../img/CrampedRoomFSChannelsOrdered15Q.png  used on input line 518.
+(pdftex.def)             Requested size: 256.0748pt x 192.06375pt.
+<../img/CrampedRoomFSTupleOrdered15Q.png, id=1030, 462.528pt x 346.896pt>
 File: ../img/CrampedRoomFSTupleOrdered15Q.png Graphic file (type png)
 <use ../img/CrampedRoomFSTupleOrdered15Q.png>
-Package pdftex.def Info: ../img/CrampedRoomFSTupleOrdered15Q.png  used on input line 527.
-(pdftex.def)             Requested size: 227.62204pt x 170.71628pt.
- [59 <../img/FinalPopFinalPopFsTupleQ15.png>]
-<../img/CounterCircuitFSVariantsOrderedAvg.png, id=1042, 462.528pt x 346.896pt>
+Package pdftex.def Info: ../img/CrampedRoomFSTupleOrdered15Q.png  used on input line 531.
+(pdftex.def)             Requested size: 256.0748pt x 192.06375pt.
+ [59 <../img/FinalPopFinalPopFsTupleQ15.png>] [60 <../img/CrampedRoomFSVariantsOrderedAvg.png> <../img/CrampedRoomFSChannelsOrdered15Q.png>]
+<../img/CounterCircuitFSVariantsOrderedAvg.png, id=1053, 462.528pt x 346.896pt>
 File: ../img/CounterCircuitFSVariantsOrderedAvg.png Graphic file (type png)
 <use ../img/CounterCircuitFSVariantsOrderedAvg.png>
-Package pdftex.def Info: ../img/CounterCircuitFSVariantsOrderedAvg.png  used on input line 551.
+Package pdftex.def Info: ../img/CounterCircuitFSVariantsOrderedAvg.png  used on input line 555.
 (pdftex.def)             Requested size: 227.62204pt x 170.71628pt.
- [60 <../img/CrampedRoomFSVariantsOrderedAvg.png> <../img/CrampedRoomFSChannelsOrdered15Q.png>]
 <../img/CounterCircuitFSChannelsOrderedQ15.png, id=1055, 462.528pt x 346.896pt>
 File: ../img/CounterCircuitFSChannelsOrderedQ15.png Graphic file (type png)
 <use ../img/CounterCircuitFSChannelsOrderedQ15.png>
-Package pdftex.def Info: ../img/CounterCircuitFSChannelsOrderedQ15.png  used on input line 567.
+Package pdftex.def Info: ../img/CounterCircuitFSChannelsOrderedQ15.png  used on input line 571.
 (pdftex.def)             Requested size: 227.62204pt x 170.71628pt.
 <../img/CounterCircuitFSTupleOrderedQ15.png, id=1057, 462.528pt x 346.896pt>
 File: ../img/CounterCircuitFSTupleOrderedQ15.png Graphic file (type png)
 <use ../img/CounterCircuitFSTupleOrderedQ15.png>
-Package pdftex.def Info: ../img/CounterCircuitFSTupleOrderedQ15.png  used on input line 580.
+Package pdftex.def Info: ../img/CounterCircuitFSTupleOrderedQ15.png  used on input line 584.
 (pdftex.def)             Requested size: 227.62204pt x 170.71628pt.
  [61 <../img/CrampedRoomFSTupleOrdered15Q.png> <../img/CounterCircuitFSVariantsOrderedAvg.png>] [62 <../img/CounterCircuitFSChannelsOrderedQ15.png> <../img/CounterCircuitFSTupleOrderedQ15.png>] [63]) [64]
 \openout2 = `epilog.aux'.
@@ -874,7 +874,7 @@ Package pdftex.def Info: ../img/CounterCircuitFSTupleOrderedQ15.png  used on inp
 \openout2 = `bibliography.aux'.
 
  (./bibliography.tex (./thesis.bbl
-Underfull \hbox (badness 10000) in paragraph at lines 56--59
+Underfull \hbox (badness 10000) in paragraph at lines 58--61
 []\OT1/lmr/m/n/12 Deepmind, 2019.  URL []$\OT1/lmtt/m/n/12 https : / / www . deepmind . com / blog /
  []
 
@@ -890,16 +890,16 @@ Package rerunfilecheck Info: File `thesis.out' has not changed.
 Here is how much of TeX's memory you used:
  19027 strings out of 479342
  295855 string characters out of 5869178
- 769681 words of memory out of 5000000
+ 769702 words of memory out of 5000000
  36327 multiletter control sequences out of 15000+600000
  532979 words of font info for 74 fonts, out of 8000000 for 9000
  473 hyphenation exceptions out of 8191
  77i,24n,79p,637b,2377s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rmtt.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx8.pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi6.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi8.pfb></usr/share/texmf/fonts/type1/public/lm/lmmib10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb></usr/share/texmf/fonts/type1/public/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy6.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on thesis.pdf (73 pages, 5229074 bytes).
+Output written on thesis.pdf (73 pages, 5232510 bytes).
 PDF statistics:
- 1323 PDF objects out of 1440 (max. 8388607)
- 1109 compressed objects within 12 object streams
+ 1345 PDF objects out of 1440 (max. 8388607)
+ 1131 compressed objects within 12 object streams
  307 named destinations out of 1000 (max. 500000)
  840 words of extra memory for PDF output out of 10000 (max. 10000000)
 
