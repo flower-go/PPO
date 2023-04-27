@@ -87,7 +87,7 @@ While applying the KL divergence bonus as a partial reward based on state might 
 
 \subsubsection{KL divergence coefficients}
 Applying the value of the KL divergence, as calculated by the formula, would not work in our favor, since we have to consider the value ranges with respect to the environmental properties.
-The KL divergence is not negative, but the term could dominate the objective function if not bounded.
+If not bounded, the KL divergence term could dominate the objective function.
 Additionally, we need to consider a suitable multiplicative coefficient to scale the values to a reasonable range.
 
 When a new parameterized policy $p$ is initialized, it produces the probability distribution that is close to uniform.
@@ -115,7 +115,7 @@ These values of KL divergence can give us an idea of the absolute values when ne
 We believe that the probability distributions $p$ and $q_1$ are different enough in terms of what we are trying to achieve when training a population of diverse agents.
 By considering the absolute value of the KL divergence of these two distributions, we try to derive appropriate KL divergence coefficients for loss and reward augmentation.
 
-We hypothesize that the KL divergence term, which we add to the PPO objective, should have comparable weight to the entropy bonus (recall \ref{PPO}), as this bonus is also designed to be a mild exploratory pressure rather than a main objective.
+We hypothesize that the KL divergence term, which we add to the PPO objective, should have comparable weight to the entropy bonus (recall Section \ref{PPO}), as this bonus is also designed to be a mild exploratory pressure rather than a main objective.
 Entropy in the early stages of training corresponds to a uniform probability distribution, yielding absolute values of $1.8$. 
 This combined with the initial entropy bonus coefficient of $0.1$ (hyperparameter Table \ref{tab:hyperparameters-algo}) yields absolute values of cca $0.18$.
 In the final stage, when the policy is already trained, the entropy usually decreases to absolute values of about $1.2$, which combined with the entropy bonus end coefficient of $0.03$ produces a final value of $0.036$.
@@ -387,7 +387,7 @@ Trained population agents are always evaluated against self-play agents trained 
 In addition, in the initial phase of the experiments, the diversity combination R$1$L$1$ (see Table \ref{tab:KLDiv-coefiicents}) was both problematic in terms of learning, as the training diverged more often than in other settings, and also achieved significantly worse cooperation results (see evaluations \ref{SimpleCNNOrderedAvg}, \ref{SimpleCNNOrderedAvg0.15Q}).
 Therefore, for the following experiments we added another slightly weaker combination of parameters R$0$L$0$.
 
-Using the same evaluation scheme as before (see description \ref{OrderedEvaluation}), the ordered evaluation results of the population training did not turn out to be as better for the channels frame stacking technique as it was for the simple CNN approach (see figure \ref{FSChannelsOrderedAvg}).
+Using the same evaluation scheme as before (see Section \ref{OrderedEvaluation}), the ordered evaluation results of the population training did not turn out to be as better for the channels frame stacking technique as it was for the simple CNN approach (see Figure \ref{FSChannelsOrderedAvg}).
 Similarly, the improvement is debatable for the tuple frame stacking variant (Figure \ref{FSTupleOrderedAvg}).
 Nevertheless, we argue that for several experimental settings (No divers, R$0$, R$2$, and L$0$) the improvements can be demonstrated at lower values of the average cumulative reward.
 
@@ -645,7 +645,7 @@ We try to display the overall results in the following table (Table \ref{tab:exp
 We examine interesting points of the ordered scores (50\%, 60\%, 70\%, 80\%, 90\%, 100\%) where the difference between self-play and population agents is most visible.
 Since the sub-results originate from different layouts where the maximum possible outcome value also differs, we try to normalize them by dividing the values of the sub-results by the maximum outcome obtained by self-play agents on each corresponding layout.
 
-Examining the results in the table, we can conclude with a few further observations.
+Examining the results in the table, we can make some further observations.
 As discussed earlier, in all experiment settings our population of final agents outperform the self-play agents in terms of cooperation with up to 90\% of the evaluation agents, albeit at a lower level of cooperation.
 
 From the point of view of specific KL Divergence diversification, the worst results were found when both reward and goal were increased (R$0$L$0$, R$1$L$1$).
