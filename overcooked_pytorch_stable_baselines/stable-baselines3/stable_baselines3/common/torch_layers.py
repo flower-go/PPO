@@ -96,24 +96,15 @@ class NatureCNN(BaseFeaturesExtractor):
             n_input_channels = observation_space.shape[0]
 
         self.cnn = nn.Sequential(
-            # nn.Conv2d(n_input_channels, 32, kernel_size=8, stride=4, padding=0),
-            # nn.ReLU(),
-            # nn.Conv2d(32, 64, kernel_size=4, stride=2, padding=0),
-            # nn.ReLU(),
-            # nn.Conv2d(64, 64, kernel_size=3, stride=1, padding=0),
-            # nn.ReLU(),
-            # PBa
             nn.Conv2d(n_input_channels, out_channels, kernel_size=5, stride=1, padding="same"), # PBa padding 2
             nn.LeakyReLU(),
             nn.Conv2d(out_channels, out_channels, kernel_size=3, stride=1, padding="same"), # PBa padding 1
             nn.LeakyReLU(),
             nn.Conv2d(out_channels, out_channels, kernel_size=3, stride=1, padding="valid"),
             nn.LeakyReLU(),
-            # PBa
             nn.Flatten(),
         )
 
-        # self.cnn = self.cnn.to(device="cuda", memory_model=torch.channels_last)
 
 
 
@@ -139,11 +130,10 @@ class NatureCNN(BaseFeaturesExtractor):
             n_flatten += (self._frame_stacking - 1) * frame_dense_output_dim
             first_hidden_out += (self._frame_stacking - 1) * 3
 
-        # self.linear = nn.Sequential(nn.Linear(n_flatten, features_dim), nn.ReLU())  #PBa TODO: probably make smaller than
         self.linear = nn.Sequential(
-            nn.Linear(n_flatten, first_hidden_out), #32 OUT
+            nn.Linear(n_flatten, first_hidden_out),
             nn.LeakyReLU(),
-            nn.Linear(first_hidden_out, 32),  #32 IN
+            nn.Linear(first_hidden_out, 32),
             nn.LeakyReLU(),
             nn.Linear(32, 32),
             nn.LeakyReLU(),
