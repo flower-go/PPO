@@ -27,7 +27,7 @@ Warning--entry type for "OvercookedImplementation" isn't style-file defined
 Warning--empty year in OvercookedImplementation
 You've used 33 entries,
             2773 wiz_defined-function locations,
-            845 strings with 12482 characters,
+            845 strings with 12503 characters,
 and the built_in function-call counts, 17232 in all, are:
 = -- 1417
 > -- 1406
