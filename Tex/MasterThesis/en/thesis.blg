@@ -27,34 +27,34 @@ Warning--entry type for "OvercookedImplementation" isn't style-file defined
 Warning--empty year in OvercookedImplementation
 You've used 33 entries,
             2773 wiz_defined-function locations,
-            844 strings with 12472 characters,
-and the built_in function-call counts, 17220 in all, are:
-= -- 1414
+            845 strings with 12482 characters,
+and the built_in function-call counts, 17232 in all, are:
+= -- 1417
 > -- 1406
 < -- 21
 + -- 477
 - -- 443
 * -- 1475
-:= -- 2745
-add.period$ -- 117
+:= -- 2748
+add.period$ -- 118
 call.type$ -- 33
-change.case$ -- 234
+change.case$ -- 235
 chr.to.int$ -- 32
 cite$ -- 67
 duplicate$ -- 623
 empty$ -- 1170
 format.name$ -- 484
-if$ -- 3529
+if$ -- 3532
 int.to.chr$ -- 2
 int.to.str$ -- 1
 missing$ -- 17
-newline$ -- 187
+newline$ -- 188
 num.names$ -- 136
 pop$ -- 530
 preamble$ -- 1
 purify$ -- 210
 quote$ -- 0
-skip$ -- 604
+skip$ -- 602
 stack$ -- 0
 substring$ -- 272
 swap$ -- 71
@@ -65,5 +65,5 @@ type$ -- 348
 warning$ -- 1
 while$ -- 115
 width$ -- 0
-write$ -- 451
+write$ -- 453
 (There were 6 warnings)

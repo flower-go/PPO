@@ -116,7 +116,7 @@ We believe that the probability distributions $p$ and $q_1$ are different enough
 By considering the absolute value of the KL divergence of these two distributions, we try to derive appropriate KL divergence coefficients for loss and reward augmentation.
 
 We hypothesize that the KL divergence term, which we add to the PPO objective, should have comparable weight to the entropy bonus (recall Section \ref{PPO}), as this bonus is also designed to be a mild exploratory pressure rather than a main objective.
-Entropy in the early stages of training corresponds to a uniform probability distribution, yielding absolute values of $1.8$. 
+Entropy in the early stages of training corresponds to a uniform probability distribution, yielding in our case absolute values of $1.8$. 
 This combined with the initial entropy bonus coefficient of $0.1$ (hyperparameter Table \ref{tab:hyperparameters-algo}) yields absolute values of cca $0.18$.
 In the final stage, when the policy is already trained, the entropy usually decreases to absolute values of about $1.2$, which combined with the entropy bonus end coefficient of $0.03$ produces a final value of $0.036$.
 
@@ -547,7 +547,7 @@ Interestingly, the evaluation curve of channels and tuple is different.
 It seems that the use of the channels frame stacking representation here causes agents to cooperate with virtually all other agents at a non-significantly low level of cooperation, while at some point the increase in cooperation level is outperformed by a states tuple representation.
 
 On this layout, the diversity population method managed to outperform the self-play agents in most of the experiment settings (Figures \ref {CounterCircuitFSChannelsOrderedQ15}, \ref {CounterCircuitFSTupleOrderedQ15}).
-However, we cannot say that the improvement is very convincing, as in both variants the cooperation failed noticeably on two particular settings. 
+However, in both variants the cooperation failed noticeably on two particular settings. 
 
 
 \begin{figure}[!ht]
@@ -662,7 +662,7 @@ The first and third variants (L$0$, L$2$) performed reasonably well, while the s
 However, the relationship between the proposed variants of the loss augmentation experiment is a somewhat more complicated one, since the ratio between the loss coefficient and the loss clipping varies a lot. 
 It is difficult to say if this variation is just caused by some statistical error or if this particular setting is actually so detrimental to the overall cooperation.
 
-While it may seem that overall the best results were obtained when no diversification was used, if we take a look at almost any particular experiment performed, we can find some specialized diversification variant that worked better.
+However, while it may seem that overall the best results were obtained when no diversification was used, if we look at almost any particular experiment performed, we can find some specialized diversification variant that worked better.
 For each of the reward augmentation variants we can find evidence of better performance than the no diversification variant in the following experiments (Figures \ref{SimpleCNNOrderedAvg}, \ref{SimpleCNNOrderedAvg0.15Q}, \ref{FSChannelsOrderedAvg}, \ref{FSChannelsOrderedQ15}, \ref{CounterCircuitFSChannelsOrderedQ15}).
 Additionally, for a reward augmentation variant R$1$, we see an extraordinary improvement with the simple convolutional state representation when our final agents were evaluated against each other (Figure \ref{FinalPopFinalPopSimpleCnnQ15}). 
 

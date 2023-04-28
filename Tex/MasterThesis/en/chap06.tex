@@ -65,7 +65,7 @@ As a reasonable setup, we start by reimplementing basic agent training using sel
 \subsection*{Default setting}
 We started with the simplest default settings.
 For initial experiments we chose to start with the first layout Cramped Room (Subsection \ref{CrampedRoom}) using the more lightweight of the two, partially observable representation (Subsection \ref{StateRepresentation}).
-As we recall, this representation uses a one-dimensional vector of features that is out-of-the-box compatible with prefabricated Stable Baselines MLPPolicy wrapper,s which contains two shared hidden layers before separate layers for actor and critic are applied.
+As we recall, this representation uses a one-dimensional vector of features that is out-of-the-box compatible with prefabricated Stable Baselines MLPPolicy wrapper, which contains two shared hidden layers before separate layers for actor and critic are applied.
 Despite several attempts to tweak the hyperparameters, we were not able to come close to the reported results of cooperation failure (Subsection \ref{offDiagonalReport}).
 In all of our experiments, different self-playing agents managed to cooperate reasonably well.
 While there were some pairs of agents that did not cooperate at all, this was rather rare compared to the overall cross-play evaluation (Figure \ref{MLPSPCrossPlay}).
@@ -102,7 +102,7 @@ Unfortunately, training with these settings failed on all other layouts.
 We performed hyperparameter search by running the training process with several hundred randomly chosen sets of hyperparameters to find a suitable stable configuration.
 With the resulting configuration (Table \ref{tab:hyperparameters-algo}) we were able to train a self-play agent on all layouts in most of the runs.
 There is only one exception to the table, where we use the value $0.01$ for the VF coefficient on the Cramped room layout.
-Without this change, the training was still successful, but the overall outcome of the trained agents was generally lower.
+Without this change, the training was still successful, but the overall outcome of the trained agents was substantially lower.
 
 \begin{table}[htbp]
   \small
