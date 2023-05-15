@@ -896,11 +896,14 @@ def get_vectorized_gym_env(base_env, gym_env_name, agent_idx, featurize_fn=None,
 
     base_env: A OvercookedEnv instance (fixed or variable map)
     """
-
+    print("gym make before")
+    print(gym_env_name)
+    gym_env=gym.make(gym_env_name)
+    print(gym_env.observation_space)
     def gym_env_fn():
         gym_env = gym.make(gym_env_name)
         gym_env.custom_init(base_env, featurize_fn=featurize_fn, start_state_fn=start_state_fn, baselines_reproducible=True, agent_idx=agent_idx)
         return gym_env
 
-    vectorized_gym_env = SubprocVecEnv([gym_env_fn] * args.num_workers)
+    vectorized_gym_env = SubprocVecEnv([gym_env_fn] * args.num_workers ,start_method="forkserver")
     return vectorized_gym_env

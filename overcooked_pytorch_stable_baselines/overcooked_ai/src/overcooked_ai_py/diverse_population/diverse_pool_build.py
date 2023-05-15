@@ -3,16 +3,15 @@ import random
 import sys
 import os
 
-codedir = os.environ["DATADIR"]
+codedir = os.environ["CODEDIR"]
 #codedir = /home/premek/DP/
-#projdir = os.environ["PROJDIR"]
+projdir = os.environ["PROJDIR"]
 #projdir = /home/premek/DP/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_pytorch
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src")
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines/stable-baselines3")
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines")
-projdir = codedir
-print(sys.path)
-#exit()
+# print(sys.path)
+# exit()
 from stable_baselines3.ppo.ppo import PPO
 from overcooked_ai.src.overcooked_ai_py.mdp.overcooked_env import OvercookedGridworld, OvercookedEnv, get_vectorized_gym_env
 from datetime import datetime
@@ -20,9 +19,7 @@ from experiments_params import set_layout_params
 from visualisation.visualisation import heat_map
 from evaluation.evaluation import Evaluator
 from divergent_solution_exception import divergent_solution_exception
-exit()
 os.environ['CUDA_VISIBLE_DEVICES'] = "0"
-
 
 EVAL_SET_SIZE = 30
 SP_EVAL_EXP_NAME = "SP_EVAL"
@@ -80,6 +77,8 @@ parser.add_argument("--seed", default=42, type=int, help="Random seed.")
 
 args = parser.parse_args([] if "__file__" not in globals() else None)
 
+print("argumentst")
+print(args)
 random.seed(args.seed)
 import numpy as np
 np.random.seed(args.seed)
