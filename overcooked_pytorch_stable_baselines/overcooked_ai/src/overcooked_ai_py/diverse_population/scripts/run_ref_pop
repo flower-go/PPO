@@ -1,0 +1,18 @@
+#!/bin/bash
+
+
+exp=$1;
+layout_name=$2;
+seed=$3;
+frame_stacking_mode=$4
+vf_coef=$5
+
+echo $exp
+echo $layout_name
+echo $seed
+echo $frame_stacking_mode
+
+job_name="${exp}_${layout_name}_${frame_stacking_mode}_train"
+echo $job_name
+
+qsub -N "${job_name}0" -l select=1:ncpus=3:ngpus=1:mem=15gb:scratch_local=4gb -q gpu -l walltime=23:50:00 -v layout_name=$layout_name,trained_models=30,exp=$exp,init_SP_agents=0,delay_shared_rewards=False,mode="SP",kl_diff_bonus_reward_coef=0.0,kl_diff_bonus_reward_clip=0.0,kl_diff_loss_coef=0.0,kl_diff_loss_clip=0.0,seed=$seed,n_sample_partners=3,frame_stacking=1,frame_stacking_mode=$frame_stacking_mode,vf_coef=$vf_coef  scripts/script.sh
