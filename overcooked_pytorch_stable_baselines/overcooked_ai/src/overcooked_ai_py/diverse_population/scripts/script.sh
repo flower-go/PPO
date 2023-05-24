@@ -1,14 +1,14 @@
 #!/bin/bash
 module add conda-modules-py37
-conda activate /storage/plzen1/home/premek_basta/.conda/envs/overcooked_ai_terminal
+conda activate "$home_dir"/envs/overcooked_ai_terminal
 
-cd /storage/plzen1/home/premek_basta/
+cd $home_dir
 export CODEDIR=$(pwd)
-echo $CODEDIR
-export PROJDIR=/storage/plzen1/home/premek_basta/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py
-echo $PROJDIR
+echo "codedir: " $CODEDIR
+export PROJDIR="$home_dir"/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py
+echo "projdir: " $PROJDIR
 
-cd PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py
+cd $PROJDIR
 echo $trained_models
 echo $exp
 echo $eval_set_name
@@ -29,7 +29,16 @@ echo $frame_stacking_mode
 echo $frame_stacking
 
 python diverse_population/diverse_pool_build.py --layout_name=$layout_name --trained_models=$trained_models --mode=$mode --exp=$exp --eval_set_name=$eval_set_name --init_SP_agents=$init_SP_agents --kl_diff_loss_coef=$kl_diff_loss_coef --kl_diff_loss_clip=$kl_diff_loss_clip --kl_diff_bonus_reward_coef=$kl_diff_bonus_reward_coef --kl_diff_bonus_reward_clip=$kl_diff_bonus_reward_clip --seed=$seed --n_sample_partners=$n_sample_partners --frame_stacking=$frame_stacking --frame_stacking_mode=$frame_stacking_mode --vf_coef=$vf_coef > "$SCRATCHDIR"/out.txt 2> "$SCRATCHDIR"/err.txt
+echo "python dobehl"
+INFODIR="$home_dir"/coding/results
+date_name=$(date +%m%d-%H%M)
+echo "job id"
+echo "$PBS_JOBID"
+ls "$SCRATCHDIR"
+cp "$SCRATCHDIR"/out.txt "$INFODIR"/"$date_name"."$PBS_JOBID"_out.txt
+cp "$SCRATCHDIR"/err.txt "$INFODIR"/"$date_name"."$PBS_JOBID"_err.txt
 
-cp "$SCRATCHDIR"/out.txt /storage/plzen1/home/premek_basta/results/_out.txt
-
-cp "$SCRATCHDIR"/err.txt /storage/plzen1/home/premek_basta/results/_err.txt
+echo "skopirovano"
+echo "file se jmenuje:"
+echo "$INFODIR"/"$date_name"."$PBS_JOBID"_err.txt
+rm -rf "$SCRATCHDIR"/*
