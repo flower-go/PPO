@@ -9,24 +9,25 @@ export PROJDIR="$home_dir"/coding/PPO/overcooked_pytorch_stable_baselines/overco
 echo "projdir: " $PROJDIR
 
 cd $PROJDIR
-echo $trained_models
-echo $exp
-echo $eval_set_name
-echo $init_SP_agents
-echo $delay_shared_rewards
-echo $mode
+pwd
+echo "trained_models="$trained_models
+echo "exp"=$exp
+echo "eval_set_name"=$eval_set_name
+echo "init_SP_agents"=$init_SP_agents
+echo "delay_shared_rewards"=$delay_shared_rewards
+echo "mode"=$mode
 
-echo $kl_diff_loss_coef
-echo $kl_diff_loss_clip
-echo $kl_diff_bonus_reward_coef
-echo $kl_diff_bonus_reward_clip
+echo "kl_diff_loss_coef"=$kl_diff_loss_coef
+echo "kl_diff_loss_clip"=$kl_diff_loss_clip
+echo "kl_diff_bonus_reward_coef"=$kl_diff_bonus_reward_coef
+echo "kl_diff_bonus_reward_clip"=$kl_diff_bonus_reward_clip
 
-echo $rnd_obj_prob_thresh_env
-echo $seed
-echo $n_sample_partners
-echo $layout_name
-echo $frame_stacking_mode
-echo $frame_stacking
+echo "rnd_obj_prob_thresh_env"=$rnd_obj_prob_thresh_env
+echo "seed"=$seed
+echo "n_sample_partners"=$n_sample_partners
+echo "layout_name"=$layout_name
+echo "frame_stacking_mode"=$frame_stacking_mode
+echo "frame_stacking"=$frame_stacking
 
 python diverse_population/diverse_pool_build.py --layout_name=$layout_name --trained_models=$trained_models --mode=$mode --exp=$exp --eval_set_name=$eval_set_name --init_SP_agents=$init_SP_agents --kl_diff_loss_coef=$kl_diff_loss_coef --kl_diff_loss_clip=$kl_diff_loss_clip --kl_diff_bonus_reward_coef=$kl_diff_bonus_reward_coef --kl_diff_bonus_reward_clip=$kl_diff_bonus_reward_clip --seed=$seed --n_sample_partners=$n_sample_partners --frame_stacking=$frame_stacking --frame_stacking_mode=$frame_stacking_mode --vf_coef=$vf_coef > "$SCRATCHDIR"/out.txt 2> "$SCRATCHDIR"/err.txt
 echo "python dobehl"
