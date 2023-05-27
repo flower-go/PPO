@@ -34,8 +34,10 @@ date_name=$(date +%m%d-%H%M)
 
 if [ -z "$file" ]; then echo "I can't read your mind, provide file=value parameter please.";
 else 
+	echo "frame stacking and trained models:" $frame_stacking
+	echo $trained_models
 	echo "I will run $file"
-	qsub -m ba -N "$date_name"_"$exp" -e "$res_dir" -o "$res_dir" -l select=1:ncpus=3:ngpus=1:mem=15gb:scratch_local=4gb -q gpu -l walltime=23:50:00 -v home_dir=$home_dir,layout_name=$layout_name,trained_models=$trained_models,exp=$exp,init_SP_agents=3,delay_shared_rewards=False,mode=$mode,kl_diff_bonus_reward_coef=0.0,kl_diff_bonus_reward_clip=0.0,kl_diff_loss_coef=0.0,kl_diff_loss_clip=0.0,seed=$seed,n_sample_partners=3,frame_stacking=$frame_stacking,frame_stacking_mode=$frame_stacking_mode,vf_coef=$vf_coef \
+	qsub -m ba -N "$date_name"_"$exp" -e "$res_dir" -o "$res_dir" -l select=1:ncpus=3:ngpus=1:mem=15gb:scratch_local=4gb -q gpu_long -l walltime=72:50:00 -v home_dir=$home_dir,layout_name=$layout_name,trained_models=$trained_models,exp=$exp,init_SP_agents=3,delay_shared_rewards=False,mode=$mode,kl_diff_bonus_reward_coef=0.0,kl_diff_bonus_reward_clip=0.0,kl_diff_loss_coef=0.0,kl_diff_loss_clip=0.0,seed=$seed,n_sample_partners=3,frame_stacking=$frame_stacking,frame_stacking_mode=$frame_stacking_mode,vf_coef=$vf_coef \
 "$home_dir"/"$file"
 
 fi
