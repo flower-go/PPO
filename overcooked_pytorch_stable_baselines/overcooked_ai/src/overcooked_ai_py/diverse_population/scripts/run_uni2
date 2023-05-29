@@ -29,8 +29,6 @@ do
     test "${i%%file*}" && set -- "$@" "$i"
 done
 
-#IFS=_ ; echo "$*"
-
 oldIFS=$IFS
 IFS=","
 params="$*"
@@ -53,6 +51,6 @@ else
 	#echo $trained_models
 	echo "I will run $file"
 	echo $params
-	#qsub -N "$date_name"_"$exp" -e "$res_dir" -o "$res_dir" -l select=1:ncpus=3:ngpus=1:mem=15gb:scratch_local=4gb -q gpu -l walltime=02:50:00 -v $params "$home_dir"/"$file"
+	qsub -N "$date_name"_"$exp" -e "$res_dir" -o "$res_dir" -l select=1:ncpus=4:ngpus=1:mem=15gb:scratch_local=4gb -q gpu -l walltime=02:50:00 -v $params "$home_dir"/"$file"
 
 fi
