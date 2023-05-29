@@ -250,6 +250,10 @@ overcooked_env = OvercookedEnv.from_mdp(mdp, horizon=400)
 
 
 if __name__ == "__main__":
+    print("all args:")
+    for arg in vars(args):
+        print (arg, getattr(args, arg))
+        print("\n")
 
     # State representaion and environment reset functions set
     feature_fn = lambda _, state: overcooked_env.lossless_state_encoding_mdp(state, debug=False)
