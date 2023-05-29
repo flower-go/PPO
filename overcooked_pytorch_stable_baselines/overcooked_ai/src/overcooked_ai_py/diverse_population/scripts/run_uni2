@@ -9,17 +9,32 @@ do
 
    KEY_LENGTH=${#KEY}
    VALUE="${ARGUMENT:$KEY_LENGTH+1}"
-
+   
    export "$KEY"="$VALUE"
 done
 
-declare -A def_vals
-def_vals=([trained_models]=11 [mode]="POP" [frame_stacking]=4 [vf_coef]=0.1 [frame_stacking_mode]="channels")
-for i in "${!def_vals[@]}"
+
+
+#declare -A def_vals
+#def_vals=([trained_models]=11 [mode]="POP" [frame_stacking]=4 [vf_coef]=0.1 [frame_stacking_mode]="channels")
+#for i in "${!def_vals[@]}"
+#do
+#  if [[ -z "${!i}" ]]; then declare "${i}"="${def_vals[$i]}"; fi
+#done
+
+firsttime=yes
+for i in "$@" 
 do
-  if [[ -z "${!i}" ]]; then declare "${i}"="${def_vals[$i]}"; fi
+    test "$firsttime" && set -- && unset firsttime
+    test "${i%%file*}" && set -- "$@" "$i"
 done
 
+#IFS=_ ; echo "$*"
+
+oldIFS=$IFS
+IFS=","
+params="$*"
+IFS=$oldIFS
 #home dir must be set correctly
 if [ -z "$home_dir" ]; then home_dir="/storage/plzen1/home/ayshi"; fi
 echo "home set to: $home_dir"
@@ -34,10 +49,10 @@ date_name=$(date +%m%d-%H%M)
 
 if [ -z "$file" ]; then echo "I can't read your mind, provide file=value parameter please.";
 else 
-	echo "frame stacking and trained models:" $frame_stacking
-	echo $trained_models
+	#echo "frame stacking and trained models:" $frame_stacking
+	#echo $trained_models
 	echo "I will run $file"
-	qsub -N "$date_name"_"$exp" -e "$res_dir" -o "$res_dir" -l select=1:ncpus=4:ngpus=1:mem=15gb:scratch_local=4gb -q gpu -l walltime=02:50:00 -v home_dir=$home_dir,layout_name=$layout_name,trained_models=$trained_models,exp=$exp,init_SP_agents=3,delay_shared_rewards=False,mode=$mode,kl_diff_bonus_reward_coef=0.0,kl_diff_bonus_reward_clip=0.0,kl_diff_loss_coef=0.0,kl_diff_loss_clip=0.0,seed=$seed,n_sample_partners=$n_sample_partners,frame_stacking=$frame_stacking,frame_stacking_mode=$frame_stacking_mode,vf_coef=$vf_coef \
-"$home_dir"/"$file"
+	echo $params
+	#qsub -N "$date_name"_"$exp" -e "$res_dir" -o "$res_dir" -l select=1:ncpus=3:ngpus=1:mem=15gb:scratch_local=4gb -q gpu -l walltime=02:50:00 -v $params "$home_dir"/"$file"
 
 fi
