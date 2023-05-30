@@ -3,6 +3,7 @@
 #arguments parsers (dont pass equal sign as a value!!)
 #source: https://unix.stackexchange.com/questions/129391/passing-named-arguments-to-shell-scripts
 # potrebuju: exp, layout name, seed, frame_stacking_mode,vf_coef
+#echo $*
 for ARGUMENT in "$@"
 do
    KEY=$(echo $ARGUMENT | cut -f1 -d=)
@@ -34,7 +35,10 @@ IFS=","
 params="$*"
 IFS=$oldIFS
 #home dir must be set correctly
-if [ -z "$home_dir" ]; then home_dir="/storage/plzen1/home/ayshi"; fi
+if [ -z "$home_dir" ]; then 
+	home_dir="/storage/plzen1/home/ayshi";
+	params+=",home_dir=""$home_dir"
+ fi
 echo "home set to: $home_dir"
 
 job_name="${exp}_${layout_name}_${frame_stacking_mode}_train"
@@ -51,6 +55,6 @@ else
 	#echo $trained_models
 	echo "I will run $file"
 	echo $params
-	qsub -N "$date_name"_"$exp" -e "$res_dir" -o "$res_dir" -l select=1:ncpus=4:ngpus=1:mem=15gb:scratch_local=4gb -q gpu -l walltime=02:50:00 -v $params "$home_dir"/"$file"
+	qsub -N "$date_name"_"$exp" -e "$res_dir" -o "$res_dir" -l select=1:ncpus=4:ngpus=1:mem=15gb:scratch_local=4gb -q gpu -l walltime=02:50:00 -v "$params" "$home_dir"/"$file"
 
 fi

@@ -12,7 +12,7 @@ def set_layout_params(args):
         args.eval_stop_threshold = 205
 
     if args.layout_name == "forced_coordination":
-        args.eval_stop_threshold = 165 #150
+        args.eval_stop_threshold = 160 #150
 
     if args.layout_name == "counter_circuit_o_1order":
         args.eval_stop_threshold = 123

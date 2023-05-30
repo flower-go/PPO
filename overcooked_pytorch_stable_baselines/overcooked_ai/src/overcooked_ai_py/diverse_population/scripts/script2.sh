@@ -3,6 +3,8 @@ module add conda-modules-py37
 conda activate "$home_dir"/envs/overcooked_ai_terminal
 
 cd $home_dir
+echo "homedir"
+echo $home_dir
 export CODEDIR=$(pwd)/coding
 echo "codedir: " $CODEDIR
 export PROJDIR="$home_dir"/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py
@@ -30,9 +32,12 @@ echo "layout_name"=$layout_name
 echo "frame_stacking_mode"=$frame_stacking_mode
 echo "frame_stacking"=$frame_stacking
 
+echo "parametry"
+echo "$*"
 firsttime=yes
 for i in "$@"
 do
+    echo $i
     test "$firsttime" && set -- && unset firsttime
     test "${i%%home_dir*}" && set -- "$@" "$i"
 done
