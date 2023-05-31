@@ -65,7 +65,7 @@ def display_and_export_to_array(test_dict):
     show_image_in_ipython(img_path)
     return pygame.surfarray.array3d(surface)
 
-def save_map_pic(test_dict):
+def save_map_pic(test_dict, filename):
     test_dict = copy.deepcopy(test_dict)
     test_dict["kwargs"]["state"] = OvercookedState.from_dict(
         test_dict["kwargs"]["state"]
@@ -73,7 +73,7 @@ def save_map_pic(test_dict):
     surface = StateVisualizer(**test_dict["config"]).render_state(
         **test_dict["kwargs"]
     )
-    img_path = "./rendered_map.png"
+    img_path = "./" + filename + ".png"
     pygame.image.save(surface, img_path)
 
 DEFAULT_VALUES = {
@@ -109,13 +109,11 @@ DEFAULT_VALUES = {
     "grid": None,
     "background_color": (155, 101, 0),  # color of empty counter
 }
-config = copy.deepcopy(DEFAULT_VALUES)
-if __name__ == "__main__":
-    print("before mdp")
-    mdp = OvercookedGridworld.from_layout_name(layout_name="cramped_room")
-    print("after mdp")
+
+def print_map(map_name):
+    config = copy.deepcopy(DEFAULT_VALUES)
+    mdp = OvercookedGridworld.from_layout_name(layout_name=map_name)
     agent_eval = AgentEvaluator(env_params={"horizon": 1}, mdp_fn=lambda _: mdp)
-    print("after agent")
     trajectory_random_pair = agent_eval.evaluate_random_pair(num_games=1, display=False, native_eval=True)
     grid = trajectory_random_pair["mdp_params"][0]["terrain"]
     state = trajectory_random_pair["ep_states"][0][0]
@@ -131,5 +129,18 @@ if __name__ == "__main__":
         "result_array_filename": "test_hud_2.npy",
     }
 
-    test_hud_2_array = save_map_pic(test_hud_2)
+    test_hud_2_array = save_map_pic(test_hud_2, map_name)
+
+if __name__ == "__main__":
+    directory = './data/layouts'
+    # iterate over files in
+    # that directory
+    layouts = []
+    for filename in os.scandir(directory):
+        if filename.is_file():
+            print(filename.path)
+            map_name = filename.split(".")[0]
+            print(map_name)
+            print_map(map_name)
+
 
