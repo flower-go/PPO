@@ -1,22 +1,34 @@
-from overcooked_ai_py.agents.benchmarking import AgentEvaluator
-from overcooked_ai_py.agents.agent import (
+import sys
+import os
+
+codedir = os.environ["CODEDIR"]
+#codedir = /home/premek/DP/
+projdir = os.environ["PROJDIR"]
+#projdir = /home/premek/DP/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_pytorch
+sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src")
+sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines/stable-baselines3")
+sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines")
+
+
+from overcooked_ai.src.overcooked_ai_py.agents.benchmarking import AgentEvaluator
+from overcooked_ai.src.overcooked_ai_py.agents.agent import (
     SampleAgent,
     GreedyHumanModel,
     RandomAgent,
 )
-from overcooked_ai_py.mdp.overcooked_mdp import (
+from overcooked_ai.src.overcooked_ai_py.mdp.overcooked_mdp import (
     OvercookedGridworld,
     OvercookedState,
     Recipe,
     SoupState,
 )
-from overcooked_ai_py.visualization.state_visualizer import StateVisualizer
-from overcooked_ai_py.visualization.visualization_utils import (
+from overcooked_ai.src.overcooked_ai_py.visualization.state_visualizer import StateVisualizer
+from overcooked_ai.src.overcooked_ai_py.visualization.visualization_utils import (
     show_image_in_ipython,
 )
-from overcooked_ai_py.utils import generate_temporary_file_path
-from overcooked_ai_py.static import FONTS_DIR
-from overcooked_ai_py.mdp.layout_generator import POT
+from overcooked_ai.src.overcooked_ai_py.utils import generate_temporary_file_path
+from overcooked_ai.src.overcooked_ai_py.static import FONTS_DIR
+from overcooked_ai.src.overcooked_ai_py.mdp.layout_generator import POT
 import copy
 import pygame
 import os
