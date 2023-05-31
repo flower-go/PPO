@@ -10,30 +10,32 @@ sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines/stable-basel
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines")
 
 
-from overcooked_ai.src.overcooked_ai_py.agents.benchmarking import AgentEvaluator
-from overcooked_ai.src.overcooked_ai_py.agents.agent import (
+from overcooked_ai_py.agents.benchmarking import AgentEvaluator
+from overcooked_ai_py.agents.agent import (
     SampleAgent,
     GreedyHumanModel,
     RandomAgent,
 )
-from overcooked_ai.src.overcooked_ai_py.mdp.overcooked_mdp import (
+from overcooked_ai_py.mdp.overcooked_mdp import (
     OvercookedGridworld,
     OvercookedState,
     Recipe,
     SoupState,
 )
-from overcooked_ai.src.overcooked_ai_py.visualization.state_visualizer import StateVisualizer
-from overcooked_ai.src.overcooked_ai_py.visualization.visualization_utils import (
+from overcooked_ai_py.visualization.state_visualizer import StateVisualizer
+from overcooked_ai_py.visualization.visualization_utils import (
     show_image_in_ipython,
 )
-from overcooked_ai.src.overcooked_ai_py.utils import generate_temporary_file_path
-from overcooked_ai.src.overcooked_ai_py.static import FONTS_DIR
-from overcooked_ai.src.overcooked_ai_py.mdp.layout_generator import POT
+from overcooked_ai_py.utils import generate_temporary_file_path
+from overcooked_ai_py.static import FONTS_DIR
+from overcooked_ai_py.mdp.layout_generator import POT
 import copy
 import pygame
 import os
 import numpy as np
 import json
+os.environ['SDL_AUDIODRIVER'] = 'dsp'
+
 def has_cooking_timer(state, grid):
     for obj in state.objects.values():
         if isinstance(obj, SoupState):
@@ -109,11 +111,12 @@ DEFAULT_VALUES = {
 }
 config = copy.deepcopy(DEFAULT_VALUES)
 if __name__ == "__main__":
+    print("before mdp")
     mdp = OvercookedGridworld.from_layout_name(layout_name="cramped_room")
+    print("after mdp")
     agent_eval = AgentEvaluator(env_params={"horizon": 1}, mdp_fn=lambda _: mdp)
-
-    trajectory_random_pair = agent_eval.evaluate_random_pair(
-        num_games=1, display=False, native_eval=True)
+    print("after agent")
+    trajectory_random_pair = agent_eval.evaluate_random_pair(num_games=1, display=False, native_eval=True)
     grid = trajectory_random_pair["mdp_params"][0]["terrain"]
     state = trajectory_random_pair["ep_states"][0][0]
 
