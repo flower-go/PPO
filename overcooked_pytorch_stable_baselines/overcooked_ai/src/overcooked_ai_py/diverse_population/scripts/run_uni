@@ -37,7 +37,7 @@ else
 	echo "frame stacking and trained models:" $frame_stacking
 	echo $trained_models
 	echo "I will run $file"
-	qsub -N "$date_name"_"$exp" -e "$res_dir" -o "$res_dir" -l select=1:ncpus=4:ngpus=1:mem=17gb:scratch_local=4gb -q gpu -l walltime=23:50:00 -v home_dir=$home_dir,layout_name=$layout_name,trained_models=$trained_models,exp=$exp,init_SP_agents=3,delay_shared_rewards=False,mode=$mode,kl_diff_bonus_reward_coef=0.0,kl_diff_bonus_reward_clip=0.0,kl_diff_loss_coef=0.0,kl_diff_loss_clip=0.0,seed=$seed,n_sample_partners=$n_sample_partners,frame_stacking=$frame_stacking,frame_stacking_mode=$frame_stacking_mode,vf_coef=$vf_coef \
+	qsub -N "$date_name"_"$exp" -e "$res_dir" -o "$res_dir" -l select=1:ncpus=4:ngpus=1:mem=17gb:scratch_local=4gb -q gpu_long -l walltime=48:50:00 -v home_dir=$home_dir,layout_name=$layout_name,trained_models=$trained_models,exp=$exp,init_SP_agents=3,delay_shared_rewards=False,mode=$mode,kl_diff_bonus_reward_coef=0.0,kl_diff_bonus_reward_clip=0.0,kl_diff_loss_coef=0.0,kl_diff_loss_clip=0.0,seed=$seed,n_sample_partners=$n_sample_partners,frame_stacking=$frame_stacking,frame_stacking_mode=$frame_stacking_mode,vf_coef=$vf_coef \
 "$home_dir"/"$file"
 
 fi
