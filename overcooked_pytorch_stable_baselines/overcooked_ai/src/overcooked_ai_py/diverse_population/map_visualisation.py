@@ -138,8 +138,8 @@ if __name__ == "__main__":
     layouts = []
     for filename in os.scandir(directory):
         if filename.is_file():
-            print(filename.path)
-            map_name = filename.split(".")[0]
+            print(filename.name)
+            map_name = filename.name.split(".")[0]
             print(map_name)
             print_map(map_name)
 
