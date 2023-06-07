@@ -244,28 +244,32 @@ def get_name(name, args, sp=False, extended=False):
     return full_name
 
 
+def print_args():
+    print("all args:")
+    for arg in vars(args):
+        print (arg, getattr(args, arg))
+
 # Overcooked MDP and environment is loaded
 mdp = OvercookedGridworld.from_layout_name(args.layout_name)
 overcooked_env = OvercookedEnv.from_mdp(mdp, horizon=400)
 
 
 if __name__ == "__main__":
-    print("all args:")
-    for arg in vars(args):
-        print (arg, getattr(args, arg))
-        print("\n")
+    print_args()
+
 
     # State representaion and environment reset functions set
     feature_fn = lambda _, state: overcooked_env.lossless_state_encoding_mdp(state, debug=False)
     start_state_fn = mdp.get_random_start_state_fn(random_start_pos=True, # TODO: set Default True
                                                    rnd_obj_prob_thresh = args.rnd_obj_prob_thresh_env,# TODO: set Default args.rnd_obj_prob_thresh_env,
                                                    random_switch_start_pos = args.random_switch_start_pos) if args.static_start == False else mdp.get_standard_start_state
-
+    print("pred gym env vytvvorenim")
+    print_args()
     # Vectorized overcooked environments are initialized
     gym_env = get_vectorized_gym_env(
         overcooked_env, 'Overcooked-v0', agent_idx=0, featurize_fn=feature_fn, start_state_fn=start_state_fn, args=args
     )
-
+    print("mame gym env")
     #Agent indices are set
     agent_idxs = [0 for _ in range(args.num_workers)]
     gym_env.remote_set_agent_idx(agent_idxs)
@@ -280,7 +284,7 @@ if __name__ == "__main__":
 
     set_layout_params(args)
     args.full_exp_name = get_name(args.exp, args, sp=args.mode == "SP")
-
+    print("budu volat load or train")
     #Models training
     models = load_or_train_models(args, gym_env)
 

@@ -17,7 +17,7 @@ echo "eval_set_name"=$eval_set_name
 echo "init_SP_agents"=$init_SP_agents
 echo "delay_shared_rewards"=$delay_shared_rewards
 echo "mode"=$mode
-
+echo "execute final eval" = $execute_final_eval
 echo "kl_diff_loss_coef"=$kl_diff_loss_coef
 echo "kl_diff_loss_clip"=$kl_diff_loss_clip
 echo "kl_diff_bonus_reward_coef"=$kl_diff_bonus_reward_coef
