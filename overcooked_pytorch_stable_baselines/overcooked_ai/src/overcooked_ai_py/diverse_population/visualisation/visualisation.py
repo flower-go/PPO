@@ -8,6 +8,7 @@ def heat_map(table, group_name, layout_name, deterministic=True, eval_env=""):
     """
     Visualises evaluated cross-play table as heat map
     """
+    print("zacinam s heat map")
     table = np.around(table, decimals=2)
     fig, ax = plt.subplots()
     im = ax.imshow(table)
@@ -28,4 +29,5 @@ def heat_map(table, group_name, layout_name, deterministic=True, eval_env=""):
     fig.tight_layout()
     file_name = f"{os.environ['PROJDIR']}/diverse_population/visualisation/{layout_name}/" + group_name + ('' if deterministic else '_STOCH')
     file_name = file_name + eval_env + ".png"
+    print("jmeno filu je:" + file_name)
     plt.savefig(file_name)

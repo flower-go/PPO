@@ -67,13 +67,14 @@ def display_and_export_to_array(test_dict):
 
 def save_map_pic(test_dict, filename):
     test_dict = copy.deepcopy(test_dict)
+    print(filename)
     test_dict["kwargs"]["state"] = OvercookedState.from_dict(
         test_dict["kwargs"]["state"]
     )
     surface = StateVisualizer(**test_dict["config"]).render_state(
         **test_dict["kwargs"]
     )
-    img_path = "./" + filename + ".png"
+    img_path = "./diverse_population/visualisation/maps" + filename + ".png"
     pygame.image.save(surface, img_path)
 
 DEFAULT_VALUES = {
@@ -137,7 +138,7 @@ if __name__ == "__main__":
     # that directory
     layouts = []
     for filename in os.scandir(directory):
-        if filename.is_file():
+        if filename.is_file() and "multi" not in filename.name:
             print(filename.name)
             map_name = filename.name.split(".")[0]
             print(map_name)
