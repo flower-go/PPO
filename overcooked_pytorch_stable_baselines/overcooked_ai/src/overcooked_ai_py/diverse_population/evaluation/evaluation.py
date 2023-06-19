@@ -17,6 +17,9 @@ class Evaluator(object):
         Pairwise cross-evaluation is performed.
         Result is saved for future straightforward loading.
         """
+        file_dir = f"{os.environ['PROJDIR']}/diverse_population/evaluation/{layout_name}/"
+        if not os.path.exists(file_dir):
+            os.makedirs(file_dir)
         file_full_name = f"{os.environ['PROJDIR']}/diverse_population/evaluation/{layout_name}/" + group_name + ('' if deterministic else '_STOCH')
         file_full_name += eval_env
         try:
