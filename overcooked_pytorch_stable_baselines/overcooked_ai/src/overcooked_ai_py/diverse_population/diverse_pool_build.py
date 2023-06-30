@@ -285,6 +285,7 @@ if __name__ == "__main__":
     set_layout_params(args)
     args.full_exp_name = get_name(args.exp, args, sp=args.mode == "SP")
     print("budu volat load or train")
+    print_args()
     #Models training
     models = load_or_train_models(args, gym_env)
 
