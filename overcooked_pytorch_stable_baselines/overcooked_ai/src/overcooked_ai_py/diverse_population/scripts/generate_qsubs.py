@@ -92,7 +92,7 @@ def SP_epochs(layout_name, seed, stacking = "nostack"):
     stack_number = stack[1]
     result = START_QSUB + 'exp="' + exp + '"' + ' layout_name="' + layout_name + '"'
     result += ' frame_stacking=' + str(stack_number) + ' frame_stacking_mode="' + stack_mode + '"'
-    result += ' seed=' + str(seed) + ' execute_final_eval=True walltime=72:00:00' + end
+    result += ' seed=' + str(seed) + end
 
     return result,exp
 
