@@ -71,6 +71,7 @@ parser.add_argument("--device", default="cuda", type=str, help="Device ('cuda' o
 parser.add_argument("--training_percent_start_eval", default=0.5, type=float, help="Ratio of total training steps when evaluation starts")
 parser.add_argument("--tensorboard_log", default=False, action="store_true", help="Whether to do tensorboard logging")
 parser.add_argument("--seed", default=42, type=int, help="Random seed value")
+parser.add_argument("--behavior_check", default=True, action="store_true",help="if true, logs actions and states, stops after divergent found" )
 
 
 
@@ -168,6 +169,8 @@ def train_model(n, env, args):
             found = True
         except divergent_solution_exception.divergent_solution_exception:
             print("found divergent solution")
+            if (args.behavior_check):
+                break;
             found = False
 
     return model
@@ -251,7 +254,10 @@ def print_args():
 
 # Overcooked MDP and environment is loaded
 mdp = OvercookedGridworld.from_layout_name(args.layout_name)
-overcooked_env = OvercookedEnv.from_mdp(mdp, horizon=400)
+if (args.behavior_check):
+    overcooked_env = OvercookedEnv.from_mdp(mdp, horizon=400, info_level=4)
+else:
+    overcooked_env = OvercookedEnv.from_mdp(mdp, horizon=400)
 
 
 if __name__ == "__main__":
