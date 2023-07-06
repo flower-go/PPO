@@ -254,7 +254,10 @@ def print_args():
 
 # Overcooked MDP and environment is loaded
 mdp = OvercookedGridworld.from_layout_name(args.layout_name)
-overcooked_env = OvercookedEnv.from_mdp(mdp, horizon=400)
+if (args.behavior_check):
+    overcooked_env = OvercookedEnv.from_mdp(mdp, horizon=400, info_level=4)
+else:
+    overcooked_env = OvercookedEnv.from_mdp(mdp, horizon=400)
 
 
 if __name__ == "__main__":
