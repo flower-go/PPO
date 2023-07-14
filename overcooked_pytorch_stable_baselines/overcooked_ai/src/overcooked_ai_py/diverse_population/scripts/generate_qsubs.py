@@ -87,7 +87,7 @@ def SP_ref(layout_name, seed, stacking = "nostack"):
 def SP_epochs(layout_name, seed, stacking = "nostack"):
     exp = "log1_" + stacking[0:4] + "_"  + layout_name + "_ref_30"
     script = SCRIPT_PATH[0:-3] + "_bcheck.sh"
-    end = ' mode="SP" n_sample_partners=-1 trained_models=30 file="' + script + '"'
+    end = ' mode="SP" n_sample_partners=-1 trained_models=1 file="' + script + '"'
     stack = frame_stacking[stacking]
     stack_mode = stack[0]
     stack_number = stack[1]
