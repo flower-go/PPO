@@ -117,8 +117,11 @@ def print_map(map_name):
     agent_eval = AgentEvaluator(env_params={"horizon": 1}, mdp_fn=lambda _: mdp)
     trajectory_random_pair = agent_eval.evaluate_random_pair(num_games=1, display=False, native_eval=True)
     grid = trajectory_random_pair["mdp_params"][0]["terrain"]
+    print("this is grid")
+    print(grid)
     state = trajectory_random_pair["ep_states"][0][0]
-
+    print("this is state")
+    print(state)
     hud_data = {
         "all_orders": trajectory_random_pair["mdp_params"][0]["start_all_orders"]
     }
@@ -134,8 +137,6 @@ def print_map(map_name):
 
 if __name__ == "__main__":
     directory = './data/layouts'
-    # iterate over files in
-    # that directory
     layouts = []
     for filename in os.scandir(directory):
         if filename.is_file() and "multi" not in filename.name:
