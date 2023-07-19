@@ -74,7 +74,7 @@ def save_map_pic(test_dict, filename):
     surface = StateVisualizer(**test_dict["config"]).render_state(
         **test_dict["kwargs"]
     )
-    img_path = "./diverse_population/visualisation/maps" + filename + ".png"
+    img_path = "./diverse_population/visualisation/maps/" + filename + str(1) + ".png"
     pygame.image.save(surface, img_path)
 
 DEFAULT_VALUES = {
