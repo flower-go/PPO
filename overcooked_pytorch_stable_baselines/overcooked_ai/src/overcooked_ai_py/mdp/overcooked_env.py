@@ -273,6 +273,7 @@ class OvercookedEnv(object):
             print(joint_action)
             print(next_state)
             print(timestep_sparse_reward)
+            print(self.mdp.mdp_params[0]["terrain"])
         return (next_state, timestep_sparse_reward, done, env_info)
 
     def lossless_state_encoding_mdp(self, state, debug=False):
