@@ -74,11 +74,11 @@ DEFAULT_VALUES = {
     "background_color": (155, 101, 0),  # color of empty counter
 }
 
-
+Recipe.configure({})
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("--input_file", default=None, type=str, help="path to file with behavior records in required format")
-parser.add_argument("--ouput_file", default=None, type=str, help="path to the result destination")
+parser.add_argument("--output_file", default=None, type=str, help="path to the result destination")
 
 args = parser.parse_args([] if "__file__" not in globals() else None)
 def save_map_pic(filename, img_path):
@@ -126,8 +126,6 @@ if __name__ == "__main__":
     if args.output_file is None:
         args.output_file = "./diverse_population/visualisation/maps/eval_vis_" + str(datetime.datetime.now()) + ".png"
     save_map_pic(args.input_file, args.output_file)
-
-
 
 
 
