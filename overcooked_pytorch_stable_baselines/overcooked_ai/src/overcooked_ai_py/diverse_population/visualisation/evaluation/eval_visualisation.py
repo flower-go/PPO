@@ -124,7 +124,7 @@ def file_to_dict(filename):
 
 if __name__ == "__main__":
     if args.output_file is None:
-        args.output_file = "./diverse_population/visualisation/maps/eval_vis_" + str(datetime.datetime.now) + ".png"
+        args.output_file = "./diverse_population/visualisation/maps/eval_vis_" + str(datetime.datetime.now()) + ".png"
     save_map_pic(args.input_file, args.output_file)
 
 
