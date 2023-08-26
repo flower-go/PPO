@@ -9,5 +9,5 @@ echo "codedir: " $CODEDIR
 export PROJDIR="$home_dir"/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py
 echo "projdir: " $PROJDIR
 cd $PROJDIR
-python diverse_population/map_visualisation.py
+python diverse_population/visualisation/eval_visualisation.py
 
