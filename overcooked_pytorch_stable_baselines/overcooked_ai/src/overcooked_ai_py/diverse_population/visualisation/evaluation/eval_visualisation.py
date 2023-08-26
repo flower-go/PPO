@@ -38,7 +38,6 @@ import json
 os.environ['SDL_AUDIODRIVER'] = 'dsp'
 
 #grid a state
-#ONE_STEP_INPUT = [[['X', 'X', 'P', 'X', 'X'], ['T', ' ', ' ', ' ', 'T'], ['X', ' ', ' ', ' ', 'O'], ['X', 'X', 'D', 'S', 'X']],[]]
 
 DEFAULT_VALUES = {
     "height": None,  # if None use grid_width - NOTE: can chop down hud if hud is wider than grid

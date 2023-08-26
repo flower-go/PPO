@@ -9,10 +9,10 @@ layouts_onions = [
            "pipeline",
            "scenario1_s",
            "large_room",
-           "asymetric_advantages", #tady
+           "asymmetric_advantages", #tady
            "schelling_s",
             "coordination_ring", #tady
-           "counter_circuit_o1_order", #tady
+           "counter_circuit_o_1order", #tady
            "long_cook_time",
            "cramped_room", #tady
            "forced_coordination", #tady
@@ -127,8 +127,10 @@ def print_exps_ref_pop():
 #print_exps_ref_pop()
 
 #this will generate qsubs for ref population training
-#ref_populations(False)
-one_epoch()
+ref_populations(False)
+
+#this is for one epoch logging
+#one_epoch()
 
 
 
