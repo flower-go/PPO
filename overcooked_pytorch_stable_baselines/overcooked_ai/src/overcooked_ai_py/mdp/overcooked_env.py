@@ -1,3 +1,4 @@
+import threading
 import time
 
 import gym
@@ -271,9 +272,10 @@ class OvercookedEnv(object):
         timestep_sparse_reward = sum(mdp_infos["sparse_reward_by_agent"])
         if(self.info_level > 3):
             print("loguju postup")
-            print("joint action:" +  str(joint_action))
-            print("next state:" +  str(self.state.to_dict())) #TODO
-            print("reward:" + str(timestep_sparse_reward))
+            print("thread:" + str(threading.current_thread().ident))
+            print("joint action:" +  joint_action)
+            print("next state:" +  self.state.to_dict()) #TODO
+            print("reward:" + timestep_sparse_reward)
             #print("grid:" + self.mdp.mdp_params[0]["terrain"])
         return (next_state, timestep_sparse_reward, done, env_info)
 
