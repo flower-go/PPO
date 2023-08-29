@@ -79,7 +79,7 @@ class OvercookedEnv(object):
         self.start_state_fn = start_state_fn
         self.info_level = info_level
         self.reset(outside_info=initial_info)
-        print("grid:" + self.mdp.mdp_params[0]["terrain"])
+        print("grid:" + str(self.mdp.mdp_params["terrain"]))
         if self.horizon >= MAX_HORIZON and self.info_level > 0:
             print(
                 "Environment has (near-)infinite horizon and no terminal states. \
@@ -271,9 +271,9 @@ class OvercookedEnv(object):
         timestep_sparse_reward = sum(mdp_infos["sparse_reward_by_agent"])
         if(self.info_level > 3):
             print("loguju postup")
-            print("joint action:" +  joint_action)
-            print("next state:" +  self.state.to_dict()) #TODO
-            print("reward:" + timestep_sparse_reward)
+            print("joint action:" +  str(joint_action))
+            print("next state:" +  str(self.state.to_dict())) #TODO
+            print("reward:" + str(timestep_sparse_reward))
             #print("grid:" + self.mdp.mdp_params[0]["terrain"])
         return (next_state, timestep_sparse_reward, done, env_info)
 
@@ -913,10 +913,6 @@ def get_vectorized_gym_env(base_env, gym_env_name, agent_idx, featurize_fn=None,
     print(base_env)
     print(type(base_env))
     def gym_env_fn():
-        print("all args:")
-        for arg in vars(args):
-            print (arg, getattr(args, arg))        
-        print("zacatek gym_env_fn")
         gym_env = gym.make(gym_env_name)
         gym_env.custom_init(base_env, featurize_fn=featurize_fn, start_state_fn=start_state_fn, baselines_reproducible=True, agent_idx=agent_idx, frame_stacking = args.frame_stacking, frame_stacking_mode=args.frame_stacking_mode)
         return gym_env
