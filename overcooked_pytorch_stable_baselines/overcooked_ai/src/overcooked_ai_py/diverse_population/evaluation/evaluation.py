@@ -24,6 +24,7 @@ class Evaluator(object):
         file_full_name += eval_env
         try:
             result_matrix = np.loadtxt(file_full_name)
+            print("result_matrix loaded")
         except:
             total = len(agent_set_0) * len(agent_set_1)
             completed = 0
