@@ -18,7 +18,7 @@ echo "eval_set_name"=$eval_set_name
 echo "init_SP_agents"=$init_SP_agents
 echo "delay_shared_rewards"=$delay_shared_rewards
 echo "mode"=$mode
-echo "execute final eval" = $execute_final_eval
+echo "execute_final_eval" = $execute_final_eval
 echo "kl_diff_loss_coef"=$kl_diff_loss_coef
 echo "kl_diff_loss_clip"=$kl_diff_loss_clip
 echo "kl_diff_bonus_reward_coef"=$kl_diff_bonus_reward_coef
@@ -30,7 +30,8 @@ echo "n_sample_partners"=$n_sample_partners
 echo "layout_name"=$layout_name
 echo "frame_stacking_mode"=$frame_stacking_mode
 echo "frame_stacking"=$frame_stacking
-echo "execuet final eval"=$execute_final_eval
+echo "execuet final eval"
+echo $execute_final_eval
 
 if [[ $execute_final_eval == "True" ]]; then 
 	execute="--execute_final_eval"

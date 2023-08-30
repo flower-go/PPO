@@ -261,9 +261,6 @@ else:
 
 
 if __name__ == "__main__":
-    print_args()
-
-
     # State representaion and environment reset functions set
     feature_fn = lambda _, state: overcooked_env.lossless_state_encoding_mdp(state, debug=False)
     start_state_fn = mdp.get_random_start_state_fn(random_start_pos=True, # TODO: set Default True

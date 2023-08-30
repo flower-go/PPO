@@ -251,6 +251,7 @@ class OvercookedEnv(object):
             ep_shaped_r: the component of the reward that is due to reward shaped (excluding sparse rewards)
             ep_length: length of rollout
         """
+        print("step with logging")
         assert not self.is_done()
         if joint_agent_action_info is None:
             joint_agent_action_info = [{}, {}]
@@ -769,6 +770,7 @@ class Overcooked(gym.Env):
         returns:
             observation: formatted to be standard input for self.agent_idx's policy
         """
+        print("step bez vypisovani")
         assert all(
             self.action_space.contains(a) for a in action
         ), "%r (%s) invalid" % (
