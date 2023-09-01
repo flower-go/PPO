@@ -7,7 +7,7 @@
 #home dir must be set correctly
 if [ -z "$home_dir" ]; then home_dir="/storage/plzen1/home/ayshi"; fi
 echo "home set to: $home_dir"
-
+exp="maps"
 res_dir="$home_dir"/coding/results
 echo "results can be found here: $res_dir"
 date_name=$(date +%m%d-%H%M)

@@ -33,14 +33,14 @@ echo "frame_stacking"=$frame_stacking
 echo "execuet final eval"
 echo $execute_final_eval
 
-if [[ $execute_final_eval == "True" ]]; then 
+if [ $execute_final_eval == "True" ]; then 
+        echo "jsou stejne"
 	execute="--execute_final_eval"
 else
 	execute=""
-	echo $execute
 fi
-
-python diverse_population/diverse_pool_build.py --layout_name=$layout_name --trained_models=$trained_models --mode=$mode --exp=$exp --eval_set_name=$eval_set_name --init_SP_agents=$init_SP_agents --kl_diff_loss_coef=$kl_diff_loss_coef --kl_diff_loss_clip=$kl_diff_loss_clip --kl_diff_bonus_reward_coef=$kl_diff_bonus_reward_coef --kl_diff_bonus_reward_clip=$kl_diff_bonus_reward_clip --seed=$seed --n_sample_partners=$n_sample_partners --frame_stacking=$frame_stacking --frame_stacking_mode=$frame_stacking_mode --n_epochs=1 --vf_coef=$vf_coef --behavior_check > "$SCRATCHDIR"/out.txt 2> "$SCRATCHDIR"/err.txt
+echo $execute
+python diverse_population/diverse_pool_build.py --layout_name=$layout_name --trained_models=$trained_models --mode=$mode --exp=$exp --eval_set_name=$eval_set_name --init_SP_agents=$init_SP_agents --kl_diff_loss_coef=$kl_diff_loss_coef --kl_diff_loss_clip=$kl_diff_loss_clip $execute --kl_diff_bonus_reward_coef=$kl_diff_bonus_reward_coef --kl_diff_bonus_reward_clip=$kl_diff_bonus_reward_clip --seed=$seed --n_sample_partners=$n_sample_partners --frame_stacking=$frame_stacking --frame_stacking_mode=$frame_stacking_mode --n_epochs=1 --vf_coef=$vf_coef --behavior_check > "$SCRATCHDIR"/out.txt 2> "$SCRATCHDIR"/err.txt
 echo "python dobehl"
 INFODIR="$home_dir"/coding/results
 date_name=$(date +%m%d-%H%M)
@@ -54,3 +54,4 @@ echo "skopirovano"
 echo "file se jmenuje:"
 echo "$INFODIR"/"$date_name"."$PBS_JOBID"_err.txt
 rm -rf "$SCRATCHDIR"/*
+

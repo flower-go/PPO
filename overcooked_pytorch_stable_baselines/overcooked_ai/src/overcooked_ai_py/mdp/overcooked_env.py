@@ -274,9 +274,9 @@ class OvercookedEnv(object):
         if(self.info_level > 3):
             print("loguju postup")
             print("thread:" + str(threading.current_thread().ident))
-            print("joint action:" +  joint_action)
-            print("next state:" +  self.state.to_dict()) #TODO
-            print("reward:" + timestep_sparse_reward)
+            print("joint action:" +  str(joint_action))
+            print("next state:" +  str(self.state.to_dict())) #TODO
+            print("reward:" + str(timestep_sparse_reward))
             #print("grid:" + self.mdp.mdp_params[0]["terrain"])
         return (next_state, timestep_sparse_reward, done, env_info)
 
