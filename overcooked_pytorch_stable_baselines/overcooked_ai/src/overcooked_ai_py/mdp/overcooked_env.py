@@ -80,7 +80,7 @@ class OvercookedEnv(object):
         self.start_state_fn = start_state_fn
         self.info_level = info_level
         self.reset(outside_info=initial_info)
-        print("grid:" + str(self.mdp.mdp_params["terrain"]))
+        #print("grid:" + str(self.mdp.mdp_params["terrain"]))
         if self.horizon >= MAX_HORIZON and self.info_level > 0:
             print(
                 "Environment has (near-)infinite horizon and no terminal states. \
@@ -251,7 +251,6 @@ class OvercookedEnv(object):
             ep_shaped_r: the component of the reward that is due to reward shaped (excluding sparse rewards)
             ep_length: length of rollout
         """
-        print("step with logging")
         assert not self.is_done()
         if joint_agent_action_info is None:
             joint_agent_action_info = [{}, {}]
@@ -273,10 +272,10 @@ class OvercookedEnv(object):
         timestep_sparse_reward = sum(mdp_infos["sparse_reward_by_agent"])
         if(self.info_level > 3):
             print("loguju postup")
-            print("thread:" + str(threading.current_thread().ident))
-            print("joint action:" +  str(joint_action))
-            print("next state:" +  str(self.state.to_dict())) #TODO
-            print("reward:" + str(timestep_sparse_reward))
+            print("t:" + str(threading.current_thread().ident))
+            print("j:" +  str(joint_action))
+            print("n:" +  str(self.state.to_dict())) #TODO
+            print("r:" + str(timestep_sparse_reward))
             #print("grid:" + self.mdp.mdp_params[0]["terrain"])
         return (next_state, timestep_sparse_reward, done, env_info)
 
@@ -770,7 +769,6 @@ class Overcooked(gym.Env):
         returns:
             observation: formatted to be standard input for self.agent_idx's policy
         """
-        print("step bez vypisovani")
         assert all(
             self.action_space.contains(a) for a in action
         ), "%r (%s) invalid" % (

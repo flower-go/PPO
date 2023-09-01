@@ -80,7 +80,7 @@ def SP_ref(layout_name, seed, stacking = "nostack"):
     stack_number = stack[1]
     result = START_QSUB + 'exp="' + exp + '"' + ' layout_name="' + layout_name + '"'
     result += ' frame_stacking=' + str(stack_number) + ' frame_stacking_mode="' + stack_mode + '"'
-    result += ' seed=' + str(seed) + ' execute_final_eval=True walltime=72:00:00' + end
+    result += ' seed=' + str(seed) + ' walltime=72:00:00' + end
 
     return result,exp
 
@@ -93,7 +93,7 @@ def SP_epochs(layout_name, seed, stacking = "nostack"):
     stack_number = stack[1]
     result = START_QSUB + 'exp="' + exp + '"' + ' layout_name="' + layout_name + '"'
     result += ' frame_stacking=' + str(stack_number) + ' frame_stacking_mode="' + stack_mode + '"'
-    result += ' seed=' + str(seed) + end
+    result += ' seed=' + str(seed) + ' execute_final_eval=True' + end
 
     return result,exp
 
@@ -119,18 +119,26 @@ def one_epoch():
         print("\n" + "#stacking: " + stacking + "\n")
         for layout_name in layouts_onions:
             res, exp = SP_epochs(layout_name, seed, stacking)
+            res = res + ' execute_final_eval=True num_workers=1'
             print(res)
 
+def one_epoch_eval():
+    seed = seeds[0]
+    for stacking in frame_stacking:
+        print("\n" + "#stacking: " + stacking + "\n")
+        for layout_name in layouts_onions:
+            res, exp = SP_epochs(layout_name, seed, stacking)
+            print(res)
 def print_exps_ref_pop():
     ref_populations(True)
 
 #print_exps_ref_pop()
 
 #this will generate qsubs for ref population training
-ref_populations(False)
+#ref_populations(False)
 
 #this is for one epoch logging
-#one_epoch()
+one_epoch()
 
 
 
