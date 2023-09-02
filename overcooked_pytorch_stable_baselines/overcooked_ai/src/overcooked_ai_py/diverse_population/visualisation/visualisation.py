@@ -9,6 +9,7 @@ def heat_map(table, group_name, layout_name, deterministic=True, eval_env=""):
     Visualises evaluated cross-play table as heat map
     """
     print("zacinam s heat map")
+    print(table)
     table = np.around(table, decimals=2)
     fig, ax = plt.subplots()
     im = ax.imshow(table)
