@@ -3,9 +3,7 @@ import os
 import datetime
 
 codedir = os.environ["CODEDIR"]
-#codedir = /home/premek/DP/
 projdir = os.environ["PROJDIR"]
-#projdir = /home/premek/DP/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_pytorch
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src")
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines/stable-baselines3")
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines")
@@ -35,6 +33,7 @@ import pygame
 import os
 import numpy as np
 import json
+import data_transform as dt
 os.environ['SDL_AUDIODRIVER'] = 'dsp'
 
 #grid a state
@@ -78,7 +77,6 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("--input_file", default=None, type=str, help="path to file with behavior records in required format")
 parser.add_argument("--output_file", default=None, type=str, help="path to the result destination")
-
 args = parser.parse_args([] if "__file__" not in globals() else None)
 def save_map_pic(filename, img_path):
     test_dict = file_to_dict(filename)
@@ -122,9 +120,13 @@ def file_to_dict(filename):
     return test_dict
 
 if __name__ == "__main__":
-    if args.output_file is None:
-        args.output_file = "./diverse_population/visualisation/maps/eval_vis_" + str(datetime.datetime.now()) + ".png"
-    save_map_pic(args.input_file, args.output_file)
+    data = dt.load_data()
+    name = str(datetime.datetime.now())
+    os.mkdir("./diverse_population/visualisation/maps/eval_vis_" + name)
+    for i,d in enumerate(data):
+        if args.output_file is None:
+            args.output_file = "./diverse_population/visualisation/maps/eval_vis_" + name + "/" + str(i) + ".png"
+            save_map_pic(args.input_file, args.output_file)
 
 
 
