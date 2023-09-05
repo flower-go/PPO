@@ -256,7 +256,7 @@ def print_args():
 mdp = OvercookedGridworld.from_layout_name(args.layout_name)
 if (args.behavior_check):
     overcooked_env = OvercookedEnv.from_mdp(mdp, horizon=400, info_level=4)
-    print("grid:" + str(overcooked_env.mdp.mdp_params["terrain"]))
+#    print("grid:" + str(overcooked_env.mdp.mdp_params["terrain"]))
 else:
     overcooked_env = OvercookedEnv.from_mdp(mdp, horizon=400)
 
