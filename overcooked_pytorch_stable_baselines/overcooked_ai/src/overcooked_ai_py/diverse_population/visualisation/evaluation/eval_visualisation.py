@@ -72,6 +72,7 @@ DEFAULT_VALUES = {
     "background_color": (155, 101, 0),  # color of empty counter
 }
 
+grid = None
 Recipe.configure({})
 import argparse
 parser = argparse.ArgumentParser()
@@ -87,8 +88,30 @@ def save_map_pic(filename, img_path):
     )
     pygame.image.save(surface, img_path)
 
-def file_to_dict(filename):
-    #TODO tady napsat nacitani z file
+def data_to_dict(grid, data):
+    config = copy.deepcopy(DEFAULT_VALUES)
+    all_orders = data["next_state"]["all_orders"]
+    state = data["next_state"]
+    hud_data = {
+        #    "all_orders": trajectory_random_pair["mdp_params"][0]["start_all_orders"]
+        "all_orders": all_orders
+    }
+    kwargs = {"hud_data": hud_data, "grid": grid, "state": state}
+    test_dict = {
+        "config": config,
+        "kwargs": kwargs,
+        "comment": "Test simple recipes in hud. NOTE: failing to render stuff outside HUD also fails this test",
+        "result_array_filename": "test_hud_2.npy",
+    }
+    copy.deepcopy(test_dict)
+    test_dict["kwargs"]["state"] = OvercookedState.from_dict(
+        test_dict["kwargs"]["state"]
+    )
+
+    return test_dict
+
+
+def test_file_to_dict(filename):
     config = copy.deepcopy(DEFAULT_VALUES)
     #TODO zatim natvrdo
     grid = [['X', 'O', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'], ['X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'], ['X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'], ['X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'P'], ['X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'], ['X', ' ', 'D', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'], ['X', 'S', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X']]
@@ -120,12 +143,13 @@ def file_to_dict(filename):
     return test_dict
 
 if __name__ == "__main__":
-    data = dt.load_data()
-    name = str(datetime.datetime.now())
-    os.mkdir("./diverse_population/visualisation/maps/eval_vis_" + name)
+    lname, grid, data = dt.load_data()
+    date = datetime.datetime.now()
+    name = str(lname + "_" + date.Day + date.Month +  date.Year + "_" + date.hour + date.minute)
+    os.mkdir("./diverse_population/visualisation/maps/" + name)
     for i,d in enumerate(data):
         if args.output_file is None:
-            args.output_file = "./diverse_population/visualisation/maps/eval_vis_" + name + "/" + str(i) + ".png"
+            args.output_file = "./diverse_population/visualisation/maps/" + name + "/" + str(i) + ".png"
             save_map_pic(args.input_file, args.output_file)
 
 

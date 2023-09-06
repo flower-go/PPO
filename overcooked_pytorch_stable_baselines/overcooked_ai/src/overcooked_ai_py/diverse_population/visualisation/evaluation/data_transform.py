@@ -8,9 +8,12 @@ def load_data(filename = file_name):
     reward = None
     next_state = None
     result = []
+    layout_name = None
 
 # Using for loop
     for line in file1:
+        if line.startswith("layout_name"):
+            layout_name = line.split(" ")[1]
         if line.startswith("grid"):
             print(line)
             terrain = ast.literal_eval(line[5:])
@@ -31,4 +34,4 @@ def load_data(filename = file_name):
                     print(line)
 
     file1.close()
-    return result
+    return layout_name, terrain, result
