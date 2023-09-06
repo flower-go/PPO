@@ -1,6 +1,6 @@
 import ast
 
-file_name = "/Users/petravysusilova/Documents/TR/research/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/visualisation/evaluation/test_file"
+file_name = "./diverse_population/visualisation/evaluation/test_file"
 
 def load_data(filename = file_name):
     file1 = open(file_name, 'r')
@@ -8,7 +8,7 @@ def load_data(filename = file_name):
     reward = None
     next_state = None
     result = []
-
+    reading_log = False
 # Using for loop
     for line in file1:
         if line.startswith("grid"):
