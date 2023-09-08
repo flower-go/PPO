@@ -63,7 +63,8 @@ DEFAULT_VALUES = {
     "hud_distance_between_orders": 5,
     "hud_order_size": 15,
     "is_rendering_cooking_timer": True,
-    "show_timer_when_cooked": True,
+    "show_timer_when_cooked"
+: True,
     "cooking_timer_font_size": 20,  # # if set to None use cooking_timer_font_path
     # needs to be overwritten with default - every pc has different pathes "cooking_timer_font_path": roboto_path,
     "cooking_timer_system_font_name": None,
@@ -79,8 +80,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--input_file", default=None, type=str, help="path to file with behavior records in required format")
 parser.add_argument("--output_file", default=None, type=str, help="path to the result destination")
 args = parser.parse_args([] if "__file__" not in globals() else None)
-def save_map_pic(filename, img_path):
-    test_dict = file_to_dict(filename)
+def save_map_pic(input, filename, img_path):
+    test_dict = file_to_dict(grid, input)
     print(filename)
 
     surface = StateVisualizer(**test_dict["config"]).render_state(
@@ -88,7 +89,7 @@ def save_map_pic(filename, img_path):
     )
     pygame.image.save(surface, img_path)
 
-def data_to_dict(grid, data):
+def file_to_dict(grid, data):
     config = copy.deepcopy(DEFAULT_VALUES)
     all_orders = data["next_state"]["all_orders"]
     state = data["next_state"]
@@ -144,13 +145,24 @@ def test_file_to_dict(filename):
 
 if __name__ == "__main__":
     lname, grid, data = dt.load_data()
+    print("name of the terrain")
+    print(lname)
+    print("grid looks like this:")
+    print(grid)
     date = datetime.datetime.now()
-    name = str(lname + "_" + date.Day + date.Month +  date.Year + "_" + date.hour + date.minute)
+    name = str(lname + "_" + str(date.date())  + "_" + str(date.hour) + str(date.minute))
+    name = "".join(name.split())
+    print("directory name: ", name) 
     os.mkdir("./diverse_population/visualisation/maps/" + name)
+    print("data length:", len(data))
+    print("orvni data")
+    print(data[0])
+    print("druha data")
+    print(data[1])
     for i,d in enumerate(data):
         if args.output_file is None:
             args.output_file = "./diverse_population/visualisation/maps/" + name + "/" + str(i) + ".png"
-            save_map_pic(args.input_file, args.output_file)
+        save_map_pic(d, args.input_file, args.output_file)
 
 
 
