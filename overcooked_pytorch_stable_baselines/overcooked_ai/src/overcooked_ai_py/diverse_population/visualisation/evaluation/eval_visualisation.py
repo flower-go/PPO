@@ -80,14 +80,16 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--input_file", default=None, type=str, help="path to file with behavior records in required format")
 parser.add_argument("--output_file", default=None, type=str, help="path to the result destination")
 args = parser.parse_args([] if "__file__" not in globals() else None)
-def save_map_pic(input, filename, img_path):
+def save_map_pic(input, img_path):
+    print("volam tvoreni obrazku")
     test_dict = file_to_dict(grid, input)
-    print(filename)
+    print("prevedeny data")
 
     surface = StateVisualizer(**test_dict["config"]).render_state(
         **test_dict["kwargs"]
     )
     pygame.image.save(surface, img_path)
+    print("ulozeno do ", img_path)
 
 def file_to_dict(grid, data):
     config = copy.deepcopy(DEFAULT_VALUES)
@@ -149,20 +151,20 @@ if __name__ == "__main__":
     print(lname)
     print("grid looks like this:")
     print(grid)
-    date = datetime.datetime.now()
-    name = str(lname + "_" + str(date.date())  + "_" + str(date.hour) + str(date.minute))
-    name = "".join(name.split())
+    dt_now = datetime.datetime.now()
+    name = str(lname.split()[0] + "_" + dt_now.strftime("%d%m%Y_%H%M%S"))
     print("directory name: ", name) 
     os.mkdir("./diverse_population/visualisation/maps/" + name)
     print("data length:", len(data))
-    print("orvni data")
+    print("prvni data")
     print(data[0])
     print("druha data")
     print(data[1])
     for i,d in enumerate(data):
+        print("index is ", i)
         if args.output_file is None:
             args.output_file = "./diverse_population/visualisation/maps/" + name + "/" + str(i) + ".png"
-        save_map_pic(d, args.input_file, args.output_file)
+        save_map_pic(d, args.output_file)
 
 
 
