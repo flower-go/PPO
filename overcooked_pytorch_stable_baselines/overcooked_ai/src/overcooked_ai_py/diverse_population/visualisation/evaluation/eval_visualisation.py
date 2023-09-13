@@ -165,8 +165,7 @@ if __name__ == "__main__":
     print(data[1])
     for i,d in enumerate(data):
         print("index is ", i)
-        if args.output_file is None:
-            args.output_file = "./diverse_population/visualisation/maps/" + name + "/" + str(i) + ".png"
+        args.output_file = "./diverse_population/visualisation/maps/" + name + "/" + str(i) + ".png"
         save_map_pic(d, args.output_file)
 
 
