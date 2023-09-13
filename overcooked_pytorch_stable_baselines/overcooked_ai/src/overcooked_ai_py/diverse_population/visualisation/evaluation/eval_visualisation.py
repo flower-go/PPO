@@ -97,7 +97,10 @@ def file_to_dict(grid, data):
     state = data["next_state"]
     hud_data = {
         #    "all_orders": trajectory_random_pair["mdp_params"][0]["start_all_orders"]
-        "all_orders": all_orders
+        "all_orders": all_orders,
+        "score": data["reward"],
+        "action": data["join_action"],
+        "time": data["next_state"]["timestep"]
     }
     kwargs = {"hud_data": hud_data, "grid": grid, "state": state}
     test_dict = {
