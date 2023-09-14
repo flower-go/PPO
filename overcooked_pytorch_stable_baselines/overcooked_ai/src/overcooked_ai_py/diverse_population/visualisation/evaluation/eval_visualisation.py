@@ -99,7 +99,7 @@ def file_to_dict(grid, data):
         #    "all_orders": trajectory_random_pair["mdp_params"][0]["start_all_orders"]
         "all_orders": all_orders,
         "score": data["reward"],
-        "action": data["join_action"],
+        "action": data["joint_action"],
         "time": data["next_state"]["timestep"]
     }
     kwargs = {"hud_data": hud_data, "grid": grid, "state": state}
@@ -149,7 +149,7 @@ def test_file_to_dict(filename):
     return test_dict
 
 if __name__ == "__main__":
-    lname, grid, data = dt.load_data()
+    lname, grid, data = dt.load_data("/storage/plzen1/home/ayshi/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/visualisation/five_test")
     print("name of the terrain")
     print(lname)
     print("grid looks like this:")
