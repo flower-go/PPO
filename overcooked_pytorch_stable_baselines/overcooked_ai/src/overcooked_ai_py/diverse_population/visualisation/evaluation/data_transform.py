@@ -2,7 +2,7 @@ import ast
 
 file_name = "./diverse_population/visualisation/evaluation/test_file"
 
-def load_data(filename = file_name):
+def load_data(filename):
     file1 = open(filename, 'r')
     terrain = None
     reward = None
@@ -12,13 +12,9 @@ def load_data(filename = file_name):
     layout_name = None
 
     for line in file1:
-        print("ctu radku:")
-        print(line)
         if line.startswith("layout_name"):
             layout_name = line
         if line.startswith("grid"):
-            print("this s grid")
-            print(line)
             terrain = ast.literal_eval(line[5:])
         if reading_log:
             if line.startswith("r:"):
@@ -33,6 +29,8 @@ def load_data(filename = file_name):
                 except:
                     print("e")
                     print(line)
+                    line = (line.split(":", 1)[1]).rsplit("}",1)[0]
+                    next_state = ast.literal_eval(line)
 
     file1.close()
     return layout_name, terrain, result

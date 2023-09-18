@@ -1,4 +1,3 @@
-
 import sys
 import os
 import datetime
@@ -80,13 +79,13 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("--input_file", default=None, type=str, help="path to file with behavior records in required format")
 parser.add_argument("--output_file", default=None, type=str, help="path to the result destination")
+parser.add_argument("--layout_name", default=None, type=str, help="layout name")
 args = parser.parse_args([] if "__file__" not in globals() else None)
 def save_map_pic(input, img_path):
     print("volam tvoreni obrazku")
     test_dict = file_to_dict(grid, input)
     print("prevedeny data")
-    print(test_dict)
-    print("test dict nahore")
+
     surface = StateVisualizer(**test_dict["config"]).render_state(
         **test_dict["kwargs"]
     )
@@ -101,7 +100,7 @@ def file_to_dict(grid, data):
         #    "all_orders": trajectory_random_pair["mdp_params"][0]["start_all_orders"]
         "all_orders": all_orders,
         "score": data["reward"],
-        "action": data["action"],
+        "action": data["join_action"],
         "time": data["next_state"]["timestep"]
     }
     kwargs = {"hud_data": hud_data, "grid": grid, "state": state}
@@ -151,27 +150,19 @@ def test_file_to_dict(filename):
     return test_dict
 
 if __name__ == "__main__":
-#    lname, grid, data = dt.load_data("/storage/plzen1/home/ayshi/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/visualisation/five_test")
-    lname, grid, data = dt.load_data("/storage/plzen1/home/ayshi/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/visualisation/evaluation/test_file")
-    print("name of the terrain")
-    print(lname)
+    lname, grid, data = dt.load_data()
     print("grid looks like this:")
     print(grid)
     dt_now = datetime.datetime.now()
-    name = str(lname.split()[0] + "_" + dt_now.strftime("%d%m%Y_%H%M%S"))
-    print("directory name: ", name) 
-    os.mkdir("./diverse_population/visualisation/maps/" + name)
+    print("directory name: ", args.layout_name)
+    os.mkdir("./diverse_population/visualisation/maps/" + args.layout_name)
     print("data length:", len(data))
-    print("cela data")
-    print(data)
     print("prvni data")
     print(data[0])
-    print("druha data")
-    print(data[1])
     for i,d in enumerate(data):
         print("index is ", i)
-        args.output_file = "./diverse_population/visualisation/maps/" + name + "/" + str(i) + ".png"
-        save_map_pic(d, args.output_file)
+        args.output_file = "./diverse_population/visualisation/maps/" + args.layout_name + "/" + str(i) + ".png"
+        save_map_pic(d, args.output_file)s
 
 
 
