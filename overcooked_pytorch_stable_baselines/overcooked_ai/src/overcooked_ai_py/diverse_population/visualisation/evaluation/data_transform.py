@@ -8,17 +8,18 @@ def load_data(filename = file_name):
     reward = None
     next_state = None
     result = []
-    reading_log = False
+    reading_log = True
     layout_name = None
 
     for line in file1:
+        print("ctu radku:")
+        print(line)
         if line.startswith("layout_name"):
-            layout_name = line.split(" ")[1]
+            layout_name = line
         if line.startswith("grid"):
+            print("this s grid")
             print(line)
             terrain = ast.literal_eval(line[5:])
-        if line[0:6] == "loguju":
-            reading_log = True
         if reading_log:
             if line.startswith("r:"):
                 reward = float(line.split(":", 1)[1])
