@@ -3,7 +3,6 @@
 #arguments parsers (dont pass equal sign as a value!!)
 #source: https://unix.stackexchange.com/questions/129391/passing-named-arguments-to-shell-scripts
 # potrebuju: exp, layout name, seed, frame_stacking_mode,vf_coef
-
 for ARGUMENT in "$@"
 do
    KEY=$(echo $ARGUMENT | cut -f1 -d=)
@@ -26,4 +25,4 @@ echo "i will load file"
 echo $input_file
 
 echo "I will run $file"
-qsub  -l select=1:ncpus=4:ngpus=1:mem=17gb:scratch_local=4gb -q gpu -l walltime=1:50:00 -v layout=$layout,input_file=$input_file "$home_dir"/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/print_maps.sh
+qsub  -l select=1:ncpus=4:ngpus=1:mem=17gb:scratch_local=4gb -q gpu -l walltime=1:50:00 -v layout=$layout,input_file=$input_file,home_dir="$home_dir" "$home_dir"/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/print_maps.sh
