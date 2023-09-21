@@ -150,7 +150,7 @@ def test_file_to_dict(filename):
     return test_dict
 
 if __name__ == "__main__":
-    lname, grid, data = dt.load_data()
+    lname, grid, data = dt.load_data(args.input_file)
     print("grid looks like this:")
     print(grid)
     dt_now = datetime.datetime.now()
@@ -158,11 +158,12 @@ if __name__ == "__main__":
     os.mkdir("./diverse_population/visualisation/maps/" + args.layout_name)
     print("data length:", len(data))
     print("prvni data")
-    print(data[0])
+    print(data[0][0])
+    data = list(data.values())[0]
     for i,d in enumerate(data):
         print("index is ", i)
         args.output_file = "./diverse_population/visualisation/maps/" + args.layout_name + "/" + str(i) + ".png"
-        save_map_pic(d, args.output_file)s
+        save_map_pic(d, args.output_file)
 
 
 

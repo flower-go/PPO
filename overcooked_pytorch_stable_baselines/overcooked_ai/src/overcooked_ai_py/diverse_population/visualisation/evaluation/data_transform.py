@@ -3,6 +3,9 @@ import ast
 file_name = "./diverse_population/visualisation/evaluation/test_file"
 
 def load_data(filename):
+    
+    print("filename")
+    print(filename)
     file1 = open(filename, 'r')
     terrain = None
     reward = None
