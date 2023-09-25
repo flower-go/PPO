@@ -10,7 +10,7 @@ def load_data(filename):
     terrain = None
     reward = None
     next_state = None
-    result = []
+    result = {}
     reading_log = True
     layout_name = None
 
@@ -20,22 +20,30 @@ def load_data(filename):
         if line.startswith("grid"):
             terrain = ast.literal_eval(line[5:])
         if reading_log:
-            if line.startswith("t:"):
-                thread = str(line.split(":", 1)[1])
-            if line.startswith("r:"):
-                reward = float(line.split(":", 1)[1])
-                result[thread].append({"action": joint_action, "reward": reward, "next_state": next_state })
-                continue
-            elif line.startswith("j:"):
-                joint_action = ast.literal_eval(line.split(":", 1)[1])
-            elif line.startswith("n:"):
-                try:
+            try:
+                if line.startswith("t:"):
+                    thread = str(line.split(":", 1)[1])
+                if line.startswith("r:"):
+                    reward = float(line.split(":", 1)[1])
+                    if result.get(thread) is None:
+                        result[thread] = [{"action": joint_action, "reward": reward, "next_state": next_state }]
+                    else:
+                        result[thread].append({"action": joint_action, "reward": reward, "next_state": next_state })
+                    continue
+                elif line.startswith("j:"):
+                    joint_action = ast.literal_eval(line.split(":", 1)[1])
+                elif line.startswith("n:"):
                     next_state = ast.literal_eval(line.split(":", 1)[1])
-                except:
-                    print("e")
-                    print(line)
-                    line = (line.split(":", 1)[1]).rsplit("}",1)[0]
-                    next_state = ast.literal_eval(line)
-
-    file1.close()
+            except:
+                print("e")
+                print(line)
+                if line.startswith("r"):
+                    line = line[:-13]
+                else:
+                    try:
+                        line = (line.split(":", 1)[1]).rsplit("}",1)[0]
+                        print("nova line")
+                        print(line)
+                        next_state = ast.literal_eval(line + "}")
+                    except:
     return layout_name, terrain, result
