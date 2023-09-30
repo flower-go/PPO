@@ -23,4 +23,4 @@ echo "results can be found here: $res_dir"
 date_name=$(date +%m%d-%H%M)
 echo "i will load file"
 echo $input_file
-qsub  -l select=1:ncpus=4:ngpus=1:mem=17gb:scratch_local=4gb -q gpu -l walltime=1:50:00 -v layout=$layout,input_file=$input_file,home_dir="$home_dir" "$home_dir"/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/print_maps.sh
+qsub  -o "$home_dir/coding/results" -e "$home_dir/coding/results" -l select=1:ncpus=4:ngpus=1:mem=17gb:scratch_local=4gb -q gpu -l walltime=1:50:00 -v layout=$layout,input_file=$input_file,home_dir="$home_dir" "$home_dir"/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/print_maps.sh
