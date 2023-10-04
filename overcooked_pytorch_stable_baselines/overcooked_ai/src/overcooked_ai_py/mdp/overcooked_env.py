@@ -272,6 +272,7 @@ class OvercookedEnv(object):
         timestep_sparse_reward = sum(mdp_infos["sparse_reward_by_agent"])
         if(self.info_level > 3):
             print("loguju postup")
+            print("is done" + str(done))
             print("t:" + str(threading.current_thread().ident))
             print("j:" +  str(joint_action))
             print("n:" +  str(self.state.to_dict())) #TODO
@@ -326,6 +327,10 @@ class OvercookedEnv(object):
 
     def is_done(self):
         """Whether the episode is over."""
+        print("is_done fcn")
+        print("timestep:" + str(self.state.timestep))
+        print("horizon", str(self.horizon))
+        print("is terminal", self.mdp.is_terminal)
         return self.state.timestep >= self.horizon or self.mdp.is_terminal(
             self.state
         )
