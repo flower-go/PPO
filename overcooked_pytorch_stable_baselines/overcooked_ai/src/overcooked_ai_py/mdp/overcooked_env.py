@@ -330,7 +330,7 @@ class OvercookedEnv(object):
         print("is_done fcn")
         print("timestep:" + str(self.state.timestep))
         print("horizon", str(self.horizon))
-        print("is terminal", self.mdp.is_terminal)
+        print("is terminal", self.mdp.is_terminal(self.state))
         return self.state.timestep >= self.horizon or self.mdp.is_terminal(
             self.state
         )
