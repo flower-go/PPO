@@ -1,9 +1,10 @@
 import multiprocessing as mp
 from collections import OrderedDict
 from typing import Any, Callable, List, Optional, Sequence, Tuple, Type, Union
-
+import logging
 import gym
 import numpy as np
+import os
 
 from stable_baselines3.common.vec_env.base_vec_env import (
     CloudpickleWrapper,
@@ -22,6 +23,24 @@ def _worker(
 
     parent_remote.close()
     env = env_fn_wrapper.var()
+
+    # Configure the logger for each process
+    process_id = os.getpid()
+    logger = logging.getLogger(f'Process-{process_id}')
+    logger.setLevel(logging.DEBUG)
+
+    # Create a file handler for log output with the process ID in the filename
+    log_filename = f'process_{process_id}_log.txt'
+    handler = logging.FileHandler(log_filename)
+    handler.setLevel(logging.DEBUG)
+
+    # Create a formatter and set it for the handler
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+
+    # Add the handler to the logger
+    logger.addHandler(handler)
+
     while True:
         try:
             cmd, data = remote.recv()
