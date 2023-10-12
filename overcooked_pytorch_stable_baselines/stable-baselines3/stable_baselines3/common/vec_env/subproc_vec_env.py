@@ -40,13 +40,13 @@ def _worker(
 
     # Add the handler to the logger
     logger.addHandler(handler)
-    env.logger = logger
+    env.base_env.logger = logger
 
     while True:
         try:
             cmd, data = remote.recv()
             if cmd == "step":
-                observation, reward, done, info = env.step(data, logger)
+                observation, reward, done, info = env.step(data)
                 if done:
                     # save final observation where user can get it, then reset
                     info["terminal_observation"] = observation
