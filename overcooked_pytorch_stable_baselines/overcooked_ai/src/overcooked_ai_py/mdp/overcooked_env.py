@@ -241,7 +241,7 @@ class OvercookedEnv(object):
     ###################
 
     def step(
-        self, joint_action, logger, joint_agent_action_info=None, display_phi=False
+        self, joint_action, joint_agent_action_info=None, display_phi=False
     ):
         """Performs a joint action, updating the environment state
         and providing a reward.
@@ -271,12 +271,12 @@ class OvercookedEnv(object):
 
         timestep_sparse_reward = sum(mdp_infos["sparse_reward_by_agent"])
         if(self.info_level > 3):
-            logger.debug("loguju postup")
-            logger.debug("is done" + str(done))
-            logger.debug("t:" + str(threading.current_thread().ident))
-            logger.debug("j:" +  str(joint_action))
-            logger.debug("n:" +  str(self.state.to_dict()))
-            logger.debug("r:" + str(timestep_sparse_reward))
+            self.logger.debug("loguju postup")
+            self.logger.debug("is done" + str(done))
+            self.logger.debug("t:" + str(threading.current_thread().ident))
+            self.logger.debug("j:" +  str(joint_action))
+            self.logger.debug("n:" +  str(self.state.to_dict()))
+            self.logger.debug("r:" + str(timestep_sparse_reward))
             #print("grid:" + self.mdp.mdp_params[0]["terrain"])
         return (next_state, timestep_sparse_reward, done, env_info)
 
@@ -765,7 +765,7 @@ class Overcooked(gym.Env):
         return gym.spaces.Box(low, high, dtype=np.uint8) # for CNN
 
 
-    def step(self, action, logger):
+    def step(self, action):
         """
         action:
             (agent with index self.agent_idx action, other agent action)
