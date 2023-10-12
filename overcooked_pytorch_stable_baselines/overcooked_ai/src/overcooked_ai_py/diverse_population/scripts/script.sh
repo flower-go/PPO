@@ -47,7 +47,7 @@ echo "$PBS_JOBID"
 ls "$SCRATCHDIR"
 cp "$SCRATCHDIR"/out.txt "$INFODIR"/"$date_name"."$PBS_JOBID"_out.txt
 cp "$SCRATCHDIR"/err.txt "$INFODIR"/"$date_name"."$PBS_JOBID"_err.txt
-cp "$SCRATCHDIR"/process.* "$INFODIR"/*
+
 
 echo "skopirovano"
 echo "file se jmenuje:"
