@@ -765,7 +765,7 @@ class Overcooked(gym.Env):
         return gym.spaces.Box(low, high, dtype=np.uint8) # for CNN
 
 
-    def step(self, action):
+    def step(self, action, logger):
         """
         action:
             (agent with index self.agent_idx action, other agent action)
