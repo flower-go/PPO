@@ -45,7 +45,8 @@ def _worker(
         try:
             cmd, data = remote.recv()
             if cmd == "step":
-                observation, reward, done, info = env.step(data, logger = logger)
+                print(env.step)
+                observation, reward, done, info = env.step(data)
                 if done:
                     # save final observation where user can get it, then reset
                     info["terminal_observation"] = observation
