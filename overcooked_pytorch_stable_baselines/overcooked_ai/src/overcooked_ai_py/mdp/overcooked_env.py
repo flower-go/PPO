@@ -271,13 +271,14 @@ class OvercookedEnv(object):
 
         timestep_sparse_reward = sum(mdp_infos["sparse_reward_by_agent"])
         if(self.info_level > 3):
-            self.logger.debug("loguju postup")
-            self.logger.debug("is done" + str(done))
-            self.logger.debug("t:" + str(threading.current_thread().ident))
-            self.logger.debug("j:" +  str(joint_action))
-            self.logger.debug("n:" +  str(self.state.to_dict()))
-            self.logger.debug("r:" + str(timestep_sparse_reward))
-            #print("grid:" + self.mdp.mdp_params[0]["terrain"])
+            log_dict = {
+                "action:": joint_action,
+                "thread:": threading.current_thread().ident,
+                "next_state": self.state.to_dict(),
+                "done": done,
+                "reward": timestep_sparse_reward
+            }
+            self.logger.debug(str(log_dict))
         return (next_state, timestep_sparse_reward, done, env_info)
 
     def lossless_state_encoding_mdp(self, state, debug=False):
