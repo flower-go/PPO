@@ -1,5 +1,6 @@
 #!/bin/bash
-
+#PBS -M vysusilova.petra.m@gmail.com # specify recipient's email; if this option is not used, your registered email will be used
+#PBS -m abe # send mail when the job begins (b), aborts (a) or ends (e)
 #arguments parsers (dont pass equal sign as a value!!)
 #source: https://unix.stackexchange.com/questions/129391/passing-named-arguments-to-shell-scripts
 # potrebuju: exp, layout name, seed, frame_stacking_mode,vf_coef
@@ -15,6 +16,7 @@ done
 
 declare -A def_vals
 def_vals=([trained_models]=11 [mode]="POP" [frame_stacking]=4 [vf_coef]=0.1 [frame_stacking_mode]="channels" [execute_final_eval]="False" [walltime]="02:50:00" [num_workers]=30)
+echo "num_workers jsou: "$num_workers
 for i in "${!def_vals[@]}"
 do
   if [[ -z "${!i}" ]]; then declare "${i}"="${def_vals[$i]}"; fi
