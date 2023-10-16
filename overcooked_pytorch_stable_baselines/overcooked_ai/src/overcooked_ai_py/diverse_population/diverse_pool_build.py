@@ -72,7 +72,7 @@ parser.add_argument("--training_percent_start_eval", default=0.5, type=float, he
 parser.add_argument("--tensorboard_log", default=False, action="store_true", help="Whether to do tensorboard logging")
 parser.add_argument("--seed", default=42, type=int, help="Random seed value")
 parser.add_argument("--behavior_check", default=False, action="store_true",help="if true, logs actions and states, stops after divergent found" )
-
+parser.add_argument("--log_dir", default="log_dir", help="where to store actions, state etc.")
 
 
 args = parser.parse_args([] if "__file__" not in globals() else None)
