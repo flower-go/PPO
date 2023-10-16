@@ -16,7 +16,8 @@ from stable_baselines3.common.vec_env.base_vec_env import (
 
 
 def _worker(
-    remote: mp.connection.Connection, parent_remote: mp.connection.Connection, env_fn_wrapper: CloudpickleWrapper
+    remote: mp.connection.Connection, parent_remote: mp.connection.Connection, env_fn_wrapper: CloudpickleWrapper,
+        log_dir: str
 ) -> None:
     # Import here to avoid a circular import
     from stable_baselines3.common.env_util import is_wrapped
@@ -30,7 +31,7 @@ def _worker(
     logger.setLevel(logging.DEBUG)
 
     # Create a file handler for log output with the process ID in the filename
-    log_filename = f'process_{process_id}_log.txt'
+    log_filename = f'{log_dir}/process_{process_id}_log.txt'
     handler = logging.FileHandler(log_filename)
     handler.setLevel(logging.DEBUG)
 
@@ -112,7 +113,7 @@ class SubprocVecEnv(VecEnv):
            Defaults to 'forkserver' on available platforms, and 'spawn' otherwise.
     """
 
-    def __init__(self, env_fns: List[Callable[[], gym.Env]], start_method: Optional[str] = None):
+    def __init__(self, env_fns: List[Callable[[], gym.Env]], start_method: Optional[str] = None, log_dir = None):
         self.waiting = False
         self.closed = False
         n_envs = len(env_fns)
@@ -128,7 +129,7 @@ class SubprocVecEnv(VecEnv):
         self.remotes, self.work_remotes = zip(*[ctx.Pipe() for _ in range(n_envs)])
         self.processes = []
         for work_remote, remote, env_fn in zip(self.work_remotes, self.remotes, env_fns):
-            args = (work_remote, remote, CloudpickleWrapper(env_fn))
+            args = (work_remote, remote, CloudpickleWrapper(env_fn), log_dir)
             # daemon=True: if the main process crashes, we should not cause things to hang
             process = ctx.Process(target=_worker, args=args, daemon=True)  # pytype:disable=attribute-error
             process.start()

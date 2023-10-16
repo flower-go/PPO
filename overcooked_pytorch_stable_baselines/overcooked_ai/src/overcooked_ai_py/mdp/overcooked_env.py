@@ -925,5 +925,5 @@ def get_vectorized_gym_env(base_env, gym_env_name, agent_idx, featurize_fn=None,
         gym_env.custom_init(base_env, featurize_fn=featurize_fn, start_state_fn=start_state_fn, baselines_reproducible=True, agent_idx=agent_idx, frame_stacking = args.frame_stacking, frame_stacking_mode=args.frame_stacking_mode)
         return gym_env
 
-    vectorized_gym_env = SubprocVecEnv([gym_env_fn] * args.num_workers)
+    vectorized_gym_env = SubprocVecEnv([gym_env_fn] * args.num_workers, log_dir=args.log_dir)
     return vectorized_gym_env
