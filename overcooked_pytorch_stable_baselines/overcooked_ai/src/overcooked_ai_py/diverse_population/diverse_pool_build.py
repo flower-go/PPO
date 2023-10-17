@@ -265,6 +265,7 @@ else:
 
 if __name__ == "__main__":
     # State representaion and environment reset functions set
+    os.makedirs(args.log_dir)
     feature_fn = lambda _, state: overcooked_env.lossless_state_encoding_mdp(state, debug=False)
     start_state_fn = mdp.get_random_start_state_fn(random_start_pos=True, # TODO: set Default True
                                                    rnd_obj_prob_thresh = args.rnd_obj_prob_thresh_env,# TODO: set Default args.rnd_obj_prob_thresh_env,
