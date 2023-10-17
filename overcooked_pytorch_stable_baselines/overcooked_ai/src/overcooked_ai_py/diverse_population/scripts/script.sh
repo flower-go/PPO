@@ -7,7 +7,7 @@ export CODEDIR=$(pwd)/coding
 echo "codedir: " $CODEDIR
 export PROJDIR="$home_dir"/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py
 echo "projdir: " $PROJDIR
-INFODIR="$home_dir"/coding/results	
+INFODIR="$home_dir"/coding/results
 echo -e "$PBS_JOBNAME\t$PBS_JOBID\t`hostname -f`\t$SCRATCHDIR" >> "$INFODIR"/jobs_info.txt
 cd $PROJDIR
 pwd
