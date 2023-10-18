@@ -150,9 +150,9 @@ def test_file_to_dict(filename):
     return test_dict
 
 if __name__ == "__main__":
-    lname, grid, data = dt.load_data(args.input_file)
-    print("grid looks like this:")
-    print(grid)
+    data = dt.load_data(args.input_file)
+    #print("grid looks like this:")
+    #print(grid)
     dt_now = datetime.datetime.now()
     print("directory name: ", args.layout_name)
     os.mkdir("./diverse_population/visualisation/maps/" + args.layout_name)
