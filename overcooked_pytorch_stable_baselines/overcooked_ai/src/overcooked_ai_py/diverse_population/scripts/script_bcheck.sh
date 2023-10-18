@@ -38,7 +38,7 @@ else
 	execute=""
 fi
 echo $execute
-python diverse_population/diverse_pool_build.py --log_dir=$PBS_PBS_JOBNAME --layout_name=$layout_name --trained_models=$trained_models --mode=$mode --exp=$exp --eval_set_name=$eval_set_name --init_SP_agents=$init_SP_agents --kl_diff_loss_coef=$kl_diff_loss_coef --kl_diff_loss_clip=$kl_diff_loss_clip $execute --kl_diff_bonus_reward_coef=$kl_diff_bonus_reward_coef --kl_diff_bonus_reward_clip=$kl_diff_bonus_reward_clip --seed=$seed --n_sample_partners=$n_sample_partners --frame_stacking=$frame_stacking --frame_stacking_mode=$frame_stacking_mode --num_workers=$num_workers --n_epochs=1 --vf_coef=$vf_coef --behavior_check > "$SCRATCHDIR"/out.txt 2> "$SCRATCHDIR"/err.txt
+python diverse_population/diverse_pool_build.py --log_dir=$PBS_JOBNAME --layout_name=$layout_name --trained_models=$trained_models --mode=$mode --exp=$exp --eval_set_name=$eval_set_name --init_SP_agents=$init_SP_agents --kl_diff_loss_coef=$kl_diff_loss_coef --kl_diff_loss_clip=$kl_diff_loss_clip $execute --kl_diff_bonus_reward_coef=$kl_diff_bonus_reward_coef --kl_diff_bonus_reward_clip=$kl_diff_bonus_reward_clip --seed=$seed --n_sample_partners=$n_sample_partners --frame_stacking=$frame_stacking --frame_stacking_mode=$frame_stacking_mode --num_workers=$num_workers --n_epochs=1 --vf_coef=$vf_coef --behavior_check > "$SCRATCHDIR"/out.txt 2> "$SCRATCHDIR"/err.txt
 echo "python dobehl"
 INFODIR="$home_dir"/coding/results
 date_name=$(date +%m%d-%H%M)
