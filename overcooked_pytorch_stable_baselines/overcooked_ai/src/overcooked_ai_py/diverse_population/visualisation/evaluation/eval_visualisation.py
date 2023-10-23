@@ -100,7 +100,7 @@ def file_to_dict(grid, data):
         #    "all_orders": trajectory_random_pair["mdp_params"][0]["start_all_orders"]
         "all_orders": all_orders,
         "score": data["reward"],
-        "action": data["join_action"],
+        "action": data["action:"],
         "time": data["next_state"]["timestep"]
     }
     kwargs = {"hud_data": hud_data, "grid": grid, "state": state}
@@ -153,14 +153,17 @@ if __name__ == "__main__":
     data = dt.load_data(args.input_file)
     #print("grid looks like this:")
     #print(grid)
+    grid = [['X','D','P','X','X'],['X',' ',' ',' ','S'],['O',' ',' ',' ','X'],['X',' ',' ',' ','D'],['X','O','X','P','X']]
     dt_now = datetime.datetime.now()
     print("directory name: ", args.layout_name)
-    os.mkdir("./diverse_population/visualisation/maps/" + args.layout_name)
+    os.makedirs("./diverse_population/visualisation/maps/" + args.layout_name, exist_ok=True)
     print("data length:", len(data))
     print("prvni data")
-    print(data[0][0])
-    data = list(data.values())[0]
+    print(data[0])
+    print(data[0]["action:"])
     for i,d in enumerate(data):
+        if(i > 5 ):
+            exit;
         print("index is ", i)
         args.output_file = "./diverse_population/visualisation/maps/" + args.layout_name + "/" + str(i) + ".png"
         save_map_pic(d, args.output_file)
