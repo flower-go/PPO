@@ -80,7 +80,8 @@ class OvercookedEnv(object):
         self.start_state_fn = start_state_fn
         self.info_level = info_level
         self.reset(outside_info=initial_info)
-        #print("grid:" + str(self.mdp.mdp_params["terrain"]))
+        self.logger.debug("grid:" + str(self.mdp.mdp_params["terrain"]))
+        self.logger.debbug("name:" + str(self.mdp.layout_name))
         if self.horizon >= MAX_HORIZON and self.info_level > 0:
             print(
                 "Environment has (near-)infinite horizon and no terminal states. \
