@@ -16,14 +16,13 @@ def load_data(filename):
             if len(line) > 1:
                 try:
                     data = ast.literal_eval(line.strip())
-                    reward += data["reward:"]
+                    reward += data["reward"]
                     data["cumulative_reward"] = reward
                     result.append(data)
 
                 except:
                     print("error on this line")
                     print(line)
-                    print(len(line))
 
 
     return result
