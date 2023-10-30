@@ -99,7 +99,7 @@ def file_to_dict(grid, data):
     hud_data = {
         #    "all_orders": trajectory_random_pair["mdp_params"][0]["start_all_orders"]
         "all_orders": all_orders,
-        "score": data["reward"],
+        "score": data["cumulative_reward"],
         "action": data["action:"],
         "time": data["next_state"]["timestep"]
     }

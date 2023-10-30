@@ -14,8 +14,10 @@ def load_data(filename):
     with open(filename, "r") as file:
         for line in file:
             if len(line) > 1:
-                try:
+                try
                     data = ast.literal_eval(line.strip())
+                    if data["timestep"] == 0:
+                        reward = 0
                     reward += data["reward"]
                     data["cumulative_reward"] = reward
                     result.append(data)
