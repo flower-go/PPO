@@ -150,13 +150,14 @@ def test_file_to_dict(filename):
     return test_dict
 
 if __name__ == "__main__":
-    data = dt.load_data(args.input_file)
-    #print("grid looks like this:")
-    #print(grid)
-    grid = [['X','D','P','X','X'],['X',' ',' ',' ','S'],['O',' ',' ',' ','X'],['X',' ',' ',' ','D'],['X','O','X','P','X']]
+    data, grid, name = dt.load_data(args.input_file)
+    print("grid looks like this:")
+    print(grid)
+    #grid = [['X','D','P','X','X'],['X',' ',' ',' ','S'],['O',' ',' ',' ','X'],['X',' ',' ',' ','D'],['X','O','X','P','X']]
+    print("name: " + name)
     dt_now = datetime.datetime.now()
     print("directory name: ", args.layout_name)
-    os.makedirs("./diverse_population/visualisation/maps/" + args.layout_name, exist_ok=True)
+    os.makedirs("./diverse_population/visualisation/maps/" + name, exist_ok=True)
     print("data length:", len(data))
     print("prvni data")
     print(data[0])
@@ -165,7 +166,7 @@ if __name__ == "__main__":
         if(i > 5 ):
             exit;
         print("index is ", i)
-        args.output_file = "./diverse_population/visualisation/maps/" + args.layout_name + "/" + str(i) + ".png"
+        args.output_file = "./diverse_population/visualisation/maps/" + name + "/" + str(i) + ".png"
         save_map_pic(d, args.output_file)
 
 

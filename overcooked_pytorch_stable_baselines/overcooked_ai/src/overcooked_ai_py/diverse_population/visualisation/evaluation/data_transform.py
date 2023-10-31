@@ -10,9 +10,14 @@ def load_data(filename):
     file1 = open(filename, 'r')
     result = []
     reward = 0
+    grid, name = None
 
     with open(filename, "r") as file:
-        for line in file:
+        for i, line in enumerate(file):
+            if i == 0:
+                grid = line[5:]
+            if i == 2:
+                name = line[5:]
             if len(line) > 1:
                 try:
                     data = ast.literal_eval(line.strip())
@@ -26,4 +31,4 @@ def load_data(filename):
                     print(line)
                     print(e)
 
-    return result
+    return result, grid, name
