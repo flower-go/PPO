@@ -277,6 +277,7 @@ if __name__ == "__main__":
         overcooked_env, 'Overcooked-v0', agent_idx=0, featurize_fn=feature_fn, start_state_fn=start_state_fn, args=args
     )
     print("\n mame gym env\n")
+
     #Agent indices are set
     agent_idxs = [0 for _ in range(args.num_workers)]
     gym_env.remote_set_agent_idx(agent_idxs)

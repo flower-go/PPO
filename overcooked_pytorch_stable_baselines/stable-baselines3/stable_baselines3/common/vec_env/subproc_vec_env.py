@@ -42,6 +42,8 @@ def _worker(
     # Add the handler to the logger
     logger.addHandler(handler)
     env.base_env.logger = logger
+    logger.debug("grid:" + str(env.base_env.mdp.mdp_params["terrain"]))
+    logger.debbug("name:" + str(env.base_env.mdp.layout_name))
 
     while True:
         try:
