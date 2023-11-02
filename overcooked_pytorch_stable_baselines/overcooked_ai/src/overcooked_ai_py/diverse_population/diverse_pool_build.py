@@ -2,6 +2,9 @@ import copy
 import random
 import sys
 import os
+import time
+
+start_time = time.time()
 
 codedir = os.environ["CODEDIR"]
 #codedir = /home/premek/DP/
@@ -17,6 +20,7 @@ from experiments_params import set_layout_params
 from visualisation.visualisation import heat_map
 from evaluation.evaluation import Evaluator
 from divergent_solution_exception import divergent_solution_exception
+from stable_baselines3.common.callbacks import CheckpointCallback
 os.environ['CUDA_VISIBLE_DEVICES'] = "0"   #Due to Metacentrum computing reasons
 
 
@@ -165,7 +169,14 @@ def train_model(n, env, args):
             # If population mode is detected, this will change during training
             env.other_agent_model = model
             num_steps = args.total_timesteps
-            model.learn(num_steps, args=args, reset_num_timesteps=False)
+            checkpoint_callback = CheckpointCallback(
+                save_freq=100,
+                save_path="./logs_train/",
+                name_prefix=args.exp,
+                save_replay_buffer=True,
+                save_vecnormalize=True,
+            )
+            model.learn(num_steps, args=args, reset_num_timesteps=False, callback=checkpoint_callback)
             found = True
         except divergent_solution_exception.divergent_solution_exception:
             print("found divergent solution")
@@ -282,6 +293,7 @@ if __name__ == "__main__":
     agent_idxs = [0 for _ in range(args.num_workers)]
     gym_env.remote_set_agent_idx(agent_idxs)
     gym_env.population = []
+    gym_env.start_time = start_time
 
     #Frame stacking method is initialized
     gym_env.frame_stacking = args.frame_stacking
