@@ -169,9 +169,10 @@ def train_model(n, env, args):
             # If population mode is detected, this will change during training
             env.other_agent_model = model
             num_steps = args.total_timesteps
+            os.makedirs(args.exp)
             checkpoint_callback = CheckpointCallback(
-                save_freq=100,
-                save_path="./logs_train/",
+                save_freq=300000,
+                save_path="./args.exp/logs_train/",
                 name_prefix=args.exp,
                 save_replay_buffer=True,
                 save_vecnormalize=True,
