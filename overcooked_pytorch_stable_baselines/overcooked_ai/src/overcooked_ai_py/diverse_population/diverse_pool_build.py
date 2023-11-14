@@ -172,7 +172,7 @@ def train_model(n, env, args):
             os.makedirs(args.exp)
             checkpoint_callback = CheckpointCallback(
                 save_freq=300000,
-                save_path="./args.exp/logs_train/",
+                save_path="./" + args.exp + "/logs_train/",
                 name_prefix=args.exp,
                 save_replay_buffer=True,
                 save_vecnormalize=True,
