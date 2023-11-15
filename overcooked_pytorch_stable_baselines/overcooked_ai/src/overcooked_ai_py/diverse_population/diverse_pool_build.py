@@ -3,7 +3,7 @@ import random
 import sys
 import os
 import time
-
+import datetime
 start_time = time.time()
 
 codedir = os.environ["CODEDIR"]
@@ -172,7 +172,7 @@ def train_model(n, env, args):
             os.makedirs(args.exp, exist_ok = True)
             checkpoint_callback = CheckpointCallback(
                 save_freq=300000,
-                save_path="./" + args.exp + "/logs_train/",
+                save_path="./" + args.exp + "/logs_train" + datetime.datetime.now() + "/",
                 name_prefix=args.exp,
                 save_replay_buffer=True,
                 save_vecnormalize=True,
