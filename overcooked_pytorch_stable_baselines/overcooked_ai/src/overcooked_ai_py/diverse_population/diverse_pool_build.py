@@ -134,8 +134,14 @@ def load_or_train_model(directory, n, env, args):
         model.custom_id = n
         print(f"model {model_name} loaded")
     except:
-        if model is None:
-            model = train_model(n, env, args)
+        if (args.behavior_check):
+            model_path = "./log_call_nost_five_by_five_ref_30/logs_train/log_call_nost_five_by_five_ref_30_900000_steps.zip"
+            model = PPO.load(model_path, env=env, device ="cuda")
+            model.custom_id = n
+            print(f"model {model_name} loaded")
+        else:
+            if model is None:
+                model = train_model(n, env, args)
         model.save(model_name)
         print(f"model {model_name} learned")
 
