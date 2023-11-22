@@ -5,6 +5,7 @@ import os
 import time
 import datetime
 start_time = time.time()
+import glob
 
 codedir = os.environ["CODEDIR"]
 #codedir = /home/premek/DP/
@@ -134,16 +135,20 @@ def load_or_train_model(directory, n, env, args):
         model.custom_id = n
         print(f"model {model_name} loaded")
     except:
-#        if (args.behavior_check):
- #           model_path = "./log_call_nost_five_by_five_ref_30/logs_train/log_call_nost_five_by_five_ref_30_900000_steps.zip"
-  #          model = PPO.load(model_path, env=env, device ="cuda")
-   #         model.custom_id = n
-    #        print(f"model {model_name} loaded from checkpoint {model_path}")
-     #   else:
-        if model is None:
-                model = train_model(n, env, args)
-        model.save(model_name)
-        print(f"model {model_name} learned")
+        if (args.behavior_check): #jeste muzeme chctit nacitat z checkpoints
+            try:
+                model_path = projdir + "/diverse_population/checkpoints/" + args.layout_name + "/" + exp_part + "/" + str(n).zfill(2)
+                list_of_files = glob.glob(model_path + "/*")  # * means all if need specific format then *.csv
+                latest_file = max(list_of_files, key=os.path.getctime)
+                model = PPO.load(model_path + "/" + latest_file, env=env, device="cuda")
+                model.custom_id = n
+                print(f"model {model_name} loaded from CHECKPOINT {model_path}")
+
+            except:
+                if model is None:
+                    model = train_model(n, env, args)
+                    model.save(model_name)
+                    print(f"model {model_name} learned")
 
     return model
 
