@@ -134,13 +134,13 @@ def load_or_train_model(directory, n, env, args):
         model.custom_id = n
         print(f"model {model_name} loaded")
     except:
-        if (args.behavior_check):
-            model_path = "./log_call_nost_five_by_five_ref_30/logs_train/log_call_nost_five_by_five_ref_30_900000_steps.zip"
-            model = PPO.load(model_path, env=env, device ="cuda")
-            model.custom_id = n
-            print(f"model {model_name} loaded")
-        else:
-            if model is None:
+#        if (args.behavior_check):
+ #           model_path = "./log_call_nost_five_by_five_ref_30/logs_train/log_call_nost_five_by_five_ref_30_900000_steps.zip"
+  #          model = PPO.load(model_path, env=env, device ="cuda")
+   #         model.custom_id = n
+    #        print(f"model {model_name} loaded from checkpoint {model_path}")
+     #   else:
+        if model is None:
                 model = train_model(n, env, args)
         model.save(model_name)
         print(f"model {model_name} learned")
@@ -177,8 +177,8 @@ def train_model(n, env, args):
             num_steps = args.total_timesteps
             os.makedirs(args.exp, exist_ok = True)
             checkpoint_callback = CheckpointCallback(
-                save_freq=300000,
-                save_path="./" + args.exp + "/logs_train" + datetime.datetime.now() + "/",
+                save_freq=800000,
+                save_path= projdir + "/diverse_population/checkpoints/" + args.layout_name + "/" + args.exp + f"/{str(n).zfill(2)}",
                 name_prefix=args.exp,
                 save_replay_buffer=True,
                 save_vecnormalize=True,
