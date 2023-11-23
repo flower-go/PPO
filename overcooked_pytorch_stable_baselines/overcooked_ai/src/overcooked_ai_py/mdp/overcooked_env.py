@@ -328,10 +328,10 @@ class OvercookedEnv(object):
 
     def is_done(self):
         """Whether the episode is over."""
-        print("\nis_done fcn")
-        print("\ntimestep:" + str(self.state.timestep))
-        print("\nhorizon", str(self.horizon))
-        print("\nis terminal", self.mdp.is_terminal(self.state))
+        #print("\nis_done fcn")
+        #print("\ntimestep:" + str(self.state.timestep))
+        #print("\nhorizon", str(self.horizon))
+        #print("\nis terminal", self.mdp.is_terminal(self.state))
         return self.state.timestep >= self.horizon or self.mdp.is_terminal(
             self.state
         )
