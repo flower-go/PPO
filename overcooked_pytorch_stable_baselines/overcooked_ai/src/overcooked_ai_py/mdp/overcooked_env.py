@@ -270,7 +270,7 @@ class OvercookedEnv(object):
             self._add_episode_info(env_info)
 
         timestep_sparse_reward = sum(mdp_infos["sparse_reward_by_agent"])
-        if(self.info_level > 10): #tted by nemelo fungovat
+        if(self.info_level > 2): #tted by nemelo fungovat
             log_dict = {
                 "action:": joint_action,
                 "thread:": threading.current_thread().ident,
