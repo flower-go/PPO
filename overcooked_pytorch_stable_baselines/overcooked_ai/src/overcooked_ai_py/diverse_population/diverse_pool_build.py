@@ -133,7 +133,7 @@ def load_or_train_model(directory, n, env, args):
         print(f"Looking for file {model_name}")
         model = PPO.load(model_name, env=env, device="cuda")
         model.custom_id = n
-        print(f"model {model_name} loaded")
+        print(f"model {model_name} loaded", flush=True)
     except:
         if (args.behavior_check): #jeste muzeme chctit nacitat z checkpoints
             try:
@@ -142,13 +142,13 @@ def load_or_train_model(directory, n, env, args):
                 latest_file = max(list_of_files, key=os.path.getctime)
                 model = PPO.load(model_path + "/" + latest_file, env=env, device="cuda")
                 model.custom_id = n
-                print(f"model {model_name} loaded from CHECKPOINT {model_path}")
+                print(f"model {model_name} loaded from CHECKPOINT {model_path}", flush=True)
 
             except:
                 if model is None:
                     model = train_model(n, env, args)
                     model.save(model_name)
-                    print(f"model {model_name} learned")
+                    print(f"model {model_name} learned", flush=True)
 
     return model
 
