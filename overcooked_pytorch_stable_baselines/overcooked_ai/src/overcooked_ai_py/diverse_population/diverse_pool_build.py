@@ -66,7 +66,7 @@ parser.add_argument("--max_grad_norm", default=0.3, type=float, help="Maximal gr
 parser.add_argument("--clip_range", default=0.1, type=float, help="Clipping range")
 parser.add_argument("--learning_rate", default=0.0004, type=float, help="Learning rate")
 parser.add_argument("--n_steps", default=400, type=int, help="Number of steps of the environment taken during training")
-parser.add_argument("--n_epochs", default=8, type=int, help="Number of learning epochs")
+parser.add_argument("--n_epochs", default=16, type=int, help="Number of learning epochs")
 parser.add_argument("--shaped_r_coef_horizon", default=2.5e6, type=int, help="Annealing horizont for shaped partial rewards")
 parser.add_argument("--divergent_check_timestep", default=3e6, type=int, help="Timestep of the check for divergent solution")
 parser.add_argument("--num_workers", default=30, type=int, help="Number of parallel environment")
@@ -77,7 +77,7 @@ parser.add_argument("--training_percent_start_eval", default=0.5, type=float, he
 parser.add_argument("--tensorboard_log", default=False, action="store_true", help="Whether to do tensorboard logging")
 parser.add_argument("--seed", default=42, type=int, help="Random seed value")
 parser.add_argument("--behavior_check", default=False, action="store_true",help="if true, logs actions and states, stops after divergent found" )
-parser.add_argument("--log_dir", default="log_dir", help="where to store actions, state etc.")
+parser.add_argument("--log_dir", default="./log_dir", help="where to store actions, state etc.")
 
 
 args = parser.parse_args([] if "__file__" not in globals() else None)
@@ -289,7 +289,10 @@ else:
 
 if __name__ == "__main__":
     # State representaion and environment reset functions set
-    os.makedirs(args.log_dir)
+    if(len(args.log_dir) > 0):
+        print("args.logdir si about to be created here:")
+        print(args.log_dir)
+        os.makedirs(args.log_dir, exist_ok= True)
     feature_fn = lambda _, state: overcooked_env.lossless_state_encoding_mdp(state, debug=False)
     start_state_fn = mdp.get_random_start_state_fn(random_start_pos=True, # TODO: set Default True
                                                    rnd_obj_prob_thresh = args.rnd_obj_prob_thresh_env,# TODO: set Default args.rnd_obj_prob_thresh_env,
