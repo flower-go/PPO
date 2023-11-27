@@ -133,8 +133,9 @@ def load_or_train_model(directory, n, env, args):
         print(f"Looking for file {model_name}")
         model = PPO.load(model_name, env=env, device="cuda")
         model.custom_id = n
-        print(f"model {model_name} loaded", flush=True)
+        print(f"model {model_name} loaded")
     except:
+        print(f"mode {model_name} not found" )
         if (args.behavior_check): #jeste muzeme chctit nacitat z checkpoints
             try:
                 print("model not found, I am searching for checkpoints")
@@ -146,10 +147,11 @@ def load_or_train_model(directory, n, env, args):
                 print(f"model {model_name} loaded from CHECKPOINT {model_path}", flush=True)
 
             except:
+                print(f"I will train {model_name} now")
                 if model is None:
                     model = train_model(n, env, args)
                     model.save(model_name)
-                    print(f"model {model_name} learned", flush=True)
+                    print(f"model {model_name} learned")
 
     return model
 
