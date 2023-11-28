@@ -77,7 +77,6 @@ parser.add_argument("--training_percent_start_eval", default=0.5, type=float, he
 parser.add_argument("--tensorboard_log", default=False, action="store_true", help="Whether to do tensorboard logging")
 parser.add_argument("--seed", default=42, type=int, help="Random seed value")
 parser.add_argument("--behavior_check", default=False, action="store_true",help="if true, logs actions and states, stops after divergent found" )
-parser.add_argument("--log_dir", default="./log_dir", help="where to store actions, state etc.")
 
 
 args = parser.parse_args([] if "__file__" not in globals() else None)
@@ -187,10 +186,13 @@ def train_model(n, env, args):
             # If population mode is detected, this will change during training
             env.other_agent_model = model
             num_steps = args.total_timesteps
-            os.makedirs(args.exp, exist_ok = True)
+            # os.makedirs(args.exp, exist_ok = True) #proc toto? pro logy?
+            callback_path = projdir + "/diverse_population/checkpoints/" + args.layout_name + "/" + args.exp + f"/{str(n).zfill(2)}
+            os.makedirs(callback_path, exist_ok = True)
+
             checkpoint_callback = CheckpointCallback(
                 save_freq=args.total_timesteps/4,
-                save_path= projdir + "/diverse_population/checkpoints/" + args.layout_name + "/" + args.exp + f"/{str(n).zfill(2)}",
+                save_path= callback_path,
                 name_prefix=args.exp,
                 save_replay_buffer=True,
                 save_vecnormalize=True,
@@ -294,11 +296,10 @@ else:
 
 
 if __name__ == "__main__":
+    args.log_dir = projdir + "/diverse_population/text_logs/" + args.layout_name + "/"
+    if (args.behavior_check):
+        os.makedirs(args.log_dir, exist_ok=True)
     # State representaion and environment reset functions set
-    if(len(args.log_dir) > 0):
-        print("args.logdir si about to be created here:")
-        print(args.log_dir)
-        os.makedirs(args.log_dir, exist_ok= True)
     feature_fn = lambda _, state: overcooked_env.lossless_state_encoding_mdp(state, debug=False)
     start_state_fn = mdp.get_random_start_state_fn(random_start_pos=True, # TODO: set Default True
                                                    rnd_obj_prob_thresh = args.rnd_obj_prob_thresh_env,# TODO: set Default args.rnd_obj_prob_thresh_env,
@@ -325,7 +326,7 @@ if __name__ == "__main__":
 
 
     set_layout_params(args)
-    args.full_exp_name = get_name(args.exp, args, sp=args.mode == "SP")
+    args.full_exp_name = get_name(args.exp, args, sp=args.mode == "POP")
     print("budu volat load or train")
     print_args()
     #Models training
