@@ -66,7 +66,7 @@ parser.add_argument("--max_grad_norm", default=0.3, type=float, help="Maximal gr
 parser.add_argument("--clip_range", default=0.1, type=float, help="Clipping range")
 parser.add_argument("--learning_rate", default=0.0004, type=float, help="Learning rate")
 parser.add_argument("--n_steps", default=400, type=int, help="Number of steps of the environment taken during training")
-parser.add_argument("--n_epochs", default=16, type=int, help="Number of learning epochs")
+parser.add_argument("--n_epochs", default=8, type=int, help="Number of learning epochs")
 parser.add_argument("--shaped_r_coef_horizon", default=2.5e6, type=int, help="Annealing horizont for shaped partial rewards")
 parser.add_argument("--divergent_check_timestep", default=3e6, type=int, help="Timestep of the check for divergent solution")
 parser.add_argument("--num_workers", default=30, type=int, help="Number of parallel environment")
