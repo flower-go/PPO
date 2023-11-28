@@ -189,7 +189,7 @@ def train_model(n, env, args):
             num_steps = args.total_timesteps
             os.makedirs(args.exp, exist_ok = True)
             checkpoint_callback = CheckpointCallback(
-                save_freq=800000,
+                save_freq=args.total_timesteps/4,
                 save_path= projdir + "/diverse_population/checkpoints/" + args.layout_name + "/" + args.exp + f"/{str(n).zfill(2)}",
                 name_prefix=args.exp,
                 save_replay_buffer=True,
