@@ -59,13 +59,13 @@ parser.add_argument("--static_start", default=False, action="store_true", help="
 parser.add_argument("--ent_coef_start", default=0.1, type=float, help="Coeficient for entropy bonus term at the start")
 parser.add_argument("--ent_coef_end", default=0.03, type=float, help="Coeficient for entropy bonus term after ent_coef_horizon steps")
 parser.add_argument("--ent_coef_horizon", default=1.5e6, type=int, help="Number of steps for annealing entropy bonus coeficient")
-parser.add_argument("--total_timesteps", default=5.5e6, type=int, help="Total number of environment steps during training")
+parser.add_argument("--total_timesteps", default=400, type=int, help="Total number of environment steps during training")
 parser.add_argument("--vf_coef", default=0.1, type=float, help="Coeficient for critic term in PPO objective")
 parser.add_argument("--batch_size", default=2000, type=int, help="Batch size")
 parser.add_argument("--max_grad_norm", default=0.3, type=float, help="Maximal gradient norm value")
 parser.add_argument("--clip_range", default=0.1, type=float, help="Clipping range")
 parser.add_argument("--learning_rate", default=0.0004, type=float, help="Learning rate")
-parser.add_argument("--n_steps", default=400, type=int, help="Number of steps of the environment taken during training")
+parser.add_argument("--n_steps", default=10, type=int, help="Number of steps of the environment taken during training")
 parser.add_argument("--n_epochs", default=8, type=int, help="Number of learning epochs")
 parser.add_argument("--shaped_r_coef_horizon", default=2.5e6, type=int, help="Annealing horizont for shaped partial rewards")
 parser.add_argument("--divergent_check_timestep", default=3e6, type=int, help="Timestep of the check for divergent solution")
@@ -77,7 +77,7 @@ parser.add_argument("--training_percent_start_eval", default=0.5, type=float, he
 parser.add_argument("--tensorboard_log", default=False, action="store_true", help="Whether to do tensorboard logging")
 parser.add_argument("--seed", default=42, type=int, help="Random seed value")
 parser.add_argument("--behavior_check", default=False, action="store_true",help="if true, logs actions and states, stops after divergent found" )
-
+parser.add_argument("--log_dir", default=None, help="directory for checkpoints")
 
 args = parser.parse_args([] if "__file__" not in globals() else None)
 
@@ -187,11 +187,11 @@ def train_model(n, env, args):
             env.other_agent_model = model
             num_steps = args.total_timesteps
             # os.makedirs(args.exp, exist_ok = True) #proc toto? pro logy?
-            callback_path = projdir + "/diverse_population/checkpoints/" + args.layout_name + "/" + args.exp + f"/{str(n).zfill(2)}
+            callback_path = projdir + "/diverse_population/checkpoints/" + args.layout_name + "/" + args.exp + f"/{str(n).zfill(2)}"
             os.makedirs(callback_path, exist_ok = True)
-
+            print(f"checkpoints are stored here: {callback_path}")
             checkpoint_callback = CheckpointCallback(
-                save_freq=args.total_timesteps/4,
+                save_freq=3,
                 save_path= callback_path,
                 name_prefix=args.exp,
                 save_replay_buffer=True,
@@ -296,9 +296,12 @@ else:
 
 
 if __name__ == "__main__":
-    args.log_dir = projdir + "/diverse_population/text_logs/" + args.layout_name + "/"
     if (args.behavior_check):
+        args.log_dir = projdir + "/diverse_population/text_logs/" + args.layout_name + "/"
         os.makedirs(args.log_dir, exist_ok=True)
+        print("vytvorila jsem log_adresar")
+    else:
+        args.log_dir = None
     # State representaion and environment reset functions set
     feature_fn = lambda _, state: overcooked_env.lossless_state_encoding_mdp(state, debug=False)
     start_state_fn = mdp.get_random_start_state_fn(random_start_pos=True, # TODO: set Default True
