@@ -6,7 +6,7 @@ import time
 import datetime
 start_time = time.time()
 import glob
-
+import math
 codedir = os.environ["CODEDIR"]
 #codedir = /home/premek/DP/
 projdir = os.environ["PROJDIR"]
@@ -78,6 +78,7 @@ parser.add_argument("--tensorboard_log", default=False, action="store_true", hel
 parser.add_argument("--seed", default=42, type=int, help="Random seed value")
 parser.add_argument("--behavior_check", default=False, action="store_true",help="if true, logs actions and states, stops after divergent found" )
 parser.add_argument("--log_dir", default=None, help="directory for checkpoints")
+parser.add_argument("num_checkpoints", default = 4, help="number of stored models")
 
 args = parser.parse_args([] if "__file__" not in globals() else None)
 
@@ -163,6 +164,14 @@ def train_model(n, env, args):
     """
     Trains one model using population-extended stable baselines PPO algorithm
     """
+
+    def get_callback_freq(num_checkpoints):
+        rollout_size = args.num_workers*args.n_steps
+        n_cycles = math.ceil(args.total_timesteps/rollout_size)
+        all_steps = n_cycles * rollout_size
+        frequency = all_steps/num_checkpoints/args.num_workers + 1
+        return frequency
+
     found = False
     while not found:
         try:
@@ -189,13 +198,14 @@ def train_model(n, env, args):
             # os.makedirs(args.exp, exist_ok = True) #proc toto? pro logy?
             callback_path = projdir + "/diverse_population/checkpoints/" + args.layout_name + "/" + args.exp + f"/{str(n).zfill(2)}"
             os.makedirs(callback_path, exist_ok = True)
-            print(f"checkpoints are stored here: {callback_path}")
+            frequency = get_callback_freq(args.num_checkpoints)
+            print(f"checkpoints are stored here: {callback_path} with frequency {frequency}")
             checkpoint_callback = CheckpointCallback(
-                save_freq=3,
+                save_freq=frequency,
                 save_path= callback_path,
                 name_prefix=args.exp,
-                save_replay_buffer=True,
-                save_vecnormalize=True,
+                save_replay_buffer=False,
+                save_vecnormalize=True
             )
             model.learn(num_steps, args=args, reset_num_timesteps=False, callback=checkpoint_callback)
             found = True
