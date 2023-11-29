@@ -24,26 +24,26 @@ def _worker(
 
     parent_remote.close()
     env = env_fn_wrapper.var()
-
+    if(log_dir is not None):
     # Configure the logger for each process
-    process_id = os.getpid()
-    logger = logging.getLogger(f'Process-{process_id}')
-    logger.setLevel(logging.DEBUG)
+        process_id = os.getpid()
+        logger = logging.getLogger(f'Process-{process_id}')
+        logger.setLevel(logging.DEBUG)
 
     # Create a file handler for log output with the process ID in the filename
-    log_filename = f'{log_dir}/process_{process_id}_log.txt'
-    handler = logging.FileHandler(log_filename)
-    handler.setLevel(logging.DEBUG)
+        log_filename = f'{log_dir}/process_{process_id}_log.txt'
+        handler = logging.FileHandler(log_filename)
+        handler.setLevel(logging.DEBUG)
 
     # Create a formatter and set it for the handler
-    formatter = logging.Formatter('%(message)s\n')
-    handler.setFormatter(formatter)
+        formatter = logging.Formatter('%(message)s\n')
+        handler.setFormatter(formatter)
 
     # Add the handler to the logger
-    logger.addHandler(handler)
-    env.base_env.logger = logger
-    logger.debug("grid:" + str(env.base_env.mdp.mdp_params["terrain"]))
-    logger.debug("name:" + str(env.base_env.mdp.layout_name))
+        logger.addHandler(handler)
+        env.base_env.logger = logger
+        logger.debug("grid:" + str(env.base_env.mdp.mdp_params["terrain"]))
+        logger.debug("name:" + str(env.base_env.mdp.layout_name))
 
     while True:
         try:
