@@ -132,14 +132,23 @@ def load_or_train_model(directory, n, env, args):
 
     if (args.behavior_check):  # jeste muzeme chctit nacitat z checkpoints, ale u toho nebudem trenovat
         try:
-            print("model not found, I am searching for checkpoints")
-            model_path = projdir + "/diverse_population/checkpoints/" + args.layout_name + "/" + exp_part + "/" + str(
-                n).zfill(2)
-            list_of_files = glob.glob(model_path + "/*")  # * means all if need specific format then *.csv
-            latest_file = max(list_of_files, key=os.path.getctime)
-            model = PPO.load(latest_file, env=env, device="cuda")
-            model.custom_id = n
-            print(f"model {model_name} loaded from CHECKPOINT {model_path}", flush=True)
+            try:
+                print(f"Looking for file {model_name}")
+                model = PPO.load(model_name, env=env, device="cuda")
+                model.custom_id = n
+                print(f"model {model_name} loaded")
+            except:
+                print(f"mode {model_name} not found")
+
+
+                print("model not found, I am searching for checkpoints")
+                model_path = projdir + "/diverse_population/checkpoints/" + args.layout_name + "/" + exp_part + "/" + str(
+                    n).zfill(2)
+                list_of_files = glob.glob(model_path + "/*")  # * means all if need specific format then *.csv
+                latest_file = max(list_of_files, key=os.path.getctime)
+                model = PPO.load(latest_file, env=env, device="cuda")
+                model.custom_id = n
+                print(f"model {model_name} loaded from CHECKPOINT {model_path}", flush=True)
         except:
             print(f"model {model_name} not found, please train it first")
     else:
