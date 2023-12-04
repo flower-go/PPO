@@ -78,7 +78,7 @@ parser.add_argument("--tensorboard_log", default=False, action="store_true", hel
 parser.add_argument("--seed", default=42, type=int, help="Random seed value")
 parser.add_argument("--behavior_check", default=False, action="store_true",help="if true, logs actions and states, stops after divergent found" )
 parser.add_argument("--log_dir", default=None, help="directory for checkpoints")
-parser.add_argument("num_checkpoints", default = 4, help="number of stored models")
+parser.add_argument("--num_checkpoints", default = 4, help="number of stored models")
 
 args = parser.parse_args([] if "__file__" not in globals() else None)
 
