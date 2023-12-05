@@ -43,24 +43,37 @@ def check_models(name_1, name_2 = None, count = 30):
     is_ok = True
     for map in maps:
         name = name_1 + map + name_2
-        path = f"../models/{map}/{name}/"
-        print("searching models in: {path}")
-        subfolders = [f.path for f in os.scandir(path) if f.is_dir()]
+        path = "./diverse_population/models/" + map + "/" + name + "/"
+        print(f"searching models in: {path}")
+        try:
+            files = [f.path for f in os.scandir(path) if f.is_file()]
+        except:
+            print(f"Path  {path} probably not found")
         results[map] = {}
-        num_models = len(subfolders)
-        results[map]["model_folders"] = num_models
+        num_models = len(files)
+        results[map]["model_count"] = num_models
         if num_models != count:
             is_ok= False
-            print(f"Model count is wrong. Desired: {count} Actual: {num_models}")
-        for sub in subfolders:
-            model_files = [(f,os.path.getmtime(f)) for f in os.scandir(sub) if f.is_file()]
-            if len(model_files) > 1:
-                print(f"V adresari je vice model souboru. Dir: {sub}")
-            else:
-                file, date = model_files[0]
-                results["map"]["model_file"] = (file, date)
-                print(f"model {file} created {date}")
+            print(f"Model count is wrong. Desired: {count} Actual:{num_models}")
+        results[map]["model_files"] = [(f, os.path.getmtime(f)) for f in files]
+    return results, is_ok
+
+def check_maps(name_1, name_2 = None):
+    is_ok = True
+    for map in maps:
+        name = name_1 + map + name_2
+        path = "./diverse_population/visualisation/" + map + "/" + name + "/"
+        print(f"searching models in: {path}")
+        try:
+            files = [f.path for f in os.scandir(path) if f.is_file()]
+            results[map] = {}
+            results[map]["map_file"] = [(f, os.path.getmtime(f)) for f in files][0]
+        except Exception as error:
+            print(f"Path  {path} probably not found. Error {error}")
+    return results, is_ok
 
 
-
-
+if __name__ == "__main__":
+    # res, ok = check_models(name_1 = "nost1_", name_2 = "_ref_30")
+    res, ok = check_maps(name_1 = "nost1_", name_2 = "_ref_30")
+    print(res)
