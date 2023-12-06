@@ -6,6 +6,14 @@ from reportlab.lib.utils import ImageReader
 import math as mt
 from PIL import Image
 
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("--path", type=str, help="Path to the dictionary with png files")
+parser.add_argument("--filename", type=str, help="Name of the resulting pdf file")
+parser.add_argument("--title", type=str, help="Header of the pdf")
+parser.add_argument("--columns", deafult=4, type=int, help="number of columns")
+args = parser.parse_args([] if "__file__" not in globals() else None)
+
 import os
 
 #code from: https://stackoverflow.com/questions/67162412/creating-a-4-x-5-grid-of-images-within-report-lab-python
@@ -18,7 +26,7 @@ title = 'Test'
 Y_POS_START = 250
 
 
-def createPDF(path_to_images, document_name, document_title, columns=4):
+def createPDF(path_to_images, document_name, document_title):
     th_size = 180*4/columns
     img_size = 115*4/columns
     x_space = th_size / (columns + 4)
@@ -79,6 +87,6 @@ def createPDF(path_to_images, document_name, document_title, columns=4):
             rows_rendered += 1
 
     pdf.save()
-
-
-createPDF(path, filename, title, 5)
+if __name__ == "__main__":
+    #createPDF(path, filename, title, 5)
+    createPDF(args.path, args.filename, args.title, args.columns)
