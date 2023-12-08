@@ -9,7 +9,8 @@ export CODEDIR=$(pwd)/coding
 echo "codedir: " $CODEDIR
 export PROJDIR="$home_dir"/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py
 echo "projdir: " $PROJDIR
-
+INFODIR="$home_dir"/coding/results
+echo -e "$PBS_JOBNAME\t$PBS_JOBID\t`hostname -f`\t$SCRATCHDIR" >> "$INFODIR"/jobs_info.txt
 cd $PROJDIR
 pwd
 echo $home_dir
@@ -19,12 +20,12 @@ echo "eval_set_name"=$eval_set_name
 echo "init_SP_agents"=$init_SP_agents
 echo "delay_shared_rewards"=$delay_shared_rewards
 echo "mode"=$mode
-
+echo "execute final eval" = $execute_final_eval
 echo "kl_diff_loss_coef"=$kl_diff_loss_coef
 echo "kl_diff_loss_clip"=$kl_diff_loss_clip
 echo "kl_diff_bonus_reward_coef"=$kl_diff_bonus_reward_coef
 echo "kl_diff_bonus_reward_clip"=$kl_diff_bonus_reward_clip
-
+echo "num_workers"=$num_workers
 echo "rnd_obj_prob_thresh_env"=$rnd_obj_prob_thresh_env
 echo "seed"=$seed
 echo "n_sample_partners"=$n_sample_partners
@@ -46,7 +47,9 @@ oldIFS=$IFS
 IFS=","
 params="$*"
 IFS=$oldIFS
-
+echo "params:"
+echo $params
+exit 0
 python diverse_population/diverse_pool_build.py $params > "$SCRATCHDIR"/out.txt 2> "$SCRATCHDIR"/err.txt
 
 echo "python dobehl"

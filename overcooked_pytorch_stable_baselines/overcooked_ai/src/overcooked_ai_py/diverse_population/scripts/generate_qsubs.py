@@ -28,6 +28,29 @@ layouts_onions = [
            #"diagonal",
            #"long_forced",
            "tutorial_0"]
+
+vis_maps =[
+"five_by_five",
+"schelling",
+"centre_pots",
+"scenario1_s",
+"large_room",
+"schelling_s",
+"coordination_ring",
+"counter_circuit_o_1order",
+"cramped_room",
+"forced_coordination",
+"m_shaped_s",
+"unident",
+"simple_o",
+"centre_objects",
+"scenario2_s",
+"scenario3",
+"scenario2",
+"scenario4",
+"bottleneck"
+]
+
 origin_params = {
     "discount":0.99,
     "GAE":0.98,
@@ -87,7 +110,7 @@ def SP_ref(layout_name, seed, stacking = "nostack"):
 def SP_epochs(layout_name, seed, stacking = "nostack"):
     exp = "log1_" + stacking[0:4] + "_"  + layout_name + "_ref_30"
     script = SCRIPT_PATH[0:-3] + "_bcheck.sh"
-    end = ' mode="SP" n_sample_partners=-1 trained_models=1 file="' + script + '"'
+    end = ' mode="SP" n_sample_partners=-1 trained_models=30 file="' + script + '"'
     stack = frame_stacking[stacking]
     stack_mode = stack[0]
     stack_number = stack[1]
@@ -122,13 +145,19 @@ def one_epoch():
             res = res + ' execute_final_eval=True num_workers=1'
             print(res)
 
-def one_epoch_eval():
+def one_epoch_eval(checkpoint = None, map_names = layouts_onions):
     seed = seeds[0]
     for stacking in frame_stacking:
         print("\n" + "#stacking: " + stacking + "\n")
-        for layout_name in layouts_onions:
+        for layout_name in map_names:
             res, exp = SP_epochs(layout_name, seed, stacking)
+            res = res  + " walltime=40:00:00"
+            if checkpoint is not None:
+                res = res + f' checkp_steps="{checkpoint}"'
             print(res)
+
+
+
 def print_exps_ref_pop():
     ref_populations(True)
 
@@ -138,7 +167,42 @@ def print_exps_ref_pop():
 #ref_populations(False)
 
 #this is for one epoch logging
-one_epoch()
+#one_epoch()
+
+#generating qsubs for eval and heat maps
+#one_epoch_eval()
+
+#generate for specific checkpoint
+steps= [1377030,2754060,4131090]
+counts = {
+"five_by_five": 2,
+"schelling": 3,
+"centre_pots": 3,
+"scenario1_s": 3,
+"large_room": 3,
+"asymmetric_advantages": 3,
+"schelling_s": 3,
+"coordination_ring": 3,
+"counter_circuit_o_1order": 3,
+"cramped_room": 3,
+"forced_coordination": 2,
+"m_shaped_s": 2,
+"unident": 2,
+"simple_o": 2,
+"centre_objects": 3,
+"scenario2_s": 3,
+"scenario3": 3,
+"scenario2": 2,
+"scenario4": 3,
+"bottleneck": 3
+}
+for i,s in enumerate(steps):
+    print(f"# steps {steps[i]}")
+    step_map_list = []
+    for m in vis_maps:
+        if counts[m] >= i+1:
+            step_map_list.append(m)
+    one_epoch_eval(s, step_map_list)
 
 
 

@@ -1,16 +1,16 @@
 #!/bin/bash
-
+#PBS -M vysusilova.petra.m@gmail.com # specify recipient's email; if this option is not used, your registered email will be used
+#PBS -m abe # send mail when the job begins (b), aborts (a) or ends (e)
 #arguments parsers (dont pass equal sign as a value!!)
 #source: https://unix.stackexchange.com/questions/129391/passing-named-arguments-to-shell-scripts
 # potrebuju: exp, layout name, seed, frame_stacking_mode,vf_coef
-#echo $*
 for ARGUMENT in "$@"
 do
    KEY=$(echo $ARGUMENT | cut -f1 -d=)
 
    KEY_LENGTH=${#KEY}
    VALUE="${ARGUMENT:$KEY_LENGTH+1}"
-   
+
    export "$KEY"="$VALUE"
 done
 
@@ -24,7 +24,7 @@ done
 #done
 
 firsttime=yes
-for i in "$@" 
+for i in "$@"
 do
     test "$firsttime" && set -- && unset firsttime
     test "${i%%file*}" && set -- "$@" "$i"
@@ -35,7 +35,7 @@ IFS=","
 params="$*"
 IFS=$oldIFS
 #home dir must be set correctly
-if [ -z "$home_dir" ]; then 
+if [ -z "$home_dir" ]; then
 	home_dir="/storage/plzen1/home/ayshi";
 	params+=",home_dir=""$home_dir"
  fi
@@ -48,6 +48,14 @@ echo $job_name
 res_dir="$home_dir"/coding/results
 echo "results can be found here: $res_dir"
 date_name=$(date +%m%d-%H%M)
+echo "walltime" + $walltime
+echo ${walltime:0:2}
+if [ ${walltime:0:2} -gt 23 ]; then
+	echo "je vetsi"
+	fronta="gpu_long"
+else
+	fronta="gpu"
+fi
 
 if [ -z "$file" ]; then echo "I can't read your mind, provide file=value parameter please.";
 else 
@@ -55,6 +63,6 @@ else
 	#echo $trained_models
 	echo "I will run $file"
 	echo $params
-	qsub -N "$date_name"_"$exp" -e "$res_dir" -o "$res_dir" -l select=1:ncpus=4:ngpus=1:mem=15gb:scratch_local=4gb -q gpu -l walltime=02:50:00 -v "$params" "$home_dir"/"$file"
+	qsub -m abe -M vysusilova.petra.m@gmail.com -N -N "$exp"_"$date_name" -e "$res_dir" -o "$res_dir" -l select=1:ncpus=4:ngpus=1:mem=15gb:scratch_local=4gb -q gpu -l walltime=02:50:00 -v "$params" "$home_dir"/"$file"
 
 fi
