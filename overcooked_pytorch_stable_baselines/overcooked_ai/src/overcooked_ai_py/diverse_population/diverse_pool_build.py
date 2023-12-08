@@ -137,31 +137,36 @@ def load_or_train_model(directory, n, env, args):
                 n).zfill(2)
             list_of_files = glob.glob(model_path + "/*")
             model_name = [f for f in list_of_files if args.checkp_step in f][0]
-            model = PPO.load(model_name, env=env, device="cuda")
-            model.custom_id = n
-            print(f"model {model_name} loaded")
-            print(f"Checkpoint on step {args.checkp_step} loaded from file: {model_file}")
-        else:
             try:
+                print(f"Looking for file {model_name}")
+                model = PPO.load(model_name, env=env, device="cuda")
+                model.custom_id = n
+                print(f"model {model_name} loaded")
+            except:
+                print(f"mode {model_name} not found")
+        else:
+            #zkusme nacist natrenovany model
+            try:
+                print(f"Looking for file {model_name}")
+                model = PPO.load(model_name, env=env, device="cuda")
+                model.custom_id = n
+                print(f"model {model_name} loaded")
+            except:
+                print(f"mode {model_name} not found")
+
+            if model is None: #zkusme latest checkpoint
+
+                print("model not found, I am searching for checkpoints")
+                model_path = projdir + "/diverse_population/checkpoints/" + args.layout_name + "/" + exp_part + "/" + str(
+                    n).zfill(2)
+                list_of_files = glob.glob(model_path + "/*")  # * means all if need specific format then *.csv
+                latest_file = max(list_of_files, key=os.path.getctime)
                 try:
-                    print(f"Looking for file {model_name}")
-                    model = PPO.load(model_name, env=env, device="cuda")
-                    model.custom_id = n
-                    print(f"model {model_name} loaded")
-                except:
-                    print(f"mode {model_name} not found")
-
-
-                    print("model not found, I am searching for checkpoints")
-                    model_path = projdir + "/diverse_population/checkpoints/" + args.layout_name + "/" + exp_part + "/" + str(
-                        n).zfill(2)
-                    list_of_files = glob.glob(model_path + "/*")  # * means all if need specific format then *.csv
-                    latest_file = max(list_of_files, key=os.path.getctime)
                     model = PPO.load(latest_file, env=env, device="cuda")
                     model.custom_id = n
                     print(f"model {model_name} loaded from CHECKPOINT {model_path}", flush=True)
-            except:
-                print(f"model {model_name} not found, please train it first")
+                except:
+                    print(f"model {model_name} not found, please train it first")
     else:
         try:
             print(f"Looking for file {model_name}")
@@ -176,7 +181,8 @@ def load_or_train_model(directory, n, env, args):
                 model = train_model(n, env, args)
                 model.save(model_name)
                 print(f"model {model_name} learned")
-
+    if model is None:
+        raise Exception("DONT PANIC! No model loaded, check your paths, params and error output.")
     return model
 
 
