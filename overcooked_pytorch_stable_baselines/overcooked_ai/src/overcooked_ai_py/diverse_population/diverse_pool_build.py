@@ -5,6 +5,7 @@ import os
 import time
 import datetime
 start_time = time.time()
+import re
 import glob
 import math
 codedir = os.environ["CODEDIR"]
@@ -127,15 +128,21 @@ def load_or_train_model(directory, n, env, args):
     model = None
     if args.mode == "SP" or n < args.init_SP_agents:
         exp_part = args.exp
+        if args.behavior_check:
+            exp_part = re.sub(r'^.*?_', '', exp_part)
     else:
         exp_part = args.full_exp_name
     model_name = directory + exp_part + "/" + str(n).zfill(2)
-
+    
     if (args.behavior_check): # muzeme chctit nacitat z checkpoints, ale u toho nebudem trenovat
-        if args.checkp_step:
+        if args.checkp_step is not None:
             model_path = projdir + "/diverse_population/checkpoints/" + args.layout_name + "/" + exp_part + "/" + str(
                 n).zfill(2)
+            print(f"model path: {model_path}")
             list_of_files = glob.glob(model_path + "/*")
+            print("list_of_files")
+            print(list_of_files)
+            print(args.checkp_step)
             model_name = [f for f in list_of_files if args.checkp_step in f][0]
             try:
                 print(f"Looking for file {model_name}")

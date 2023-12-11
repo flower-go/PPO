@@ -32,8 +32,9 @@ echo "n_sample_partners"=$n_sample_partners
 echo "layout_name"=$layout_name
 echo "frame_stacking_mode"=$frame_stacking_mode
 echo "frame_stacking"=$frame_stacking
-
-echo "parametry"
+echo "jajky"=$jajky
+echo "parametry_script"
+echo $@
 echo "$*"
 firsttime=yes
 for i in "$@"

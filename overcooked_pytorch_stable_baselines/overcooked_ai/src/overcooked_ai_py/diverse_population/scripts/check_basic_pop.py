@@ -73,6 +73,28 @@ def check_maps(name_1, name_2 = None):
             print(f"Visual not found  {path} probably not found. Error {error}")
     return results, is_ok
 
+
+
+def check_checkpoints(name_1, name_2 = None):
+    is_ok = True
+    for map in maps:
+        name = name_1 + map + name_2
+        path = "./diverse_population/checkpoints/" + map + "/" + name + "/"
+        print(f"searching models in: {path}")
+        for i in range(30):
+            min_num = 3
+            try:
+                new_path = path + f"{i:02d}"
+                files = [f.path for f in os.scandir(new_path) if f.is_file()]
+                if len(files) < min_num:
+                    min_num = len(files)
+            except:
+                print(f"Path to model  {path} probably not found")
+        results[map] = {}
+        results[map]["checkpoint_count"] = min_num
+        results[map]["checkpoint_files"] = files
+    return results, is_ok
+
 import shutil
 def copy_maps(filenames, dest_dir):
     for f in filenames:
@@ -103,3 +125,11 @@ if __name__ == "__main__":
     print(dir_name)
     os.makedirs(dir_name)
     copy_maps(yes_map,dir_name)
+    
+
+    res_c, ok_c = check_checkpoints(name_1 = "nost1_", name_2 = "_ref_30")
+    print("*************************************")
+    print("Checkpoint counts:")
+    
+    for map in maps:
+       print(f'"{map}": {res_c[map]["checkpoint_count"]},')
