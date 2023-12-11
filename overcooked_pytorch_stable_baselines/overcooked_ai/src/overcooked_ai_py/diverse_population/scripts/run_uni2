@@ -15,34 +15,21 @@ do
 done
 
 
-
-#declare -A def_vals
-#def_vals=([trained_models]=11 [mode]="POP" [frame_stacking]=4 [vf_coef]=0.1 [frame_stacking_mode]="channels")
-#for i in "${!def_vals[@]}"
-#do
-#  if [[ -z "${!i}" ]]; then declare "${i}"="${def_vals[$i]}"; fi
-#done
-
-#firsttime=yes
-#for i in "$@"
-#do
-#    test "$firsttime" && set -- && unset firsttime
-#    test "${i%%file*}" && set -- "$@" "$i"
-#done
+declare -A def_vals
+def_vals=( [walltime]="02:50:00" [home_dir]="/storage/plzen1/home/ayshi")
+for i in "${!def_vals[@]}"
+do
+  if [[ -z "${!i}" ]]; then declare "${i}"="${def_vals[$i]}"; fi
+done
 
 oldIFS=$IFS
 IFS=","
 params="$*"
 IFS=$oldIFS
 
-#home dir must be set correctly
-if [ -z "$home_dir" ]; then
-	home_dir="/storage/plzen1/home/ayshi";
-	params+=",home_dir=""$home_dir"
- fi
 echo "home set to: $home_dir"
 
-job_name="${exp}_${layout_name}_${frame_stacking_mode}_train"
+job_name="${exp}_${layout_name}_${frame_stacking_mode}"
 echo $job_name
 
 #cd "$home_dir"/coding/pbs-tools
@@ -50,21 +37,27 @@ res_dir="$home_dir"/coding/results
 echo "results can be found here: $res_dir"
 date_name=$(date +%m%d-%H%M)
 echo "walltime" + $walltime
-echo ${walltime:0:2}
-if [ ${walltime:0:2} -gt 23 ]; then
+
+OIFS=$IFS
+IFS=':'
+wallt=$walltime
+
+if [ ${wallt[0]} -gt 23 ]; then
 	echo "je vetsi"
 	fronta="gpu_long"
 else
 	fronta="gpu"
 fi
+IFS=$OIFS
 
 if [ -z "$file" ]; then echo "I can't read your mind, provide file=value parameter please.";
 else 
-	#echo "frame stacking and trained models:" $frame_stacking
-	#echo $trained_models
+	echo "frame stacking and trained models:" $frame_stacking
+	echo $trained_models
+	echo $fronta
 	echo "I will run $file"
 	echo "params:"
-        echo $params
+  echo $params
 	qsub -m abe -M vysusilova.petra.m@gmail.com -N "$exp"_"$date_name" -e "$res_dir" -o "$res_dir" -l select=1:ncpus=4:ngpus=1:mem=15gb:scratch_local=4gb -q gpu -l walltime=02:50:00 -- "$home_dir"/"$file" home_dir=$home_dir jajky="kukyny"
 #	qsub -m abe -M vysusilova.petra.m@gmail.com -N "$exp"_"$date_name" -e "$res_dir" -o "$res_dir" -l select=1:ncpus=4:ngpus=1:mem=17gb:scratch_local=4gb -q $fronta -l walltime=$walltime -v home_dir=$home_dir,layout_name=$layout_name,num_workers=$num_workers,trained_models=$trained_models,exp=$exp,init_SP_agents=3,delay_shared_rewards=False,mode=$mode,kl_diff_bonus_reward_coef=0.0,kl_diff_bonus_reward_clip=0.0,kl_diff_loss_coef=0.0,kl_diff_loss_clip=0.0,seed=$seed,n_sample_partners=$n_sample_partners,frame_stacking=$frame_stacking,frame_stacking_mode=$frame_stacking_mode,vf_coef=$vf_coef,execute_final_eval=$execute_final_eval "$home_dir"/"$file"
 fi
