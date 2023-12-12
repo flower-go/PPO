@@ -1,4 +1,16 @@
 #!/bin/bash
+
+for ARGUMENT in "$@"
+do
+   KEY=$(echo $ARGUMENT | cut -f1 -d=)
+
+   KEY_LENGTH=${#KEY}
+   VALUE="${ARGUMENT:$KEY_LENGTH+1}"
+
+   export "$KEY"="$VALUE"
+done
+
+
 module add conda-modules-py37
 conda activate "$home_dir"/envs/overcooked_ai_terminal
 
@@ -15,23 +27,10 @@ cd $PROJDIR
 pwd
 
 echo "parametry:"
-echo $@
-
-firsttime=yes
-for i in "$@"
-do
-    echo $i
-    test "$firsttime" && set -- && unset firsttime
-    test "${i%%home_dir*}" && set -- "$@" "$i"
-done
-
-oldIFS=$IFS
-IFS=","
-params="$*"
-IFS=$oldIFS
-echo "params:"
 echo $params
-exit 0
+
+
+params=$(echo $params | sed 's/^/--/g' | sed 's/ / --/g')
 python diverse_population/diverse_pool_build.py $params > "$SCRATCHDIR"/out.txt 2> "$SCRATCHDIR"/err.txt
 
 echo "python dobehl"

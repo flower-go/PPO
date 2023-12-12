@@ -15,7 +15,7 @@ projdir = os.environ["PROJDIR"]
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src")
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines/stable-baselines3")
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines")
-
+jobid = os.environ["JOBID"]
 from stable_baselines3.ppo.ppo import PPO
 from overcooked_ai.src.overcooked_ai_py.mdp.overcooked_env import OvercookedGridworld, OvercookedEnv, get_vectorized_gym_env
 from experiments_params import set_layout_params
@@ -25,8 +25,8 @@ from divergent_solution_exception import divergent_solution_exception
 from stable_baselines3.common.callbacks import CheckpointCallback
 os.environ['CUDA_VISIBLE_DEVICES'] = "0"   #Due to Metacentrum computing reasons
 
+import argparse      
 
-import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("--layout_name", default="forced_coordination", type=str, help="Layout name ('forced_coordination','cramped_room', 'counter_circuit_o_1order', 'coordination_ring'")
 parser.add_argument("--trained_models", default=11, type=int, help="Number of models to train during run")
@@ -47,7 +47,7 @@ parser.add_argument("--final_eval_games_per_worker", default=5, type=int, help="
 parser.add_argument("--n_sample_partners", default=-1, type=int, help="Number of sampled partners from population for data collection")
 parser.add_argument("--frame_stacking", default=4, type=int, help="Number of frames stacked considered for temporal information")
 parser.add_argument("--frame_stacking_mode", default="channels", type=str, help="Whether to stack previous frames as other channels ('channels'), or as tuple of individual states ('tuple').")
-
+parser.add_argument("--wandb_key", default="./wandbkey.txt", type=str, help="patht o wandb key file")
 
 
 parser.add_argument("--partner_action_deterministic", default=False, action="store_true", help="Whether trained partners from population play argmax for episodes sampling")
@@ -88,6 +88,15 @@ import numpy as np
 random.seed(args.seed)
 np.random.seed(args.seed)
 
+def log_to_wandb(key, project_name, config_args):
+    import wandb
+    wandb.login(key=key)
+    wandb.init(project = project_name, config=config_args, name=config_args.exp, id = jobid)
+
+def load_wandb_key(filename):
+    with open(filename) as f:
+        wandb_key_value = f.readline()
+    return wandb_key_value
 
 def load_or_train_models(args, env):
     """
@@ -339,6 +348,9 @@ else:
 
 
 if __name__ == "__main__":
+    wandb_key_value = load_wandb_key(args.wandb_key).strip()
+    log_to_wandb(wandb_key_value, "ref_30", args)
+    exit()
     if (args.behavior_check):
         args.log_dir = projdir + "/diverse_population/text_logs/" + args.layout_name + "/"
         os.makedirs(args.log_dir, exist_ok=True)
