@@ -39,7 +39,7 @@ parser.add_argument("--kl_diff_bonus_reward_clip", default=0.0, type=float, help
 parser.add_argument("--kl_diff_loss_coef", default=0., type=float, help="Coeficient for KL div term of population policies")
 parser.add_argument("--kl_diff_loss_clip", default=0., type=float, help="Clipping value for KL div term of population policies")
 parser.add_argument("--delay_shared_reward", default=False, action="store_true", help="Whether to delay shared rewards during early phase")
-parser.add_argument("--exp", default="POP_SP_INIT", type=str, help="Experiment name")
+parser.add_argument("--exp", default="", type=str, help="Experiment name")
 parser.add_argument("--eval_set_name", default="SP_EVAL2_ROP0.0", type=str, help="Exact name of evaluation set")
 parser.add_argument("--base_eval_name", default="SP_EVAL2_ROP0.0", type=str, help="Base name of evaluation set")
 parser.add_argument("--execute_final_eval", default=False, action="store_true", help="Whether to do final evaluation")
@@ -81,6 +81,7 @@ parser.add_argument("--behavior_check", default=False, action="store_true",help=
 parser.add_argument("--log_dir", default=None, help="directory for checkpoints")
 parser.add_argument("--num_checkpoints", default = 4, help="number of stored models")
 parser.add_argument("--checkp_step", default = None, help="chcekpoint in checkp_step steps will be loaded")
+parser.add_argument("--group", default="no_group", help="group of experiments, important for wandb and loading correct hyperparameters")
 
 args = parser.parse_args([] if "__file__" not in globals() else None)
 
@@ -88,6 +89,13 @@ import numpy as np
 random.seed(args.seed)
 np.random.seed(args.seed)
 
+def load_args_from_file(args):
+    name = args.frame_stacking_mode + "_" + args.layout_name + "_" + args.group
+    try:
+        file_args = json.load(projdir + "/diverse_population/scripts/hyperparams/" + name + ".json")
+        return file_args
+    except:
+        print("no file with hyperparameters founded")
 
 def load_or_train_models(args, env):
     """
@@ -339,6 +347,8 @@ else:
 
 
 if __name__ == "__main__":
+    args.exp = args.exp + args.frame_stacking_mode + "_" + args.layout_name + "_" + args.group
+    file_args = load_args_from_file(args)
     if (args.behavior_check):
         args.log_dir = projdir + "/diverse_population/text_logs/" + args.layout_name + "/"
         os.makedirs(args.log_dir, exist_ok=True)
