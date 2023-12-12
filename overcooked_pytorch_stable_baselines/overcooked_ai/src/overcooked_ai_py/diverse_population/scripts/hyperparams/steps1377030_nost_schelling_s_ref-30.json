@@ -1,0 +1,1 @@
+{"execute_final_eval": true, "mode": "SP", "n_sample_partners": -1, "seed": 79, "frame_stacking_mode": "channels", "frame_stacking": 1, "exp": "channels_schelling_s_ref-30", "layout_name": "schelling_s", "checkp_step": 1377030}
