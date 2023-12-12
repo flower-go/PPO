@@ -8,6 +8,7 @@ echo "codedir: " $CODEDIR
 export PROJDIR="$home_dir"/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py
 echo "projdir: " $PROJDIR
 INFODIR="$home_dir"/coding/results
+export JOBID=$PBS_JOBID
 echo -e "$PBS_JOBNAME\t$PBS_JOBID\t`hostname -f`\t$SCRATCHDIR" >> "$INFODIR"/jobs_info.txt
 cd $PROJDIR
 pwd
@@ -39,7 +40,14 @@ else
 	echo $execute
 fi
 
-python diverse_population/diverse_pool_build.py --log_dir=$PBS_JOBNAME --layout_name=$layout_name --trained_models=$trained_models --mode=$mode --exp=$exp --eval_set_name=$eval_set_name --init_SP_agents=$init_SP_agents --kl_diff_loss_coef=$kl_diff_loss_coef --kl_diff_loss_clip=$kl_diff_loss_clip --kl_diff_bonus_reward_coef=$kl_diff_bonus_reward_coef --kl_diff_bonus_reward_clip=$kl_diff_bonus_reward_clip --seed=$seed --n_sample_partners=$n_sample_partners --frame_stacking=$frame_stacking --frame_stacking_mode=$frame_stacking_mode --vf_coef=$vf_coef --num_workers=$num_workers --cehckp_steps=$checkp_steps $execute > "$SCRATCHDIR"/out.txt 2> "$SCRATCHDIR"/err.txt
+if [[ $ == "True" ]]; then 
+        execute="--execute_final_eval"
+else
+        execute=""
+        echo $execute
+fi
+
+python diverse_population/diverse_pool_build.py --log_dir=$PBS_JOBNAME --layout_name=$layout_name --trained_models=$trained_models --mode=$mode --exp=$exp --eval_set_name=$eval_set_name --init_SP_agents=$init_SP_agents --kl_diff_loss_coef=$kl_diff_loss_coef --kl_diff_loss_clip=$kl_diff_loss_clip --kl_diff_bonus_reward_coef=$kl_diff_bonus_reward_coef --kl_diff_bonus_reward_clip=$kl_diff_bonus_reward_clip --seed=$seed --n_sample_partners=$n_sample_partners --frame_stacking=$frame_stacking --frame_stacking_mode=$frame_stacking_mode --vf_coef=$vf_coef --num_workers=$num_workers --checkp_step=$checkp_steps $execute > "$SCRATCHDIR"/out.txt 2> "$SCRATCHDIR"/err.txt
 echo "python dobehl"
 date_name=$(date +%m%d-%H%M)
 echo "job id"

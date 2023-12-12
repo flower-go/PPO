@@ -15,7 +15,7 @@ do
 done
 
 declare -A def_vals
-def_vals=([trained_models]=11 [mode]="POP" [frame_stacking]=4 [vf_coef]=0.1 [frame_stacking_mode]="channels" [execute_final_eval]="False" [walltime]="02:50:00" [num_workers]=30)
+def_vals=([checkp_steps=0] [trained_models]=11 [mode]="POP" [frame_stacking]=4 [vf_coef]=0.1 [frame_stacking_mode]="channels" [execute_final_eval]="False" [walltime]="02:50:00" [num_workers]=30)
 echo "num_workers jsou: "$num_workers
 for i in "${!def_vals[@]}"
 do
@@ -34,12 +34,15 @@ res_dir="$home_dir"/coding/results
 echo "results can be found here: $res_dir"
 date_name=$(date +%m%d-%H%M)
 echo "walltime" + $walltime
-echo ${walltime:0:2}
-if [ ${walltime:0:2} -gt 23 ]; then
-	echo "je vetsi"
-	fronta="gpu_long"
+
+hours=$(echo $walltime | cut -d: -f1) 
+
+if [ ${hours} -gt 23 ]; then
+        echo "je vetsi"
+        fronta="gpu_long"
 else
-	fronta="gpu"
+        echo "job pobezi v normalni fronte"
+        fronta="gpu"
 fi
 
 if [ -z "$file" ]; then echo "I can't read your mind, provide file=value parameter please.";

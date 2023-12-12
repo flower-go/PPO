@@ -36,19 +36,17 @@ echo $job_name
 res_dir="$home_dir"/coding/results
 echo "results can be found here: $res_dir"
 date_name=$(date +%m%d-%H%M)
-echo "walltime" + $walltime
+echo "walltime:" $walltime
 
-OIFS=$IFS
-IFS=':'
-wallt=$walltime
+hours=$(echo $walltime | cut -d: -f1) 
 
-if [ ${wallt[0]} -gt 23 ]; then
+if [ ${hours} -gt 23 ]; then
 	echo "je vetsi"
 	fronta="gpu_long"
 else
+        echo "job pobezi v normalni fronte"
 	fronta="gpu"
 fi
-IFS=$OIFS
 
 if [ -z "$file" ]; then echo "I can't read your mind, provide file=value parameter please.";
 else 
@@ -58,6 +56,6 @@ else
 	echo "I will run $file"
 	echo "params:"
   echo $params
-	qsub -m abe -M vysusilova.petra.m@gmail.com -N "$exp"_"$date_name" -e "$res_dir" -o "$res_dir" -l select=1:ncpus=4:ngpus=1:mem=15gb:scratch_local=4gb -q gpu -l walltime=02:50:00 -- "$home_dir"/"$file" home_dir=$home_dir jajky="kukyny"
+	qsub -m abe -M vysusilova.petra.m@gmail.com -N "$exp"_"$date_name" -e "$res_dir" -o "$res_dir" -l select=1:ncpus=4:ngpus=1:mem=15gb:scratch_local=4gb -q $fronta -l walltime=$walltime -- "$home_dir"/"$file" $@
 #	qsub -m abe -M vysusilova.petra.m@gmail.com -N "$exp"_"$date_name" -e "$res_dir" -o "$res_dir" -l select=1:ncpus=4:ngpus=1:mem=17gb:scratch_local=4gb -q $fronta -l walltime=$walltime -v home_dir=$home_dir,layout_name=$layout_name,num_workers=$num_workers,trained_models=$trained_models,exp=$exp,init_SP_agents=3,delay_shared_rewards=False,mode=$mode,kl_diff_bonus_reward_coef=0.0,kl_diff_bonus_reward_clip=0.0,kl_diff_loss_coef=0.0,kl_diff_loss_clip=0.0,seed=$seed,n_sample_partners=$n_sample_partners,frame_stacking=$frame_stacking,frame_stacking_mode=$frame_stacking_mode,vf_coef=$vf_coef,execute_final_eval=$execute_final_eval "$home_dir"/"$file"
 fi
