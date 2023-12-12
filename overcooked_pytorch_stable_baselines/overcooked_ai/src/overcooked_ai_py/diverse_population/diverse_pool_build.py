@@ -4,6 +4,7 @@ import sys
 import os
 import time
 import datetime
+import json
 start_time = time.time()
 import re
 import glob
@@ -92,10 +93,14 @@ np.random.seed(args.seed)
 def load_args_from_file(args):
     name = args.frame_stacking_mode + "_" + args.layout_name + "_" + args.group
     try:
-        file_args = json.load(projdir + "/diverse_population/scripts/hyperparams/" + name + ".json")
+        path = projdir + "/diverse_population/scripts/hyperparams/" + name + ".json"
+        with open(path, "r") as read_file:
+            file_args = json.load(read_file)
         return file_args
-    except:
+    except Exception as error:
         print("no file with hyperparameters founded")
+        print(f"path was: {path}")
+        print(f"error is: {error}")
 def log_to_wandb(key, project_name, config_args):
     import wandb
     wandb.login(key=key)
