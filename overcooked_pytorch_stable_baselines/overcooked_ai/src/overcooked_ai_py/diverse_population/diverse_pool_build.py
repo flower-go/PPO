@@ -362,6 +362,7 @@ if __name__ == "__main__":
     file_args = load_args_from_file(args)
     wandb_key_value = load_wandb_key(args.wandb_key).strip()
     log_to_wandb(wandb_key_value, "ref_30", args)
+    wandb.config.update(file_args)
     exit()
     if (args.behavior_check):
         args.log_dir = projdir + "/diverse_population/text_logs/" + args.layout_name + "/"
