@@ -4,6 +4,7 @@ import sys
 import os
 import time
 import datetime
+from types import SimpleNamespace
 import json
 start_time = time.time()
 import re
@@ -82,16 +83,16 @@ parser.add_argument("--behavior_check", default=False, action="store_true",help=
 parser.add_argument("--log_dir", default=None, help="directory for checkpoints")
 parser.add_argument("--num_checkpoints", default = 4, help="number of stored models")
 parser.add_argument("--checkp_step", default = None, help="chcekpoint in checkp_step steps will be loaded")
-parser.add_argument("--prefix", default="no_group", help="prefix of the name")
+parser.add_argument("--prefix", default="", help="prefix of the name")
 
 args = parser.parse_args([] if "__file__" not in globals() else None)
-
+import wandb
 import numpy as np
 random.seed(args.seed)
 np.random.seed(args.seed)
 
 def load_args_from_file(args):
-    name = args.frame_stacking_mode + "_" + args.layout_name + "_" + args.group
+    name = args.exp[len(args.prefix):]
     try:
         path = projdir + "/diverse_population/scripts/hyperparams/" + name + ".json"
         with open(path, "r") as read_file:
@@ -102,9 +103,8 @@ def load_args_from_file(args):
         print(f"path was: {path}")
         print(f"error is: {error}")
 def log_to_wandb(key, project_name, config_args):
-    import wandb
     wandb.login(key=key)
-    wandb.init(project = project_name, config=config_args, name=config_args.exp, id = jobid, group = args.group)
+    wandb.init(project = project_name, config=config_args, name=config_args.exp, id = jobid, group = project_name)
 
 def load_wandb_key(filename):
     with open(filename) as f:
@@ -360,10 +360,6 @@ else:
 if __name__ == "__main__":
     args.exp = args.prefix + args.exp
     file_args = load_args_from_file(args)
-    wandb_key_value = load_wandb_key(args.wandb_key).strip()
-    log_to_wandb(wandb_key_value, "ref_30", args)
-    wandb.config.update(file_args)
-    exit()
     if (args.behavior_check):
         args.log_dir = projdir + "/diverse_population/text_logs/" + args.layout_name + "/"
         os.makedirs(args.log_dir, exist_ok=True)
@@ -376,6 +372,11 @@ if __name__ == "__main__":
                                                    rnd_obj_prob_thresh = args.rnd_obj_prob_thresh_env,# TODO: set Default args.rnd_obj_prob_thresh_env,
                                                    random_switch_start_pos = args.random_switch_start_pos) if args.static_start == False else mdp.get_standard_start_state
     print("pred gym env vytvvorenim")
+    wandb_key_value = load_wandb_key(args.wandb_key).strip()
+    log_to_wandb(wandb_key_value, "ref_30", args) #TODO zmenit group
+    wandb.config.update(file_args, allow_val_change=True)
+    args = SimpleNamespace(**wandb.config._items)
+    print("args print")
     print_args()
     # Vectorized overcooked environments are initialized
     gym_env = get_vectorized_gym_env(
