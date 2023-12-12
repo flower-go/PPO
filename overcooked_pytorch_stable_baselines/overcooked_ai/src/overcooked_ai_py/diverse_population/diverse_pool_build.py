@@ -81,7 +81,7 @@ parser.add_argument("--behavior_check", default=False, action="store_true",help=
 parser.add_argument("--log_dir", default=None, help="directory for checkpoints")
 parser.add_argument("--num_checkpoints", default = 4, help="number of stored models")
 parser.add_argument("--checkp_step", default = None, help="chcekpoint in checkp_step steps will be loaded")
-parser.add_argument("--group", default="no_group", help="group of experiments, important for wandb and loading correct hyperparameters")
+parser.add_argument("--prefix", default="no_group", help="prefix of the name")
 
 args = parser.parse_args([] if "__file__" not in globals() else None)
 
@@ -99,7 +99,7 @@ def load_args_from_file(args):
 def log_to_wandb(key, project_name, config_args):
     import wandb
     wandb.login(key=key)
-    wandb.init(project = project_name, config=config_args, name=config_args.exp, id = jobid)
+    wandb.init(project = project_name, config=config_args, name=config_args.exp, id = jobid, group = args.group)
 
 def load_wandb_key(filename):
     with open(filename) as f:
@@ -146,7 +146,7 @@ def load_or_train_model(directory, n, env, args):
     if args.mode == "SP" or n < args.init_SP_agents:
         exp_part = args.exp
         if args.behavior_check:
-            exp_part = re.sub(r'^.*?_', '', exp_part)
+            exp_part = exp_part[len(args.prefix):]
     else:
         exp_part = args.full_exp_name
     model_name = directory + exp_part + "/" + str(n).zfill(2)
@@ -352,11 +352,8 @@ if (args.behavior_check):
 else:
     overcooked_env = OvercookedEnv.from_mdp(mdp, horizon=400)
 
-
-
-
 if __name__ == "__main__":
-    args.exp = args.exp + args.frame_stacking_mode + "_" + args.layout_name + "_" + args.group
+    args.exp = args.prefix + args.exp
     file_args = load_args_from_file(args)
     wandb_key_value = load_wandb_key(args.wandb_key).strip()
     log_to_wandb(wandb_key_value, "ref_30", args)
