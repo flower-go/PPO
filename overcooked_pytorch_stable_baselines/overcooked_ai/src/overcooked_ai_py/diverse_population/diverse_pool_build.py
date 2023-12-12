@@ -48,7 +48,7 @@ parser.add_argument("--final_eval_games_per_worker", default=5, type=int, help="
 parser.add_argument("--n_sample_partners", default=-1, type=int, help="Number of sampled partners from population for data collection")
 parser.add_argument("--frame_stacking", default=4, type=int, help="Number of frames stacked considered for temporal information")
 parser.add_argument("--frame_stacking_mode", default="channels", type=str, help="Whether to stack previous frames as other channels ('channels'), or as tuple of individual states ('tuple').")
-parser.add_argument("--wandb_key", default="./wandbkey.txt", type=str, help="patht o wandb key file")
+parser.add_argument("--wandb_key", default="./wandbkey.txt", type=str, help="path to wandb key file")
 
 
 parser.add_argument("--partner_action_deterministic", default=False, action="store_true", help="Whether trained partners from population play argmax for episodes sampling")

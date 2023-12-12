@@ -93,7 +93,6 @@ frame_stacking = {"channels":("channels",4),
                   "nostack":("channels",1) #effectively no stacking
                   }
 
-
 def SP_ref(layout_name, seed, stacking = "nostack"):
     #sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp="SP30_ref_nostack" layout_name="forced_coordination" seed=18 file=./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/script.sh mode="SP" n_sample_partners=-1 trained_models=20 frame_stacking=1
     exp = stacking[0:4] + "_"  + layout_name + "_ref_30"
@@ -196,13 +195,32 @@ counts = {
 "scenario4": 3,
 "bottleneck": 3
 }
-for i,s in enumerate(steps):
-    print(f"# steps {steps[i]}")
-    step_map_list = []
-    for m in vis_maps:
-        if counts[m] >= i+1:
-            step_map_list.append(m)
-    one_epoch_eval(s, step_map_list)
+#for i,s in enumerate(steps):
+#    print(f"# steps {steps[i]}")
+#    step_map_list = []
+#    for m in vis_maps:
+#        if counts[m] >= i+1:
+#            step_map_list.append(m)
+#    one_epoch_eval(s, step_map_list)
+
+def generate_new_ref30(stacking, layout_name):
+    exp = stacking[0:4] + "_"  + layout_name + "_ref-30"
+    result = START_QSUB + 'exp="' + exp  + '" ' + ' walltime=99:00:00'
+    return result
+
+def one_epoch_new(map_names = layouts_onions):
+    seed = seeds[0]
+    for stacking in frame_stacking:
+        print("\n" + "#stacking: " + stacking + "\n")
+        for layout_name in map_names:
+            res = generate_new_ref30(stacking, layout_name)
+            print(res)
+
+one_epoch_new()
+
+
+
+
 
 
 

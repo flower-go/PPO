@@ -58,6 +58,7 @@ def gen_ref_30_common(result_dict):
     result_dict["mode"] ="SP"
     result_dict["n_sample_partners"] = -1
     result_dict["seed"] = seeds[0]
+    result_dict["behavior_check"] = True
     return result_dict
 
 
@@ -113,7 +114,7 @@ def generate_steps():
         generate_whole_ref_pop(step_map_list,step=s)
 
 
-#generate_whole_ref_pop()
+generate_whole_ref_pop()
 generate_steps()
 
 
