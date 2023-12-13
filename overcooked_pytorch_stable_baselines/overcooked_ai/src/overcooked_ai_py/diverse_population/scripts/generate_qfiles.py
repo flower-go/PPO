@@ -114,7 +114,7 @@ def generate_steps():
         generate_whole_ref_pop(step_map_list,step=s)
 
 
-generate_whole_ref_pop()
+#generate_whole_ref_pop()
 generate_steps()
 
 

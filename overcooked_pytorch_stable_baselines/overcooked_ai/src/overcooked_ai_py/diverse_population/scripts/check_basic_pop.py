@@ -9,6 +9,18 @@ sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines/overcooked_a
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines/stable-baselines3")
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines")
 
+from visualisation.maps.maps_to_pdf import createPDF
+
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("--filename", type=str, help="Name of the resulting pdf file")
+parser.add_argument("--title", type=str, help="Header of the pdf")
+parser.add_argument("--columns", default=4, type=int, help="number of columns")
+parser.add_argument("--prefix", default="", type=str, help="prefix ot be removed")
+parser.add_argument("--postfix", default="", type=str, help="postfix to be removed")
+args = parser.parse_args([] if "__file__" not in globals() else None)
+
+
 results = {}
 
 maps = [
@@ -100,10 +112,11 @@ def copy_maps(filenames, dest_dir):
     for f in filenames:
         shutil.copy2(f, dest_dir) 
 
-if __name__ == "__main__":
-    res, ok = check_models(name_1 = "nost1_", name_2 = "_ref_30")
-    res_m, ok = check_maps(name_1 = "nost1_", name_2 = "_ref_30")
-#    print(res)
+def print_models():
+    res, ok = check_models(name_1="nost1_", name_2="_ref_30")
+
+def print_eval(name_1 = "nost1_", name_2 = "_ref_30"):
+    res_m, ok = check_maps(name_1 = name_1, name_2 = name_2)
     no_map = []
     yes_map = []
     print("*************************************")
@@ -119,17 +132,31 @@ if __name__ == "__main__":
     print("*************************************")
     print("no visualisation file for:")
     print(*no_map, sep="\n")
- #   print("yes maps")
-#    print(yes_map)
+    return yes_map
+
+def prepare_pdf(yes_map, args)
     dir_name = projdir + "/diverse_population/visualisation/matrices" + f"{datetime.datetime.now():%Y_%m_%d_%H_%M_%S}"
     print(dir_name)
     os.makedirs(dir_name)
     copy_maps(yes_map,dir_name)
-    
+    createPDF(dir_name, args.filename, args.title, 4, args)
 
-    res_c, ok_c = check_checkpoints(name_1 = "nost1_", name_2 = "_ref_30")
+def print_checkpoints()
+    res_c, ok_c = check_checkpoints(name_1="nost1_", name_2="_ref_30")
     print("*************************************")
     print("Checkpoint counts:")
-    
     for map in maps:
        print(f'"{map}": {res_c[map]["checkpoint_count"]},')
+
+
+if __name__ == "__main__":
+    print_models()
+    yes_maps = print_eval()
+    yes_maps + print_eval("tupl_", "ref-30") + print_eval("chan_", "ref-30")
+    print_checkpoints()
+    prepare_pdf(yes_maps,args)
+
+
+
+
+

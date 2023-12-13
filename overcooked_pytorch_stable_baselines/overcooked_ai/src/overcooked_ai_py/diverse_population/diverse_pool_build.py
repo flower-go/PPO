@@ -152,7 +152,7 @@ def load_or_train_model(directory, n, env, args):
     if args.mode == "SP" or n < args.init_SP_agents:
         exp_part = args.exp
         if args.checkp_step:
-            exp_part = re.sub(r'^_', '', stri)
+            exp_part = re.sub(r'^_', '', exp_part)
     else:
         exp_part = args.full_exp_name
     model_name = directory + exp_part + "/" + str(n).zfill(2)
