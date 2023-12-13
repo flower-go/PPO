@@ -104,7 +104,8 @@ def load_args_from_file(args):
         print(f"error is: {error}")
 def log_to_wandb(key, project_name, config_args):
     wandb.login(key=key)
-    wandb.init(project = project_name, config=config_args, name=config_args.exp, id = jobid, group = project_name)
+    group = project_name.split("_")[-1]
+    wandb.init(project = project_name, config=config_args, name=config_args.exp, id = jobid, group = group)
 
 def load_wandb_key(filename):
     with open(filename) as f:
@@ -373,7 +374,7 @@ if __name__ == "__main__":
                                                    random_switch_start_pos = args.random_switch_start_pos) if args.static_start == False else mdp.get_standard_start_state
     print("pred gym env vytvvorenim")
     wandb_key_value = load_wandb_key(args.wandb_key).strip()
-    log_to_wandb(wandb_key_value, "ref_30", args) #TODO zmenit group
+    log_to_wandb(wandb_key_value, "overcooked1", args)
     wandb.config.update(file_args, allow_val_change=True)
     args = SimpleNamespace(**wandb.config._items)
     print("args print")
