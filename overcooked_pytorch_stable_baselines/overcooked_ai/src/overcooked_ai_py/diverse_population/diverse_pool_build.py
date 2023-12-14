@@ -104,7 +104,7 @@ def load_args_from_file(args):
         print(f"error is: {error}")
 def log_to_wandb(key, project_name, config_args):
     wandb.login(key=key)
-    group = project_name.split("_")[-1]
+    group = config_args.exp.split("_")[-1]
     wandb.init(project = project_name, config=config_args, name=config_args.exp, id = jobid, group = group)
 
 def load_wandb_key(filename):
