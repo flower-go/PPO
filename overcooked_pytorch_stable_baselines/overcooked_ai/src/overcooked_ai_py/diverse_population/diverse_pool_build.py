@@ -102,9 +102,10 @@ def load_args_from_file(args):
         print("no file with hyperparameters founded")
         print(f"path was: {path}")
         print(f"error is: {error}")
-def log_to_wandb(key, project_name, config_args):
+def log_to_wandb(key, project_name, config_args, group = None):
     wandb.login(key=key)
-    group = config_args.exp.split("_")[-1]
+    if group is None:
+        group = config_args.exp.split("_")[-1]
     wandb.init(project = project_name, config=config_args, name=config_args.exp, id = jobid, group = group)
 
 def load_wandb_key(filename):
