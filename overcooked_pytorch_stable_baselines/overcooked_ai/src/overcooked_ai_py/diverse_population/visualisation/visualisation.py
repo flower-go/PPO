@@ -35,3 +35,4 @@ def heat_map(table, group_name, layout_name, deterministic=True, eval_env=""):
     file_name = file_name + eval_env + ".png"
     print("jmeno filu je:" + file_name)
     plt.savefig(file_name)
+    return file_name

@@ -422,12 +422,13 @@ if __name__ == "__main__":
 
             #Sets of models are cross-play evaluated
             eval_table = evaluator.evaluate(models, eval_models, args.final_eval_games_per_worker, args.layout_name, group_name, eval_env = eval_env, mode=args.mode, deterministic=True)
-            heat_map(eval_table, group_name, args.layout_name, eval_env = eval_env, deterministic=True)
+            heat_map_file = heat_map(eval_table, group_name, args.layout_name, eval_env = eval_env, deterministic=True)
         else:
             print("vypisuji v SP mode")
             group_name = args.full_exp_name + "_X_" + args.full_exp_name
             eval_table = evaluator.evaluate(models, models, args.final_eval_games_per_worker, args.layout_name, group_name, eval_env = eval_env, mode=args.mode, deterministic=True)
             print("eval table " + str(eval_table))
             print("eval_env " + str(eval_env))
-            heat_map(eval_table, group_name, args.layout_name, eval_env = eval_env, deterministic=True)
-
+            heat_map_file = heat_map(eval_table, group_name, args.layout_name, eval_env = eval_env, deterministic=True)
+        wandb.log({"heat_map": wandb.Image(heat_map_file)})
+        wandb.log({"eval_table": eval_table})
