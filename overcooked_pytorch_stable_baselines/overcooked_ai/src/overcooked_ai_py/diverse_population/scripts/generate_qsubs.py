@@ -199,20 +199,28 @@ counts = {
 "scenario4": 3,
 "bottleneck": 3
 }
-#for i,s in enumerate(steps):
-#    print(f"# steps {steps[i]}")
-#    step_map_list = []
-#    for m in vis_maps:
-#        if counts[m] >= i+1:
-#            step_map_list.append(m)
-#    one_epoch_eval(s, step_map_list)
 
-def generate_new_ref30(stacking, layout_name):
+def gen_steps_nostack():
+    for i,s in enumerate(steps):
+        print(f"# steps {steps[i]}")
+        step_map_list = []
+        for m in vis_maps:
+            if counts[m] >= i+1:
+                step_map_list.append(m)
+        for m in step_map_list:
+            print(generate_new_ref30("nostack", m, s))
+
+
+def generate_new_ref30(stacking, layout_name, step = None):
     exp = stacking[0:4] + "_"  + layout_name + "_ref-30"
-    result = START_QSUB + 'exp="' + exp  + '" ' + ' walltime=99:00:00'
+    if step is not None:
+        exp = "steps" + str(step) + "_" + exp
+    result = START_QSUB + 'exp="' + exp + '" ' + ' walltime=99:00:00'
     return result
 
-def one_epoch_new(map_names = layouts_onions):
+
+
+def one_epoch_new(map_names = layouts_onions, step = None):
     seed = seeds[0]
     for stacking in frame_stacking:
         print("\n" + "#stacking: " + stacking + "\n")
@@ -220,7 +228,10 @@ def one_epoch_new(map_names = layouts_onions):
             res = generate_new_ref30(stacking, layout_name)
             print(res)
 
-one_epoch_new()
+#one_epoch_new()
+gen_steps_nostack()
+
+
 
 
 
