@@ -134,14 +134,14 @@ def print_eval(name_1 = "nost1_", name_2 = "_ref_30"):
     print(*no_map, sep="\n")
     return yes_map
 
-def prepare_pdf(yes_map,args)
+def prepare_pdf(yes_map,args):
     dir_name = projdir + "/diverse_population/visualisation/matrices" + f"{datetime.datetime.now():%Y_%m_%d_%H_%M_%S}"
     print(dir_name)
     os.makedirs(dir_name)
     copy_maps(yes_map,dir_name)
     createPDF(dir_name, args.filename, args.title, 4, args)
 
-def print_checkpoints()
+def print_checkpoints():
     res_c, ok_c = check_checkpoints(name_1="nost1_", name_2="_ref_30")
     print("*************************************")
     print("Checkpoint counts:")
