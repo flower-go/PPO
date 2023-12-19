@@ -1,1 +1,1 @@
-{"execute_final_eval": true, "mode": "SP", "n_sample_partners": -1, "seed": 79, "behavior_check": true, "frame_stacking_mode": "tuple", "frame_stacking": 4, "exp": "tuple_schelling_s_ref_30", "layout_name": "schelling_s", "checkp_step": 4131090}
+{"execute_final_eval": true, "mode": "SP", "n_sample_partners": -1, "seed": 79, "behavior_check": true, "frame_stacking_mode": "tuple", "frame_stacking": 4, "exp": "tupl_schelling_s_ref-30", "layout_name": "schelling_s", "checkp_step": 4131090}
