@@ -8,7 +8,7 @@ projdir = os.environ["PROJDIR"]
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src")
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines/stable-baselines3")
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines")
-
+sys.path.append(projdir + "/diverse_population")
 from visualisation.maps.maps_to_pdf import createPDF
 
 import argparse
@@ -22,6 +22,7 @@ args = parser.parse_args([] if "__file__" not in globals() else None)
 
 
 results = {}
+
 
 maps = [
     # "small_corridor",
@@ -52,6 +53,9 @@ maps = [
 ]
 
 
+for map in maps:
+    results[map] = {}
+
 def check_models(name_1, name_2 = None, count = 30):
     is_ok = True
     for map in maps:
@@ -62,13 +66,12 @@ def check_models(name_1, name_2 = None, count = 30):
             files = [f.path for f in os.scandir(path) if f.is_file()]
         except:
             print(f"Path to model  {path} probably not found")
-        results[map] = {}
         num_models = len(files)
-        results[map]["model_count"] = num_models
+        results[map]["model_count_" + name_1] = num_models
         if num_models != count:
             is_ok= False
             print(f"Model count is wrong. Desired: {count} Actual:{num_models}")
-        results[map]["model_files"] = [(f, os.path.getmtime(f)) for f in files]
+        results[map]["model_files_" + name_1] = [(f, os.path.getmtime(f)) for f in files]
     return results, is_ok
 
 def check_maps(name_1, name_2 = None):
@@ -79,8 +82,7 @@ def check_maps(name_1, name_2 = None):
         print(f"searching models in: {path}")
         try:
             files = [f.path for f in os.scandir(path) if f.is_file() and f.name.startswith(name_1)]
-            results[map] = {}
-            results[map]["map_file"] = [(f, os.path.getmtime(f)) for f in files][0]
+            results[map]["map_file_" + name_1] = [(f, os.path.getmtime(f)) for f in files][0]
         except Exception as error:
             print(f"Visual not found  {path} probably not found. Error {error}")
     return results, is_ok
@@ -102,9 +104,8 @@ def check_checkpoints(name_1, name_2 = None):
                     min_num = len(files)
             except:
                 print(f"Path to model  {path} probably not found")
-        results[map] = {}
-        results[map]["checkpoint_count"] = min_num
-        results[map]["checkpoint_files"] = files
+        results[map]["checkpoint_count_"+ name_1] = min_num
+        results[map]["checkpoint_files_" + name_1] = files
     return results, is_ok
 
 import shutil
@@ -112,10 +113,16 @@ def copy_maps(filenames, dest_dir):
     for f in filenames:
         shutil.copy2(f, dest_dir) 
 
-def print_models():
-    res, ok = check_models(name_1="nost1_", name_2="_ref_30")
+def print_models(name_1="nost1_", name_2="_ref_30"):
+    print("*************************************")
+    print(f"Printing models for {name_1} a {name_2}")
+    res, ok = check_models(name_1=name_1, name_2=name_2)
+    return res
+
 
 def print_eval(name_1 = "nost1_", name_2 = "_ref_30"):
+    print("*************************************")
+    print(f"Printing visualisation matrices for {name_1} a {name_2}")
     res_m, ok = check_maps(name_1 = name_1, name_2 = name_2)
     no_map = []
     yes_map = []
@@ -134,28 +141,37 @@ def print_eval(name_1 = "nost1_", name_2 = "_ref_30"):
     print(*no_map, sep="\n")
     return yes_map
 
-def prepare_pdf(yes_map,args)
+def prepare_pdf(yes_map,args):
     dir_name = projdir + "/diverse_population/visualisation/matrices" + f"{datetime.datetime.now():%Y_%m_%d_%H_%M_%S}"
     print(dir_name)
     os.makedirs(dir_name)
     copy_maps(yes_map,dir_name)
     createPDF(dir_name, args.filename, args.title, 4, args)
 
-def print_checkpoints()
+def print_checkpoints():
     res_c, ok_c = check_checkpoints(name_1="nost1_", name_2="_ref_30")
     print("*************************************")
     print("Checkpoint counts:")
     for map in maps:
        print(f'"{map}": {res_c[map]["checkpoint_count"]},')
 
-
+def print_table():
+    for map in maps:
+        values = results[map]
+        line = ""
+        for key, value in values.items():
+            if "files" not in key:
+                if ""
+                line = line + f" {value} "
+        print(line)
+        exit()
 if __name__ == "__main__":
     print_models()
     yes_maps = print_eval()
     yes_maps + print_eval("tupl_", "ref-30") + print_eval("chan_", "ref-30")
-    print_checkpoints()
-    prepare_pdf(yes_maps,args)
-
+    #print_checkpoints()
+    #prepare_pdf(yes_maps,args)
+    print_table()
 
 
 
