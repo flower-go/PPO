@@ -1,1 +1,1 @@
-{"execute_final_eval": true, "mode": "SP", "n_sample_partners": -1, "seed": 79, "behavior_check": true, "frame_stacking_mode": "tuple", "frame_stacking": 4, "exp": "tuple_centre_objects_ref_30", "layout_name": "centre_objects", "checkp_step": 1377030}
+{"execute_final_eval": true, "mode": "SP", "n_sample_partners": -1, "seed": 79, "behavior_check": true, "frame_stacking_mode": "tuple", "frame_stacking": 4, "exp": "tupl_centre_objects_ref-30", "layout_name": "centre_objects", "checkp_step": 1377030}
