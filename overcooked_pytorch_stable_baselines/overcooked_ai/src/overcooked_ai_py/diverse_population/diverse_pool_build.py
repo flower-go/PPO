@@ -31,7 +31,7 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--layout_name", default="forced_coordination", type=str, help="Layout name ('forced_coordination','cramped_room', 'counter_circuit_o_1order', 'coordination_ring'")
-parser.add_argument("--trained_models", default=11, type=int, help="Number of models to train during run")
+parser.add_argument("--trained_models", default=30, type=int, help="Number of models to train during run")
 parser.add_argument("--init_SP_agents", default=3, type=int, help="Number of self-play agents trained to initialize population")
 parser.add_argument("--eval_agents", default=30, type=int, help="Number of agents from evaluation set used for evaluation")
 parser.add_argument("--mode", default="POP", type=str, help="Mode of experiment: Self-play ('SP') or Population ('POP')")
@@ -167,7 +167,7 @@ def load_or_train_model(directory, n, env, args):
             print("list_of_files")
             print(list_of_files)
             print(args.checkp_step)
-            model_name = [f for f in list_of_files if args.checkp_step in f][0]
+            model_name = [f for f in list_of_files if str(args.checkp_step) in f][0]
             try:
                 print(f"Looking for file {model_name}")
                 model = PPO.load(model_name, env=env, device="cuda")
@@ -360,6 +360,7 @@ else:
     overcooked_env = OvercookedEnv.from_mdp(mdp, horizon=400)
 
 if __name__ == "__main__":
+    print(jobid)
     args.exp = args.prefix + args.exp
     file_args = load_args_from_file(args)
     if (args.behavior_check):
