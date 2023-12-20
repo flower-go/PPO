@@ -1,1 +1,1 @@
-{"execute_final_eval": true, "mode": "SP", "n_sample_partners": -1, "seed": 79, "behavior_check": true, "frame_stacking_mode": "channels", "frame_stacking": 1, "exp": "nost_scenario3_ref-30", "layout_name": "scenario3"}
+{"execute_final_eval": true, "mode": "SP", "n_sample_partners": -1, "seed": 79, "behavior_check": false, "frame_stacking_mode": "channels", "frame_stacking": 1, "exp": "nost_scenario3_ref-30", "layout_name": "scenario3"}

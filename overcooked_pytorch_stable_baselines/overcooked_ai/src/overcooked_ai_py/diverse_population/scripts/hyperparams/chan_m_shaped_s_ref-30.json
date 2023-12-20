@@ -1,1 +1,1 @@
-{"execute_final_eval": true, "mode": "SP", "n_sample_partners": -1, "seed": 79, "behavior_check": true, "frame_stacking_mode": "channels", "frame_stacking": 4, "exp": "chan_m_shaped_s_ref-30", "layout_name": "m_shaped_s"}
+{"execute_final_eval": true, "mode": "SP", "n_sample_partners": -1, "seed": 79, "behavior_check": false, "frame_stacking_mode": "channels", "frame_stacking": 4, "exp": "chan_m_shaped_s_ref-30", "layout_name": "m_shaped_s"}
