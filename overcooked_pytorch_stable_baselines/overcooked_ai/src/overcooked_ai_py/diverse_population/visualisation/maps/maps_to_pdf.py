@@ -57,6 +57,7 @@ def createPDF(path_to_images, document_name, document_title, columns, args):
             print(f"image size is {width},{height}")
             end = -1*int(len(args.postfix))
             print(f"image name is {image_filename} length is {len(image_filename)} and indices are {start} and {end}")
+            image_filename = image_filename.split("X")[0]
             image_filename = image_filename[start : end]
             # Lays out the image and filename
             img_ratio = width/desired_width
@@ -67,6 +68,7 @@ def createPDF(path_to_images, document_name, document_title, columns, args):
             x_pos += x_increment  # Increments the x position ready for the next image
     images = [i for i in os.listdir(path_to_images) if
               i.endswith('.png')]  # Creates list of images filtering out non .jpgs
+    print(f"images are {images}")
     row_layout = list(rowGen(images))  # Creates the layout of image rows
 
     pdf = canvas.Canvas(document_name, pagesize=A4, pageCompression=1)
@@ -77,7 +79,7 @@ def createPDF(path_to_images, document_name, document_title, columns, args):
 
     y_pos = Y_POS_START # Sets starting y pos
     pdf.setFont('Helvetica', 8)
-
+    print(row_layout)
     for row in row_layout:  # Loops through each row in the row_layout list and renders the row. For each 5 rows, makes a new page
 
         if rows_rendered == rows_in_page:
