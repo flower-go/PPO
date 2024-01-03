@@ -1,6 +1,8 @@
 import numpy as np
 import torch as th
 import os
+import random
+
 
 
 class Evaluator(object):
@@ -11,6 +13,7 @@ class Evaluator(object):
         self.args = args
 
         self.venv.reset_times([i for i in range(args.num_workers)])
+        random.seed(args.seed)
 
     def evaluate(self, agent_set_0, agent_set_1, num_games_per_worker = 2, layout_name = None, group_name = None, deterministic=True, eval_env="", mode="POP"):
         """
@@ -64,6 +67,8 @@ class Evaluator(object):
             for _ in range(400):
                 with th.no_grad():
                     obs = self.update_obs(obs, np.array([entry["both_agent_obs"][0] for entry in self.venv._last_obs]))
+                    if self.args.self_states and random.randint(0,100) < 3:
+                        print("obs:{obs}")
                     actions, _ = self_agent_model.policy.predict(obs, deterministic=deterministic)
 
                     other_agent_obs = self.update_obs(other_agent_obs, np.array([entry["both_agent_obs"][1] for entry in self.venv._last_obs]))
