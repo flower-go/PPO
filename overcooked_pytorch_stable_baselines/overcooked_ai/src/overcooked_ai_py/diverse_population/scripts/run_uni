@@ -15,7 +15,7 @@ do
 done
 
 declare -A def_vals
-def_vals=( [walltime]="02:50:00" [home_dir]="/storage/plzen1/home/ayshi")
+def_vals=( [file]="./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/script.sh" [walltime]="02:50:00" [home_dir]="/storage/plzen1/home/ayshi")
 for i in "${!def_vals[@]}"
 do
   if [[ -z "${!i}" ]]; then declare "${i}"="${def_vals[$i]}"; fi

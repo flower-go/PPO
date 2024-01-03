@@ -160,6 +160,7 @@ def load_or_train_model(directory, n, env, args):
     
     if (args.behavior_check): # muzeme chctit nacitat z checkpoints, ale u toho nebudem trenovat
         if args.checkp_step is not None:
+            print("Hledam file pro konkrentni checkpoint")
             model_path = projdir + "/diverse_population/checkpoints/" + args.layout_name + "/" + exp_part + "/" + str(
                 n).zfill(2)
             print(f"model path: {model_path}")
@@ -173,8 +174,9 @@ def load_or_train_model(directory, n, env, args):
                 model = PPO.load(model_name, env=env, device="cuda")
                 model.custom_id = n
                 print(f"model {model_name} loaded")
-            except:
-                print(f"mode {model_name} not found")
+            except Exception as e:
+                print(f"mode {model_name} for specific step not found ")
+                print(e)
         else:
             #zkusme nacist natrenovany model
             try:
@@ -191,13 +193,14 @@ def load_or_train_model(directory, n, env, args):
                 model_path = projdir + "/diverse_population/checkpoints/" + args.layout_name + "/" + exp_part + "/" + str(
                     n).zfill(2)
                 list_of_files = glob.glob(model_path + "/*")  # * means all if need specific format then *.csv
-                latest_file = max(list_of_files, key=os.path.getctime)
-                try:
-                    model = PPO.load(latest_file, env=env, device="cuda")
-                    model.custom_id = n
-                    print(f"model {model_name} loaded from CHECKPOINT {model_path}", flush=True)
-                except:
-                    print(f"model {model_name} not found, please train it first")
+                if len(list_of_files)> 0:
+                    latest_file = max(list_of_files, key=os.path.getctime)
+                    try:
+                        model = PPO.load(latest_file, env=env, device="cuda")
+                        model.custom_id = n
+                        print(f"model {model_name} loaded from CHECKPOINT {model_path}", flush=True)
+                    except:
+                        print(f"model {model_name} not found, please train it first")
     else:
         try:
             print(f"Looking for file {model_name}")
@@ -346,16 +349,24 @@ def get_name(name, args, sp=False, extended=False):
     return full_name
 
 
-def print_args():
+def print_args(a=None):
     print("all args:")
-    for arg in vars(args):
-        print (arg, getattr(args, arg))
+    if a is not None:
+        print(a)
+    else:
+        for arg in vars(args):
+            print (arg, getattr(args, arg))
 
+
+args.exp = args.prefix + args.exp
+file_args = load_args_from_file(args)
+layout_name = file_args["layout_name"] if  file_args["layout_name"] is not None else args.layout_name
 # Overcooked MDP and environment is loaded
-mdp = OvercookedGridworld.from_layout_name(args.layout_name)
+mdp = OvercookedGridworld.from_layout_name(layout_name)
+print(f"ov env se vytvari s laoutem {args.layout_name}")
 if (args.behavior_check):
     overcooked_env = OvercookedEnv.from_mdp(mdp, horizon=400, info_level=4)
-#    print("grid:" + str(overcooked_env.mdp.mdp_params["terrain"]))
+    print("grid:" + str(overcooked_env.mdp.mdp_params["terrain"]))
 else:
     overcooked_env = OvercookedEnv.from_mdp(mdp, horizon=400)
 
@@ -363,24 +374,27 @@ if __name__ == "__main__":
     print(jobid)
     args.exp = args.prefix + args.exp
     file_args = load_args_from_file(args)
-    if (args.behavior_check):
-        args.log_dir = projdir + "/diverse_population/text_logs/" + args.layout_name + "/"
-        os.makedirs(args.log_dir, exist_ok=True)
-        print("vytvorila jsem log_adresar")
-    else:
-        args.log_dir = None
-    # State representaion and environment reset functions set
-    feature_fn = lambda _, state: overcooked_env.lossless_state_encoding_mdp(state, debug=False)
-    start_state_fn = mdp.get_random_start_state_fn(random_start_pos=True, # TODO: set Default True
-                                                   rnd_obj_prob_thresh = args.rnd_obj_prob_thresh_env,# TODO: set Default args.rnd_obj_prob_thresh_env,
-                                                   random_switch_start_pos = args.random_switch_start_pos) if args.static_start == False else mdp.get_standard_start_state
     print("pred gym env vytvvorenim")
     wandb_key_value = load_wandb_key(args.wandb_key).strip()
     log_to_wandb(wandb_key_value, "overcooked1", args)
     wandb.config.update(file_args, allow_val_change=True)
     args = SimpleNamespace(**wandb.config._items)
     print("args print")
-    print_args()
+    print_args(args)
+    if (args.behavior_check):
+        args.log_dir = projdir + "/diverse_population/text_logs/" + args.layout_name + "/"
+        os.makedirs(args.log_dir, exist_ok=True)
+        print("vytvorila jsem log_adresar")
+    else:
+        args.log_dir = None
+    
+
+    # State representaion and environment reset functions set
+    feature_fn = lambda _, state: overcooked_env.lossless_state_encoding_mdp(state, debug=False)
+    start_state_fn = mdp.get_random_start_state_fn(random_start_pos=True, # TODO: set Default True
+                                                   rnd_obj_prob_thresh = args.rnd_obj_prob_thresh_env,# TODO: set Default args.rnd_obj_prob_thresh_env,
+                                                   random_switch_start_pos = args.random_switch_start_pos) if args.static_start == False else mdp.get_standard_start_state
+
     # Vectorized overcooked environments are initialized
     gym_env = get_vectorized_gym_env(
         overcooked_env, 'Overcooked-v0', agent_idx=0, featurize_fn=feature_fn, start_state_fn=start_state_fn, args=args
