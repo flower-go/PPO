@@ -152,12 +152,12 @@ def load_or_train_model(directory, n, env, args):
     model = None
     if args.mode == "SP" or n < args.init_SP_agents:
         exp_part = args.exp
-        if args.checkp_step:
+        if args.checkp_step or args.prefix:
             exp_part = re.sub(r'^_', '', exp_part)
     else:
         exp_part = args.full_exp_name
     model_name = directory + exp_part + "/" + str(n).zfill(2)
-    
+    print("model name is:")
     if (args.behavior_check): # muzeme chctit nacitat z checkpoints, ale u toho nebudem trenovat
         if args.checkp_step is not None:
             print("Hledam file pro konkrentni checkpoint")
