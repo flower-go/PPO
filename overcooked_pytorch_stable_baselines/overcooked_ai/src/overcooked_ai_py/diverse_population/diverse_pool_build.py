@@ -84,7 +84,7 @@ parser.add_argument("--log_dir", default=None, help="directory for checkpoints")
 parser.add_argument("--num_checkpoints", default = 4, help="number of stored models")
 parser.add_argument("--checkp_step", default = None, help="chcekpoint in checkp_step steps will be loaded")
 parser.add_argument("--prefix", default="", help="prefix of the name")
-
+parser.add_argument("--save_states", default=False,action="store_true", help="")
 args = parser.parse_args([] if "__file__" not in globals() else None)
 import wandb
 import numpy as np
@@ -168,7 +168,8 @@ def load_or_train_model(directory, n, env, args):
             print("list_of_files")
             print(list_of_files)
             print(args.checkp_step)
-            model_name = [f for f in list_of_files if str(args.checkp_step) in f][0]
+            valid_files = [f for f in list_of_files if str(args.checkp_step) in f]
+            model_name= valid_files[0] if len(valid_files > 0) else None
             try:
                 print(f"Looking for file {model_name}")
                 model = PPO.load(model_name, env=env, device="cuda")
