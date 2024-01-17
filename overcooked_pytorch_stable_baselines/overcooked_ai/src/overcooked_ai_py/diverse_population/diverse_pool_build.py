@@ -86,6 +86,7 @@ parser.add_argument("--num_checkpoints", default = 4, help="number of stored mod
 parser.add_argument("--checkp_step", default = None, help="chcekpoint in checkp_step steps will be loaded")
 parser.add_argument("--prefix", default="obs_", help="prefix of the name")
 parser.add_argument("--save_states", default=True,action="store_true", help="")
+parser.add_argument("--execution_mode", default="norm", help="whether we are running experiments (norm) or just generating observations and logits (obs)")
 args = parser.parse_args([] if "__file__" not in globals() else None)
 import wandb
 import numpy as np
@@ -376,7 +377,7 @@ else:
     overcooked_env = OvercookedEnv.from_mdp(mdp, horizon=400)
 
 if __name__ == "__main__":
-    print(jobid)
+    print(f"Job ID is {jobid}")
     args.exp = args.prefix + args.exp
     file_args = load_args_from_file(args)
     print("pred gym env vytvvorenim")
@@ -425,21 +426,37 @@ if __name__ == "__main__":
     print_args()
     #Models training
     models = load_or_train_models(args, gym_env)
-    print("naloadovano")
-    obs = np.load("/storage/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/observations/chan_five_by_five_ref-30_observations_all.log.npy", allow_pickle = True)
-    print(obs.shape)
+    print("models loaded")
+
+    #obs = np.load("/storage/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/observations/chan_five_by_five_ref-30_observations_all.log.npy", allow_pickle = True)
+    #print(obs.shape)
     #action, others = models[0].policy.predict(obs, deterministic = True)
-    dist = models[0].policy.get_distribution(obs_as_tensor(obs[0],'cuda'))
+    #dist = models[0].policy.get_distribution(obs_as_tensor(obs[0],'cuda'))
     #print(f"action is {action} and it also returned {others} and distribution is {dist}")
-    print(f"distribution is {dist} and logit is {dist.distribution.logits}")
-    exit()
+    #print(f"distribution is {dist} and logit is {dist.distribution.logits}")
+    #exit()
     #Final evaluation
-    if args.execute_final_eval:
+    if args.execute_final_eval or args.execution_mode == "obs":
         random.seed(args.seed)
         np.random.seed(args.seed)
 
         eval_env = "_ENVROP" + str(args.rnd_obj_prob_thresh_env)
-        if args.mode == "POP":
+
+        if args.execution_mode == "obs":
+            print("generating observations starts here")
+            group_name = args.full_exp_name + "_X_" + args.full_exp_name
+            obs_file = "/storage/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/observations/chan_five_by_five_ref-30_observations_all.log.npy"
+            eval_table = evaluator.evaluate(models, models, args.final_eval_games_per_worker, args.layout_name,
+                                            group_name,
+                                            eval_env=eval_env, mode=args.mode, deterministic=True)
+            print("eval_env " + str(eval_env))
+            obs = np.load(obs_file, allow_pickle = True)
+            print(f"obserations has  shape {obs.shape}")
+            dist = models[0].policy.get_distribution(obs_as_tensor(obs[0],'cuda')) #TODO loaduju jen prvni tricetici
+            print(f"distribution is {dist} and logit is {dist.distribution.logits}")
+            exit()
+
+        elif args.mode == "POP":
             models_name = args.full_exp_name
             evals_name = args.eval_set_name
             group_name = models_name + "_X_" + evals_name
