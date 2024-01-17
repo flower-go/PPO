@@ -1,0 +1,203 @@
+2024-01-12 11:44:36,735 INFO    StreamThr :751916 [internal.py:wandb_internal():89] W&B internal server running at pid: 751916, started at: 2024-01-12 11:44:36.732553
+2024-01-12 11:44:36,737 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: status
+2024-01-12 11:44:36,755 INFO    WriterThread:751916 [datastore.py:open_for_write():85] open: /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_114436-19677487.meta-pbs.metacentrum.cz/run-19677487.meta-pbs.metacentrum.cz.wandb
+2024-01-12 11:44:36,765 DEBUG   SenderThread:751916 [sender.py:send():382] send: header
+2024-01-12 11:44:36,931 DEBUG   SenderThread:751916 [sender.py:send():382] send: run
+2024-01-12 11:44:37,430 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: check_version
+2024-01-12 11:44:37,440 INFO    SenderThread:751916 [dir_watcher.py:__init__():211] watching files in: /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_114436-19677487.meta-pbs.metacentrum.cz/files
+2024-01-12 11:44:37,440 INFO    SenderThread:751916 [sender.py:_start_run_threads():1139] run started: 19677487.meta-pbs.metacentrum.cz with start time 1705056276.751898
+2024-01-12 11:44:37,440 DEBUG   SenderThread:751916 [sender.py:send_request():409] send_request: check_version
+2024-01-12 11:44:37,511 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: run_start
+2024-01-12 11:44:37,539 DEBUG   HandlerThread:751916 [system_info.py:__init__():32] System info init
+2024-01-12 11:44:37,539 DEBUG   HandlerThread:751916 [system_info.py:__init__():47] System info init done
+2024-01-12 11:44:37,539 INFO    HandlerThread:751916 [system_monitor.py:start():194] Starting system monitor
+2024-01-12 11:44:37,539 INFO    SystemMonitor:751916 [system_monitor.py:_start():158] Starting system asset monitoring threads
+2024-01-12 11:44:37,539 INFO    HandlerThread:751916 [system_monitor.py:probe():214] Collecting system info
+2024-01-12 11:44:37,540 INFO    SystemMonitor:751916 [interfaces.py:start():190] Started cpu monitoring
+2024-01-12 11:44:37,540 INFO    SystemMonitor:751916 [interfaces.py:start():190] Started disk monitoring
+2024-01-12 11:44:37,541 INFO    SystemMonitor:751916 [interfaces.py:start():190] Started gpu monitoring
+2024-01-12 11:44:37,542 INFO    SystemMonitor:751916 [interfaces.py:start():190] Started memory monitoring
+2024-01-12 11:44:37,543 INFO    SystemMonitor:751916 [interfaces.py:start():190] Started network monitoring
+2024-01-12 11:44:37,555 DEBUG   HandlerThread:751916 [system_info.py:probe():196] Probing system
+2024-01-12 11:44:37,571 DEBUG   HandlerThread:751916 [system_info.py:_probe_git():181] Probing git
+2024-01-12 11:44:37,699 DEBUG   HandlerThread:751916 [system_info.py:_probe_git():189] Probing git done
+2024-01-12 11:44:37,699 DEBUG   HandlerThread:751916 [system_info.py:probe():244] Probing system done
+2024-01-12 11:44:37,699 DEBUG   HandlerThread:751916 [system_monitor.py:probe():223] {'os': 'Linux-5.10.0-13-amd64-x86_64-with-debian-11.7', 'python': '3.7.16', 'heartbeatAt': '2024-01-12T10:44:37.556057', 'startedAt': '2024-01-12T10:44:36.628001', 'docker': None, 'cuda': None, 'args': ('--exp=chan_five_by_five_ref-30',), 'state': 'running', 'program': 'diverse_population/diverse_pool_build.py', 'codePathLocal': 'diverse_population/diverse_pool_build.py', 'codePath': 'overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/diverse_pool_build.py', 'git': {'remote': 'git@github.com:flower-go/PPO.git', 'commit': 'c4d0383188ba3f8e2190126c6550166089e69c35'}, 'email': None, 'root': '/auto/plzen1/home/ayshi/coding/PPO2/PPO', 'host': 'adan31.grid.cesnet.cz', 'username': 'ayshi', 'executable': '/storage/plzen1/home/ayshi/envs/overcooked_ai_terminal/bin/python', 'cpu_count': 32, 'cpu_count_logical': 64, 'cpu_freq': {'current': 2504.1858593750007, 'min': 0.0, 'max': 0.0}, 'cpu_freq_per_core': [{'current': 2796.096, 'min': 0.0, 'max': 0.0}, {'current': 2792.223, 'min': 0.0, 'max': 0.0}, {'current': 2798.229, 'min': 0.0, 'max': 0.0}, {'current': 2797.246, 'min': 0.0, 'max': 0.0}, {'current': 2909.853, 'min': 0.0, 'max': 0.0}, {'current': 2909.849, 'min': 0.0, 'max': 0.0}, {'current': 2909.848, 'min': 0.0, 'max': 0.0}, {'current': 2909.858, 'min': 0.0, 'max': 0.0}, {'current': 2380.579, 'min': 0.0, 'max': 0.0}, {'current': 2380.349, 'min': 0.0, 'max': 0.0}, {'current': 2380.929, 'min': 0.0, 'max': 0.0}, {'current': 2380.572, 'min': 0.0, 'max': 0.0}, {'current': 2380.576, 'min': 0.0, 'max': 0.0}, {'current': 2380.923, 'min': 0.0, 'max': 0.0}, {'current': 2380.575, 'min': 0.0, 'max': 0.0}, {'current': 2380.591, 'min': 0.0, 'max': 0.0}, {'current': 2534.868, 'min': 0.0, 'max': 0.0}, {'current': 2539.164, 'min': 0.0, 'max': 0.0}, {'current': 2487.28, 'min': 0.0, 'max': 0.0}, {'current': 2538.861, 'min': 0.0, 'max': 0.0}, {'current': 2539.157, 'min': 0.0, 'max': 0.0}, {'current': 2539.797, 'min': 0.0, 'max': 0.0}, {'current': 2538.405, 'min': 0.0, 'max': 0.0}, {'current': 2540.819, 'min': 0.0, 'max': 0.0}, {'current': 2307.504, 'min': 0.0, 'max': 0.0}, {'current': 2307.505, 'min': 0.0, 'max': 0.0}, {'current': 2307.869, 'min': 0.0, 'max': 0.0}, {'current': 2309.686, 'min': 0.0, 'max': 0.0}, {'current': 2307.831, 'min': 0.0, 'max': 0.0}, {'current': 2307.831, 'min': 0.0, 'max': 0.0}, {'current': 2307.503, 'min': 0.0, 'max': 0.0}, {'current': 2307.503, 'min': 0.0, 'max': 0.0}, {'current': 2536.779, 'min': 0.0, 'max': 0.0}, {'current': 2774.047, 'min': 0.0, 'max': 0.0}, {'current': 2523.716, 'min': 0.0, 'max': 0.0}, {'current': 2778.257, 'min': 0.0, 'max': 0.0}, {'current': 3046.298, 'min': 0.0, 'max': 0.0}, {'current': 2802.343, 'min': 0.0, 'max': 0.0}, {'current': 2797.702, 'min': 0.0, 'max': 0.0}, {'current': 2913.722, 'min': 0.0, 'max': 0.0}, {'current': 2297.262, 'min': 0.0, 'max': 0.0}, {'current': 2299.565, 'min': 0.0, 'max': 0.0}, {'current': 2297.281, 'min': 0.0, 'max': 0.0}, {'current': 2305.377, 'min': 0.0, 'max': 0.0}, {'current': 2301.473, 'min': 0.0, 'max': 0.0}, {'current': 2298.581, 'min': 0.0, 'max': 0.0}, {'current': 2297.7, 'min': 0.0, 'max': 0.0}, {'current': 2299.346, 'min': 0.0, 'max': 0.0}, {'current': 2635.243, 'min': 0.0, 'max': 0.0}, {'current': 2609.383, 'min': 0.0, 'max': 0.0}, {'current': 2485.925, 'min': 0.0, 'max': 0.0}, {'current': 2569.874, 'min': 0.0, 'max': 0.0}, {'current': 2543.197, 'min': 0.0, 'max': 0.0}, {'current': 2767.037, 'min': 0.0, 'max': 0.0}, {'current': 2346.621, 'min': 0.0, 'max': 0.0}, {'current': 2751.439, 'min': 0.0, 'max': 0.0}, {'current': 2299.147, 'min': 0.0, 'max': 0.0}, {'current': 2299.524, 'min': 0.0, 'max': 0.0}, {'current': 2299.889, 'min': 0.0, 'max': 0.0}, {'current': 2300.261, 'min': 0.0, 'max': 0.0}, {'current': 2299.478, 'min': 0.0, 'max': 0.0}, {'current': 2304.223, 'min': 0.0, 'max': 0.0}, {'current': 2299.908, 'min': 0.0, 'max': 0.0}, {'current': 2297.418, 'min': 0.0, 'max': 0.0}], 'disk': {'/': {'total': 78.08685302734375, 'used': 16.38105010986328}}, 'gpu': 'Tesla T4', 'gpu_count': 1, 'gpu_devices': [{'name': 'Tesla T4', 'memory_total': 16106127360}], 'memory': {'total': 187.58176803588867}}
+2024-01-12 11:44:37,699 INFO    HandlerThread:751916 [system_monitor.py:probe():224] Finished collecting system info
+2024-01-12 11:44:37,699 INFO    HandlerThread:751916 [system_monitor.py:probe():227] Publishing system info
+2024-01-12 11:44:37,699 DEBUG   HandlerThread:751916 [system_info.py:_save_pip():53] Saving list of pip packages installed into the current environment
+2024-01-12 11:44:37,708 DEBUG   HandlerThread:751916 [system_info.py:_save_pip():68] Saving pip packages done
+2024-01-12 11:44:37,710 DEBUG   HandlerThread:751916 [system_info.py:_save_conda():76] Saving list of conda packages installed into the current environment
+2024-01-12 11:44:38,449 INFO    Thread-12 :751916 [dir_watcher.py:_on_file_created():271] file/dir created: /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_114436-19677487.meta-pbs.metacentrum.cz/files/conda-environment.yaml
+2024-01-12 11:44:38,450 INFO    Thread-12 :751916 [dir_watcher.py:_on_file_created():271] file/dir created: /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_114436-19677487.meta-pbs.metacentrum.cz/files/requirements.txt
+2024-01-12 11:44:40,019 DEBUG   HandlerThread:751916 [system_info.py:_save_conda():87] Saving conda packages done
+2024-01-12 11:44:40,041 INFO    HandlerThread:751916 [system_monitor.py:probe():229] Finished publishing system info
+2024-01-12 11:44:40,202 DEBUG   SenderThread:751916 [sender.py:send():382] send: files
+2024-01-12 11:44:40,202 INFO    SenderThread:751916 [sender.py:_save_file():1392] saving file wandb-metadata.json with policy now
+2024-01-12 11:44:40,218 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: stop_status
+2024-01-12 11:44:40,218 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: internal_messages
+2024-01-12 11:44:40,219 DEBUG   SenderThread:751916 [sender.py:send_request():409] send_request: stop_status
+2024-01-12 11:44:40,458 INFO    Thread-12 :751916 [dir_watcher.py:_on_file_modified():288] file/dir modified: /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_114436-19677487.meta-pbs.metacentrum.cz/files/conda-environment.yaml
+2024-01-12 11:44:40,459 INFO    Thread-12 :751916 [dir_watcher.py:_on_file_created():271] file/dir created: /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_114436-19677487.meta-pbs.metacentrum.cz/files/wandb-metadata.json
+2024-01-12 11:44:40,473 DEBUG   SenderThread:751916 [sender.py:send():382] send: telemetry
+2024-01-12 11:44:40,474 DEBUG   SenderThread:751916 [sender.py:send():382] send: config
+2024-01-12 11:44:40,732 INFO    wandb-upload_0:751916 [upload_job.py:push():131] Uploaded file /var/tmp/pbs.19677487.meta-pbs.metacentrum.cz/tmpkx7gnbotwandb/8xxje7z0-wandb-metadata.json
+2024-01-12 11:44:41,465 INFO    Thread-12 :751916 [dir_watcher.py:_on_file_created():271] file/dir created: /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_114436-19677487.meta-pbs.metacentrum.cz/files/output.log
+2024-01-12 11:44:42,479 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: status_report
+2024-01-12 11:44:43,477 INFO    Thread-12 :751916 [dir_watcher.py:_on_file_modified():288] file/dir modified: /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_114436-19677487.meta-pbs.metacentrum.cz/files/output.log
+2024-01-12 11:44:47,480 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: status_report
+2024-01-12 11:44:52,486 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: status_report
+2024-01-12 11:44:55,218 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: stop_status
+2024-01-12 11:44:55,218 DEBUG   SenderThread:751916 [sender.py:send_request():409] send_request: stop_status
+2024-01-12 11:44:55,221 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: internal_messages
+2024-01-12 11:44:57,573 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: status_report
+2024-01-12 11:45:02,574 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: status_report
+2024-01-12 11:45:07,579 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: status_report
+2024-01-12 11:45:08,576 INFO    Thread-12 :751916 [dir_watcher.py:_on_file_modified():288] file/dir modified: /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_114436-19677487.meta-pbs.metacentrum.cz/files/output.log
+2024-01-12 11:45:08,577 INFO    Thread-12 :751916 [dir_watcher.py:_on_file_modified():288] file/dir modified: /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_114436-19677487.meta-pbs.metacentrum.cz/files/config.yaml
+2024-01-12 11:45:12,959 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: status_report
+2024-01-12 11:45:17,960 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: status_report
+2024-01-12 11:45:22,460 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: internal_messages
+2024-01-12 11:45:22,460 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: stop_status
+2024-01-12 11:45:22,461 DEBUG   SenderThread:751916 [sender.py:send_request():409] send_request: stop_status
+2024-01-12 11:45:23,333 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: status_report
+2024-01-12 11:45:23,432 DEBUG   SenderThread:751916 [sender.py:send():382] send: exit
+2024-01-12 11:45:23,432 INFO    SenderThread:751916 [sender.py:send_exit():589] handling exit code: 1
+2024-01-12 11:45:23,432 INFO    SenderThread:751916 [sender.py:send_exit():591] handling runtime: 45
+2024-01-12 11:45:23,457 INFO    SenderThread:751916 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2024-01-12 11:45:23,457 INFO    SenderThread:751916 [sender.py:send_exit():597] send defer
+2024-01-12 11:45:23,457 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: defer
+2024-01-12 11:45:23,458 INFO    HandlerThread:751916 [handler.py:handle_request_defer():172] handle defer: 0
+2024-01-12 11:45:23,458 DEBUG   SenderThread:751916 [sender.py:send_request():409] send_request: defer
+2024-01-12 11:45:23,458 INFO    SenderThread:751916 [sender.py:send_request_defer():613] handle sender defer: 0
+2024-01-12 11:45:23,458 INFO    SenderThread:751916 [sender.py:transition_state():617] send defer: 1
+2024-01-12 11:45:23,458 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: defer
+2024-01-12 11:45:23,458 INFO    HandlerThread:751916 [handler.py:handle_request_defer():172] handle defer: 1
+2024-01-12 11:45:23,458 DEBUG   SenderThread:751916 [sender.py:send_request():409] send_request: defer
+2024-01-12 11:45:23,458 INFO    SenderThread:751916 [sender.py:send_request_defer():613] handle sender defer: 1
+2024-01-12 11:45:23,458 INFO    SenderThread:751916 [sender.py:transition_state():617] send defer: 2
+2024-01-12 11:45:23,458 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: defer
+2024-01-12 11:45:23,458 INFO    HandlerThread:751916 [handler.py:handle_request_defer():172] handle defer: 2
+2024-01-12 11:45:23,458 INFO    HandlerThread:751916 [system_monitor.py:finish():203] Stopping system monitor
+2024-01-12 11:45:23,459 DEBUG   SystemMonitor:751916 [system_monitor.py:_start():172] Starting system metrics aggregation loop
+2024-01-12 11:45:23,459 DEBUG   SystemMonitor:751916 [system_monitor.py:_start():179] Finished system metrics aggregation loop
+2024-01-12 11:45:23,459 DEBUG   SystemMonitor:751916 [system_monitor.py:_start():183] Publishing last batch of metrics
+2024-01-12 11:45:23,460 INFO    HandlerThread:751916 [interfaces.py:finish():202] Joined cpu monitor
+2024-01-12 11:45:23,460 INFO    HandlerThread:751916 [interfaces.py:finish():202] Joined disk monitor
+2024-01-12 11:45:23,716 INFO    Thread-12 :751916 [dir_watcher.py:_on_file_created():271] file/dir created: /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_114436-19677487.meta-pbs.metacentrum.cz/files/wandb-summary.json
+2024-01-12 11:45:23,959 INFO    HandlerThread:751916 [interfaces.py:finish():202] Joined gpu monitor
+2024-01-12 11:45:23,960 INFO    HandlerThread:751916 [interfaces.py:finish():202] Joined memory monitor
+2024-01-12 11:45:23,960 INFO    HandlerThread:751916 [interfaces.py:finish():202] Joined network monitor
+2024-01-12 11:45:23,960 DEBUG   SenderThread:751916 [sender.py:send_request():409] send_request: defer
+2024-01-12 11:45:23,960 INFO    SenderThread:751916 [sender.py:send_request_defer():613] handle sender defer: 2
+2024-01-12 11:45:23,960 INFO    SenderThread:751916 [sender.py:transition_state():617] send defer: 3
+2024-01-12 11:45:23,960 DEBUG   SenderThread:751916 [sender.py:send():382] send: stats
+2024-01-12 11:45:23,961 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: defer
+2024-01-12 11:45:23,961 INFO    HandlerThread:751916 [handler.py:handle_request_defer():172] handle defer: 3
+2024-01-12 11:45:23,961 DEBUG   SenderThread:751916 [sender.py:send_request():409] send_request: defer
+2024-01-12 11:45:23,961 INFO    SenderThread:751916 [sender.py:send_request_defer():613] handle sender defer: 3
+2024-01-12 11:45:23,961 INFO    SenderThread:751916 [sender.py:transition_state():617] send defer: 4
+2024-01-12 11:45:23,961 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: defer
+2024-01-12 11:45:23,961 INFO    HandlerThread:751916 [handler.py:handle_request_defer():172] handle defer: 4
+2024-01-12 11:45:23,962 DEBUG   SenderThread:751916 [sender.py:send_request():409] send_request: defer
+2024-01-12 11:45:23,962 INFO    SenderThread:751916 [sender.py:send_request_defer():613] handle sender defer: 4
+2024-01-12 11:45:23,962 INFO    SenderThread:751916 [sender.py:transition_state():617] send defer: 5
+2024-01-12 11:45:23,962 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: defer
+2024-01-12 11:45:23,962 INFO    HandlerThread:751916 [handler.py:handle_request_defer():172] handle defer: 5
+2024-01-12 11:45:23,962 DEBUG   SenderThread:751916 [sender.py:send():382] send: summary
+2024-01-12 11:45:23,973 INFO    SenderThread:751916 [sender.py:_save_file():1392] saving file wandb-summary.json with policy end
+2024-01-12 11:45:23,973 DEBUG   SenderThread:751916 [sender.py:send_request():409] send_request: defer
+2024-01-12 11:45:23,973 INFO    SenderThread:751916 [sender.py:send_request_defer():613] handle sender defer: 5
+2024-01-12 11:45:23,973 INFO    SenderThread:751916 [sender.py:transition_state():617] send defer: 6
+2024-01-12 11:45:23,974 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: defer
+2024-01-12 11:45:23,974 INFO    HandlerThread:751916 [handler.py:handle_request_defer():172] handle defer: 6
+2024-01-12 11:45:23,974 DEBUG   SenderThread:751916 [sender.py:send_request():409] send_request: defer
+2024-01-12 11:45:23,974 INFO    SenderThread:751916 [sender.py:send_request_defer():613] handle sender defer: 6
+2024-01-12 11:45:23,974 INFO    SenderThread:751916 [sender.py:transition_state():617] send defer: 7
+2024-01-12 11:45:23,974 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: status_report
+2024-01-12 11:45:23,974 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: defer
+2024-01-12 11:45:23,974 INFO    HandlerThread:751916 [handler.py:handle_request_defer():172] handle defer: 7
+2024-01-12 11:45:23,974 DEBUG   SenderThread:751916 [sender.py:send_request():409] send_request: defer
+2024-01-12 11:45:23,974 INFO    SenderThread:751916 [sender.py:send_request_defer():613] handle sender defer: 7
+2024-01-12 11:45:24,426 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: poll_exit
+2024-01-12 11:45:24,839 INFO    Thread-12 :751916 [dir_watcher.py:_on_file_modified():288] file/dir modified: /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_114436-19677487.meta-pbs.metacentrum.cz/files/output.log
+2024-01-12 11:45:24,839 INFO    Thread-12 :751916 [dir_watcher.py:_on_file_modified():288] file/dir modified: /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_114436-19677487.meta-pbs.metacentrum.cz/files/wandb-summary.json
+2024-01-12 11:45:25,449 INFO    SenderThread:751916 [sender.py:transition_state():617] send defer: 8
+2024-01-12 11:45:25,449 DEBUG   SenderThread:751916 [sender.py:send_request():409] send_request: poll_exit
+2024-01-12 11:45:25,450 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: defer
+2024-01-12 11:45:25,450 INFO    HandlerThread:751916 [handler.py:handle_request_defer():172] handle defer: 8
+2024-01-12 11:45:25,450 DEBUG   SenderThread:751916 [sender.py:send_request():409] send_request: defer
+2024-01-12 11:45:25,450 INFO    SenderThread:751916 [sender.py:send_request_defer():613] handle sender defer: 8
+2024-01-12 11:45:25,450 INFO    SenderThread:751916 [job_builder.py:build():298] Attempting to build job artifact
+2024-01-12 11:45:25,456 INFO    SenderThread:751916 [job_builder.py:_get_source_type():428] is repo sourced job
+2024-01-12 11:45:25,769 INFO    SenderThread:751916 [job_builder.py:build():404] adding wandb-job metadata file
+2024-01-12 11:45:25,835 INFO    SenderThread:751916 [sender.py:transition_state():617] send defer: 9
+2024-01-12 11:45:25,835 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: defer
+2024-01-12 11:45:25,835 DEBUG   SenderThread:751916 [sender.py:send():382] send: artifact
+2024-01-12 11:45:25,835 INFO    HandlerThread:751916 [handler.py:handle_request_defer():172] handle defer: 9
+2024-01-12 11:45:25,841 INFO    Thread-12 :751916 [dir_watcher.py:_on_file_modified():288] file/dir modified: /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_114436-19677487.meta-pbs.metacentrum.cz/files/output.log
+2024-01-12 11:45:26,535 INFO    SenderThread:751916 [sender.py:send_artifact():1470] sent artifact job-git_github.com_flower-go_PPO.git_overcooked_pytorch_stable_..i_src_overcooked_ai_py_diverse_population_diverse_pool_build.py - {'id': 'QXJ0aWZhY3Q6Njg3MTk0NzAw', 'state': 'COMMITTED', 'artifactSequence': {'id': 'QXJ0aWZhY3RDb2xsZWN0aW9uOjEyOTAxNTQwOA==', 'latestArtifact': {'id': 'QXJ0aWZhY3Q6Njg3MTk0NzAw', 'versionIndex': 0}}}
+2024-01-12 11:45:26,536 DEBUG   SenderThread:751916 [sender.py:send_request():409] send_request: defer
+2024-01-12 11:45:26,536 INFO    SenderThread:751916 [sender.py:send_request_defer():613] handle sender defer: 9
+2024-01-12 11:45:26,536 INFO    SenderThread:751916 [dir_watcher.py:finish():358] shutting down directory watcher
+2024-01-12 11:45:26,846 INFO    SenderThread:751916 [dir_watcher.py:finish():388] scan: /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_114436-19677487.meta-pbs.metacentrum.cz/files
+2024-01-12 11:45:26,848 INFO    SenderThread:751916 [dir_watcher.py:finish():402] scan save: /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_114436-19677487.meta-pbs.metacentrum.cz/files/conda-environment.yaml conda-environment.yaml
+2024-01-12 11:45:26,849 INFO    SenderThread:751916 [dir_watcher.py:finish():402] scan save: /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_114436-19677487.meta-pbs.metacentrum.cz/files/wandb-metadata.json wandb-metadata.json
+2024-01-12 11:45:26,849 INFO    SenderThread:751916 [dir_watcher.py:finish():402] scan save: /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_114436-19677487.meta-pbs.metacentrum.cz/files/config.yaml config.yaml
+2024-01-12 11:45:26,852 INFO    SenderThread:751916 [dir_watcher.py:finish():402] scan save: /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_114436-19677487.meta-pbs.metacentrum.cz/files/requirements.txt requirements.txt
+2024-01-12 11:45:26,854 INFO    SenderThread:751916 [dir_watcher.py:finish():402] scan save: /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_114436-19677487.meta-pbs.metacentrum.cz/files/wandb-summary.json wandb-summary.json
+2024-01-12 11:45:26,857 INFO    SenderThread:751916 [dir_watcher.py:finish():402] scan save: /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_114436-19677487.meta-pbs.metacentrum.cz/files/output.log output.log
+2024-01-12 11:45:26,860 INFO    SenderThread:751916 [sender.py:transition_state():617] send defer: 10
+2024-01-12 11:45:26,860 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: defer
+2024-01-12 11:45:26,861 INFO    HandlerThread:751916 [handler.py:handle_request_defer():172] handle defer: 10
+2024-01-12 11:45:26,863 DEBUG   SenderThread:751916 [sender.py:send_request():409] send_request: defer
+2024-01-12 11:45:26,863 INFO    SenderThread:751916 [sender.py:send_request_defer():613] handle sender defer: 10
+2024-01-12 11:45:26,864 INFO    SenderThread:751916 [file_pusher.py:finish():175] shutting down file pusher
+2024-01-12 11:45:27,199 INFO    wandb-upload_1:751916 [upload_job.py:push():131] Uploaded file /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_114436-19677487.meta-pbs.metacentrum.cz/files/config.yaml
+2024-01-12 11:45:27,246 INFO    wandb-upload_0:751916 [upload_job.py:push():131] Uploaded file /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_114436-19677487.meta-pbs.metacentrum.cz/files/conda-environment.yaml
+2024-01-12 11:45:27,251 INFO    wandb-upload_2:751916 [upload_job.py:push():131] Uploaded file /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_114436-19677487.meta-pbs.metacentrum.cz/files/requirements.txt
+2024-01-12 11:45:27,270 INFO    wandb-upload_3:751916 [upload_job.py:push():131] Uploaded file /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_114436-19677487.meta-pbs.metacentrum.cz/files/wandb-summary.json
+2024-01-12 11:45:27,441 INFO    wandb-upload_4:751916 [upload_job.py:push():131] Uploaded file /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_114436-19677487.meta-pbs.metacentrum.cz/files/output.log
+2024-01-12 11:45:27,642 INFO    Thread-11 :751916 [sender.py:transition_state():617] send defer: 11
+2024-01-12 11:45:27,642 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: defer
+2024-01-12 11:45:27,642 INFO    HandlerThread:751916 [handler.py:handle_request_defer():172] handle defer: 11
+2024-01-12 11:45:27,642 DEBUG   SenderThread:751916 [sender.py:send_request():409] send_request: defer
+2024-01-12 11:45:27,643 INFO    SenderThread:751916 [sender.py:send_request_defer():613] handle sender defer: 11
+2024-01-12 11:45:27,643 INFO    SenderThread:751916 [file_pusher.py:join():181] waiting for file pusher
+2024-01-12 11:45:27,643 INFO    SenderThread:751916 [sender.py:transition_state():617] send defer: 12
+2024-01-12 11:45:27,643 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: defer
+2024-01-12 11:45:27,643 INFO    HandlerThread:751916 [handler.py:handle_request_defer():172] handle defer: 12
+2024-01-12 11:45:27,643 DEBUG   SenderThread:751916 [sender.py:send_request():409] send_request: defer
+2024-01-12 11:45:27,643 INFO    SenderThread:751916 [sender.py:send_request_defer():613] handle sender defer: 12
+2024-01-12 11:45:27,643 INFO    SenderThread:751916 [file_stream.py:finish():595] file stream finish called
+2024-01-12 11:45:27,787 INFO    SenderThread:751916 [file_stream.py:finish():599] file stream finish is done
+2024-01-12 11:45:27,788 INFO    SenderThread:751916 [sender.py:transition_state():617] send defer: 13
+2024-01-12 11:45:27,788 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: defer
+2024-01-12 11:45:27,788 INFO    HandlerThread:751916 [handler.py:handle_request_defer():172] handle defer: 13
+2024-01-12 11:45:27,788 DEBUG   SenderThread:751916 [sender.py:send_request():409] send_request: defer
+2024-01-12 11:45:27,788 INFO    SenderThread:751916 [sender.py:send_request_defer():613] handle sender defer: 13
+2024-01-12 11:45:27,788 INFO    SenderThread:751916 [sender.py:transition_state():617] send defer: 14
+2024-01-12 11:45:27,788 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: defer
+2024-01-12 11:45:27,789 INFO    HandlerThread:751916 [handler.py:handle_request_defer():172] handle defer: 14
+2024-01-12 11:45:27,789 DEBUG   SenderThread:751916 [sender.py:send():382] send: final
+2024-01-12 11:45:27,789 DEBUG   SenderThread:751916 [sender.py:send():382] send: footer
+2024-01-12 11:45:27,789 DEBUG   SenderThread:751916 [sender.py:send_request():409] send_request: defer
+2024-01-12 11:45:27,789 INFO    SenderThread:751916 [sender.py:send_request_defer():613] handle sender defer: 14
+2024-01-12 11:45:27,789 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: poll_exit
+2024-01-12 11:45:27,789 DEBUG   SenderThread:751916 [sender.py:send_request():409] send_request: poll_exit
+2024-01-12 11:45:27,790 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: server_info
+2024-01-12 11:45:27,790 DEBUG   SenderThread:751916 [sender.py:send_request():409] send_request: server_info
+2024-01-12 11:45:27,793 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: get_summary
+2024-01-12 11:45:27,793 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: sampled_history
+2024-01-12 11:45:27,793 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: internal_messages
+2024-01-12 11:45:27,793 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: job_info
+2024-01-12 11:45:27,930 DEBUG   SenderThread:751916 [sender.py:send_request():409] send_request: job_info
+2024-01-12 11:45:27,931 INFO    MainThread:751916 [wandb_run.py:_footer_history_summary_info():3837] rendering history
+2024-01-12 11:45:27,931 INFO    MainThread:751916 [wandb_run.py:_footer_history_summary_info():3869] rendering summary
+2024-01-12 11:45:27,931 INFO    MainThread:751916 [wandb_run.py:_footer_sync_info():3796] logging synced files
+2024-01-12 11:45:27,931 DEBUG   HandlerThread:751916 [handler.py:handle_request():146] handle_request: shutdown
+2024-01-12 11:45:27,932 INFO    HandlerThread:751916 [handler.py:finish():866] shutting down handler
+2024-01-12 11:45:28,794 INFO    WriterThread:751916 [datastore.py:close():294] close: /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_114436-19677487.meta-pbs.metacentrum.cz/run-19677487.meta-pbs.metacentrum.cz.wandb
+2024-01-12 11:45:28,931 INFO    SenderThread:751916 [sender.py:finish():1548] shutting down sender
+2024-01-12 11:45:28,931 INFO    SenderThread:751916 [file_pusher.py:finish():175] shutting down file pusher
+2024-01-12 11:45:28,931 INFO    SenderThread:751916 [file_pusher.py:join():181] waiting for file pusher

@@ -1,0 +1,1 @@
+{"heat_map": {"_type": "image-file", "sha256": "12e6a9e8eb23c152b86fa14570b638362732d808f5b678df16f4993d790f3635", "size": 20734, "path": "media/images/heat_map_0_12e6a9e8eb23c152b86f.png", "format": "png", "width": 640, "height": 480}, "_timestamp": 1705272149.8848581, "_runtime": 677.6106441020966, "_step": 1, "eval_table": 0.0, "_wandb": {"runtime": 676}}

@@ -1,0 +1,90 @@
+args print
+all args:
+namespace(_wandb={}, base_eval_name='SP_EVAL2_ROP0.0', batch_size=2000, behavior_check=False, checkp_step=None, clip_range=0.1, delay_shared_reward=False, device='cuda', divergent_check_timestep=3000000.0, ent_coef_end=0.03, ent_coef_horizon=1500000.0, ent_coef_start=0.1, eval_agents=1, eval_interval=10, eval_mode='SP', eval_set_name='', evals_num_to_threshold=2, execute_final_eval=True, exp='chan_five_by_five_ref-30', final_eval_games_per_worker=1, frame_stacking=4, frame_stacking_mode='channels', init_SP_agents=3, kl_diff_bonus_reward_clip=0.0, kl_diff_bonus_reward_coef=0.0, kl_diff_loss_clip=0.0, kl_diff_loss_coef=0.0, layout_name='five_by_five', learning_rate=0.0004, log_dir=None, max_grad_norm=0.3, mode='SP', n_epochs=16, n_sample_partners=-1, n_steps=400, num_checkpoints=4, num_workers=30, partner_action_deterministic=False, prefix='obs_', random_switch_start_pos=False, rnd_obj_prob_thresh_agent=0.0, rnd_obj_prob_thresh_env=0.0, save_states=True, seed=79, shaped_r_coef_horizon=2500000.0, static_start=False, tensorboard_log=False, total_timesteps=5500000.0, trained_models=1, training_percent_start_eval=0.5, vf_coef=0.1, wandb_key='./wandbkey.txt')
+gym env name Overcooked-v0
+X       D       P       X       X
+X                               S
+O               ↑1              X
+X       ↑0                      D
+X       O       X       P       X
+layout je five_by_five
+gyn env name je
+Overcooked-v0
+<class 'overcooked_ai.src.overcooked_ai_py.mdp.overcooked_env.OvercookedEnv'>
+ mame gym env
+jmeno nenaparovano
+budu volat load or train
+all args:
+layout_name five_by_five
+trained_models 1
+init_SP_agents 3
+eval_agents 1
+mode SP
+eval_mode SP
+kl_diff_bonus_reward_coef 0.0
+kl_diff_bonus_reward_clip 0.0
+kl_diff_loss_coef 0.0
+kl_diff_loss_clip 0.0
+delay_shared_reward False
+exp chan_five_by_five_ref-30
+eval_set_name
+base_eval_name SP_EVAL2_ROP0.0
+execute_final_eval True
+final_eval_games_per_worker 1
+n_sample_partners -1
+frame_stacking 4
+frame_stacking_mode channels
+wandb_key ./wandbkey.txt
+partner_action_deterministic False
+random_switch_start_pos False
+rnd_obj_prob_thresh_env 0.0
+rnd_obj_prob_thresh_agent 0.0
+static_start False
+ent_coef_start 0.1
+ent_coef_end 0.03
+ent_coef_horizon 1500000.0
+total_timesteps 5500000.0
+vf_coef 0.1
+batch_size 2000
+max_grad_norm 0.3
+clip_range 0.1
+learning_rate 0.0004
+n_steps 400
+n_epochs 16
+shaped_r_coef_horizon 2500000.0
+divergent_check_timestep 3000000.0
+num_workers 30
+eval_interval 10
+evals_num_to_threshold 2
+device cuda
+training_percent_start_eval 0.5
+tensorboard_log False
+seed 79
+behavior_check False
+log_dir None
+num_checkpoints 4
+checkp_step None
+prefix obs_
+save_states True
+_wandb {}
+eval_stop_threshold 150
+full_exp_name chan_five_by_five_ref-30_ROP0.0_MSP_BRCoef0.0_BRClip0.0_LCoef0.0_LClip0.0_DSRFalse_PADFalse_NSP-1
+model name is:
+Looking for file /storage/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/models/five_by_five/chan_five_by_five_ref-30/00
+model /storage/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/models/five_by_five/chan_five_by_five_ref-30/00 loaded
+naloadovano
+vypisuji v SP mode
+loguju observatitons
+loguju observatitons
+loguju observatitons
+loguju observatitons
+loguju observatitons
+loguju observatitons
+loguju observatitons
+0.0
+completed 1 out of 1
+eval table [[0.]]
+eval_env _ENVROP0.0
+zacinam s heat map
+[[0.]]
+jmeno filu je:/storage/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/visualisation/five_by_five/chan_five_by_five_ref-30_ROP0.0_MSP_BRCoef0.0_BRClip0.0_LCoef0.0_LClip0.0_DSRFalse_PADFalse_NSP-1_X_chan_five_by_five_ref-30_ROP0.0_MSP_BRCoef0.0_BRClip0.0_LCoef0.0_LClip0.0_DSRFalse_PADFalse_NSP-1_ENVROP0.0.png

@@ -1,0 +1,181 @@
+wandb_version: 1
+
+layout_name:
+  desc: null
+  value: five_by_five
+trained_models:
+  desc: null
+  value: 1
+init_SP_agents:
+  desc: null
+  value: 3
+eval_agents:
+  desc: null
+  value: 1
+mode:
+  desc: null
+  value: SP
+eval_mode:
+  desc: null
+  value: SP
+kl_diff_bonus_reward_coef:
+  desc: null
+  value: 0.0
+kl_diff_bonus_reward_clip:
+  desc: null
+  value: 0.0
+kl_diff_loss_coef:
+  desc: null
+  value: 0.0
+kl_diff_loss_clip:
+  desc: null
+  value: 0.0
+delay_shared_reward:
+  desc: null
+  value: false
+exp:
+  desc: null
+  value: chan_five_by_five_ref-30
+eval_set_name:
+  desc: null
+  value: ''
+base_eval_name:
+  desc: null
+  value: SP_EVAL2_ROP0.0
+execute_final_eval:
+  desc: null
+  value: true
+final_eval_games_per_worker:
+  desc: null
+  value: 1
+n_sample_partners:
+  desc: null
+  value: -1
+frame_stacking:
+  desc: null
+  value: 4
+frame_stacking_mode:
+  desc: null
+  value: channels
+wandb_key:
+  desc: null
+  value: ./wandbkey.txt
+partner_action_deterministic:
+  desc: null
+  value: false
+random_switch_start_pos:
+  desc: null
+  value: false
+rnd_obj_prob_thresh_env:
+  desc: null
+  value: 0.0
+rnd_obj_prob_thresh_agent:
+  desc: null
+  value: 0.0
+static_start:
+  desc: null
+  value: false
+ent_coef_start:
+  desc: null
+  value: 0.1
+ent_coef_end:
+  desc: null
+  value: 0.03
+ent_coef_horizon:
+  desc: null
+  value: 1500000.0
+total_timesteps:
+  desc: null
+  value: 5500000.0
+vf_coef:
+  desc: null
+  value: 0.1
+batch_size:
+  desc: null
+  value: 2000
+max_grad_norm:
+  desc: null
+  value: 0.3
+clip_range:
+  desc: null
+  value: 0.1
+learning_rate:
+  desc: null
+  value: 0.0004
+n_steps:
+  desc: null
+  value: 400
+n_epochs:
+  desc: null
+  value: 16
+shaped_r_coef_horizon:
+  desc: null
+  value: 2500000.0
+divergent_check_timestep:
+  desc: null
+  value: 3000000.0
+num_workers:
+  desc: null
+  value: 30
+eval_interval:
+  desc: null
+  value: 10
+evals_num_to_threshold:
+  desc: null
+  value: 2
+device:
+  desc: null
+  value: cuda
+training_percent_start_eval:
+  desc: null
+  value: 0.5
+tensorboard_log:
+  desc: null
+  value: false
+seed:
+  desc: null
+  value: 79
+behavior_check:
+  desc: null
+  value: false
+log_dir:
+  desc: null
+  value: null
+num_checkpoints:
+  desc: null
+  value: 4
+checkp_step:
+  desc: null
+  value: null
+prefix:
+  desc: null
+  value: obs_
+save_states:
+  desc: null
+  value: true
+_wandb:
+  desc: null
+  value:
+    python_version: 3.7.16
+    cli_version: 0.16.1
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    start_time: 1705067158.107442
+    t:
+      1:
+      - 1
+      - 55
+      2:
+      - 1
+      - 55
+      3:
+      - 13
+      - 14
+      - 16
+      - 23
+      4: 3.7.16
+      5: 0.16.1
+      8:
+      - 5
+      13: linux-x86_64

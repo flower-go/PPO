@@ -1,0 +1,30 @@
+2024-01-12 11:04:17,426 INFO    MainThread:502589 [wandb_setup.py:_flush():76] Current SDK version is 0.16.1
+2024-01-12 11:04:17,426 INFO    MainThread:502589 [wandb_setup.py:_flush():76] Configure stats pid to 502589
+2024-01-12 11:04:17,426 INFO    MainThread:502589 [wandb_setup.py:_flush():76] Loading settings from /storage/plzen1/home/ayshi/.config/wandb/settings
+2024-01-12 11:04:17,426 INFO    MainThread:502589 [wandb_setup.py:_flush():76] Loading settings from /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/settings
+2024-01-12 11:04:17,426 INFO    MainThread:502589 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-01-12 11:04:17,426 INFO    MainThread:502589 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/diverse_pool_build.py', 'program_abspath': '/auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/diverse_pool_build.py', 'program': 'diverse_population/diverse_pool_build.py'}
+2024-01-12 11:04:17,427 INFO    MainThread:502589 [wandb_setup.py:_flush():76] Applying login settings: {'api_key': '***REDACTED***'}
+2024-01-12 11:04:17,427 INFO    MainThread:502589 [wandb_setup.py:_flush():76] Applying login settings: {'api_key': '***REDACTED***'}
+2024-01-12 11:04:17,427 INFO    MainThread:502589 [wandb_init.py:_log_setup():524] Logging user logs to /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_110417-19675207.meta-pbs.metacentrum.cz/logs/debug.log
+2024-01-12 11:04:17,427 INFO    MainThread:502589 [wandb_init.py:_log_setup():525] Logging internal logs to /auto/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/wandb/run-20240112_110417-19675207.meta-pbs.metacentrum.cz/logs/debug-internal.log
+2024-01-12 11:04:17,427 INFO    MainThread:502589 [wandb_init.py:init():564] calling init triggers
+2024-01-12 11:04:17,427 INFO    MainThread:502589 [wandb_init.py:init():572] wandb.init called with sweep_config: {}
+config: {'layout_name': 'forced_coordination', 'trained_models': 30, 'init_SP_agents': 3, 'eval_agents': 30, 'mode': 'POP', 'eval_mode': 'SP', 'kl_diff_bonus_reward_coef': 0.0, 'kl_diff_bonus_reward_clip': 0.0, 'kl_diff_loss_coef': 0.0, 'kl_diff_loss_clip': 0.0, 'delay_shared_reward': False, 'exp': 'obs_obs_chan_five_by_five_ref-30', 'eval_set_name': 'SP_EVAL2_ROP0.0', 'base_eval_name': 'SP_EVAL2_ROP0.0', 'execute_final_eval': False, 'final_eval_games_per_worker': 5, 'n_sample_partners': -1, 'frame_stacking': 4, 'frame_stacking_mode': 'channels', 'wandb_key': './wandbkey.txt', 'partner_action_deterministic': False, 'random_switch_start_pos': False, 'rnd_obj_prob_thresh_env': 0.0, 'rnd_obj_prob_thresh_agent': 0.0, 'static_start': False, 'ent_coef_start': 0.1, 'ent_coef_end': 0.03, 'ent_coef_horizon': 1500000.0, 'total_timesteps': 5500000.0, 'vf_coef': 0.1, 'batch_size': 2000, 'max_grad_norm': 0.3, 'clip_range': 0.1, 'learning_rate': 0.0004, 'n_steps': 400, 'n_epochs': 16, 'shaped_r_coef_horizon': 2500000.0, 'divergent_check_timestep': 3000000.0, 'num_workers': 30, 'eval_interval': 10, 'evals_num_to_threshold': 2, 'device': 'cuda', 'training_percent_start_eval': 0.5, 'tensorboard_log': False, 'seed': 42, 'behavior_check': False, 'log_dir': None, 'num_checkpoints': 4, 'checkp_step': None, 'prefix': 'obs_', 'save_states': True}
+2024-01-12 11:04:17,427 INFO    MainThread:502589 [wandb_init.py:init():614] starting backend
+2024-01-12 11:04:17,427 INFO    MainThread:502589 [wandb_init.py:init():618] setting up manager
+2024-01-12 11:04:17,430 INFO    MainThread:502589 [backend.py:_multiprocessing_setup():107] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2024-01-12 11:04:17,434 INFO    MainThread:502589 [wandb_init.py:init():624] backend started and connected
+2024-01-12 11:04:17,439 INFO    MainThread:502589 [wandb_init.py:init():716] updated telemetry
+2024-01-12 11:04:17,475 INFO    MainThread:502589 [wandb_init.py:init():749] communicating run to backend with 90.0 second timeout
+2024-01-12 11:04:18,073 INFO    MainThread:502589 [wandb_run.py:_on_init():2254] communicating current version
+2024-01-12 11:04:18,138 INFO    MainThread:502589 [wandb_run.py:_on_init():2263] got version response upgrade_message: "wandb version 0.16.2 is available!  To upgrade, please run:\n $ pip install wandb --upgrade"
+
+2024-01-12 11:04:18,138 INFO    MainThread:502589 [wandb_init.py:init():800] starting run threads in backend
+2024-01-12 11:04:21,250 INFO    MainThread:502589 [wandb_run.py:_console_start():2233] atexit reg
+2024-01-12 11:04:21,250 INFO    MainThread:502589 [wandb_run.py:_redirect():2088] redirect: wrap_raw
+2024-01-12 11:04:21,251 INFO    MainThread:502589 [wandb_run.py:_redirect():2153] Wrapping output streams.
+2024-01-12 11:04:21,251 INFO    MainThread:502589 [wandb_run.py:_redirect():2178] Redirects installed.
+2024-01-12 11:04:21,252 INFO    MainThread:502589 [wandb_init.py:init():841] run started, returning control to user process
+2024-01-12 11:04:21,253 INFO    MainThread:502589 [wandb_run.py:_config_callback():1342] config_cb None None {'execute_final_eval': True, 'mode': 'SP', 'n_sample_partners': -1, 'seed': 79, 'behavior_check': False, 'frame_stacking_mode': 'channels', 'frame_stacking': 4, 'eval_set_name': '', 'trained_models': 1, 'exp': 'chan_five_by_five_ref-30', 'eval_agents': 1, 'layout_name': 'five_by_five', 'final_eval_games_per_worker': 1}
+2024-01-12 11:04:52,432 WARNING MsgRouterThr:502589 [router.py:message_loop():77] message_loop has been closed

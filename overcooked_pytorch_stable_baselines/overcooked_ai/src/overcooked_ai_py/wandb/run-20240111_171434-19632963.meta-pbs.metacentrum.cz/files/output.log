@@ -1,0 +1,12 @@
+args print
+all args:
+namespace(_wandb={}, base_eval_name='SP_EVAL2_ROP0.0', batch_size=2000, behavior_check=False, checkp_step=None, clip_range=0.1, delay_shared_reward=False, device='cuda', divergent_check_timestep=3000000.0, ent_coef_end=0.03, ent_coef_horizon=1500000.0, ent_coef_start=0.1, eval_agents=1, eval_interval=10, eval_mode='SP', eval_set_name='', evals_num_to_threshold=2, execute_final_eval=True, exp='chan_five_by_five_ref-30', final_eval_games_per_worker=1, frame_stacking=4, frame_stacking_mode='channels', init_SP_agents=3, kl_diff_bonus_reward_clip=0.0, kl_diff_bonus_reward_coef=0.0, kl_diff_loss_clip=0.0, kl_diff_loss_coef=0.0, layout_name='five_by_five', learning_rate=0.0004, log_dir=None, max_grad_norm=0.3, mode='SP', n_epochs=16, n_sample_partners=-1, n_steps=400, num_checkpoints=4, num_workers=30, partner_action_deterministic=False, prefix='obs_', random_switch_start_pos=False, rnd_obj_prob_thresh_agent=0.0, rnd_obj_prob_thresh_env=0.0, save_states=True, seed=79, shaped_r_coef_horizon=2500000.0, static_start=False, tensorboard_log=False, total_timesteps=5500000.0, trained_models=1, training_percent_start_eval=0.5, vf_coef=0.1, wandb_key='./wandbkey.txt')
+gym env name Overcooked-v0
+X       D       P       X       X
+X                               S
+O               ↑1              X
+X       ↑0                      D
+X       O       X       P       X
+layout je five_by_five
+gyn env name je
+Overcooked-v0

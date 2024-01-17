@@ -1,0 +1,210 @@
+{
+    "os": "Linux-5.10.0-26-amd64-x86_64-with-debian-11.8",
+    "python": "3.7.16",
+    "heartbeatAt": "2024-01-14T22:31:14.050002",
+    "startedAt": "2024-01-14T22:31:11.999461",
+    "docker": null,
+    "cuda": null,
+    "args": [
+        "--exp=chan_five_by_five_ref-30"
+    ],
+    "state": "running",
+    "program": "diverse_population/diverse_pool_build.py",
+    "codePathLocal": "diverse_population/diverse_pool_build.py",
+    "codePath": "overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/diverse_pool_build.py",
+    "git": {
+        "remote": "git@github.com:flower-go/PPO.git",
+        "commit": "c4d0383188ba3f8e2190126c6550166089e69c35"
+    },
+    "email": null,
+    "root": "/mnt/storage-plzen1/home/ayshi/coding/PPO2/PPO",
+    "host": "gita1.cerit-sc.cz",
+    "username": "ayshi",
+    "executable": "/storage/plzen1/home/ayshi/envs/overcooked_ai_terminal/bin/python",
+    "cpu_count": 32,
+    "cpu_count_logical": 32,
+    "cpu_freq": {
+        "current": 3493.4790000000025,
+        "min": 0.0,
+        "max": 0.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3493.479,
+            "min": 0.0,
+            "max": 0.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 29.36499786376953,
+            "used": 21.42470932006836
+        }
+    },
+    "gpu": "NVIDIA GeForce RTX 2080 Ti",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce RTX 2080 Ti",
+            "memory_total": 11811160064
+        }
+    ],
+    "memory": {
+        "total": 440.8862113952637
+    }
+}

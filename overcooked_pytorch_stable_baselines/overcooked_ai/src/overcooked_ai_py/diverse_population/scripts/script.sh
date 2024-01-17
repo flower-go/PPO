@@ -18,7 +18,7 @@ cd $home_dir
 echo "homedir:" $home_dir
 export CODEDIR=$(pwd)/coding
 echo "codedir: " $CODEDIR
-export PROJDIR="$home_dir"/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py
+export PROJDIR="$home_dir"/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py
 echo "projdir: " $PROJDIR
 INFODIR="$home_dir"/coding/results
 export JOBID=$PBS_JOBID

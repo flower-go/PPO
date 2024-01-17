@@ -1,0 +1,4 @@
+name: overcooked_ai_terminal
+channels:
+  - defaults
+prefix: /storage/plzen1/home/ayshi/.conda/envs/overcooked_ai_terminal

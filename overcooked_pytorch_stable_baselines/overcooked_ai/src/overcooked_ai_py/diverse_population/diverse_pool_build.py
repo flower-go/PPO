@@ -25,6 +25,7 @@ from visualisation.visualisation import heat_map
 from evaluation.evaluation import Evaluator
 from divergent_solution_exception import divergent_solution_exception
 from stable_baselines3.common.callbacks import CheckpointCallback
+from stable_baselines3.common.utils import obs_as_tensor
 os.environ['CUDA_VISIBLE_DEVICES'] = "0"   #Due to Metacentrum computing reasons
 
 import argparse      
@@ -83,16 +84,18 @@ parser.add_argument("--behavior_check", default=False, action="store_true",help=
 parser.add_argument("--log_dir", default=None, help="directory for checkpoints")
 parser.add_argument("--num_checkpoints", default = 4, help="number of stored models")
 parser.add_argument("--checkp_step", default = None, help="chcekpoint in checkp_step steps will be loaded")
-parser.add_argument("--prefix", default="", help="prefix of the name")
-parser.add_argument("--save_states", default=False,action="store_true", help="")
+parser.add_argument("--prefix", default="obs_", help="prefix of the name")
+parser.add_argument("--save_states", default=True,action="store_true", help="")
 args = parser.parse_args([] if "__file__" not in globals() else None)
 import wandb
 import numpy as np
+
+os.environ["WANDB__SERVICE_WAIT"] = "300"
 random.seed(args.seed)
 np.random.seed(args.seed)
 
 def load_args_from_file(args):
-    name = args.exp[len(args.prefix):]
+    name = "chan_five_by_five_obs"
     try:
         path = projdir + "/diverse_population/scripts/hyperparams/" + name + ".json"
         with open(path, "r") as read_file:
@@ -109,6 +112,7 @@ def log_to_wandb(key, project_name, config_args, group = None):
     wandb.init(project = project_name, config=config_args, name=config_args.exp, id = jobid, group = group)
 
 def load_wandb_key(filename):
+    print(f"wandb cesta je {filename}")
     with open(filename) as f:
         wandb_key_value = f.readline()
     return wandb_key_value
@@ -377,7 +381,7 @@ if __name__ == "__main__":
     file_args = load_args_from_file(args)
     print("pred gym env vytvvorenim")
     wandb_key_value = load_wandb_key(args.wandb_key).strip()
-    log_to_wandb(wandb_key_value, "overcooked1", args)
+    log_to_wandb(wandb_key_value, "pokus", args)
     wandb.config.update(file_args, allow_val_change=True)
     args = SimpleNamespace(**wandb.config._items)
     print("args print")
@@ -421,7 +425,14 @@ if __name__ == "__main__":
     print_args()
     #Models training
     models = load_or_train_models(args, gym_env)
-
+    print("naloadovano")
+    obs = np.load("/storage/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/observations/chan_five_by_five_ref-30_observations_all.log.npy", allow_pickle = True)
+    print(obs.shape)
+    #action, others = models[0].policy.predict(obs, deterministic = True)
+    dist = models[0].policy.get_distribution(obs_as_tensor(obs[0],'cuda'))
+    #print(f"action is {action} and it also returned {others} and distribution is {dist}")
+    print(f"distribution is {dist} and logit is {dist.distribution.logits}")
+    exit()
     #Final evaluation
     if args.execute_final_eval:
         random.seed(args.seed)
