@@ -446,15 +446,15 @@ if __name__ == "__main__":
             print("generating observations starts here")
             group_name = args.full_exp_name + "_X_" + args.full_exp_name
             obs_file = "/storage/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/observations/chan_five_by_five_ref-30_observations_all.log.npy"
-            eval_table = evaluator.evaluate(models, models, args.final_eval_games_per_worker, args.layout_name,
+            eval_table, eval_file = evaluator.evaluate(models, models, args.final_eval_games_per_worker, args.layout_name,
                                             group_name,
                                             eval_env=eval_env, mode=args.mode, deterministic=True)
             print("eval_env " + str(eval_env))
             obs = np.load(obs_file, allow_pickle = True)
             print(f"obserations has  shape {obs.shape}")
             dist = models[0].policy.get_distribution(obs_as_tensor(obs[0],'cuda')) #TODO loaduju jen prvni tricetici
-            print(f"distribution is {dist} and logit is {dist.distribution.logits}")
-            exit()
+            print(f"distribution is {dist.distribution.probs} and logit is {dist.distribution.logits}")
+            #exit()
 
         elif args.mode == "POP":
             models_name = args.full_exp_name
@@ -470,9 +470,9 @@ if __name__ == "__main__":
         else:
             print("vypisuji v SP mode")
             group_name = args.full_exp_name + "_X_" + args.full_exp_name
-            eval_table = evaluator.evaluate(models, models, args.final_eval_games_per_worker, args.layout_name, group_name, eval_env = eval_env, mode=args.mode, deterministic=True)
+            eval_table, eval_file = evaluator.evaluate(models, models, args.final_eval_games_per_worker, args.layout_name, group_name, eval_env = eval_env, mode=args.mode, deterministic=True)
             print("eval table " + str(eval_table))
             print("eval_env " + str(eval_env))
             heat_map_file = heat_map(eval_table, group_name, args.layout_name, eval_env = eval_env, deterministic=True)
-        wandb.log({"heat_map": wandb.Image(heat_map_file)})
-        wandb.log({"eval_table": eval_table})
+            wandb.log({"heat_map": wandb.Image(heat_map_file)})
+        wandb.save(eval_file)
