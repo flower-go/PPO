@@ -63,6 +63,9 @@ def fill_table():
         for pref in exp_names1:
             names_dict.append(pref + "_" + map)
     res_table["exp_name"] = names_dict
+    res_table.set_index("exp_name", inplace=True)
+
+
 
 
 for map in maps:
@@ -80,11 +83,10 @@ def check_models(name_1, name_2 = None, count = 30):
             print(f"Path to models  {path} probably not found", file=sys. stderr)
         num_models = len(files)
         #results[map]["model_count_" + name_1] = num_models
-        res_table['']
         if num_models != count:
             is_ok= False
             print(f"Model count is wrong. Desired: {count} Actual:{num_models}")
-        results[map]["model_files_" + name_1] = [(f, os.path.getmtime(f)) for f in files]
+        res_table.loc[name_1 + map]["num_model"] = len(files)
     return results, is_ok
 
 def check_maps(name_1, name_2 = None):
@@ -173,6 +175,8 @@ def print_checkpoints():
 
 if __name__ == "__main__":
     fill_table()
+    check_models("nost1_","_ref-30")
+    print("end")
 #    print_models()
     #yes_maps = print_eval()
     #yes_maps =  print_eval("chan_", "ref-30")
