@@ -1,15 +1,18 @@
 import os
 import sys
 import datetime
-codedir = os.environ["CODEDIR"]
+import pandas as pd
+#codedir = os.environ["CODEDIR"]
+codedir = "/Users/petravysusilova/Documents/TR/research/coding"
 #codedir = /home/premek/DP/
-projdir = os.environ["PROJDIR"]
+#projdir = os.environ["PROJDIR"]
+projdir = codedir + "/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py"
 #projdir = /home/premek/DP/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_pytorch
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src")
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines/stable-baselines3")
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines")
 sys.path.append(projdir + "/diverse_population")
-from visualisation.maps.maps_to_pdf import createPDF
+#from visualisation.maps.maps_to_pdf import createPDF
 
 import argparse
 parser = argparse.ArgumentParser()
@@ -22,6 +25,7 @@ args = parser.parse_args([] if "__file__" not in globals() else None)
 
 
 results = {}
+res_table = pd.DataFrame(columns=['exp_name', 'num_model' ])
 
 
 maps = [
@@ -52,6 +56,14 @@ maps = [
     "tutorial_0"
 ]
 
+def fill_table():
+    exp_names1 = ["chan", "tupl", "nost"]
+    names_dict = []
+    for map in maps:
+        for pref in exp_names1:
+            names_dict.append(pref + "_" + map)
+    res_table["exp_name"] = names_dict
+
 
 for map in maps:
     results[map] = {}
@@ -65,9 +77,10 @@ def check_models(name_1, name_2 = None, count = 30):
         try:
             files = [f.path for f in os.scandir(path) if f.is_file()]
         except:
-            print(f"Path to model  {path} probably not found")
+            print(f"Path to models  {path} probably not found", file=sys. stderr)
         num_models = len(files)
-        results[map]["model_count_" + name_1] = num_models
+        #results[map]["model_count_" + name_1] = num_models
+        res_table['']
         if num_models != count:
             is_ok= False
             print(f"Model count is wrong. Desired: {count} Actual:{num_models}")
@@ -159,11 +172,12 @@ def print_checkpoints():
        print(f'"{map}": {res_c[map]["checkpoint_count"]},')
 
 if __name__ == "__main__":
+    fill_table()
 #    print_models()
     #yes_maps = print_eval()
-    yes_maps =  print_eval("chan_", "ref-30")
+    #yes_maps =  print_eval("chan_", "ref-30")
     #print_checkpoints()
-    prepare_pdf(yes_maps,args)
+    #prepare_pdf(yes_maps,args)
     #print_table()
 
 
