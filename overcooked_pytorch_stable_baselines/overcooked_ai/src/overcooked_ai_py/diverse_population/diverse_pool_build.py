@@ -96,16 +96,19 @@ random.seed(args.seed)
 np.random.seed(args.seed)
 
 def load_args_from_file(args):
-    name = "chan_five_by_five_obs"
+    name =  args.exp
+    if args.execution_mode == "obs":
+        name = "obs_settings"
     try:
         path = projdir + "/diverse_population/scripts/hyperparams/" + name + ".json"
         with open(path, "r") as read_file:
             file_args = json.load(read_file)
+        print(f"args loaded from file, loaded args: {file_args} ")
         return file_args
     except Exception as error:
-        print("no file with hyperparameters founded")
-        print(f"path was: {path}")
-        print(f"error is: {error}")
+        print("no file with hyperparameters founded", file=sys.stderr)
+        print(f"path was: {path}", file=sys.stderr)
+        print(f"error is: {error}",file=sys.stderr)
 def log_to_wandb(key, project_name, config_args, group = None):
     wandb.login(key=key)
     if group is None:
@@ -124,7 +127,7 @@ def load_or_train_models(args, env):
     There are args.trained_models standard models trained.
     If the experiment is in POP mode there are two additional final population agents trained.
     """
-    directory = projdir + "/diverse_population/models/" + args.layout_name + "/"
+    directory = "/storage/plzen1/home/ayshi/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py" + "/diverse_population/models/" + args.layout_name + "/"
     models = []
     env.population = []
     env.population_mode = False
@@ -158,11 +161,13 @@ def load_or_train_model(directory, n, env, args):
     if args.mode == "SP" or n < args.init_SP_agents:
         exp_part = args.exp
         if args.checkp_step or args.prefix:
-            exp_part = re.sub(r'^_', '', exp_part)
+            print("je tu prefix ktery odstranujeme")
+            exp_part = re.sub(r'^.*?_', '', exp_part)
+            print(exp_part)
     else:
         exp_part = args.full_exp_name
     model_name = directory + exp_part + "/" + str(n).zfill(2)
-    print("model name is:")
+    print(f"model name is:{model_name}")
     if (args.behavior_check): # muzeme chctit nacitat z checkpoints, ale u toho nebudem trenovat
         if args.checkp_step is not None:
             print("Hledam file pro konkrentni checkpoint")
@@ -216,7 +221,7 @@ def load_or_train_model(directory, n, env, args):
         except:
             print(f"mode {model_name} not found" )
 
-            if model is None:
+            if model is None and args.execution_mode != "obs":
                 print(f"I will train {model_name} now")
                 model = train_model(n, env, args)
                 model.save(model_name)
@@ -366,10 +371,10 @@ def print_args(a=None):
 
 args.exp = args.prefix + args.exp
 file_args = load_args_from_file(args)
-layout_name = file_args["layout_name"] if  file_args["layout_name"] is not None else args.layout_name
+layout_name = file_args["layout_name"] if "layout_name" in file_args else args.layout_name
 # Overcooked MDP and environment is loaded
 mdp = OvercookedGridworld.from_layout_name(layout_name)
-print(f"ov env se vytvari s laoutem {args.layout_name}")
+print(f"ov env se vytvari s laoutem {layout_name}")
 if (args.behavior_check):
     overcooked_env = OvercookedEnv.from_mdp(mdp, horizon=400, info_level=4)
     print("grid:" + str(overcooked_env.mdp.mdp_params["terrain"]))
@@ -378,7 +383,6 @@ else:
 
 if __name__ == "__main__":
     print(f"Job ID is {jobid}")
-    args.exp = args.prefix + args.exp
     file_args = load_args_from_file(args)
     print("pred gym env vytvvorenim")
     wandb_key_value = load_wandb_key(args.wandb_key).strip()
@@ -445,16 +449,28 @@ if __name__ == "__main__":
         if args.execution_mode == "obs":
             print("generating observations starts here")
             group_name = args.full_exp_name + "_X_" + args.full_exp_name
-            obs_file = "/storage/plzen1/home/ayshi/coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/observations/chan_five_by_five_ref-30_observations_all.log.npy"
-            eval_table, eval_file = evaluator.evaluate(models, models, args.final_eval_games_per_worker, args.layout_name,
+            obs_file = projdir + "/observations/" + args.exp +".npy"
+            print(f"obs file is {obs_file}")
+            eval_table, eval_file = evaluator.evaluate([models[0]],[models[0]], args.final_eval_games_per_worker, args.layout_name,
                                             group_name,
                                             eval_env=eval_env, mode=args.mode, deterministic=True)
             print("eval_env " + str(eval_env))
             obs = np.load(obs_file, allow_pickle = True)
-            print(f"obserations has  shape {obs.shape}")
-            dist = models[0].policy.get_distribution(obs_as_tensor(obs[0],'cuda')) #TODO loaduju jen prvni tricetici
+            print(f"observations has  shape {obs.shape}")
+
+            obs_to_save = []
+            for model in models:
+                m_obs = [] 
+                for o in obs:
+                    dist = model.policy.get_distribution(obs_as_tensor(o,'cuda')) #TODO loaduju jen prvni tricetici
+                    m_obs.append(dist.distribution.probs)
+                obs_to_save.append(m_obs)
             print(f"distribution is {dist.distribution.probs} and logit is {dist.distribution.logits}")
-            #exit()
+            np.save(projdir + "/distributions/" + args.exp + ".npy", obs_to_save)
+            #np observations check
+            dist_all = np.load(projdir + "/distributions/" + args.exp + ".npy", allow_pickle = True)
+            print(f"dist shape is: {dist_all.shape} a jeden prvek vypada jako {dist_all[0]}")
+#exit()
 
         elif args.mode == "POP":
             models_name = args.full_exp_name

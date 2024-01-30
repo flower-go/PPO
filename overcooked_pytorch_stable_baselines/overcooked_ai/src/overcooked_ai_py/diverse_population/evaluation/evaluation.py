@@ -53,7 +53,7 @@ class Evaluator(object):
 
             print(f"completed {completed} out of {total}")
         if self.args.execution_mode == "obs":
-            np.save(f"./observations/{self.args.exp}_observations_all.log", obs_to_store)
+            np.save(f"./observations/{self.args.exp}", obs_to_store)
         else:
             if file_full_name is not None:
                 np.savetxt(file_full_name, np.round(np.array(result_matrix)))
