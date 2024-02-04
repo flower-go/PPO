@@ -58,7 +58,7 @@ def gen_ref_30_common(result_dict):
     result_dict["mode"] ="SP"
     result_dict["n_sample_partners"] = -1
     result_dict["seed"] = seeds[0]
-    result_dict["behavior_check"] = True
+    result_dict["behavior_check"] = False
     return result_dict
 
 
@@ -70,9 +70,10 @@ def generate_whole_ref_pop(map_list = layouts_onions, step = None):
         fs = frame_stacking[stack_type]
         res["frame_stacking_mode"] = fs[0]
         res["frame_stacking"] = fs[1]
+        res["eval_set_name"] = ""
 
         for map in map_list:
-            res["exp"] = fs[0] + "_" + map + "_" + "ref-30"
+            res["exp"] = stack_type + "_" + map + "_" + "ref-30"
             res["layout_name"] = map
             prefix = ""
             if step is not None:
@@ -114,8 +115,14 @@ def generate_steps():
         generate_whole_ref_pop(step_map_list,step=s)
 
 
+def generate_rex():
+    for f in frame_stacking:
+        for map in layouts_onions:
+            print(f"rex {f}_{map}_ref-30")
+
 #generate_whole_ref_pop()
-generate_steps()
+#generate_steps()
+generate_rex()
 
 
 

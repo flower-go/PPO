@@ -234,16 +234,16 @@ def one_epoch_new(map_names = layouts_onions, step = None):
 
 
 
-def gen_obs():
+def gen_obs(map_names = layouts_onions):
     seed = seeds[0]
     for stacking in frame_stacking:
         print("\n" + "#stacking: " + stacking + "\n")
         for layout_name in map_names:
-            res = generate_new_ref30(stacking, layout_name)
+            res = generate_new_obs(stacking, layout_name)
             print(res)
-one_epoch_new()
+#one_epoch_new()
 #gen_steps_nostack()
-#gen_obs()
+gen_obs()
 
 
 
