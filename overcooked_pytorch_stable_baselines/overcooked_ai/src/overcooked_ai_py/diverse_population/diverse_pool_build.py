@@ -169,7 +169,7 @@ def load_or_train_model(directory, n, env, args):
             print(list_of_files)
             print(args.checkp_step)
             valid_files = [f for f in list_of_files if str(args.checkp_step) in f]
-            model_name= valid_files[0] if len(valid_files > 0) else None
+            model_name= valid_files[0] if len(valid_files) > 0 else None
             try:
                 print(f"Looking for file {model_name}")
                 model = PPO.load(model_name, env=env, device="cuda")
@@ -446,5 +446,7 @@ if __name__ == "__main__":
             print("eval table " + str(eval_table))
             print("eval_env " + str(eval_env))
             heat_map_file = heat_map(eval_table, group_name, args.layout_name, eval_env = eval_env, deterministic=True)
+        print("loguju ve wandb")
         wandb.log({"heat_map": wandb.Image(heat_map_file)})
         wandb.log({"eval_table": eval_table})
+        #wandb.save(eval_file)

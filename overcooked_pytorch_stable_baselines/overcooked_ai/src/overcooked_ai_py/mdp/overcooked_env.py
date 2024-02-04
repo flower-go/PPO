@@ -919,6 +919,9 @@ def get_vectorized_gym_env(base_env, gym_env_name, agent_idx, featurize_fn=None,
     """
     print("gym env name " + gym_env_name)
     print(base_env)
+    print(f"layout je {args.layout_name}")
+    print("gyn env name je ")
+    print(gym_env_name)
     print(type(base_env))
     def gym_env_fn():
         gym_env = gym.make(gym_env_name)

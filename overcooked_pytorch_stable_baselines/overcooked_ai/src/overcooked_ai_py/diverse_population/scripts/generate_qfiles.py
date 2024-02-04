@@ -72,12 +72,14 @@ def generate_whole_ref_pop(map_list = layouts_onions, step = None):
         res["frame_stacking"] = fs[1]
 
         for map in map_list:
-            res["exp"] = fs[0] + "_" + map + "_" + "ref-30"
+            res["exp"] = stack_type + "_" + map + "_" + "ref-30"
             res["layout_name"] = map
             prefix = ""
             if step is not None:
                 res["checkp_step"] = step
                 prefix = "steps" + str(step) + "_"
+                res["prefix"] = prefix
+            print(res)
             with open('./hyperparams/' + prefix + stack_type + "_" + map + "_" + "ref-30" + '.json', 'w') as f:
                 json.dump(res, f)
 
