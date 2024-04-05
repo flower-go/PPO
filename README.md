@@ -1,3 +1,5 @@
+All code connected to population traiing is in the [directory diverse population](https://github.com/flower-go/PPO/tree/3f91fb5309cd3f9113c1a0b4bdfe99d80e97e1dc/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population)
+
 # Cooperation with Unknown Agents in Multi-agent Overcooked Environment
 
 This git repository (https://github.com/PremekBasta/PPO) serves the purpose of studying cooperation of artificial agents in multi agent cooking environment.
