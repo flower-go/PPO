@@ -1,7 +1,7 @@
 
 
-
-
+SCRIPT_PATH_PPO2 = "./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/script.sh"
+START_QSUB_PPO2 = "sh ./coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni "
 START_QSUB = "sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni "
 SCRIPT_PATH = "./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/script.sh"
 layouts_onions = [
@@ -155,8 +155,8 @@ def one_epoch_eval(checkpoint = None, map_names = layouts_onions):
         for layout_name in map_names:
             res, exp = SP_epochs(layout_name, seed, stacking)
             res = res  + " walltime=40:00:00"
-            if checkpoint is not None:
-                res = res + f' checkp_steps="{checkpoint}"'
+            #if checkpoint is not None:
+                #res = res + f' checkp_steps="{checkpoint}"'
             print(res)
 
 
@@ -218,6 +218,10 @@ def generate_new_ref30(stacking, layout_name, step = None):
     result = START_QSUB + 'exp="' + exp + '" ' + ' walltime=99:00:00'
     return result
 
+def generate_new_obs(stacking, layout_name):
+    exp = stacking[0:4] + "_"  + layout_name + "_ref-30"
+    result = START_QSUB_PPO2 + 'exp="' + exp + '" ' + ' walltime=01:00:00' + ' execution_mode="obs"' + f' layout="{layout_name}"' + ' prefix="obs_"'
+    return result
 
 
 def one_epoch_new(map_names = layouts_onions, step = None):
@@ -228,8 +232,25 @@ def one_epoch_new(map_names = layouts_onions, step = None):
             res = generate_new_ref30(stacking, layout_name)
             print(res)
 
+
+
+def gen_obs(map_names = layouts_onions):
+    seed = seeds[0]
+    for stacking in frame_stacking:
+        print("\n" + "#stacking: " + stacking + "\n")
+        for layout_name in map_names:
+            res = generate_new_obs(stacking, layout_name)
+            print(res)
 #one_epoch_new()
-gen_steps_nostack()
+#gen_steps_nostack()
+gen_obs()
+
+
+
+
+
+
+
 
 
 

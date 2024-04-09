@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-def heat_map(table, group_name, layout_name, deterministic=True, eval_env=""):
+def heat_map(table, group_name, layout_name, deterministic=True, eval_env="", prefix = ''):
     """
     Visualises evaluated cross-play table as heat map
     """
@@ -32,7 +32,7 @@ def heat_map(table, group_name, layout_name, deterministic=True, eval_env=""):
     file_name = file_dir + group_name + ('' if deterministic else '_STOCH')
     if not os.path.exists(file_dir):
         os.makedirs(file_dir)
-    file_name = file_name + eval_env + ".png"
+    file_name = file_name +  eval_env + prefix + ".png"
     print("jmeno filu je:" + file_name)
     plt.savefig(file_name)
     return file_name

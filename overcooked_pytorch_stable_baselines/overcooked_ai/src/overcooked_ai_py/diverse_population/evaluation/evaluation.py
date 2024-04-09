@@ -25,7 +25,7 @@ class Evaluator(object):
         #logger.addHandler(handler)
         #self.logger = logger
 
-    def evaluate(self, agent_set_0, agent_set_1, num_games_per_worker = 2, layout_name = None, group_name = None, deterministic=True, eval_env="", mode="POP"):
+    def evaluate(self, agent_set_0, agent_set_1, num_games_per_worker = 2, layout_name = None, group_name = None, deterministic=True, eval_env="", mode="POP", prefix=''):
         """
         Pairwise cross-evaluation is performed.
         Result is saved for future straightforward loading.
@@ -33,7 +33,7 @@ class Evaluator(object):
         file_dir = f"{os.environ['PROJDIR']}/diverse_population/evaluation/{layout_name}/"
         if not os.path.exists(file_dir):
             os.makedirs(file_dir)
-        file_full_name = f"{os.environ['PROJDIR']}/diverse_population/evaluation/{layout_name}/" + group_name + ('' if deterministic else '_STOCH')
+        file_full_name = f"{os.environ['PROJDIR']}/diverse_population/evaluation/{layout_name}/"  +  group_name + ('' if deterministic else '_STOCH') + prefix
         file_full_name += eval_env
         # try:
         #    result_matrix = np.loadtxt(file_full_name)

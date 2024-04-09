@@ -2,7 +2,7 @@ import os
 # Function to rename multiple files
 def main():
         print(os.listdir("./"))
-        path="./diverse_population/models/"
+        path="./diverse_population/visualisation/"
         for dir in os.listdir(path):
             print(dir)
             if os.path.isdir(path + dir):

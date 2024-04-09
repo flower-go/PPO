@@ -157,7 +157,7 @@ def load_or_train_model(directory, n, env, args):
     else:
         exp_part = args.full_exp_name
     model_name = directory + exp_part + "/" + str(n).zfill(2)
-    
+    print(f"exp_part is {exp_part}")
     if (args.behavior_check): # muzeme chctit nacitat z checkpoints, ale u toho nebudem trenovat
         if args.checkp_step is not None:
             print("Hledam file pro konkrentni checkpoint")
@@ -185,7 +185,8 @@ def load_or_train_model(directory, n, env, args):
                 model = PPO.load(model_name, env=env, device="cuda")
                 model.custom_id = n
                 print(f"model {model_name} loaded")
-            except:
+            except Exception as e:
+                print(e)
                 print(f"mode {model_name} not found")
 
             if model is None: #zkusme latest checkpoint
@@ -215,9 +216,15 @@ def load_or_train_model(directory, n, env, args):
                 print(f"I will train {model_name} now")
                 model = train_model(n, env, args)
                 model.save(model_name)
+                wandb_path = os.path.join(wandb.run.dir, model_name.split("/")[-1])
+                model.save(wandb_path)
+                print(f"saved to wandb as {wandb_path}")
                 print(f"model {model_name} learned")
     if model is None:
         raise Exception("DONT PANIC! No model loaded, check your paths, params and error output.")
+    wandb_path = os.path.join(wandb.run.dir, model_name.split("/")[-1] + "/" + str(n).zfill(2))
+    model.save(wandb_path)
+    print(f"saved to wandb as {wandb_path}")
     return model
 
 
@@ -275,7 +282,6 @@ def train_model(n, env, args):
             if (args.behavior_check):
                 break;
             found = False
-
     return model
 
 
@@ -437,15 +443,15 @@ if __name__ == "__main__":
             eval_models = get_eval_models(args, gym_env, mode=args.eval_mode)
 
             #Sets of models are cross-play evaluated
-            eval_table = evaluator.evaluate(models, eval_models, args.final_eval_games_per_worker, args.layout_name, group_name, eval_env = eval_env, mode=args.mode, deterministic=True)
-            heat_map_file = heat_map(eval_table, group_name, args.layout_name, eval_env = eval_env, deterministic=True)
+            eval_table = evaluator.evaluate(models, eval_models, args.final_eval_games_per_worker, args.layout_name, group_name, eval_env = eval_env, mode=args.mode, deterministic=True, prefix=args.prefix)
+            heat_map_file = heat_map(eval_table, group_name, args.layout_name, eval_env = eval_env, deterministic=True, prefix=args.prefix)
         else:
             print("vypisuji v SP mode")
             group_name = args.full_exp_name + "_X_" + args.full_exp_name
-            eval_table = evaluator.evaluate(models, models, args.final_eval_games_per_worker, args.layout_name, group_name, eval_env = eval_env, mode=args.mode, deterministic=True)
+            eval_table = evaluator.evaluate(models, models, args.final_eval_games_per_worker, args.layout_name, group_name, eval_env = eval_env, mode=args.mode, deterministic=True, prefix=args.prefix)
             print("eval table " + str(eval_table))
             print("eval_env " + str(eval_env))
-            heat_map_file = heat_map(eval_table, group_name, args.layout_name, eval_env = eval_env, deterministic=True)
+            heat_map_file = heat_map(eval_table, group_name, args.layout_name, eval_env = eval_env, deterministic=True, prefix=args.prefix)
         print("loguju ve wandb")
         wandb.log({"heat_map": wandb.Image(heat_map_file)})
         wandb.log({"eval_table": eval_table})
