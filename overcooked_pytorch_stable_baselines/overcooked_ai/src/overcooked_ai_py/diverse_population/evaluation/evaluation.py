@@ -55,7 +55,7 @@ class Evaluator(object):
         if file_full_name is not None:
             np.savetxt(file_full_name, np.round(np.array(result_matrix)))
 
-        return np.array(result_matrix)
+        return np.array(result_matrix),file_full_name
 
     def eval_episodes(self, self_agent_model, other_agent_model, num_games_per_worker, deterministic=True):
         """
