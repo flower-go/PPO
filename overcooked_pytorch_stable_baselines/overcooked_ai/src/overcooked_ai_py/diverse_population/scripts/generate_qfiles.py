@@ -115,9 +115,38 @@ def generate_steps():
                 step_map_list.append(m)
         generate_whole_ref_pop(step_map_list,step=s)
 
+def generate_R0():
+    result_dict = {}
+    result_dict["execute_final_eval"] = True
+    result_dict["mode"] ="POP"
+    result_dict["n_sample_partners"] = 3
+    result_dict["seed"] = seeds[0]
+    result_dict["behavior_check"] = False
+
+    for stack_type in frame_stacking:
+        fs = frame_stacking[stack_type]
+        result_dict["frame_stacking_mode"] = fs[0]
+        result_dict["frame_stacking"] = fs[1]
+
+        for map in vis_maps:
+            exp_part = stack_type + "_" + map + "_"
+            result_dict["exp"] = exp_part + "R0"
+            result_dict["layout_name"] = map
+            result_dict["base_eval_name"] = exp_part + "_ref-30"
+            result_dict["trained_models"] = 11
+            result_dict["kl_diff_bonus_reward_coef"] = 0.08
+            result_dict["kl_diff_bonus_reward_clip"] = 0.025
+            prefix = ""
+            print(result_dict)
+            with open('./hyperparams/' + prefix + stack_type + "_" + map + "_" + "R0" + '.json', 'w') as f:
+                json.dump(res, f)
+
+
+
 
 #generate_whole_ref_pop()
-generate_steps()
+#generate_steps()
+generate_R0()
 
 
 
