@@ -1,0 +1,84 @@
+
+#stacking: channels
+
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=chan_small_corridor_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=chan_five_by_five_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=chan_schelling_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=chan_centre_pots_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=chan_corridor_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=chan_pipeline_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=chan_scenario1_s_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=chan_large_room_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=chan_asymmetric_advantages_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=chan_schelling_s_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=chan_coordination_ring_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=chan_counter_circuit_o_1order_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=chan_long_cook_time_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=chan_cramped_room_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=chan_forced_coordination_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=chan_m_shaped_s_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=chan_unident_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=chan_simple_o_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=chan_centre_objects_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=chan_scenario2_s_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=chan_scenario3_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=chan_scenario2_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=chan_scenario4_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=chan_bottleneck_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=chan_tutorial_0_R0 walltime=120:00:00
+
+#stacking: tuple
+
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=tupl_small_corridor_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=tupl_five_by_five_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=tupl_schelling_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=tupl_centre_pots_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=tupl_corridor_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=tupl_pipeline_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=tupl_scenario1_s_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=tupl_large_room_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=tupl_asymmetric_advantages_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=tupl_schelling_s_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=tupl_coordination_ring_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=tupl_counter_circuit_o_1order_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=tupl_long_cook_time_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=tupl_cramped_room_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=tupl_forced_coordination_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=tupl_m_shaped_s_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=tupl_unident_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=tupl_simple_o_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=tupl_centre_objects_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=tupl_scenario2_s_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=tupl_scenario3_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=tupl_scenario2_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=tupl_scenario4_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=tupl_bottleneck_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=tupl_tutorial_0_R0 walltime=120:00:00
+
+#stacking: nostack
+
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=nost_small_corridor_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=nost_five_by_five_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=nost_schelling_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=nost_centre_pots_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=nost_corridor_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=nost_pipeline_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=nost_scenario1_s_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=nost_large_room_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=nost_asymmetric_advantages_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=nost_schelling_s_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=nost_coordination_ring_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=nost_counter_circuit_o_1order_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=nost_long_cook_time_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=nost_cramped_room_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=nost_forced_coordination_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=nost_m_shaped_s_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=nost_unident_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=nost_simple_o_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=nost_centre_objects_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=nost_scenario2_s_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=nost_scenario3_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=nost_scenario2_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=nost_scenario4_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=nost_bottleneck_R0 walltime=120:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp=nost_tutorial_0_R0 walltime=120:00:00
