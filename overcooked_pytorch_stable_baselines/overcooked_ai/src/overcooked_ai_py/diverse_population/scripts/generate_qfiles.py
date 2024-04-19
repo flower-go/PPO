@@ -86,7 +86,7 @@ def generate_whole_ref_pop(map_list = layouts_onions, step = None):
 def generate_steps():
     steps = [1377030, 2754060, 4131090]
     counts = {
-        "five_by_five": 2,
+        "five_by_five": 3,
         "schelling": 3,
         "centre_pots": 3,
         "scenario1_s": 3,
@@ -96,14 +96,14 @@ def generate_steps():
         "coordination_ring": 3,
         "counter_circuit_o_1order": 3,
         "cramped_room": 3,
-        "forced_coordination": 2,
-        "m_shaped_s": 2,
-        "unident": 2,
-        "simple_o": 2,
+        "forced_coordination": 3,
+        "m_shaped_s": 3,
+        "unident": 3,
+        "simple_o": 3,
         "centre_objects": 3,
         "scenario2_s": 3,
         "scenario3": 3,
-        "scenario2": 2,
+        "scenario2": 3,
         "scenario4": 3,
         "bottleneck": 3
     }
