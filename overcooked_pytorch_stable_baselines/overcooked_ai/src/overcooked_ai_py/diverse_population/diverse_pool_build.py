@@ -44,7 +44,7 @@ parser.add_argument("--delay_shared_reward", default=False, action="store_true",
 parser.add_argument("--exp", default="", type=str, help="Experiment name")
 parser.add_argument("--eval_set_name", default="SP_EVAL2_ROP0.0", type=str, help="Exact name of evaluation set")
 parser.add_argument("--base_eval_name", default="SP_EVAL2_ROP0.0", type=str, help="Base name of evaluation set")
-parser.add_argument("--execute_final_eval", default=False, action="store_true", help="Whether to do final evaluation")
+parser.add_argument("--execute_final_eval", default=True, action="store_true", help="Whether to do final evaluation")
 parser.add_argument("--final_eval_games_per_worker", default=5, type=int, help="Number of games per worker for pair in final evaluation")
 parser.add_argument("--n_sample_partners", default=-1, type=int, help="Number of sampled partners from population for data collection")
 parser.add_argument("--frame_stacking", default=4, type=int, help="Number of frames stacked considered for temporal information")
@@ -122,9 +122,18 @@ def load_or_train_models(args, env):
     directory = projdir + "/diverse_population/models/" + args.layout_name + "/"
     models = []
     env.population = []
+    five_chan = [0,1,5]
+    forced_nost = [2,3,4]
     env.population_mode = False
     for n in range(args.trained_models):
-        model = load_or_train_model(directory, n, env, args)
+        if args.mode == "POP" and n < args.init_SP_agents:
+            n_new = forced_nost[n]
+            init = True
+        else:
+            init = False
+            n_new=n
+        print(f"budu loadovat mode cislo {n_new}, jsem v modu {args.mode} a pop mod je {env.population_mode}")
+        model = load_or_train_model(directory, n_new, env, args, init)
         models.append(model)
         env.population.append(model)
 
@@ -145,15 +154,17 @@ def load_or_train_models(args, env):
     return models
 
 
-def load_or_train_model(directory, n, env, args):
+def load_or_train_model(directory, n, env, args, init=False):
     """
     Tries to load one trained model. Model is trained if not found.
     """
     model = None
-    if args.mode == "SP" or n < args.init_SP_agents:
+    if args.mode == "SP":
         exp_part = args.exp
         if args.checkp_step:
             exp_part = re.sub(r'^_', '', exp_part)
+    elif init:
+        exp_part = args.base_eval_name
     else:
         exp_part = args.full_exp_name
     model_name = directory + exp_part + "/" + str(n).zfill(2)
@@ -216,9 +227,7 @@ def load_or_train_model(directory, n, env, args):
                 print(f"I will train {model_name} now")
                 model = train_model(n, env, args)
                 model.save(model_name)
-                wandb_path = os.path.join(wandb.run.dir, model_name.split("/")[-1])
-                model.save(wandb_path)
-                print(f"saved to wandb as {wandb_path}")
+
                 print(f"model {model_name} learned")
     if model is None:
         raise Exception("DONT PANIC! No model loaded, check your paths, params and error output.")
@@ -443,16 +452,16 @@ if __name__ == "__main__":
             eval_models = get_eval_models(args, gym_env, mode=args.eval_mode)
 
             #Sets of models are cross-play evaluated
-            eval_table = evaluator.evaluate(models, eval_models, args.final_eval_games_per_worker, args.layout_name, group_name, eval_env = eval_env, mode=args.mode, deterministic=True, prefix=args.prefix)
+            eval_table,eval_file = evaluator.evaluate(models, eval_models, args.final_eval_games_per_worker, args.layout_name, group_name, eval_env = eval_env, mode=args.mode, deterministic=True, prefix=args.prefix)
             heat_map_file = heat_map(eval_table, group_name, args.layout_name, eval_env = eval_env, deterministic=True, prefix=args.prefix)
         else:
             print("vypisuji v SP mode")
             group_name = args.full_exp_name + "_X_" + args.full_exp_name
-            eval_table = evaluator.evaluate(models, models, args.final_eval_games_per_worker, args.layout_name, group_name, eval_env = eval_env, mode=args.mode, deterministic=True, prefix=args.prefix)
+            eval_table, eval_file = evaluator.evaluate(models, models, args.final_eval_games_per_worker, args.layout_name, group_name, eval_env = eval_env, mode=args.mode, deterministic=True, prefix=args.prefix)
             print("eval table " + str(eval_table))
             print("eval_env " + str(eval_env))
             heat_map_file = heat_map(eval_table, group_name, args.layout_name, eval_env = eval_env, deterministic=True, prefix=args.prefix)
         print("loguju ve wandb")
         wandb.log({"heat_map": wandb.Image(heat_map_file)})
-        wandb.log({"eval_table": eval_table})
-        #wandb.save(eval_file)
+        #wandb.log({"eval_table": eval_table})
+        wandb.save(eval_file)
