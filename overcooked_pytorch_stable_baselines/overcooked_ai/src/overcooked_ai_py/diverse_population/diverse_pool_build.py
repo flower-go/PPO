@@ -85,6 +85,7 @@ parser.add_argument("--num_checkpoints", default = 4, help="number of stored mod
 parser.add_argument("--checkp_step", default = None, help="chcekpoint in checkp_step steps will be loaded")
 parser.add_argument("--prefix", default="", help="prefix of the name")
 parser.add_argument("--save_states", default=False,action="store_true", help="")
+parser.add_argument("--init_indices", default=None,type=str, help="indices of init agent for pop training")
 args = parser.parse_args([] if "__file__" not in globals() else None)
 import wandb
 import numpy as np
@@ -386,6 +387,13 @@ if (args.behavior_check):
 else:
     overcooked_env = OvercookedEnv.from_mdp(mdp, horizon=400)
 
+def load_init_indices(args):
+    postfix_len = len(args.exp.split("_")[-1])
+    name = args.exp[len(args.prefix):][:-postfix_len] + "_ref-30"
+    path_in = projdir + "/diverse_population/inits/" + name
+    print(path_in)
+    return np.loadtxt(path_in).astype(int)
+
 if __name__ == "__main__":
     print(jobid)
     args.exp = args.prefix + args.exp
@@ -397,6 +405,11 @@ if __name__ == "__main__":
     args = SimpleNamespace(**wandb.config._items)
     print("args print")
     print_args(args)
+
+    if (args.init_indices == None) and (args.mode="POP"):
+        args.init_indices = load_init_indices(args)
+        print(f"init indices {args.init_indices}")
+        exit()
     if (args.behavior_check):
         args.log_dir = projdir + "/diverse_population/text_logs/" + args.layout_name + "/"
         os.makedirs(args.log_dir, exist_ok=True)
