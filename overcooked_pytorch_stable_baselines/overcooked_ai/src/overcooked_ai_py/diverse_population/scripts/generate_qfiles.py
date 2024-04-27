@@ -128,7 +128,7 @@ def generate_R0():
         result_dict["frame_stacking_mode"] = fs[0]
         result_dict["frame_stacking"] = fs[1]
 
-        for map in vis_maps:
+        for map in layouts_onions:
             exp_part = stack_type + "_" + map + "_"
             result_dict["exp"] = exp_part + "R0"
             result_dict["layout_name"] = map
@@ -139,7 +139,7 @@ def generate_R0():
             prefix = ""
             print(result_dict)
             with open('./hyperparams/' + prefix + stack_type + "_" + map + "_" + "R0" + '.json', 'w') as f:
-                json.dump(res, f)
+                json.dump(result_dict, f)
 
 
 

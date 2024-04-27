@@ -225,7 +225,7 @@ def generate_new_obs(stacking, layout_name):
 
 def generate_R0(stacking, layout_name):
     exp =  stacking[0:4] + "_"  + layout_name + "_R0"
-    result = f"{START_QSUB}exp={exp} walltime=120:00:00"
+    result = f'{START_QSUB}exp="{exp}" walltime=120:00:00'
     return result
 
 

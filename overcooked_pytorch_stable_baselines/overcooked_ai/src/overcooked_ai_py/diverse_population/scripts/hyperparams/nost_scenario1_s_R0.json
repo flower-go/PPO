@@ -1,0 +1,1 @@
+{"execute_final_eval": true, "mode": "POP", "n_sample_partners": 3, "seed": 79, "behavior_check": false, "frame_stacking_mode": "channels", "frame_stacking": 1, "exp": "nost_scenario1_s_R0", "layout_name": "scenario1_s", "base_eval_name": "nost_scenario1_s__ref-30", "trained_models": 11, "kl_diff_bonus_reward_coef": 0.08, "kl_diff_bonus_reward_clip": 0.025}

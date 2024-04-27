@@ -20,7 +20,7 @@ sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked
 sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp="steps1377030_nost_scenario4_ref-30"  walltime=99:00:00
 sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp="steps1377030_nost_bottleneck_ref-30"  walltime=99:00:00
 sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp="steps1377030_nost_asymmetric_advantages_ref-30"  walltime=99:00:00
-
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp="steps1377030_nost_pipeline_ref-30"  walltime=99:00:00
 # steps 2754060
 sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp="steps2754060_nost_five_by_five_ref-30"  walltime=99:00:00
 sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp="steps2754060_nost_schelling_ref-30"  walltime=99:00:00
@@ -42,6 +42,7 @@ sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked
 sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp="steps2754060_nost_scenario4_ref-30"  walltime=99:00:00
 sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp="steps2754060_nost_bottleneck_ref-30"  walltime=99:00:00
 sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp="steps2754060_nost_asymmetric_advantages_ref-30"  walltime=99:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp="steps2754060_nost_pipeline_ref-30"  walltime=99:00:00
 # steps 4131090
 sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp="steps4131090_nost_schelling_ref-30"  walltime=99:00:00
 sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp="steps4131090_nost_centre_pots_ref-30"  walltime=99:00:00
@@ -57,5 +58,6 @@ sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked
 sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp="steps4131090_nost_scenario4_ref-30"  walltime=99:00:00
 sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp="steps4131090_nost_bottleneck_ref-30"  walltime=99:00:00
 sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp="steps4131090_nost_asymmetric_advantages_ref-30"  walltime=99:00:00
+sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni exp="steps4131090_nost_pipeline_ref-30"  walltime=99:00:00
 
 Process finished with exit code 0
