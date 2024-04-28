@@ -132,7 +132,7 @@ def generate_R0():
             exp_part = stack_type + "_" + map + "_"
             result_dict["exp"] = exp_part + "R0"
             result_dict["layout_name"] = map
-            result_dict["base_eval_name"] = exp_part + "_ref-30"
+            result_dict["base_eval_name"] = exp_part + "ref-30"
             result_dict["trained_models"] = 11
             result_dict["kl_diff_bonus_reward_coef"] = 0.08
             result_dict["kl_diff_bonus_reward_clip"] = 0.025
