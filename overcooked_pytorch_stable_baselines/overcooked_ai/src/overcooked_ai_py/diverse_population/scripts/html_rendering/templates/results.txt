@@ -25,15 +25,12 @@
   .w3-card {
   display: inline-block;
 }
- .w3-row {
-margin-right:32px;
- margin-left:32px
+
+.img {
+margin: 5px;
 }
 
-@media only screen and (min-width: 1000px) {
-  /* For large screens: */
-  .cardrow {margin-right: 128px; margin-left: 128px}
-}
+
 
 
 
@@ -42,39 +39,50 @@ body, html {height: 100%;}
 body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
 h1 {font-family: 'Roboto Condensed'; font-weight:100;}
 .menu {display: none}
-.bimg {
-  background-repeat: no-repeat;
-  background-size: 100%;
-  min-height: 100%;
-  opacity: 90%;
-  background-color: white;
-}
 </style>
 </head>
 
 <body>
   {% for map in maps %}
   <div class="w3-container">
-  <h1 class="w3-grey">{{ map }}</h1>
-  <div class="w3-row">
+  <h1 class="w3-amber w3-text-white">{{ map }}</h1>
+  <h3 class=" w3-text-green"> baseline </h1>
+  <table class="w3-border w3-border-green">
+  <tr>
+  <th class="w3-center w3-light-grey w3-border-right"> Kitchen Layout</th>
   {% for key, value in res[map].items() %}
-  <div class="w3-col l1">
-     <p>{{ key }}</p>
-     <img src="{{ res[map][key]["heat"] }}" width="100">
-</div>
-      <div class="w3-col l1">
-     <p>{{ key }}  - 60% of traiing time done</p>
-     <img src="{{ res[map][key]["heat_s2"] }}" width="100">
-</div>
-  <div class="w3-col l1">
-     <p>{{ key }}  - 30% of traiing time done</p>
-     <img src="{{ res[map][key]["heat_s1"] }}" width="100">
-     </div>
-
-
-{% endfor %}
-     </div> </div>
-<hr>
+  {% if key != "general" %}
+  <th colspan="2" class="w3-center w3-light-grey w3-border-right"> {{ key }} </th>
+  {% endif %}
   {% endfor %}
+  </tr>
+<tr>
+<td class="w3-border-right w3-cell-top"><img src="{{ res[map]["general"]["layout"] }}" width="300px"></td>
+   {% for key, value in res[map].items() %}
+   {% if key != "general" %}
+    <td class="w3-cell-top">
+        <img src="{{ res[map][key]["heat"] }}" width="200px">
+    </td>
+ <td class="w3-border-right" >
+ {% if key != "channels" and key !="tuple" %}
+ <table class="w3-table w3-cell-top">
+    <tr><td class="w3-cell-top">
+        <p class="w3-text-grey">{{ key }} - 60% of train</p>
+        <img src="{{ res[map][key]["heat_s2"] }}" width="100px">
+    </td></tr>
+ <tr><td class="w3-cell-top">
+     <p class="w3-text-grey">{{ key }} - 30% of train</p>
+     <img src="{{ res[map][key]["heat_s1"] }}" width="100">
+ </td></tr>
+ </table>
+ {% endif %}
+ </td>
+    {% endif %}
+    {% endfor %}
+</tr>
+  </table>
+</div>
+<hr>
+{% endfor %}
 </body>
 </html>

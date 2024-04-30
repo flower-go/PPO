@@ -7,6 +7,7 @@
 
 # write_messages.py
 CODE_PATH = "C:/Users/PetraVysušilová/Documents/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/"
+MDP_PATH = "C:/Users/PetraVysušilová/Documents/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/mdp/"
 heat_path = "visualisation/"
 
 from jinja2 import Environment, FileSystemLoader
@@ -41,9 +42,9 @@ layouts_onions = [
            "bottleneck",
            "tutorial_0"]
 
-frame_stacking = {"chan":("channels",4),
-                  "tupl":("tuple",4),
-                  "nost":("channels",1) #effectively no stacking
+frame_stacking = {"chan":"channels",
+                  "tupl":"tuple",
+                  "nost":"nostack", #effectively no stacking
                   }
 
 environment = Environment(loader=FileSystemLoader("C:\\Users\\PetraVysušilová\\Documents\\coding\\PPO\\overcooked_pytorch_stable_baselines\\overcooked_ai\\src\\overcooked_ai_py\\diverse_population\\scripts\\html_rendering\\templates"))
@@ -53,7 +54,8 @@ res_dict = {}
 for i in layouts_onions:
     res_dict[i] = {}
     for s in frame_stacking:
-        res_dict[i][s] = {}
+        res_dict[i][frame_stacking[s]] = {}
+    res_dict[i]["general"] = {}
 
 def heat_maps():
     result = []
@@ -61,7 +63,7 @@ def heat_maps():
     for map in layouts_onions:
         for s in frame_stacking:
             file = f"{path}/{map}/{s}_{map}_ref-30_reordered.png"
-            res_dict[map][s]["heat"] = file
+            res_dict[map][frame_stacking[s]]["heat"] = file
             #result.append(file)
 
 def heat_steps():
@@ -69,14 +71,20 @@ def heat_steps():
     for map in layouts_onions:
         for s in frame_stacking:
             file = f"{path}/{map}/steps2754060_{s}_{map}_ref-30_reordered.png"
-            res_dict[map][s]["heat_s2"] = file
+            res_dict[map][frame_stacking[s]]["heat_s2"] = file
             file = f"{path}/{map}/steps1377030_{s}_{map}_ref-30_reordered.png"
-            res_dict[map][s]["heat_s1"] = file
-
+            res_dict[map][frame_stacking[s]]["heat_s1"] = file
+def map_image():
+    path = CODE_PATH +  "visualisation/maps"
+    for map in layouts_onions:
+        for s in frame_stacking:
+            file = f"{path}/{map}.png"
+            res_dict[map]["general"]["layout"] = file
 
 
 heat_maps()
 heat_steps()
+map_image()
 with open("results.html", mode="w", encoding="utf-8") as results:
     results.write(template.render(maps=layouts_onions, res = res_dict))
     print(f"... wrote {results}")
