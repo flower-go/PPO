@@ -345,7 +345,8 @@ def get_name(name, args, sp=False, extended=False):
     if sp:
         pass
     else:
-        if extended:
+        pass
+        '''if extended:
             full_name = full_name + "_VF" + str(args.vf_coef)
             full_name = full_name + "_MGN" + str(args.max_grad_norm)
             full_name = full_name + "_CR" + str(args.clip_range)
@@ -367,7 +368,7 @@ def get_name(name, args, sp=False, extended=False):
         full_name = full_name + "_LClip" + str(args.kl_diff_loss_clip)
         full_name = full_name + "_DSR" + str(args.delay_shared_reward)
         full_name = full_name + "_PAD" + str(args.partner_action_deterministic)
-        full_name = full_name + "_NSP" + str(args.n_sample_partners)
+        full_name = full_name + "_NSP" + str(args.n_sample_partners)'''
     return full_name
 
 
@@ -408,6 +409,7 @@ if __name__ == "__main__":
     log_to_wandb(wandb_key_value, "overcooked1", args)
     wandb.config.update(file_args, allow_val_change=True)
     args = SimpleNamespace(**wandb.config._items)
+    args.eval_set_name = args.base_eval_name
     print("args print")
     print_args(args)
     #print(f"args indices is {args.indices}")

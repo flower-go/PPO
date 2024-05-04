@@ -46,6 +46,8 @@ def comp_diag_average_average_out(matrix):
     print("diag average average out")
     diag_array =  []
     out_array = []
+    print("matice vypadá jako:")
+    print(matrix)
     for i in range(len(matrix[0])):
          diag_item = matrix[i][i]
          diag_array.append(1)
@@ -53,11 +55,12 @@ def comp_diag_average_average_out(matrix):
          for j in range(len(matrix[i])):
              if i != j:
                  #print(f"matrix[i][j] is {matrix[i][j]} and diag item is {diag_item}")
+                 print(f"out row on {i}{j} is{matrix[i][j]}, dividing by {diag_item} results in {matrix[i][j]/diag_item}")
                  out_row.append(matrix[i][j]/diag_item)
          out_array.append(out_row)
 
     max_out = [mean(r) for r in out_array]
-    #print(f"max out is {max_out}")
+    print(f"average out is {max_out}")
     result = sum(np.array(diag_array) - np.array(max_out))
     return result
 def comp_diag_average_max_out(matrix):
