@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Spring School of AI 2025</title>
+    <title>Results</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -45,38 +45,40 @@ h1 {font-family: 'Roboto Condensed'; font-weight:100;}
 <body>
   {% for map in maps %}
   <div class="w3-container">
-  <h1 class="w3-amber w3-text-white">{{ map }}</h1>
-  <h3 class=" w3-text-green"> baseline </h1>
-  <table class="w3-border w3-border-green">
+  <h3 class="w3-light-green w3-padding-large w3-text-black">{{ map }}</h3>
+  <table class="w3-border w3-border-light-grey">
   <tr>
+  <td class=" w3-cell-middle w3-border-right w3-dark-grey w3-text-white" rowspan="2">
+  <p  style=" rotate: -90deg;">Baseline</p>
+  </td>
   <th class="w3-center w3-light-grey w3-border-right"> Kitchen Layout</th>
   {% for key, value in res[map].items() %}
   {% if key != "general" %}
-  <th colspan="2" class="w3-center w3-light-grey w3-border-right"> {{ key }} </th>
+  <th class="w3-center w3-light-grey w3-border-right"> {{ key }} </th>
   {% endif %}
   {% endfor %}
+ <th class="w3-center w3-light-grey w3-border-right"> nostack - 50% of training </th>
+ <th class="w3-center w3-light-grey w3-border-right"> nostack - 25% of training</th>
   </tr>
 <tr>
-<td class="w3-border-right w3-cell-top"><img src="{{ res[map]["general"]["layout"] }}" width="300px"></td>
+<td class="w3-border-right w3-cell-top"><img src="{{ res[map]["general"]["layout"] }}" height="150px"></td>
    {% for key, value in res[map].items() %}
    {% if key != "general" %}
-    <td class="w3-cell-top">
-        <img src="{{ res[map][key]["heat"] }}" width="200px">
-    </td>
- <td class="w3-border-right" >
- {% if key != "channels" and key !="tuple" %}
- <table class="w3-table w3-cell-top">
-    <tr><td class="w3-cell-top">
-        <p class="w3-text-grey">{{ key }} - 60% of train</p>
-        <img src="{{ res[map][key]["heat_s2"] }}" width="100px">
-    </td></tr>
- <tr><td class="w3-cell-top">
-     <p class="w3-text-grey">{{ key }} - 30% of train</p>
-     <img src="{{ res[map][key]["heat_s1"] }}" width="100">
- </td></tr>
- </table>
+        <td class="w3-cell-top w3-border-right">
+        <img src="{{ res[map][key]["heat"] }}"  width="200px">
+        <p>SDAO: {{ res[map][key]["SDAO"] }}</p>
+        <p>SDMO: {{ res[map][key]["SDMO"] }}</p>
+        </td>
+        {% if key != "channels" and key !="tuple" %}
+        <td class="w3-cell-top w3-border-right">
+        <img src="{{ res[map][key]["heat_s2"] }}" width="200px">
+        </td>
+        <td class="w3-cell-top w3-border-right">
+        <img src="{{ res[map][key]["heat_s1"] }}" width="200">
+        </td>
+
  {% endif %}
- </td>
+
     {% endif %}
     {% endfor %}
 </tr>

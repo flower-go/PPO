@@ -81,10 +81,26 @@ def map_image():
             file = f"{path}/{map}.png"
             res_dict[map]["general"]["layout"] = file
 
+def metrics():
+    for i in [("SDAO","sum_diag_average_out"), ("SDMO","sum_diag_max_out")]:
+        name = i[0]
+        append = i[1]
+        path = CODE_PATH + "evaluation/metrics/" + append
+        with open(path) as file:
+            lines = [line.rstrip() for line in file]
+        for line in lines:
+            l = line.split(",")
+            stack = frame_stacking[l[0]]
+            map = l[1]
+            value = l[3]
+            res_dict[map][stack][name] = round(float(value),2)
+
+
 
 heat_maps()
 heat_steps()
 map_image()
+metrics()
 with open("results.html", mode="w", encoding="utf-8") as results:
     results.write(template.render(maps=layouts_onions, res = res_dict))
     print(f"... wrote {results}")

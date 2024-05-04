@@ -227,7 +227,10 @@ def generate_R0(stacking, layout_name,r):
     exp =  stacking[0:4] + "_"  + layout_name + "_" + r
     result = f'{START_QSUB}exp="{exp}" walltime=120:00:00'
     return result
-
+def generate_L(stacking, layout_name,l):
+    exp =  stacking[0:4] + "_"  + layout_name + "_" + l
+    result = f'{START_QSUB}exp="{exp}" walltime=120:00:00'
+    return result
 
 def one_epoch_new(map_names = layouts_onions, step = None):
     seed = seeds[0]
@@ -255,11 +258,19 @@ def gen_R(map_names = layouts_onions, r = "R0"):
         for layout_name in map_names:
             res = generate_R0(stacking, layout_name,r)
             print(res)
+
+def gen_L(l,map_names = layouts_onions):
+    seed = seeds[0]
+    for stacking in frame_stacking:
+        print("\n" + "#stacking: " + stacking + "\n")
+        for layout_name in map_names:
+            res = generate_L(stacking, layout_name,l)
+            print(res)
 #one_epoch_new()
 #gen_steps_nostack()
 #gen_obs()
-gen_R(r = "R2")
-
+#gen_R(r = "R2")
+gen_L(l = "R1L1")
 
 
 

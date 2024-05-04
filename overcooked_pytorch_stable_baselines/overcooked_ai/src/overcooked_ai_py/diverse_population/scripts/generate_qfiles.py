@@ -59,6 +59,17 @@ R_hyperparams = {
     "R2": (0.1,0.075)
 }
 
+L_hyperparams = {
+    "L0": (0.08, 0.03),
+    "L1": (0.12, 0.07),
+    "L2": (0.1, 0.15)
+}
+
+RL_hyperparams = {
+    "R0L0":[0.08, 0.02, 0.08, 0.02],
+    "R1L1":[ 0.1, 0.04, 0.1, 0.03]
+}
+
 def gen_ref_30_common(result_dict):
     result_dict["execute_final_eval"] = True
     result_dict["mode"] ="SP"
@@ -147,14 +158,68 @@ def generate_R0(r):
             with open('./hyperparams/' + prefix + stack_type + "_" + map + "_" + r + '.json', 'w') as f:
                 json.dump(result_dict, f)
 
+def generate_Ls(l):
+    result_dict = {}
+    result_dict["execute_final_eval"] = True
+    result_dict["mode"] ="POP"
+    result_dict["n_sample_partners"] = 3
+    result_dict["seed"] = seeds[0]
+    result_dict["behavior_check"] = False
+
+    for stack_type in frame_stacking:
+        fs = frame_stacking[stack_type]
+        result_dict["frame_stacking_mode"] = fs[0]
+        result_dict["frame_stacking"] = fs[1]
+
+        for map in layouts_onions:
+            exp_part = stack_type + "_" + map + "_"
+            result_dict["exp"] = exp_part + l
+            result_dict["layout_name"] = map
+            result_dict["base_eval_name"] = exp_part + "ref-30"
+            result_dict["trained_models"] = 11
+            result_dict["kl_diff_loss_coef"] = L_hyperparams[l][0]
+            result_dict["kl_diff_loss_clip"] = L_hyperparams[l][1]
+            prefix = ""
+            print(result_dict)
+            with open('./hyperparams/' + prefix + stack_type + "_" + map + "_" + l + '.json', 'w') as f:
+                json.dump(result_dict, f)
+
+def generate_LR(lr):
+    result_dict = {}
+    result_dict["execute_final_eval"] = True
+    result_dict["mode"] ="POP"
+    result_dict["n_sample_partners"] = 3
+    result_dict["seed"] = seeds[0]
+    result_dict["behavior_check"] = False
+
+    for stack_type in frame_stacking:
+        fs = frame_stacking[stack_type]
+        result_dict["frame_stacking_mode"] = fs[0]
+        result_dict["frame_stacking"] = fs[1]
+
+        for map in layouts_onions:
+            exp_part = stack_type + "_" + map + "_"
+            result_dict["exp"] = exp_part + lr
+            result_dict["layout_name"] = map
+            result_dict["base_eval_name"] = exp_part + "ref-30"
+            result_dict["trained_models"] = 11
+            result_dict["kl_diff_bonus_reward_coef"] = RL_hyperparams[lr][0]
+            result_dict["kl_diff_bonus_reward_clip"] = RL_hyperparams[lr][1]
+            result_dict["kl_diff_loss_coef"] = RL_hyperparams[lr][2]
+            result_dict["kl_diff_loss_clip"] = RL_hyperparams[lr][3]
+            prefix = ""
+            print(result_dict)
+            with open('./hyperparams/' + prefix + stack_type + "_" + map + "_" + lr + '.json', 'w') as f:
+                json.dump(result_dict, f)
+
 
 
 
 #generate_whole_ref_pop()
 #generate_steps()
-generate_R0("R2")
-
-
+#generate_R0("R2")
+#generate_Ls("L2")
+generate_LR("R1L1")
 
 
 
