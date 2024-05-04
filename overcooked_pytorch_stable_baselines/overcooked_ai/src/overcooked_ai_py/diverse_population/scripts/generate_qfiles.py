@@ -53,6 +53,12 @@ frame_stacking = {"chan":("channels",4),
                   "nost":("channels",1) #effectively no stacking
                   }
 
+R_hyperparams = {
+    "R0": (0.08, 0.025),
+    "R1": (0.15,0.05),
+    "R2": (0.1,0.075)
+}
+
 def gen_ref_30_common(result_dict):
     result_dict["execute_final_eval"] = True
     result_dict["mode"] ="SP"
@@ -115,7 +121,7 @@ def generate_steps():
                 step_map_list.append(m)
         generate_whole_ref_pop(step_map_list,step=s)
 
-def generate_R0():
+def generate_R0(r):
     result_dict = {}
     result_dict["execute_final_eval"] = True
     result_dict["mode"] ="POP"
@@ -130,15 +136,15 @@ def generate_R0():
 
         for map in layouts_onions:
             exp_part = stack_type + "_" + map + "_"
-            result_dict["exp"] = exp_part + "R0"
+            result_dict["exp"] = exp_part + r
             result_dict["layout_name"] = map
             result_dict["base_eval_name"] = exp_part + "ref-30"
             result_dict["trained_models"] = 11
-            result_dict["kl_diff_bonus_reward_coef"] = 0.08
-            result_dict["kl_diff_bonus_reward_clip"] = 0.025
+            result_dict["kl_diff_bonus_reward_coef"] = R_hyperparams[r][0]
+            result_dict["kl_diff_bonus_reward_clip"] = R_hyperparams[r][1]
             prefix = ""
             print(result_dict)
-            with open('./hyperparams/' + prefix + stack_type + "_" + map + "_" + "R0" + '.json', 'w') as f:
+            with open('./hyperparams/' + prefix + stack_type + "_" + map + "_" + r + '.json', 'w') as f:
                 json.dump(result_dict, f)
 
 
@@ -146,7 +152,7 @@ def generate_R0():
 
 #generate_whole_ref_pop()
 #generate_steps()
-generate_R0()
+generate_R0("R2")
 
 
 

@@ -223,8 +223,8 @@ def generate_new_obs(stacking, layout_name):
     result = START_QSUB_PPO2 + 'exp="' + exp + '" ' + ' walltime=01:00:00' + ' execution_mode="obs"' + f' layout="{layout_name}"' + ' prefix="obs_"'
     return result
 
-def generate_R0(stacking, layout_name):
-    exp =  stacking[0:4] + "_"  + layout_name + "_R0"
+def generate_R0(stacking, layout_name,r):
+    exp =  stacking[0:4] + "_"  + layout_name + "_" + r
     result = f'{START_QSUB}exp="{exp}" walltime=120:00:00'
     return result
 
@@ -248,17 +248,17 @@ def gen_obs(map_names = layouts_onions):
             print(res)
 
 
-def gen_R0(map_names = layouts_onions):
+def gen_R(map_names = layouts_onions, r = "R0"):
     seed = seeds[0]
     for stacking in frame_stacking:
         print("\n" + "#stacking: " + stacking + "\n")
         for layout_name in map_names:
-            res = generate_R0(stacking, layout_name)
+            res = generate_R0(stacking, layout_name,r)
             print(res)
 #one_epoch_new()
 #gen_steps_nostack()
 #gen_obs()
-gen_R0()
+gen_R(r = "R2")
 
 
 
