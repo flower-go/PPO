@@ -18,6 +18,7 @@ sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines/overcooked_a
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines/stable-baselines3")
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines")
 jobid = os.environ["JOBID"]
+from wandb.integration.sb3 import WandbCallback
 from stable_baselines3.ppo.ppo import PPO
 from overcooked_ai.src.overcooked_ai_py.mdp.overcooked_env import OvercookedGridworld, OvercookedEnv, get_vectorized_gym_env
 from experiments_params import set_layout_params
@@ -123,12 +124,10 @@ def load_or_train_models(args, env):
     directory = projdir + "/diverse_population/models/" + args.layout_name + "/"
     models = []
     env.population = []
-    five_chan = [0,1,5]
-    forced_nost = [2,3,4]
     env.population_mode = False
     for n in range(args.trained_models):
         if args.mode == "POP" and n < args.init_SP_agents:
-            n_new = forced_nost[n]
+            n_new = args.init_indices[n]
             init = True
         else:
             init = False
@@ -250,6 +249,7 @@ def train_model(n, env, args):
         frequency = all_steps/num_checkpoints/args.num_workers + 1
         return frequency
 
+
     found = False
     while not found:
         try:
@@ -285,7 +285,13 @@ def train_model(n, env, args):
                 save_replay_buffer=False,
                 save_vecnormalize=True
             )
-            model.learn(num_steps, args=args, reset_num_timesteps=False, callback=checkpoint_callback)
+
+            wan_callback = WandbCallback(
+                gradient_save_freq=100,
+                model_save_path=f"models/{run.id}",
+                verbose=2)
+
+            model.learn(num_steps, args=args, reset_num_timesteps=False, callback=[checkpoint_callback,wan_callback])
             found = True
         except divergent_solution_exception.divergent_solution_exception:
             print("found divergent solution")
@@ -389,7 +395,7 @@ else:
 
 def load_init_indices(args):
     postfix_len = len(args.exp.split("_")[-1])
-    name = args.exp[len(args.prefix):][:-postfix_len] + "_ref-30"
+    name = args.exp[len(args.prefix):][:-postfix_len] + "ref-30"
     path_in = projdir + "/diverse_population/inits/" + name
     print(path_in)
     return np.loadtxt(path_in).astype(int)
@@ -405,11 +411,11 @@ if __name__ == "__main__":
     args = SimpleNamespace(**wandb.config._items)
     print("args print")
     print_args(args)
-
-    if (args.init_indices == None) and (args.mode="POP"):
-        args.init_indices = load_init_indices(args)
-        print(f"init indices {args.init_indices}")
-        exit()
+    #print(f"args indices is {args.indices}")
+    if (args.init_indices == None) and (args.mode=="POP"):
+        indics = load_init_indices(args)
+        print(f"init indices {indics}")
+        args.init_indices = indics
     if (args.behavior_check):
         args.log_dir = projdir + "/diverse_population/text_logs/" + args.layout_name + "/"
         os.makedirs(args.log_dir, exist_ok=True)
