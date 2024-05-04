@@ -78,7 +78,7 @@ parser.add_argument("--eval_interval", default=10, type=int, help="Number of ste
 parser.add_argument("--evals_num_to_threshold", default=2, type=int, help="Number of more evaluation to get exact value")
 parser.add_argument("--device", default="cuda", type=str, help="Device ('cuda' or 'cpu')")
 parser.add_argument("--training_percent_start_eval", default=0.5, type=float, help="Ratio of total training steps when evaluation starts")
-parser.add_argument("--tensorboard_log", default=False, action="store_true", help="Whether to do tensorboard logging")
+parser.add_argument("--tensorboard_log", default=True, action="store_true", help="Whether to do tensorboard logging")
 parser.add_argument("--seed", default=42, type=int, help="Random seed value")
 parser.add_argument("--behavior_check", default=False, action="store_true",help="if true, logs actions and states, stops after divergent found" )
 parser.add_argument("--log_dir", default=None, help="directory for checkpoints")
@@ -108,7 +108,7 @@ def log_to_wandb(key, project_name, config_args, group = None):
     wandb.login(key=key)
     if group is None:
         group = config_args.exp.split("_")[-1]
-    wandb.init(project = project_name, config=config_args, name=config_args.exp, id = jobid, group = group)
+    wandb.init(project = project_name, config=config_args, name=config_args.exp, id = jobid, group = group,sync_tensorboard=True, monitor_gym=True,)
 
 def load_wandb_key(filename):
     with open(filename) as f:
@@ -288,7 +288,6 @@ def train_model(n, env, args):
 
             wan_callback = WandbCallback(
                 gradient_save_freq=100,
-                model_save_path=f"models/{run.id}",
                 verbose=2)
 
             model.learn(num_steps, args=args, reset_num_timesteps=False, callback=[checkpoint_callback,wan_callback])

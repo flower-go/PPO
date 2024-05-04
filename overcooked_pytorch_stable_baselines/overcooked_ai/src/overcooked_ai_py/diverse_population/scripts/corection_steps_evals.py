@@ -66,11 +66,10 @@ def extract_eval_table():
                 if append_t == False and line.startswith("zacinam s heat map"):
                     append_t=True
         print(eval_table)
-        a = np.array(eval_table)
-        print("fdsaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-        print(a)
-        np.save(new_img_path,a)
-
+        import re
+        nums = re.findall(r'\[([^][]+)\]', eval_table)
+        a = np.loadtxt(nums)
+        np.savetxt(new_img_path,a)
 extract_eval_table()
         
 

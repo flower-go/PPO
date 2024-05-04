@@ -87,7 +87,7 @@ for map in layouts_onions:
             try:
                 a = np.loadtxt(path)
 
-                comp1 =comp_diag_average_average_out(a)
+                comp1 =comp_diag_average_max_out(a)
 
                 res_string += f"{stack},{map},ref-30,{comp1}\n"
             except Exception as e:
