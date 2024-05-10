@@ -8,83 +8,91 @@
     <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-white.css">
     <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-dark-green.css">
     <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-dark-grey.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
     <link href='https://fonts.googleapis.com/css?family=Roboto Condensed' rel='stylesheet'>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         .dot {
-  height: 14px;
-  width: 14px;
-  background-color: #bbb;
-  border-radius: 50%;
-  display: inline-block;}
+          height: 14px;
+          width: 14px;
+          background-color: #bbb;
+          border-radius: 50%;
+          display: inline-block;}
 
-  .w3-card {
-  display: inline-block;
-}
+        .w3-card {
+            display: inline-block;}
 
-.img {
-margin: 5px;
-}
+        .img {
+        margin: 5px;}
 
-
-
-
-
-
-body, html {height: 100%;}
-body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
-h1 {font-family: 'Roboto Condensed'; font-weight:100;}
-.menu {display: none}
-</style>
+        body, html {height: 100%;}
+        body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
+        h1 {font-family: 'Roboto Condensed'; font-weight:100;}
+        .menu {display: none}
+    </style>
 </head>
 
 <body>
+<table class="w3-border w3-border-light-grey">
   {% for map in maps %}
-  <div class="w3-container">
-  <h3 class="w3-light-green w3-padding-large w3-text-black">{{ map }}</h3>
-  <table class="w3-border w3-border-light-grey">
-  <tr>
-  <td class=" w3-cell-middle w3-border-right w3-dark-grey w3-text-white" rowspan="2">
-  <p  style=" rotate: -90deg;">Baseline</p>
-  </td>
-  <th class="w3-center w3-light-grey w3-border-right"> Kitchen Layout</th>
-  {% for key, value in res[map].items() %}
-  {% if key != "general" %}
-  <th class="w3-center w3-light-grey w3-border-right"> {{ key }} </th>
-  {% endif %}
-  {% endfor %}
- <th class="w3-center w3-light-grey w3-border-right"> nostack - 50% of training </th>
- <th class="w3-center w3-light-grey w3-border-right"> nostack - 25% of training</th>
+    <tr><th colspan="7" class="w3-dark-grey w3-text-white">{{ map }}</th></tr>
+    <tr>
+        <td class=" w3-cell-middle w3-border-right w3-dark-grey w3-text-white" rowspan="2">
+            <p  style=" rotate: -90deg;">Baseline</p>
+        </td>
+        <th class="w3-center w3-light-grey w3-border-right"> Kitchen Layout</th>
+        {% for key, value in res[map].items() %}
+            {% if key != "general" %}
+                <th class="w3-center w3-light-grey w3-border-right"> {{ key }} </th>
+        {% endif %}
+        {% endfor %}
+         <th class="w3-center w3-light-grey w3-border-right"> nostack - 50% of training </th>
+        <th class="w3-center w3-light-grey w3-border-right"> nostack - 25% of training</th>
   </tr>
+
+<!-- prvni radka je special bo layout a tak -->
 <tr>
-<td class="w3-border-right w3-cell-top"><img src="{{ res[map]["general"]["layout"] }}" height="150px"></td>
-   {% for key, value in res[map].items() %}
-   {% if key != "general" %}
-        <td class="w3-cell-top w3-border-right">
-        <img src="{{ res[map][key]["heat"] }}"  width="200px">
-        <p>SDAO: {{ res[map][key]["SDAO"] }}</p>
-        <p>SDMO: {{ res[map][key]["SDMO"] }}</p>
-        </td>
-        {% if key != "channels" and key !="tuple" %}
-        <td class="w3-cell-top w3-border-right">
-        <img src="{{ res[map][key]["heat_s2"] }}" width="200px">
-        </td>
-        <td class="w3-cell-top w3-border-right">
-        <img src="{{ res[map][key]["heat_s1"] }}" width="200">
-        </td>
-
- {% endif %}
-
-    {% endif %}
+    <td class="w3-border-right w3-cell-top"><img src="{{ res[map]["general"]["layout"] }}" height="150px"></td>
+    {% for key, value in res[map].items() %}
+        {% if key != "general" %}
+            <td class="w3-cell-top w3-border-right">
+                <img src="{{ res[map][key]["heat"] }}"  width="100px">
+                <p>SDAO: {{ res[map][key]["SDAO"] }} <br>
+                SDMO: {{ res[map][key]["SDMO"] }}</p>
+            </td>
+            {% if key != "channels" and key !="tuple" %}
+                <td class="w3-cell-top w3-border-right">
+                    <img src="{{ res[map][key]["heat_s2"] }}" width="100px">
+                </td>
+                <td class="w3-cell-top w3-border-right">
+                    <img src="{{ res[map][key]["heat_s1"] }}" width="100">
+                </td>
+            {% endif %}
+        {% endif %}
     {% endfor %}
 </tr>
-  </table>
-</div>
-<hr>
+
+
+<!-- OTHER LINES -->
+{%  for e in exps %}
+    <tr>
+        <td class=" w3-cell-middle w3-border-right w3-amber w3-text-white" rowspan="1" >
+            <p  style=" rotate: -90deg; min-height: 50px;">{{ e }}</p>
+        <td class="w3-cell-top w3-border-right"></td>
+        {% for key, value in res[map].items() %}
+            {% if key != "general" %}
+                <td class="w3-cell-top w3-border-right">
+                    <img src="{{ res[map][key][e]}}"  width="200px">
+                </td>
+            {% endif %}
+        {% endfor %}
+    </tr>
 {% endfor %}
+
+{% endfor %}
+</table>
 </body>
 </html>

@@ -4,11 +4,11 @@
 #template = environment.from_string("Hello, {{ name }}!")
 #a = template.render(name="World")
 #print(a)
-
+import os
 # write_messages.py
 CODE_PATH = "C:/Users/PetraVysušilová/Documents/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/"
 MDP_PATH = "C:/Users/PetraVysušilová/Documents/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/mdp/"
-heat_path = "visualisation/"
+heat_path = ("visualisation/")
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -46,6 +46,8 @@ frame_stacking = {"chan":"channels",
                   "tupl":"tuple",
                   "nost":"nostack", #effectively no stacking
                   }
+
+exp_names = ["R0","R1", "R2", "L0", "L1", "L2", "R0L0", "R1L1"]
 
 environment = Environment(loader=FileSystemLoader("C:\\Users\\PetraVysušilová\\Documents\\coding\\PPO\\overcooked_pytorch_stable_baselines\\overcooked_ai\\src\\overcooked_ai_py\\diverse_population\\scripts\\html_rendering\\templates"))
 template = environment.get_template("results.txt")
@@ -95,14 +97,35 @@ def metrics():
             value = l[3]
             res_dict[map][stack][name] = round(float(value),2)
 
+def collect_R(r="R0"):
+    path = CODE_PATH + heat_path
+    for map in layouts_onions:
+        for s in frame_stacking:
+            file = f"{path}/{map}/{s}_{map}_{r}_X_SP_EVAL2_ROP0.0_ENVROP0.0.png"
+            res_dict[map][frame_stacking[s]][r] = file
+
+def rename_R(r="R0"):
+    path = CODE_PATH + heat_path
+    for map in layouts_onions:
+        for s in frame_stacking:
+            file = f"{path}{map}/{s}_{map}_{r}_X_SP_EVAL2_ROP0.0_ENVROP0.0.png"
+            if os.path.exists(file):
+                print("existuje")
+                new_name = f"{path}{map}/{s}_{map}_{r}_X_{s}_{map}_ref-30_ENVROP0.0.png"
+                #print(new_name)
+                os.rename(file,new_name)
+
 
 
 heat_maps()
 heat_steps()
 map_image()
 metrics()
+rename_R("R0")
+for e in exp_names:
+    collect_R(e)
 with open("results.html", mode="w", encoding="utf-8") as results:
-    results.write(template.render(maps=layouts_onions, res = res_dict))
+    results.write(template.render(maps=layouts_onions, res = res_dict, exps = exp_names))
     print(f"... wrote {results}")
 
 
