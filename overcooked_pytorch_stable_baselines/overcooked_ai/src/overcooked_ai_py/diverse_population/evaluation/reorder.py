@@ -97,16 +97,20 @@ layouts_onions = [
 #np.savetxt("./before",a)
 for map in layouts_onions:
     for stack in ["nost","chan","tupl"]:	
-        #prefix = "steps1377030_"
+        
+        #prefix = "steps2754060_"
         prefix = ""
-        path = f"{PATH_PREFIX}{map}/{stack}_{map}_ref-30"
+        path = f"{PATH_PREFIX}{map}/{prefix}{stack}_{map}_ref-30"
         if os.path.isfile(path):
             print(f"nalezeno {path}")
             try:
                 a = np.loadtxt(path)
-                reordered = cluster_corr(a)
-                np.savetxt(path + "_reordered", reordered)
-                heat_map(path + "_reordered", map, prefix + stack)
+                if os.path.isfile(path + "_reordered"):
+                    continue
+                else:
+                    reordered = cluster_corr(a)
+                    np.savetxt(path + "_reordered", reordered)
+                    heat_map(path + "_reordered", map, prefix + stack)
             except Exception as e:
                 print("chyba")
                 print(e)

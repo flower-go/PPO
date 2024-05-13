@@ -1,4 +1,4 @@
-import numpy as np
+np.array(diag_array) - np.array(max_out)import numpy as np
 import os
 from statistics import mean
 import pandas as pd
@@ -50,7 +50,7 @@ def comp_diag_average_average_out(matrix):
     print(matrix)
     for i in range(len(matrix[0])):
          diag_item = matrix[i][i]
-         diag_array.append(1)
+         diag_array.append(diag_item)
          out_row = []
          for j in range(len(matrix[i])):
              if i != j:
@@ -61,6 +61,8 @@ def comp_diag_average_average_out(matrix):
 
     max_out = [mean(r) for r in out_array]
     print(f"average out is {max_out}")
+    print(f"diag array is {diag_array}")
+    print(f"their diff is {np.array(diag_array) - np.array(max_out)}")
     result = sum(np.array(diag_array) - np.array(max_out))
     return result
 def comp_diag_average_max_out(matrix):
@@ -82,20 +84,21 @@ def comp_diag_average_max_out(matrix):
     result = sum(np.array(diag_array) - np.array(max_out))
     return result
 res_string = ""
-for map in layouts_onions:
-    for stack in ["chan","tupl","nost"]:
+#for map in layouts_onions:
+for map in ["pipeline"]: 
+   for stack in ["chan","tupl","nost"]:
         path = f"{PATH_PREFIX}{map}/{stack}_{map}_ref-30"
         if os.path.isfile(path):
             print(f"nalezeno {path}")
             try:
                 a = np.loadtxt(path)
 
-                comp1 =comp_diag_average_max_out(a)
-
+                comp1 =comp_diag_average_average_out(a)
                 res_string += f"{stack},{map},ref-30,{comp1}\n"
             except Exception as e:
                 print("chyba")
                 print(e)
         else:
-            print(f"not found: {path}")
+            #print(f"not found: {path}")
+            print("")
 print(res_string)
