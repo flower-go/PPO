@@ -418,9 +418,9 @@ if __name__ == "__main__":
         print(f"init indices {indics}")
         args.init_indices = indics
     if (args.behavior_check):
-        args.log_dir = projdir + "/diverse_population/text_logs/" + args.layout_name + "/"
+        args.log_dir = projdir + "/diverse_population/text_logs/" + args.exp + "/"
         os.makedirs(args.log_dir, exist_ok=True)
-        print("vytvorila jsem log_adresar")
+        print(f"vytvorila jsem log_adresar {args.log_dir}")
     else:
         args.log_dir = None
     
