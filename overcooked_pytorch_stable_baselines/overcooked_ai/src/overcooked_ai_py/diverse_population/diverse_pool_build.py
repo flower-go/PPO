@@ -95,6 +95,7 @@ np.random.seed(args.seed)
 
 def load_args_from_file(args):
     name = args.exp[len(args.prefix):]
+    print(f"loading file {name}")
     try:
         path = projdir + "/diverse_population/scripts/hyperparams/" + name + ".json"
         with open(path, "r") as read_file:
@@ -402,7 +403,6 @@ def load_init_indices(args):
 
 if __name__ == "__main__":
     print(jobid)
-    args.exp = args.prefix + args.exp
     file_args = load_args_from_file(args)
     print("pred gym env vytvvorenim")
     wandb_key_value = load_wandb_key(args.wandb_key).strip()
