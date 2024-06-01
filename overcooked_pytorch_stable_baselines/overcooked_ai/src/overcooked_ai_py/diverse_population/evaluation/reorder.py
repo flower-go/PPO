@@ -36,7 +36,7 @@ def cluster_corr(corr_array, inplace=False):
     
     return corr_array[idx, :][:, idx]
 
-def heat_map(file_path,layout_name, stack):
+def heat_map(file_path,layout_name, res_name):
     """
     Visualises evaluated cross-play table as heat map
     """
@@ -62,7 +62,7 @@ def heat_map(file_path,layout_name, stack):
 
     fig.tight_layout()
     vis_path = "/storage/plzen1/home/ayshi/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/visualisation/"
-    file_name = vis_path + layout_name + "/" + stack + "_"+ layout_name + "_ref-30_reordered" + ".png"
+    file_name = vis_path + layout_name + "/" + res_name + "_reordered" + ".png"
     print("jmeno filu je:" + file_name)
     plt.savefig(file_name)
 
@@ -94,25 +94,28 @@ layouts_onions = [
            #"diagonal",
            #"long_forced",
            "tutorial_0"]
+
+
 #np.savetxt("./before",a)
 for map in layouts_onions:
-    for stack in ["nost","chan","tupl"]:	
+    for stack in ["nost","chan","tupl"]:
+        for r in ["R0","R1", "R2", "L0", "L1", "L2", "R0L0", "R1L1"]:
         
-        #prefix = "steps2754060_"
-        prefix = ""
-        path = f"{PATH_PREFIX}{map}/{prefix}{stack}_{map}_ref-30"
-        if os.path.isfile(path):
-            print(f"nalezeno {path}")
-            try:
-                a = np.loadtxt(path)
-                if os.path.isfile(path + "_reordered"):
-                    continue
-                else:
-                    reordered = cluster_corr(a)
-                    np.savetxt(path + "_reordered", reordered)
-                    heat_map(path + "_reordered", map, prefix + stack)
-            except Exception as e:
-                print("chyba")
-                print(e)
-        else:
-            print(f"not found: {path}")
+            #prefix = "steps2754060_"
+            prefix = ""
+            path = f"{PATH_PREFIX}{map}/{prefix}{stack}_{map}_{r}_X_{stack}_{map}_ref-30_ENVROP0.0"
+            if os.path.isfile(path):
+                print(f"nalezeno {path}")
+                try:
+                    a = np.loadtxt(path)
+                    if os.path.isfile(path + "_reordered"):
+                        continue
+                    else:
+                        reordered = cluster_corr(a)
+                        np.savetxt(path + "_reordered", reordered)
+                        heat_map(path + "_reordered", map, f"{prefix}{stack}_{map}_{r}_X_{stack}_{map}_ref-30_ENVROP0.0")
+                except Exception as e:
+                    print("chyba")
+                    print(e)
+            else:
+                print(f"not found: {path}")
