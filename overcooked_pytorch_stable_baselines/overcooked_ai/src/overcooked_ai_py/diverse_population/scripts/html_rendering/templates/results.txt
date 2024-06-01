@@ -40,7 +40,7 @@
   {% for map in maps %}
     <tr><th colspan="7" class="w3-dark-grey w3-text-white">{{ map }}</th></tr>
     <tr>
-        <td class=" w3-cell-middle w3-border-right w3-dark-grey w3-text-white" rowspan="2">
+        <td class=" w3-cell-middle w3-border-right w3-dark-grey w3-text-white w3-large" rowspan="2">
             <p  style=" rotate: -90deg;">Baseline</p>
         </td>
         <th class="w3-center w3-light-grey w3-border-right"> Kitchen Layout</th>
@@ -60,8 +60,12 @@
         {% if key != "general" %}
             <td class="w3-cell-top w3-border-right">
                 <img src="{{ res[map][key]["heat"] }}"  width="100px">
-                <p>SDAO: {{ res[map][key]["SDAO"] }} <br>
-                SDMO: {{ res[map][key]["SDMO"] }}</p>
+                <p>
+                {% for metric in metrics %}
+                    {{metric}}: {{ res[map][key][metric] }}<br>
+                {% endfor %}
+                 <br>
+                </p>
             </td>
             {% if key != "channels" and key !="tuple" %}
                 <td class="w3-cell-top w3-border-right">
@@ -76,12 +80,29 @@
 </tr>
 
 
+<!-- SUMMARIZATION QUNATILES -->
+<tr>
+<td class=" w3-large w3-cell-middle w3-border-right w3-amber w3-text-black" rowspan="1" >
+            <p  style=" rotate: -90deg; min-height: 50px;">summary</p></td>
+ <td></td>
+         {% for key, value in res[map].items() %}
+            {% if key != "general" %}
+                <td class="w3-cell-top w3-border-right">
+                    <img src="{{ res[map][key]["qall"]}}"  width="200px">
+                    <img src="{{ res[map][key]["qbest"]}}"  width="200px">
+                </td>
+            {% endif %}
+        {% endfor %}
+
+</tr>
+
 <!-- OTHER LINES -->
 {%  for e in exps %}
     <tr>
-        <td class=" w3-cell-middle w3-border-right w3-amber w3-text-white" rowspan="1" >
+        <td class=" w3-cell-middle w3-border-right w3-amber w3-text-white w3-large" rowspan="1" >
             <p  style=" rotate: -90deg; min-height: 50px;">{{ e }}</p>
-        <td class="w3-cell-top w3-border-right"></td>
+        <td class="w3-cell-top w3-border-right">
+        </td>
         {% for key, value in res[map].items() %}
             {% if key != "general" %}
                 <td class="w3-cell-top w3-border-right">

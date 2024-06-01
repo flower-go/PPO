@@ -8,8 +8,19 @@ import matplotlib.pyplot as plt
 #a = np.loadtxt("coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/evaluation/coordination_ring/nost_coordination_ring_ref-30_ROP0.0_MSP_BRCoef0.0_BRClip0.0_LCoef0.0_LClip0.0_DSRFalse_PADFalse_NSP-1_X_nost_coordination_ring_ref-30_ROP0.0_MSP_BRCoef0.0_BRClip0.0_LCoef0.0_LClip0.0_DSRFalse_PADFalse_NSP-1_ENVROP0.0")
 import scipy
 import scipy.cluster.hierarchy as sch
-PATH_PREFIX = "/storage/plzen1/home/ayshi/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/evaluation/"
-def cluster_corr(corr_array, inplace=False):
+#PATH_PREFIX = "/storage/plzen1/home/ayshi/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/evaluation/"
+PATH_PREFIX = "C:/Users/PetraVysušilová/DOCUME~1/coding/PPO/OVERCO~1/OVERCO~1/src/OVERCO~1/DIVERS~1/"
+
+def cluster_corr_logic(corr_array, inplace=False):
+    pairwise_distances = sch.distance.pdist(corr_array)
+    linkage = sch.linkage(pairwise_distances, method='complete')
+    cluster_distance_threshold = pairwise_distances.max() / 2
+    idx_to_cluster_array = sch.fcluster(linkage, cluster_distance_threshold,
+                                        criterion='distance')
+    idx = np.argsort(idx_to_cluster_array)
+    return corr_array, idx
+
+def cluster_corr(corr_array, last_two=False, inplace=False):
     """
     Rearranges the correlation matrix, corr_array, so that groups of highly 
     correlated variables are next to eachother 
@@ -24,17 +35,20 @@ def cluster_corr(corr_array, inplace=False):
     pandas.DataFrame or numpy.ndarray
         a NxN correlation matrix with the columns and rows rearranged
     """
-    pairwise_distances = sch.distance.pdist(corr_array)
-    linkage = sch.linkage(pairwise_distances, method='complete')
-    cluster_distance_threshold = pairwise_distances.max()/2
-    idx_to_cluster_array = sch.fcluster(linkage, cluster_distance_threshold, 
-                                        criterion='distance')
-    idx = np.argsort(idx_to_cluster_array)
-    
+    if len(corr_array) != len(corr_array[1]):
+        corr_array = np.transpose(corr_array)
+    corr_array, idx = cluster_corr_logic(corr_array)
     if not inplace:
         corr_array = corr_array.copy()
-    
-    return corr_array[idx, :][:, idx]
+
+    if len(corr_array) == len(corr_array[1]):
+        return corr_array[idx, :][:, idx]
+    else:
+        if last_two:
+            return np.transpose(corr_array[idx,:])
+        else:
+            res,idx =  cluster_corr_logic(np.transpose(corr_array[idx,:]))
+            return res[idx,:]
 
 def heat_map(file_path,layout_name, res_name):
     """
@@ -61,10 +75,12 @@ def heat_map(file_path,layout_name, res_name):
              rotation_mode="anchor")
 
     fig.tight_layout()
-    vis_path = "/storage/plzen1/home/ayshi/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/visualisation/"
+    vis_path = f"{PATH_PREFIX}visualisation/"
+    #vis_path = "/storage/plzen1/home/ayshi/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/visualisation/"
     file_name = vis_path + layout_name + "/" + res_name + "_reordered" + ".png"
     print("jmeno filu je:" + file_name)
     plt.savefig(file_name)
+    plt.close()
 
 layouts_onions = [
            "small_corridor",
@@ -96,26 +112,33 @@ layouts_onions = [
            "tutorial_0"]
 
 
-#np.savetxt("./before",a)
-for map in layouts_onions:
-    for stack in ["nost","chan","tupl"]:
-        for r in ["R0","R1", "R2", "L0", "L1", "L2", "R0L0", "R1L1"]:
-        
-            #prefix = "steps2754060_"
-            prefix = ""
-            path = f"{PATH_PREFIX}{map}/{prefix}{stack}_{map}_{r}_X_{stack}_{map}_ref-30_ENVROP0.0"
-            if os.path.isfile(path):
-                print(f"nalezeno {path}")
-                try:
-                    a = np.loadtxt(path)
-                    if os.path.isfile(path + "_reordered"):
-                        continue
-                    else:
-                        reordered = cluster_corr(a)
-                        np.savetxt(path + "_reordered", reordered)
-                        heat_map(path + "_reordered", map, f"{prefix}{stack}_{map}_{r}_X_{stack}_{map}_ref-30_ENVROP0.0")
-                except Exception as e:
-                    print("chyba")
-                    print(e)
-            else:
-                print(f"not found: {path}")
+def r_exps(last_two=False):
+    #np.savetxt("./before",a)
+    for map in layouts_onions:
+        for stack in ["nost","chan","tupl"]:
+            for r in ["R0","R1", "R2", "L0", "L1", "L2", "R0L0", "R1L1"]:
+
+                #prefix = "steps2754060_"
+                prefix = ""
+                postfix = "_FA"
+                path = f"{PATH_PREFIX}evaluation/{map}/{prefix}{stack}_{map}_{r}_X_{stack}_{map}_ref-30_ENVROP0.0"
+                if os.path.isfile(path):
+                    print(f"nalezeno {path}")
+                    try:
+                        a = np.loadtxt(path)
+                        #if os.path.isfile(path + f"_reordered{postfix}"):
+                            #pass
+                            ##continue
+                        #else:
+                        if last_two:
+                            a = a[-2:]
+                        reordered = cluster_corr(a, last_two=last_two)
+                        np.savetxt(path + f"_reordered{postfix}", reordered)
+                        heat_map(path + f"_reordered{postfix}", map, f"{prefix}{stack}_{map}_{r}_X_{stack}_{map}_ref-30_ENVROP0.0{postfix}")
+                    except Exception as e:
+                        print("chyba")
+                        print(e)
+                else:
+                    print(f"not found: {path}")
+
+r_exps(True)
