@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Results - Self play</title>
+    <title>Results</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -36,32 +36,14 @@
 </head>
 
 <body>
-{% for stack,res in stacks.items() %}
-<div class="w3-third">
+<div class="w3-display-topmiddle w3-large">
 <table class="w3-border w3-border-light-grey w3-striped">
-<tr><th rowspan="2" >Layout</th><th colspan="4">{{stack}}</th></tr>
-<tr>
-{% for m in ["average_diag","std_error_sp","CoV"] %}
-    <th>{{m}}</th>
-{%  endfor %}
+<tr><th>Pages</th></tr>
+{% for name,link in links %}
 
-</tr>
-  {% for map in res.keys() %}
-    <tr>
-        <td class="w3-dark-grey w3-text-white">{{ map }}</td>
-        {% for m in ["average_diag","std_error_sp","CoV"]  %}
-            <td>{{ res[map][stack][m] }}  </td>
-        {%  endfor %}
-        <td><img src="{{ res[map][stack]["heat"] }}"  width="30px">
-
-        </td>
-    </tr>
-
-
-
+<tr><td><a href="{{ link }}" target="_blank">{{ name }}</a></td></tr>
 {% endfor %}
 </table>
 </div>
-{% endfor %}
 </body>
 </html>

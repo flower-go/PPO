@@ -4,6 +4,18 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import copy
+from scipy import integrate
+
+def comp_area_under_curve(table, quantile = 0.15):
+    table = np.around(table, decimals=2)
+    table = np.sort(table)
+    x = range(len(table[0]))
+    y = np.quantile(table, quantile, axis=0)
+
+    #pouzit metodu trapezoids ze scikit
+    integrated = round(integrate.trapezoid(y, x=x),2)
+    return integrated
+    #TODO ulozit do spravneho souboru
 
 size = 2000
 
@@ -28,10 +40,14 @@ def get_sorted_pairwise_best(row1, row2):
 def remove_daigonal(table):
   return table[~np.eye(table.shape[0],dtype=bool)].reshape(table.shape[0],-1)
 
-def show_sorted_cross_play(name,matrices, legends, title="", remove_diag=False, quantile=0.15):
+def show_sorted_cross_play(name,matrices, legends, title="", remove_diag=False, quantile=0.15,):
     labels = []
+    auc = []
     for matrix, legend in zip(matrices, legends):
-
+        l = name.split('\\')
+        auc_name = f"{l[1].split("_")[0]},{l[0]},{legend}"
+        auc_res = comp_area_under_curve(matrix,0.15)
+        auc.append(f"{auc_name},{auc_res}")
         table = np.around(matrix, decimals=2)
         if remove_diag:
             table = remove_daigonal(table)
@@ -58,9 +74,10 @@ def show_sorted_cross_play(name,matrices, legends, title="", remove_diag=False, 
 
     plt.title(title)
     print(f"ukladam {name}")
-    plt.savefig(f"{name}.png", dpi=300)
+    #plt.savefig(f"{name}.png", dpi=300)
     plt.clf()
     #plt.show()
+    return auc
 
 layouts_onions = [
            "small_corridor",
@@ -99,6 +116,7 @@ exp_names = ["R0","R1", "R2", "L0", "L1", "L2", "R0L0", "R1L1"]
 eval_path = "C:\\Users\\PetraVysušilová\\DOCUME~1\\coding\\PPO\\OVERCO~1\\OVERCO~1\\src\\OVERCO~1\\DIVERS~1\\evaluation\\"
 
 def print_all():
+    auc_all = []
     for layout in layouts_onions:
         for s in frame_stacking:
             matrices = []
@@ -122,13 +140,14 @@ def print_all():
                 m = scale_matrix(m) #pridelam body at mam hladkou primku
                 matrices.append(m)
                 labels.append(e)
-            sp = remove_daigonal(sp)
+            sp = remove_daigonal(sp) #TODO potreba mit diagonalu take na vypocet pod krivkou
             sp = scale_matrix(sp)
             matrices.append(sp)
             labels.append("SP")
 
-            show_sorted_cross_play(name=f"{layout}\\{s}_{layout}_quant15_all",matrices=matrices, legends=labels, title="Ordered evaluation results", remove_diag=False)
-
+            auc = show_sorted_cross_play(name=f"{layout}\\{s}_{layout}_quant15_all",matrices=matrices, legends=labels, title="Ordered evaluation results", remove_diag=False)
+            auc_all.extend(auc)
+    return auc_all
 def print_best_final():
     for layout in layouts_onions:
         for s in frame_stacking:
@@ -160,7 +179,14 @@ def print_best_final():
 
             show_sorted_cross_play(name=f"{layout}\\{s}_{layout}_quant15_best",matrices=matrices, legends=labels, title="Ordered evaluation results", remove_diag=False)
 
-print_all()
+
+auc = print_all()
 print_best_final()
 
+metric_prefix = "../evaluation/"
+
+
+with open(f'{metric_prefix}metrics/auc.txt', 'w') as f:
+    for a in auc:
+        print(a, file=f)
 print("end")

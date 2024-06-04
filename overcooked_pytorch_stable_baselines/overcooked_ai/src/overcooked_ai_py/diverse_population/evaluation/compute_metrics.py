@@ -12,7 +12,6 @@ import scipy.cluster.hierarchy as sch
 #PATH_PREFIX = "/storage/plzen1/home/ayshi/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/evaluation/"
 PATH_PREFIX = "./overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/evaluation/"
 
-
 layouts_onions = [
            "small_corridor",
            "five_by_five",
