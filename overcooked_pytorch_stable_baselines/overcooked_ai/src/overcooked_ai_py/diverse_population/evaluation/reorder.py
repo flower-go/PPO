@@ -42,13 +42,14 @@ def cluster_corr(corr_array, last_two=False, inplace=False):
         corr_array = corr_array.copy()
 
     if len(corr_array) == len(corr_array[1]):
-        return corr_array[idx, :][:, idx]
+        return corr_array[idx, :][:, idx], [idx,idx]
     else:
         if last_two:
-            return np.transpose(corr_array[idx,:])
+            return np.transpose(corr_array[idx,:]), [idx,range(corr_array[1])]
         else:
+            idx0 = idx
             res,idx =  cluster_corr_logic(np.transpose(corr_array[idx,:]))
-            return res[idx,:]
+            return res[idx,:], [idx, idx0]
 
 def heat_map(file_path,layout_name, res_name):
     """
@@ -111,6 +112,31 @@ layouts_onions = [
            #"long_forced",
            "tutorial_0"]
 
+#TODO uprava in progress
+def sp_exps():
+    for map in layouts_onions:
+        for stack in ["nost","chan","tupl"]:
+            # prefix = "steps2754060_"
+            prefix = ""
+            path = f"{PATH_PREFIX}evaluation/{map}/{prefix}{stack}_{map}_ref-30"
+            if os.path.isfile(path):
+                print(f"nalezeno {path}")
+                try:
+                    a = np.loadtxt(path)
+                    #if os.path.isfile(path + "_reordered"):
+                        #continue
+                    #else:
+                    reordered, idx_map = cluster_corr(a)
+                    np.savetxt(path + "_reordered", reordered)
+                    heat_map(path + "_reordered", map, f"{prefix}{stack}_{map}_ref-30")
+                    np.savetxt(
+                        f"{PATH_PREFIX}evaluation/help_files/{prefix}{stack}_{map}_ref-30_reord_map",
+                        idx_map)
+                except Exception as e:
+                    print("chyba")
+                    print(e)
+            else:
+                print(f"not found: {path}")
 
 def r_exps(last_two=False):
     #np.savetxt("./before",a)
@@ -128,17 +154,19 @@ def r_exps(last_two=False):
                         a = np.loadtxt(path)
                         #if os.path.isfile(path + f"_reordered{postfix}"):
                             #pass
-                            ##continue
+                            #continue
                         #else:
                         if last_two:
                             a = a[-2:]
-                        reordered = cluster_corr(a, last_two=last_two)
+                        reordered, idx_map = cluster_corr(a, last_two=last_two)
                         np.savetxt(path + f"_reordered{postfix}", reordered)
                         heat_map(path + f"_reordered{postfix}", map, f"{prefix}{stack}_{map}_{r}_X_{stack}_{map}_ref-30_ENVROP0.0{postfix}")
+                        np.savetxt(f"{PATH_PREFIX}evaluation/help_files/{prefix}{stack}_{map}_{r}_X_{stack}_{map}_ref-30_reord_map",idx_map)
                     except Exception as e:
                         print("chyba")
                         print(e)
                 else:
                     print(f"not found: {path}")
 
-r_exps(True)
+#r_exps(False)
+sp_exps()
