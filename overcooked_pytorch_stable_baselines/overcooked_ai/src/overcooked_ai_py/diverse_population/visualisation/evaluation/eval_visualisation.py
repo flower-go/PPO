@@ -4,6 +4,7 @@ import datetime
 
 codedir = os.environ["CODEDIR"]
 projdir = os.environ["PROJDIR"]
+#codedir = "C:/Users/PetraVysušilová/Documents/coding/"
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src")
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines/stable-baselines3")
 sys.path.append(codedir + "/PPO/overcooked_pytorch_stable_baselines")
@@ -155,6 +156,7 @@ if __name__ == "__main__":
     print(grid)
     #grid = [['X','D','P','X','X'],['X',' ',' ',' ','S'],['O',' ',' ',' ','X'],['X',' ',' ',' ','D'],['X','O','X','P','X']]
     print("name: " + name)
+    name = name + "_ref30"
     dt_now = datetime.datetime.now()
     print("directory name: ", args.layout_name)
     os.makedirs("./diverse_population/visualisation/maps/" + name, exist_ok=True)
