@@ -5,6 +5,8 @@
 #a = template.render(name="World")
 #print(a)
 import os
+from os import listdir
+from os.path import isfile, join
 # write_messages.py
 #CODE_PATH = "C:/Users/PetraVysušilová/Documents/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/"
 CODE_PATH = "C:/Users/PetraVysušilová/DOCUME~1/coding/PPO/OVERCO~1/OVERCO~1/src/OVERCO~1/DIVERS~1/"
@@ -78,7 +80,7 @@ def heat_maps():
     path = CODE_PATH + heat_path
     for map in layouts_onions:
         for s in frame_stacking:
-            file = f"{path}/{map}/{s}_{map}_ref-30_reordered.png"
+            file = f"{path}/{map}/{s}_{map}_ref-30.png"
             res_dict[map][frame_stacking[s]]["heat"] = file
             #result.append(file)
 
@@ -183,7 +185,7 @@ def all_results():
 
     for q in ["all", "best"]:
         get_quant(q)
-    with open("results.html", mode="w", encoding="utf-8") as results:
+    with open("./html_rendering/pages/all_results.html", mode="w", encoding="utf-8") as results:
         results.write(template.render(maps=layouts_onions, res = res_dict, exps = exp_names, metrics=metrics))
         print(f"... wrote {results}")
 
@@ -205,7 +207,7 @@ def sp_difficulty():
     template = environment.get_template("results_tables.txt")
 
 
-    with open("results_tables.html", mode="w", encoding="utf-8") as results:
+    with open("./html_rendering/pages/results_tables.html", mode="w", encoding="utf-8") as results:
         results.write(template.render(maps=layouts_onions, res = res_dict, exps = exp_names, metrics=metrics_sp))
         print(f"... wrote {results}")
 
@@ -215,21 +217,22 @@ def sp_sort_basic():
     #chci jenom pro kazdou mapu average a odchylku a serazeno dle average
     load_sp_metrics()
     compute_cov()
+    stacks = {}
     for s in frame_stacking:
         stack = frame_stacking[s]
+
         rs = dict(sorted(res_dict.items(), key=lambda item: item[1][stack]["average_diag"] if len(item[1][stack]) > 1 else 0, reverse=True ))
         #[v[1]["nostack"]["average_diag"] if len(v[1]["nostack"]) > 0 else None for v in res_dict.items()]
 
+        stacks[stack] = rs
+    environment = Environment(loader=FileSystemLoader(
+        "C:\\Users\\PetraVysušilová\\Documents\\coding\\PPO\\overcooked_pytorch_stable_baselines\\overcooked_ai\\src\\overcooked_ai_py\\diverse_population\\scripts\\html_rendering\\templates"))
+    template = environment.get_template("results_sp_sorted.txt")
 
 
-        environment = Environment(loader=FileSystemLoader(
-            "C:\\Users\\PetraVysušilová\\Documents\\coding\\PPO\\overcooked_pytorch_stable_baselines\\overcooked_ai\\src\\overcooked_ai_py\\diverse_population\\scripts\\html_rendering\\templates"))
-        template = environment.get_template("results_sp_sorted.txt")
-
-
-        with open(f"results_sort_basic_{stack}.html", mode="w", encoding="utf-8") as results:
-            results.write(template.render(maps=list(rs.keys()), res = rs, exps = exp_names, metrics=metrics_sp, stack=stack))
-            print(f"... wrote {results}")
+    with open(f"./html_rendering/pages/results_sort_basic_allstacks.html", mode="w", encoding="utf-8") as results:
+        results.write(template.render(maps=list(stacks["nostack"].keys()), stacks = stacks, exps = exp_names, metrics=metrics_sp))
+        print(f"... wrote {results}")
 
 #TODO blbe a empty list rika ty co nejsou prazdne
 def sp_res_off_diag():
@@ -250,12 +253,30 @@ def sp_res_off_diag():
             "C:\\Users\\PetraVysušilová\\Documents\\coding\\PPO\\overcooked_pytorch_stable_baselines\\overcooked_ai\\src\\overcooked_ai_py\\diverse_population\\scripts\\html_rendering\\templates"))
         template = environment.get_template("results_off_diag.txt")
 
-        with open(f"results_off_diag{stack}.html", mode="w", encoding="utf-8") as results:
+        with open(f"./html_rendering/pages/results_off_diag{stack}.html", mode="w", encoding="utf-8") as results:
             results.write(template.render(maps=list(rd.keys()), res=res_dict, exps=exp_names, metrics=metrics,
                                           sorted_maps=sorted_layouts, empty_list = empty_list,stack=stack))
             print(f"... wrote {results}")
 
+def get_pages():
+    mypath = "./html_rendering/pages/"
+    files = [f for f in listdir(mypath) if isfile(join(mypath, f)) and f != "main_page.html"]
+    result = []
+    for f in files:
+        result.append((f,f"./{f}"))
+    return result
+def update_menu():
+    pages = get_pages()
+    environment = Environment(loader=FileSystemLoader(
+        "C:\\Users\\PetraVysušilová\\Documents\\coding\\PPO\\overcooked_pytorch_stable_baselines\\overcooked_ai\\src\\overcooked_ai_py\\diverse_population\\scripts\\html_rendering\\templates"))
+    template = environment.get_template("rozcestnik.txt")
+
+    with open(f"./html_rendering/pages/main_page.html", mode="w", encoding="utf-8") as results:
+        results.write(template.render(links=pages))
+
+all_results()
 #sp_difficulty()
-sp_sort_basic()
+#sp_sort_basic()
 #sp_res_off_diag()
+update_menu()
 
