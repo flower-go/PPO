@@ -232,7 +232,7 @@ def load_or_train_model(directory, n, env, args, init=False):
                 print(f"model {model_name} learned")
     if model is None:
         raise Exception("DONT PANIC! No model loaded, check your paths, params and error output.")
-    wandb_path = os.path.join(wandb.run.dir, model_name.split("/")[-1] + "/" + str(n).zfill(2))
+    wandb_path = os.path.join(wandb.run.dir, model_name.split("/")[-2] + "_" + model_name.split("/")[-1] + "/" + str(n).zfill(2))
     model.save(wandb_path)
     print(f"saved to wandb as {wandb_path}")
     return model
