@@ -158,7 +158,7 @@ if __name__ == "__main__":
     print("name: " + name)
     name = name + "_ref30"
     dt_now = datetime.datetime.now()
-    print("directory name: ", args.layout_name)
+    #print("directory name: ", args.layout_name)
     os.makedirs("./diverse_population/visualisation/maps/" + name, exist_ok=True)
     print("data length:", len(data))
     print("prvni data")
@@ -166,7 +166,7 @@ if __name__ == "__main__":
     print(data[0]["action:"])
     for i,d in enumerate(data):
         if(i > 5 ):
-            exit;
+            exit()
         print("index is ", i)
         args.output_file = "./diverse_population/visualisation/maps/" + name + "/" + str(i) + ".png"
         save_map_pic(d, args.output_file)
