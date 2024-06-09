@@ -168,7 +168,7 @@ if __name__ == "__main__":
         if(i > 5 ):
             exit()
         print("index is ", i)
-        args.output_file = "./diverse_population/visualisation/maps/" + name + "/" + str(i) + ".png"
+        args.output_file = "./diverse_population/behav_pics/" + name + "/" + str(i) + ".png"
         save_map_pic(d, args.output_file)
 
 
