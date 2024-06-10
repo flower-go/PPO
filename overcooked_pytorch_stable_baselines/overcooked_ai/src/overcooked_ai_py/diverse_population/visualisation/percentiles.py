@@ -115,7 +115,7 @@ exp_names = ["R0","R1", "R2", "L0", "L1", "L2", "R0L0", "R1L1"]
 #eval_path = "..\\evaluation\\"
 eval_path = "C:\\Users\\PetraVysušilová\\DOCUME~1\\coding\\PPO\\OVERCO~1\\OVERCO~1\\src\\OVERCO~1\\DIVERS~1\\evaluation\\"
 
-def print_all():
+def print_all(percentile=0.15):
     auc_all = []
     for layout in layouts_onions:
         for s in frame_stacking:
@@ -145,7 +145,7 @@ def print_all():
             matrices.append(sp)
             labels.append("SP")
 
-            auc = show_sorted_cross_play(name=f"{layout}\\{s}_{layout}_quant15_all",matrices=matrices, legends=labels, title="Ordered evaluation results", remove_diag=False)
+            auc = show_sorted_cross_play(name=f"{layout}\\{s}_{layout}_quant15_all",matrices=matrices, legends=labels, title="Ordered evaluation results", remove_diag=False, quantile=percentile)
             auc_all.extend(auc)
     return auc_all
 def print_best_final():
@@ -180,13 +180,14 @@ def print_best_final():
             show_sorted_cross_play(name=f"{layout}\\{s}_{layout}_quant15_best",matrices=matrices, legends=labels, title="Ordered evaluation results", remove_diag=False)
 
 
-auc = print_all()
-print_best_final()
+percentile = 0.30
+auc = print_all(percentile=percentile)
+#print_best_final()
 
 metric_prefix = "../evaluation/"
 
 
-with open(f'{metric_prefix}metrics/auc.txt', 'w') as f:
+with open(f'{metric_prefix}metrics/auc_{percentile*100}.txt', 'w') as f:
     for a in auc:
         print(a, file=f)
 print("end")

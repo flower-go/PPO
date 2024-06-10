@@ -7,6 +7,9 @@
 import os
 from os import listdir
 from os.path import isfile, join
+
+import numpy as np
+
 # write_messages.py
 #CODE_PATH = "C:/Users/PetraVysušilová/Documents/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/"
 CODE_PATH = "C:/Users/PetraVysušilová/DOCUME~1/coding/PPO/OVERCO~1/OVERCO~1/src/OVERCO~1/DIVERS~1/"
@@ -51,7 +54,9 @@ layouts_onions = [
 
 metrics = {"SDAO": "diag_average_average_out",
            "SDMO": "diag_average_max_out",
-           "STD error": "std_error"}
+           "STD error": "std_error",
+           "avgs out to diag": "avg_out_to_avg_diag",
+           "cov out to cov diag": "cov_out_to_cov_diag"}
 
 metrics_sp = [
     "std_error_sp",
@@ -80,7 +85,7 @@ def heat_maps():
     path = CODE_PATH + heat_path
     for map in layouts_onions:
         for s in frame_stacking:
-            file = f"{path}/{map}/{s}_{map}_ref-30.png"
+            file = f"{path}/{map}/{s}_{map}_ref-30_reordered.png"
             res_dict[map][frame_stacking[s]]["heat"] = file
             #result.append(file)
 
@@ -185,18 +190,20 @@ def all_results():
 
     for q in ["all", "best"]:
         get_quant(q)
-    with open("./html_rendering/pages/all_results.html", mode="w", encoding="utf-8") as results:
+    with open("./pages/all_results.html", mode="w", encoding="utf-8") as results:
         results.write(template.render(maps=layouts_onions, res = res_dict, exps = exp_names, metrics=metrics))
         print(f"... wrote {results}")
 
 def compute_cov():
     for map in layouts_onions:
-        try:
-            std = res_dict[map]["nostack"]["std_error_sp"]
-            avg = res_dict[map]["nostack"]["average_diag"]
-            res_dict[map]["nostack"]["CoV"] = round(std/avg,2)
-        except:
-            pass
+        for stack in frame_stacking:
+            s = frame_stacking[stack]
+            try:
+                std = res_dict[map][s]["std_error_sp"]
+                avg = res_dict[map][s]["average_diag"]
+                res_dict[map][s]["CoV"] = round(std/avg,2)
+            except:
+                pass
 def sp_difficulty():
     load_sp_metrics()
 
@@ -207,7 +214,7 @@ def sp_difficulty():
     template = environment.get_template("results_tables.txt")
 
 
-    with open("./html_rendering/pages/results_tables.html", mode="w", encoding="utf-8") as results:
+    with open("./pages/results_tables.html", mode="w", encoding="utf-8") as results:
         results.write(template.render(maps=layouts_onions, res = res_dict, exps = exp_names, metrics=metrics_sp))
         print(f"... wrote {results}")
 
@@ -230,7 +237,7 @@ def sp_sort_basic():
     template = environment.get_template("results_sp_sorted.txt")
 
 
-    with open(f"./html_rendering/pages/results_sort_basic_allstacks.html", mode="w", encoding="utf-8") as results:
+    with open(f"./pages/results_sort_basic_allstacks.html", mode="w", encoding="utf-8") as results:
         results.write(template.render(maps=list(stacks["nostack"].keys()), stacks = stacks, exps = exp_names, metrics=metrics_sp))
         print(f"... wrote {results}")
 
@@ -253,13 +260,13 @@ def sp_res_off_diag():
             "C:\\Users\\PetraVysušilová\\Documents\\coding\\PPO\\overcooked_pytorch_stable_baselines\\overcooked_ai\\src\\overcooked_ai_py\\diverse_population\\scripts\\html_rendering\\templates"))
         template = environment.get_template("results_off_diag.txt")
 
-        with open(f"./html_rendering/pages/results_off_diag{stack}.html", mode="w", encoding="utf-8") as results:
+        with open(f"./pages/results_off_diag{stack}.html", mode="w", encoding="utf-8") as results:
             results.write(template.render(maps=list(rd.keys()), res=res_dict, exps=exp_names, metrics=metrics,
                                           sorted_maps=sorted_layouts, empty_list = empty_list,stack=stack))
             print(f"... wrote {results}")
 
 def get_pages():
-    mypath = "./html_rendering/pages/"
+    mypath = "./pages/"
     files = [f for f in listdir(mypath) if isfile(join(mypath, f)) and f != "main_page.html"]
     result = []
     for f in files:
@@ -271,12 +278,61 @@ def update_menu():
         "C:\\Users\\PetraVysušilová\\Documents\\coding\\PPO\\overcooked_pytorch_stable_baselines\\overcooked_ai\\src\\overcooked_ai_py\\diverse_population\\scripts\\html_rendering\\templates"))
     template = environment.get_template("rozcestnik.txt")
 
-    with open(f"./html_rendering/pages/main_page.html", mode="w", encoding="utf-8") as results:
+    with open(f"./pages/main_page.html", mode="w", encoding="utf-8") as results:
         results.write(template.render(links=pages))
+
+def comp_avg_order(matrix):
+    matrix = np.transpose(matrix)
+    result = [np.unique(matrix[i], return_counts=True) for i in range(len(matrix))]
+    avgs = []
+    for i in range(3):
+        a= result[0][1][np.where(result[0][0] == i)]
+        b = result[1][1][np.where(result[1][0] == i)]
+        c = result[2][1][np.where(result[2][0] == i)]
+        avg = (3*a+2*b+1*c)/(a + b + c)
+        avgs.append(avg)
+    return result,avgs
+
+def get_sorted_stack():
+    r = {}
+    mat = []
+    for map in layouts_onions:
+        missing = []
+        l = []
+        i=-1
+        for stack in frame_stacking:
+
+            i += 1
+            try:
+                ad = res_dict[map][frame_stacking[stack]]["average_diag"]
+                l.append(ad)
+            except:
+                missing.append(i)
+                l.append(-1)
+        if len(missing) < 3:
+            r[map] = np.argsort(l)
+            mat.append(r[map])
+            for i in missing:
+                r[map][np.where(r[map] == i)] = -1
+
+    res,a = comp_avg_order(mat)
+
+    return r, res,a
+def stack_influence():
+    load_sp_metrics()
+    sorted_stacks,counts,avg_order = get_sorted_stack()
+
+    environment = Environment(loader=FileSystemLoader(
+        "C:\\Users\\PetraVysušilová\\Documents\\coding\\PPO\\overcooked_pytorch_stable_baselines\\overcooked_ai\\src\\overcooked_ai_py\\diverse_population\\scripts\\html_rendering\\templates"))
+    template = environment.get_template("sorted_stack_np.txt")
+
+    with open(f"./pages/sorted_stack_np.html", mode="w", encoding="utf-8") as results:
+        results.write(template.render(results=sorted_stacks,avgs=avg_order))
 
 all_results()
 #sp_difficulty()
 #sp_sort_basic()
 #sp_res_off_diag()
-update_menu()
+#stack_influence()
+#update_menu()
 

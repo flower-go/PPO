@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Results - Self play</title>
@@ -33,49 +33,54 @@
         table, th, td {
   border: 0.5px solid;
 }
+
+.nostack{
+    color: orange
+}
+
+.tuple{
+    color: blue
+}
+
+.channel{
+    color:pink
+}
+
     </style>
 </head>
 
 <body>
-<h1>{{ stack }}</h1>
-<div class="w3-container" style="overflow: scroll;">
-<table clas="w3-table">
-<!-- tr style=" min-width:100px" >
-<th>layout</th>
-{% for map in maps %}
-{% if not map in empty_list %}
-    <td > <p style="writing-mode: vertical-rl;text-orientation: mixed">{{map}}</p></td>
-    {% endif %}
-{%  endfor %}
-</tr>
-<tr>
-<th>heat</th>
-{% for map in maps %}
-    {% if not map in empty_list %}
-    <td> <img src="{{ res[map][stack]["heat"] }}"  width="60px"></td>
-    {% endif %}
-{%  endfor %}
-</tr -->
-</table>
-
+<div class="w3-third">
 <table>
-{% for metric in metrics %}
-<tr><td colspan="{{sorted_maps[metric]|length}}" class="w3-black">{{metric}}</td> </tr>
+{% for map,l in results.items() %}
 <tr>
-{% for map in sorted_maps[metric] %}
-<td> <img src="{{ res[map][stack]["heat"] }}"  width="60px"> <br>
-{{map[0:8]}}</td>
-{% endfor %}
-</tr>
-<tr>
-{% for map in sorted_maps[metric] %}
-    <td>{{ res[map][stack][metric] }}</td>
-{% endfor %}
-</tr>
-{% endfor %}
+<td>{{ map }}</td>
+<td {% if (l[2] == 2) %} class="w3-green" {% elif  (l[2] == 0) %} class="w3-pink"
+{% elif (l[2] == 1) %} class="w3-blue" {% endif %}>
+{{ l[2] }}
+</td>
 
+<td {% if (l[1] == 2) %} class="w3-green" {% elif  (l[1] == 0) %} class="w3-pink"
+{% elif (l[1] == 1) %} class="w3-blue" {% endif %}>
+{{ l[1] }}
+</td>
 
+<td {% if (l[0] == 2) %} class="w3-green" {% elif  (l[0] == 0) %} class="w3-pink"
+{% elif (l[0] == 1) %} class="w3-blue" {% endif %}>
+{{ l[0] }}
+</td>
+
+</tr>
+{% endfor %}
+<tr><td><p class="w3-pink"> chan </p> <p class="w3-blue"> tupl </p><p class="w3-green"> nost </p></td></tr>
 </table>
+</div>
+
+<div class="w3-third">
+<p>average order for: <br>
+ nostack is {{  avgs[2] }} <br>
+ tuple is {{ avgs[1] }} <br>
+ channels is {{ avgs[0] }}</p>
 </div>
 </body>
 </html>
