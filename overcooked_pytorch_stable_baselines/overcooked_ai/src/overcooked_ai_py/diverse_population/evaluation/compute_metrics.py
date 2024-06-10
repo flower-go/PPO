@@ -10,8 +10,8 @@ import matplotlib.pyplot as plt
 import scipy
 import scipy.cluster.hierarchy as sch
 #PATH_PREFIX = "/storage/plzen1/home/ayshi/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/evaluation/"
-PATH_PREFIX = "./overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/evaluation/"
-
+#PATH_PREFIX = "./overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/evaluation/"
+PATH_PREFIX = "./"
 layouts_onions = [
            "small_corridor",
            "five_by_five",
@@ -43,6 +43,19 @@ layouts_onions = [
 
 def comp_std_error(matrix):
     return np.std(matrix), 0
+
+def avg_out(matrix):
+    out = 0
+    out_num = 0
+    for i in range(len(matrix[0])):
+         out_row = []
+         for j in range(len(matrix[i])):
+             if i != j:
+                 out+= matrix[i][j]
+                 out_num += 1
+
+    max_out = out/out_num
+    return max_out
 
 def comp_diag_average_average_out(matrix):
     diag_array =  []
@@ -159,4 +172,60 @@ def comp_sp_metrics():
             print(res_string, file=f)
         print("end")
 
-comp_sp_metrics()
+def avg_out_to_avg_diag(matrix):
+    out = avg_out(matrix)
+    diag = average_diag(matrix)
+    return out/diag
+
+def std_out(matrix):
+    res = []
+    for i in range(len(matrix[0])):
+         for j in range(len(matrix[i])):
+             if i != j:
+                 res.append(matrix[i][j])
+    return np.std(res)
+
+
+def cov_out_to_cov_diag(matrix):
+    #potrebuju avg diag, std diag, avg out, diag out
+    avg_diag = average_diag(matrix)
+    std_d = comp_std_error_diag(matrix)
+    cov_diag = std_d/avg_diag
+
+    avg_o = avg_out(matrix)
+    std_o =  std_out(matrix)
+    cov_o = std_o/avg_o
+
+    return cov_o/cov_diag
+
+more_metrics = {
+    "avg_diag":average_diag,
+    "avg_out": avg_out,
+    "avg_out_to_avg_diag": avg_out_to_avg_diag,
+    "cov_out_to_cov_diag": cov_out_to_cov_diag
+}
+def comp_more_metrics():
+    for m in more_metrics:
+        res_string = ""
+        for map in layouts_onions:
+            # for map in ["pipeline"]:
+            for stack in ["chan", "tupl", "nost"]:
+                path = f"{PATH_PREFIX}{map}/{stack}_{map}_ref-30"
+                if os.path.isfile(path):
+                    print(f"nalezeno {path}")
+                    try:
+                        a = np.loadtxt(path)
+                        comp1 = more_metrics[m](a)
+                        res_string += f"{stack},{map},ref-30,{comp1}\n"
+                    except Exception as e:
+                        print("chyba")
+                        print(e)
+                else:
+                    print("not found")
+        print(res_string)
+        with open(f'{PATH_PREFIX}metrics/{m}.txt', 'w') as f:
+            print(res_string, file=f)
+        print("end")
+
+#comp_sp_metrics()
+comp_more_metrics()
