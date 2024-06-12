@@ -213,13 +213,31 @@ def generate_LR(lr):
                 json.dump(result_dict, f)
 
 
+def generate_log_ref(map_list = layouts_onions):
+    result_dict = {}
+    res = gen_ref_30_common(result_dict)
+    res["num_workers"] = 1
+    res["final_eval_games_per_worker"] = 1
+    for stack_type in frame_stacking:
+        fs = frame_stacking[stack_type]
+        res["frame_stacking_mode"] = fs[0]
+        res["frame_stacking"] = fs[1]
+    #TODO pridat "final_eval_games_per_worker":1, "num_workers":1, "behavior_check": true,
+        for map in map_list:
+            res["exp"] = stack_type + "_" + map + "_" + "ref-30"
+            res["layout_name"] = map
+            prefix = "log_"
+            print(res)
+            with open('./hyperparams/' + prefix + stack_type + "_" + map + "_" + "ref-30" + '.json', 'w') as f:
+                json.dump(res, f)
 
 
 #generate_whole_ref_pop()
 #generate_steps()
 #generate_R0("R2")
 #generate_Ls("L2")
-generate_LR("R1L1")
+#generate_LR("R1L1")
+generate_log_ref()
 
 
 

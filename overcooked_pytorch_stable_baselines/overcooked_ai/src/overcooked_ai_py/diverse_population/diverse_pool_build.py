@@ -94,7 +94,8 @@ random.seed(args.seed)
 np.random.seed(args.seed)
 
 def load_args_from_file(args):
-    name = args.exp[len(args.prefix):]
+    #name = args.exp[len(args.prefix):]
+    name = args.exp
     print(f"loading file {name}")
     try:
         path = projdir + "/diverse_population/scripts/hyperparams/" + name + ".json"
