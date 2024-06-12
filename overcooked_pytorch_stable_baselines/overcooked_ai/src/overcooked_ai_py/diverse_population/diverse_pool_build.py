@@ -389,7 +389,9 @@ layout_name = file_args["layout_name"] if  file_args["layout_name"] is not None 
 # Overcooked MDP and environment is loaded
 mdp = OvercookedGridworld.from_layout_name(layout_name)
 print(f"ov env se vytvari s laoutem {args.layout_name}")
-if (args.behavior_check):
+
+bch =  file_args["behavior_check"] if  file_args["behavior_check"] is not None else args.behavior_check
+if (bch):
     overcooked_env = OvercookedEnv.from_mdp(mdp, horizon=400, info_level=4)
     print("grid:" + str(overcooked_env.mdp.mdp_params["terrain"]))
 else:
