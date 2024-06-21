@@ -137,7 +137,7 @@ def comp_pop_metrics():
                     try:
                         a = np.loadtxt(path)
                         comp1= metrics[m](a)
-                        res_string += f"{stack},{map},ref-30,{comp1}\n"
+                        res_string += f"{stack},{map},ref-30,{comp1}/n"
                     except Exception as e:
                         print("chyba")
                         print(e)
@@ -161,7 +161,7 @@ def comp_sp_metrics():
                     try:
                         a = np.loadtxt(path)
                         comp1 = metrics_sp[m](a)
-                        res_string += f"{stack},{map},ref-30,{comp1}\n"
+                        res_string += f"{stack},{map},ref-30,{comp1}/n"
                     except Exception as e:
                         print("chyba")
                         print(e)
@@ -216,7 +216,7 @@ def comp_more_metrics():
                     try:
                         a = np.loadtxt(path)
                         comp1 = more_metrics[m](a)
-                        res_string += f"{stack},{map},ref-30,{comp1}\n"
+                        res_string += f"{stack},{map},ref-30,{comp1}/n"
                     except Exception as e:
                         print("chyba")
                         print(e)
@@ -227,5 +227,72 @@ def comp_more_metrics():
             print(res_string, file=f)
         print("end")
 
+stacking = ["chan", "tupl","nost"]
+exp_type = ["SP","L0","L1","L2", "R0","R1","R2","R0L0","R1L1"]
+
+def get_index(stack, exp, layout):
+    col = exp_type.index(exp)
+    row = stacking.index(stack) + layouts_onions.index(layout)*3
+    return([row,col])
+
+def get_rank_matrix(input_matrix):
+    res = []
+    #TODO je treba osetrit cisla co chybi
+    for i in range(len(input_matrix)):
+        row = input_matrix[i]
+        #ranks = np.argsort(row)
+        ranks_order = sorted(np.array(range(0,9)), key=lambda x:row[x], reverse = True)
+        ranks = np.full(len(ranks_order),-1)
+        for i in range(len(ranks_order)):
+            ranks[ranks_order[i]] = i
+        res.append(ranks)
+    return np.array(res)
+
+def get_empy_rows(input_matrix):
+    zero_rows = []
+    for i in range(len(input_matrix)):
+        row = input_matrix[i]
+        if np.sum(row) == 0:
+            zero_rows.append(i)
+    return zero_rows
+
+
+def remove_zeros(rank, zeros):
+    res = []
+    for i in range(len(rank)):
+        row = rank[i]
+        if not i in zeros:
+            res.append(row)
+    return np.array(res)
+
+def column_average(i_m):
+    return np.mean(i_m,axis=0)
+
+def eval_auc(filename):
+    res_matrix = np.zeros((len(stacking)*len(layouts_onions),len(exp_type)))
+
+    with open(file=filename, mode='r') as res_file:
+        for line in res_file:
+            if len(line) > 0:
+                splitted = line.split(",")
+                stack = splitted[0]
+                layout = splitted[1]
+                e_type = splitted[2]
+                index = get_index(stack, e_type, layout)
+                res_matrix[index[0],index[1]] = splitted[3]
+
+    rank_matrix = get_rank_matrix(res_matrix)
+    zero_rows = get_empy_rows(res_matrix)
+    without_zeros = remove_zeros(rank_matrix, zero_rows)
+    avg_rank = column_average(without_zeros)
+#je to blbe - radi to od nejmensiho a jeste nevim jestli ty cisla jsou fakt poradi
+    return res_matrix, rank_matrix, avg_rank
+
+    
+
 #comp_sp_metrics()
-comp_more_metrics()
+#comp_more_metrics()
+res_mat, rank_mat, avg_rank = eval_auc("C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/evaluation/metrics/auc_15.txt")
+print(res_mat)
+print(rank_mat)
+print(avg_rank)

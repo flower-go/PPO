@@ -12,8 +12,8 @@ import numpy as np
 
 # write_messages.py
 #CODE_PATH = "C:/Users/PetraVysušilová/Documents/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/"
-CODE_PATH = "C:/Users/PetraVysušilová/DOCUME~1/coding/PPO/OVERCO~1/OVERCO~1/src/OVERCO~1/DIVERS~1/"
-MDP_PATH = "C:/Users/PetraVysušilová/Documents/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/mdp/"
+CODE_PATH = "C:/Users/PETRAV~1/PYCHAR~1/coding/PPO/OVERCO~1/OVERCO~1/src/OVERCO~1/DIVERS~1/"
+MDP_PATH = "C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/mdp/"
 heat_path = ("visualisation/")
 import win32api
 
@@ -179,7 +179,7 @@ def remove_empty_maps(dict):
 
 def all_results():
     environment = Environment(loader=FileSystemLoader(
-        "C:\\Users\\PetraVysušilová\\Documents\\coding\\PPO\\overcooked_pytorch_stable_baselines\\overcooked_ai\\src\\overcooked_ai_py\\diverse_population\\scripts\\html_rendering\\templates"))
+        "C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/html_rendering/templates"))
     template = environment.get_template("results.txt")
     heat_maps()
     heat_steps()
@@ -210,7 +210,7 @@ def sp_difficulty():
 
 
     environment = Environment(loader=FileSystemLoader(
-        "C:\\Users\\PetraVysušilová\\Documents\\coding\\PPO\\overcooked_pytorch_stable_baselines\\overcooked_ai\\src\\overcooked_ai_py\\diverse_population\\scripts\\html_rendering\\templates"))
+        "C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/html_rendering/templates"))
     template = environment.get_template("results_tables.txt")
 
 
@@ -233,7 +233,7 @@ def sp_sort_basic():
 
         stacks[stack] = rs
     environment = Environment(loader=FileSystemLoader(
-        "C:\\Users\\PetraVysušilová\\Documents\\coding\\PPO\\overcooked_pytorch_stable_baselines\\overcooked_ai\\src\\overcooked_ai_py\\diverse_population\\scripts\\html_rendering\\templates"))
+        "C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/html_rendering/templates"))
     template = environment.get_template("results_sp_sorted.txt")
 
 
@@ -257,7 +257,7 @@ def sp_res_off_diag():
 
 
         environment = Environment(loader=FileSystemLoader(
-            "C:\\Users\\PetraVysušilová\\Documents\\coding\\PPO\\overcooked_pytorch_stable_baselines\\overcooked_ai\\src\\overcooked_ai_py\\diverse_population\\scripts\\html_rendering\\templates"))
+            "C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/html_rendering/templates"))
         template = environment.get_template("results_off_diag.txt")
 
         with open(f"./pages/results_off_diag{stack}.html", mode="w", encoding="utf-8") as results:
@@ -275,7 +275,7 @@ def get_pages():
 def update_menu():
     pages = get_pages()
     environment = Environment(loader=FileSystemLoader(
-        "C:\\Users\\PetraVysušilová\\Documents\\coding\\PPO\\overcooked_pytorch_stable_baselines\\overcooked_ai\\src\\overcooked_ai_py\\diverse_population\\scripts\\html_rendering\\templates"))
+        "C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/html_rendering/templates"))
     template = environment.get_template("rozcestnik.txt")
 
     with open(f"./pages/main_page.html", mode="w", encoding="utf-8") as results:
@@ -323,16 +323,106 @@ def stack_influence():
     sorted_stacks,counts,avg_order = get_sorted_stack()
 
     environment = Environment(loader=FileSystemLoader(
-        "C:\\Users\\PetraVysušilová\\Documents\\coding\\PPO\\overcooked_pytorch_stable_baselines\\overcooked_ai\\src\\overcooked_ai_py\\diverse_population\\scripts\\html_rendering\\templates"))
+        "C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/html_rendering/templates"))
     template = environment.get_template("sorted_stack_np.txt")
 
     with open(f"./pages/sorted_stack_np.html", mode="w", encoding="utf-8") as results:
         results.write(template.render(results=sorted_stacks,avgs=avg_order))
 
-all_results()
+
+stacking = ["chan", "tupl", "nost"]
+exp_type = ["SP", "L0", "L1", "L2", "R0", "R1", "R2", "R0L0", "R1L1"]
+
+
+def get_index(stack, exp, layout):
+    col = exp_type.index(exp)
+    row = stacking.index(stack) + layouts_onions.index(layout) * 3
+    return ([row, col])
+
+
+def get_rank_matrix(input_matrix):
+    res = []
+    # TODO je treba osetrit cisla co chybi
+    for i in range(len(input_matrix)):
+        row = input_matrix[i]
+        # ranks = np.argsort(row)
+        ranks_order = sorted(np.array(range(0, 9)), key=lambda x: row[x], reverse=True)
+        ranks = np.full(len(ranks_order), -1)
+        for i in range(len(ranks_order)):
+            ranks[ranks_order[i]] = i
+        res.append(ranks)
+    return np.array(res)
+
+
+def get_empy_rows(input_matrix):
+    zero_rows = []
+    for i in range(len(input_matrix)):
+        row = input_matrix[i]
+        if np.sum(row) == 0:
+            zero_rows.append(i)
+    return zero_rows
+
+
+def remove_zeros(rank, zeros):
+    res = []
+    for i in range(len(rank)):
+        row = rank[i]
+        if not i in zeros:
+            res.append(row)
+    return np.array(res)
+
+
+def column_average(i_m):
+    return np.mean(i_m, axis=0)
+
+
+def eval_auc(filename):
+    res_matrix = np.zeros((len(stacking) * len(layouts_onions), len(exp_type)))
+
+    with open(file=filename, mode='r') as res_file:
+        for line in res_file:
+            if len(line) > 0:
+                splitted = line.split(",")
+                stack = splitted[0]
+                layout = splitted[1]
+                e_type = splitted[2]
+                index = get_index(stack, e_type, layout)
+                res_matrix[index[0], index[1]] = splitted[3]
+
+    rank_matrix = get_rank_matrix(res_matrix)
+    zero_rows = get_empy_rows(res_matrix)
+    without_zeros = remove_zeros(rank_matrix, zero_rows)
+    avg_rank = column_average(without_zeros)
+    # je to blbe - radi to od nejmensiho a jeste nevim jestli ty cisla jsou fakt poradi
+    return res_matrix, rank_matrix, avg_rank, without_zeros, zero_rows
+
+def generate_names(zero_rows):
+    names = []
+    i = 0
+    for l in layouts_onions:
+        for s in stacking:
+            if i not in zero_rows:
+                names.append(f"{s}_{l}")
+            i+=1
+    return names
+
+def population_avg_rank():
+    res_mat, rank_mat, avg_rank,no_zeros, zero_rows = eval_auc(
+        "C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/evaluation/metrics/auc_15.txt")
+
+    environment = Environment(loader=FileSystemLoader(
+        "C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/html_rendering/templates"))
+    template = environment.get_template("pop_avg_rank.txt")
+
+    with open(f"./pages/pop_avg_rank.html", mode="w", encoding="utf-8") as results:
+        results.write(template.render(res_mat=res_mat,rank_mat=no_zeros,avg_rank=np.round(avg_rank,2), color_range=["Yellow","Light-Green","Green","Teal","Cyan","Blue","Indigo","Purple","Black"], exp_names = exp_type, names=generate_names(zero_rows)))
+
+
+#all_results()
 #sp_difficulty()
 #sp_sort_basic()
 #sp_res_off_diag()
 #stack_influence()
-#update_menu()
+population_avg_rank()
+update_menu()
 

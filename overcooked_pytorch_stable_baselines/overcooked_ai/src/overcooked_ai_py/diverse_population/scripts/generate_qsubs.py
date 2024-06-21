@@ -232,6 +232,11 @@ def generate_L(stacking, layout_name,l):
     result = f'{START_QSUB}exp="{exp}" walltime=120:00:00'
     return result
 
+
+def generate_reeval(stacking, layout_name):
+    exp =  stacking[0:4] + "_"  + layout_name + "_ref-30"
+    result = f'{START_QSUB}exp="{exp}" walltime=02:00:00 log_dir="" prefix="log_"'
+    return result
 def one_epoch_new(map_names = layouts_onions, step = None):
     seed = seeds[0]
     for stacking in frame_stacking:
@@ -266,13 +271,30 @@ def gen_L(l,map_names = layouts_onions):
         for layout_name in map_names:
             res = generate_L(stacking, layout_name,l)
             print(res)
+
+def gen_reeval_ref30(map_names = layouts_onions):
+    for stacking in frame_stacking:
+        print("\n" + "#stacking: " + stacking + "\n")
+        for layout_name in map_names:
+            res = generate_reeval(stacking, layout_name)
+            print(res)
+
+
+def generate_image_generation(map_names = layouts_onions):
+    for stacking in frame_stacking:
+        print("\n" + "#stacking: " + stacking + "\n")
+        for layout_name in map_names:
+            exp_name = f"{stacking[0:4]}_{layout_name}_ref-30"
+            #result = f'python diverse_population/visualisation/evaluation/eval_visualisation.py --input_file="./diverse_population/text_logs/{exp_name}/text_log.txt'
+            result =  f'sh ./coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni walltime="03:50:00" exp="{exp_name}" file="./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/generate_pics.sh" input_file="./diverse_population/text_logs/{exp_name}/text_log.txt"'
+            print(result)
 #one_epoch_new()
 #gen_steps_nostack()
 #gen_obs()
 #gen_R(r = "R2")
-gen_L(l = "R1L1")
-
-
+#gen_L(l = "R1L1")
+#gen_reeval_ref30()
+generate_image_generation()
 
 
 

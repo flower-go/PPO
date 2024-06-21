@@ -1,16 +1,18 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="diverse_pool_build" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
     <module name="overcooked_pytorch_stable_baselines" />
+    <option name="ENV_FILES" value="" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
     <envs>
       <env name="PYTHONUNBUFFERED" value="1" />
-      <env name="CODEDIR" value="$PROJECT_DIR$/../.." />
+      <env name="CODEDIR" value="$USER_HOME$" />
       <env name="PROJDIR" value="$PROJECT_DIR$/overcooked_ai/src/overcooked_ai_py" />
     </envs>
     <option name="SDK_HOME" value="" />
+    <option name="SDK_NAME" value="Python 3.12 (coding)" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/overcooked_ai/src/overcooked_ai_py" />
-    <option name="IS_MODULE_SDK" value="true" />
+    <option name="IS_MODULE_SDK" value="false" />
     <option name="ADD_CONTENT_ROOTS" value="true" />
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <option name="SCRIPT_NAME" value="$PROJECT_DIR$/overcooked_ai/src/overcooked_ai_py/diverse_population/diverse_pool_build.py" />
