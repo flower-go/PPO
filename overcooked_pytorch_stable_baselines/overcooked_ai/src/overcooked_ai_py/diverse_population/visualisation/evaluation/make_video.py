@@ -19,5 +19,7 @@ fps = 3
 
 if __name__ == "__main__":
     dir_files = [f for f in listdir(args.img_directory) if isfile(join(args.img_directory, f)) and f.endswith('.png')]
+    dir_files = sorted(dir_files, key=lambda x: int(x.split(".")[0]))
+    dir_files = [join(args.img_directory,f) for f in dir_files]
     clip = moviepy.video.io.ImageSequenceClip.ImageSequenceClip(dir_files, fps=fps)
     clip.write_videofile(args.video_path + '.mp4')

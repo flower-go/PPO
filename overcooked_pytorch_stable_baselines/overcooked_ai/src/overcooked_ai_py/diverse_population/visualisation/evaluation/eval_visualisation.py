@@ -81,6 +81,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--input_file", default=None, type=str, help="path to file with behavior records in required format")
 parser.add_argument("--output_file", default=None, type=str, help="path to the result destination")
 parser.add_argument("--layout_name", default=None, type=str, help="layout name")
+parser.add_argument("--exp", default=None, type=str, help="for logging only")
 args = parser.parse_args([] if "__file__" not in globals() else None)
 def save_map_pic(input, img_path):
     print("volam tvoreni obrazku")
@@ -151,24 +152,34 @@ def test_file_to_dict(filename):
     return test_dict
 
 if __name__ == "__main__":
-    data, grid, name = dt.load_data(args.input_file)
+    data, grid, name = dt.load_data(projdir + "/" + args.input_file)
     print("grid looks like this:")
     print(grid)
     #grid = [['X','D','P','X','X'],['X',' ',' ',' ','S'],['O',' ',' ',' ','X'],['X',' ',' ',' ','D'],['X','O','X','P','X']]
     print("name: " + name)
-    name = name + "_ref30"
+    name = name.strip()
+    name = args.exp + "_ref30"
     dt_now = datetime.datetime.now()
+    print(len(data))
     #print("directory name: ", args.layout_name)
-    os.makedirs("./diverse_population/visualisation/maps/" + name, exist_ok=True)
+    os.makedirs("./diverse_population/behav_pics/" + name, exist_ok=True)
+    path =  "./diverse_population/behav_pics/" + name
     print("data length:", len(data))
     print("prvni data")
     print(data[0])
     print(data[0]["action:"])
+    eval_pair_order = 0
     for i,d in enumerate(data):
-        if(i > 5 ):
-            exit()
+        time = d["next_state"]["timestep"] - 1
+        if time == 0:
+            eval_pair_order = eval_pair_order + 1
+            pair_directory_path = path + "/" + str(eval_pair_order)
+            os.makedirs(pair_directory_path)
+        #if(i > 5 ):
+        #    exit()
+        #print(d["next_state"]["timestep"])
         print("index is ", i)
-        args.output_file = "./diverse_population/behav_pics/" + name + "/" + str(i) + ".png"
+        args.output_file = pair_directory_path + "/" + str(i) + ".png"
         save_map_pic(d, args.output_file)
 
 
