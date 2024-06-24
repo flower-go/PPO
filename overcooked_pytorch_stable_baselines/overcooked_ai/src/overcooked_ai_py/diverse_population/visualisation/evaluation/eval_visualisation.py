@@ -171,11 +171,14 @@ if __name__ == "__main__":
     print(data[0]["action:"])
     eval_pair_order = 0
     generating_this = False
+    generate_indices = None
+    if args.generate_only is not None:
+        generate_indices = [ int(a) for a in args.generate_only.split(",") ]
     for i,d in enumerate(data):
         time = d["next_state"]["timestep"] - 1
         if time == 0:
             eval_pair_order = eval_pair_order + 1
-            if (args.generate_only is None) or (eval_pair_order in args.generate_only):
+            if (generate_indices is None) or (eval_pair_order in generate_indices):
                 pair_directory_path = path + "/" + str(eval_pair_order)
                 os.makedirs(pair_directory_path)
                 generating_this = True
