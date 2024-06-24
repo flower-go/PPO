@@ -290,9 +290,9 @@ def eval_auc(filename):
 
     
 
-#comp_sp_metrics()
+comp_sp_metrics()
 #comp_more_metrics()
-res_mat, rank_mat, avg_rank = eval_auc("C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/evaluation/metrics/auc_15.txt")
-print(res_mat)
-print(rank_mat)
-print(avg_rank)
+#res_mat, rank_mat, avg_rank = eval_auc("C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/evaluation/metrics/auc_15.txt")
+#print(res_mat)
+#print(rank_mat)
+#print(avg_rank)

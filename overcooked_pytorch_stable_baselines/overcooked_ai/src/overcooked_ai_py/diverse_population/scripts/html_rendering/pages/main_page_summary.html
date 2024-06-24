@@ -36,7 +36,7 @@
 </head>
 
 <body>
-<div>
+<div class="w3-container">
     <H1>A. Self-play analysis</H1>
     First part of the results analysis focuses on describing map properties and acknowledge the presence of the "off diagonal problem".
     <h2>1. Which maps are hard even for self-play?</h2>
@@ -53,7 +53,23 @@
     </ul>
 
     I have run same analysis for channels and tuple stacking options. We can see some maps have good score over all experimetns, while
-    other maps performs substantially differently depending on the stacking type. There is more analysis on stacking influence following.
+    other maps performs substantially differently depending on the stacking type. There is more analysis on stacking influence following. It seems
+    like 4 maps are just too hard even for self play - bottleneck, tutorial_0, corridor, small_corridor.
+    Their maps are: small_corridor, corridor, bottleneck, tutorial_0 <br>
+    small corridor
+    <img width="100px" alt="small_corridor" src="C:\Users\PetraVysušilová\PycharmProjects\coding\PPO\overcooked_pytorch_stable_baselines\overcooked_ai\src\overcooked_ai_py\diverse_population\visualisation\maps\small_corridor.png">
+    <br> corridor
+    <img width="100px" alt="corridor" src="C:\Users\PetraVysušilová\PycharmProjects\coding\PPO\overcooked_pytorch_stable_baselines\overcooked_ai\src\overcooked_ai_py\diverse_population\visualisation\maps\corridor.png">
+    <br> bottleneck
+    <img width="100px" alt="bottleneck" src="C:\Users\PetraVysušilová\PycharmProjects\coding\PPO\overcooked_pytorch_stable_baselines\overcooked_ai\src\overcooked_ai_py\diverse_population\visualisation\maps\bottleneck.png">
+    <br> tutorial_0
+    <img width="100px" alt="tutorial_0" src="C:\Users\PetraVysušilová\PycharmProjects\coding\PPO\overcooked_pytorch_stable_baselines\overcooked_ai\src\overcooked_ai_py\diverse_population\visualisation\maps\tutorial_0.png">
+
+    <br>
+    The first two maps - corridor and small corridor have narrow corridor. This type of maps is sensitive to agents deadlock where both agents are waiting in the corridor
+    for another agent to step back. We suppose same problem can be seen in bottleneck layout. Tutorial_0 layout is different. There is no need for agents to cooperate heavily
+    as only shared resource is plate disposer. In this layout, we have observed agents learning, unfortunately very slowly - 30x slower than other layouts (training whoel ref population
+    of 30 agents would take more than a month so we categorized this layout as hard, although SP PPO converges at the end.
 
     <h2>2. Stacking influence</h2>
     Results for this part can be found here: <a href="./sorted_stack_np.html" target="_blank">sorted_stack_np.html</a> <br>
@@ -61,7 +77,11 @@
     selfplay agents are not capable to use the potential of the information about history or they simply learn faster and
     sufficiently good without it. The worst type of frame stacking are channels, there are 5 maps, where chan experiments
     even did not converge. There are also some maps, although in minority, where channels performed quite good and
-    I hdo not have an explanation yet - TODO maybe these maps requiere the history info for better strategies?
+    I do not have an explanation yet. These are centre_pots, cramped room and simple_o.
+
+
+
+
 
     <h2>3. qualitative analysis</h2>
     In the table with all results (<a href="./all_results.html" target="_blank">all_results.html</a>) you can see not the original

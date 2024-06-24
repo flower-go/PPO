@@ -1,0 +1,2511 @@
+<<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Population training - method comaprison</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-white.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-dark-green.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-dark-grey.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link href='https://fonts.googleapis.com/css?family=Roboto Condensed' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .dot {
+          height: 14px;
+          width: 14px;
+          background-color: #bbb;
+          border-radius: 50%;
+          display: inline-block;}
+
+        .w3-card {
+            display: inline-block;}
+
+
+        body, html {height: 100%;}
+        body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
+        h1 {font-family: 'Roboto Condensed'; font-weight:100;}
+        .menu {display: none}
+        table, th, td {
+  border: 0.3px solid black;
+}
+
+.nostack{
+    color: orange
+}
+
+.tuple{
+    color: blue
+}
+
+.channel{
+    color:pink
+}
+
+    </style>
+</head>
+
+<body>
+<table class="w3-table">
+<tr>
+<td>rank scale colors</td>
+
+    <td class="w3-Yellow">0</td>
+
+    <td class="w3-Light-Green">1</td>
+
+    <td class="w3-Green">2</td>
+
+    <td class="w3-Teal">3</td>
+
+    <td class="w3-Cyan">4</td>
+
+    <td class="w3-Blue">5</td>
+
+    <td class="w3-Indigo">6</td>
+
+    <td class="w3-Purple">7</td>
+
+    <td class="w3-Black">8</td>
+
+</tr>
+</table>
+
+<div class="w3-quarter">
+<br>
+<table class="w3-table w3-tiny">
+<tr><td colspan="1"><td/><td colspan="9">Avg rank (higher is better) of POP methods</td></tr>
+<tr>
+<td></td>
+
+<td class="w3-Black"> 3.05</td>
+
+<td class="w3-Cyan"> 4.12</td>
+
+<td class="w3-Light-Green"> 4.4</td>
+
+<td class="w3-Yellow"> 4.52</td>
+
+<td class="w3-Purple"> 3.55</td>
+
+<td class="w3-Teal"> 4.21</td>
+
+<td class="w3-Blue"> 4.1</td>
+
+<td class="w3-Green"> 4.26</td>
+
+<td class="w3-Indigo"> 3.79</td>
+
+</tr>
+<tr><td colspan="9">POP by layouts </td></tr>
+<tr>
+<td></td>
+
+    <td>SP</td>
+
+    <td>L0</td>
+
+    <td>L1</td>
+
+    <td>L2</td>
+
+    <td>R0</td>
+
+    <td>R1</td>
+
+    <td>R2</td>
+
+    <td>R0L0</td>
+
+    <td>R1L1</td>
+
+</tr>
+
+<tr>
+<td>chan_five_by_five</td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+</tr>
+
+<tr>
+<td>tupl_five_by_five</td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+</tr>
+
+<tr>
+<td>nost_five_by_five</td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+</tr>
+
+<tr>
+<td>chan_schelling</td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+</tr>
+
+<tr>
+<td>tupl_schelling</td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+</tr>
+
+<tr>
+<td>nost_schelling</td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+</tr>
+
+<tr>
+<td>chan_centre_pots</td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+</tr>
+
+<tr>
+<td>tupl_centre_pots</td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+</tr>
+
+<tr>
+<td>nost_centre_pots</td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+</tr>
+
+<tr>
+<td>tupl_pipeline</td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+</tr>
+
+<tr>
+<td>nost_pipeline</td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+</tr>
+
+<tr>
+<td>tupl_scenario1_s</td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+</tr>
+
+<tr>
+<td>nost_scenario1_s</td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+</tr>
+
+<tr>
+<td>chan_large_room</td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+</tr>
+
+<tr>
+<td>tupl_large_room</td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+</tr>
+
+<tr>
+<td>nost_large_room</td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+</tr>
+
+<tr>
+<td>chan_asymmetric_advantages</td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+</tr>
+
+<tr>
+<td>tupl_asymmetric_advantages</td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+</tr>
+
+<tr>
+<td>nost_asymmetric_advantages</td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+</tr>
+
+<tr>
+<td>chan_schelling_s</td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+</tr>
+
+<tr>
+<td>tupl_schelling_s</td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+</tr>
+
+<tr>
+<td>nost_schelling_s</td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+</tr>
+
+<tr>
+<td>chan_coordination_ring</td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+</tr>
+
+<tr>
+<td>tupl_coordination_ring</td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+</tr>
+
+<tr>
+<td>nost_coordination_ring</td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+</tr>
+
+<tr>
+<td>tupl_counter_circuit_o_1order</td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+</tr>
+
+<tr>
+<td>nost_counter_circuit_o_1order</td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+</tr>
+
+<tr>
+<td>chan_cramped_room</td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+</tr>
+
+<tr>
+<td>tupl_cramped_room</td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+</tr>
+
+<tr>
+<td>nost_cramped_room</td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+</tr>
+
+<tr>
+<td>tupl_forced_coordination</td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+</tr>
+
+<tr>
+<td>nost_forced_coordination</td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+</tr>
+
+<tr>
+<td>chan_m_shaped_s</td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+</tr>
+
+<tr>
+<td>tupl_m_shaped_s</td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+</tr>
+
+<tr>
+<td>nost_m_shaped_s</td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+</tr>
+
+<tr>
+<td>chan_unident</td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+</tr>
+
+<tr>
+<td>tupl_unident</td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+</tr>
+
+<tr>
+<td>nost_unident</td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+</tr>
+
+<tr>
+<td>chan_simple_o</td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+</tr>
+
+<tr>
+<td>tupl_simple_o</td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+</tr>
+
+<tr>
+<td>nost_simple_o</td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+</tr>
+
+<tr>
+<td>chan_centre_objects</td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+</tr>
+
+<tr>
+<td>tupl_centre_objects</td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+</tr>
+
+<tr>
+<td>nost_centre_objects</td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+</tr>
+
+<tr>
+<td>chan_scenario2_s</td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+</tr>
+
+<tr>
+<td>tupl_scenario2_s</td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+</tr>
+
+<tr>
+<td>nost_scenario2_s</td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+</tr>
+
+<tr>
+<td>chan_scenario3</td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+</tr>
+
+<tr>
+<td>tupl_scenario3</td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+</tr>
+
+<tr>
+<td>nost_scenario3</td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+</tr>
+
+<tr>
+<td>chan_scenario2</td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+</tr>
+
+<tr>
+<td>tupl_scenario2</td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+</tr>
+
+<tr>
+<td>nost_scenario2</td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+</tr>
+
+<tr>
+<td>chan_scenario4</td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+</tr>
+
+<tr>
+<td>tupl_scenario4</td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+</tr>
+
+<tr>
+<td>nost_scenario4</td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+</tr>
+
+<tr>
+<td>tupl_bottleneck</td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+</tr>
+
+<tr>
+<td>nost_bottleneck</td>
+    
+        <td class="w3-Yellow">
+            0
+        </td>
+    
+        <td class="w3-Teal">
+            3
+        </td>
+    
+        <td class="w3-Cyan">
+            4
+        </td>
+    
+        <td class="w3-Light-Green">
+            1
+        </td>
+    
+        <td class="w3-Indigo">
+            6
+        </td>
+    
+        <td class="w3-Blue">
+            5
+        </td>
+    
+        <td class="w3-Purple">
+            7
+        </td>
+    
+        <td class="w3-Black">
+            8
+        </td>
+    
+        <td class="w3-Green">
+            2
+        </td>
+    
+</tr>
+
+
+</table>
+</div>
+
+</body>
+</html>

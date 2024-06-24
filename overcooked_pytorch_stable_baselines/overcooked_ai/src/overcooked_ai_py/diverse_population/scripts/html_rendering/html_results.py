@@ -72,7 +72,12 @@ frame_stacking = {"chan":"channels",
 
 exp_names = ["R0","R1", "R2", "L0", "L1", "L2", "R0L0", "R1L1"]
 
-
+def get_rank(input_vec):
+    ranks_order = sorted(np.array(range(0, 9)), key=lambda x: input_vec[x])
+    ranks = np.full(len(ranks_order), -1)
+    for i in range(len(ranks_order)):
+        ranks[ranks_order[i]] = i
+    return ranks
 
 for i in layouts_onions:
     res_dict[i] = {}
@@ -407,16 +412,27 @@ def generate_names(zero_rows):
     return names
 
 def population_avg_rank():
-    res_mat, rank_mat, avg_rank,no_zeros, zero_rows = eval_auc(
-        "C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/evaluation/metrics/auc_15.txt")
+    input_dict= {}
+    for perc in [15,30]:
+        for best in ["","_best"]:
+
+            res_mat, rank_mat, avg_rank,no_zeros, zero_rows = eval_auc(
+                f"C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/evaluation/metrics/auc{best}_{perc}.0.txt")
+            sorted_avg_rank = get_rank(avg_rank)
+            input_dict[f"{perc}_{best}"] = {}
+            input_dict[f"{perc}_{best}"]["res_mat"] = res_mat
+            input_dict[f"{perc}_{best}"]["rank_mat"] = no_zeros
+            input_dict[f"{perc}_{best}"]["avg_rank"] = np.round(avg_rank,2)
+            input_dict[f"{perc}_{best}"]["sorted_avg_rank"] = sorted_avg_rank
+
 
     environment = Environment(loader=FileSystemLoader(
         "C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/html_rendering/templates"))
     template = environment.get_template("pop_avg_rank.txt")
 
     with open(f"./pages/pop_avg_rank.html", mode="w", encoding="utf-8") as results:
-        results.write(template.render(res_mat=res_mat,rank_mat=no_zeros,avg_rank=np.round(avg_rank,2), color_range=["Yellow","Light-Green","Green","Teal","Cyan","Blue","Indigo","Purple","Black"], exp_names = exp_type, names=generate_names(zero_rows)))
-
+        #results.write(template.render(res_mat=res_mat,rank_mat=no_zeros,avg_rank=np.round(avg_rank,2), sorted_avg_rank = sorted_avg_rank, color_range=["Yellow","Light-Green","Green","Teal","Cyan","Blue","Indigo","Purple","Black"], exp_names = exp_type, names=generate_names(zero_rows)))
+        results.write(template.render(input_dict = input_dict, color_range=["yellow","orange","light-green","green","teal","cyan","blue","indigo","purple"], exp_names = exp_type, names=generate_names(zero_rows)))
 
 #all_results()
 #sp_difficulty()
@@ -424,5 +440,5 @@ def population_avg_rank():
 #sp_res_off_diag()
 #stack_influence()
 population_avg_rank()
-update_menu()
+#update_menu()
 

@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Population training - method comaprison</title>
@@ -50,7 +50,6 @@
 </head>
 
 <body>
-<div class="w3-third">
 <table class="w3-table">
 <tr>
 <td>rank scale colors</td>
@@ -59,32 +58,48 @@
 {% endfor %}
 </tr>
 </table>
+<div class="container">
+{% for type,values in input_dict.items() %}
+{% set outer_loop = loop %}
+<div class="w3-cell w3-padding">
 <br>
-<table class="w3-table">
-
+<table class="w3-table w3-tiny">
+<tr><td colspan="10">Table for {{type}}</td></tr>
+<tr><td colspan="10">Avg rank (lower is better) of POP methods</td></tr>
 <tr>
+{% if outer_loop.index0 < 1 %}
 <td></td>
+{% endif %}
+{% for a in values["avg_rank"] %}
+<td class="w3-{{ color_range[values["sorted_avg_rank"][loop.index0]] }}"> {{ a }}</td>
+{% endfor %}
+</tr>
+
+<tr><td colspan="10">POP by layouts </td></tr>
+<tr>
+{% if outer_loop.index0 < 1 %}
+<td></td>
+{% endif %}
 {% for i in exp_names %}
     <td>{{ i }}</td>
 {% endfor %}
 </tr>
-{% for row in rank_mat%}
+{% for row in values["rank_mat"]%}
 <tr>
-<td>{{ names[loop.index0] }}</td>
-    {% for num in row %}
-        <td class="w3-{{ color_range[num] }}">
-            {{ num }}
-        </td>
-    {% endfor %}
-</tr>
-{% endfor %}
-<tr>
-<td></td>
-{% for a in avg_rank %}
-<td class="w3-pink"> {{ a }}</td>
+{% if outer_loop.index0 < 1 %}
+    <td>{{ names[loop.index0] }}</td>
+{% endif %}
+{% for num in row %}
+    <td class="w3-{{ color_range[num] }}">
+        {{ num }}
+    </td>
 {% endfor %}
 </tr>
+{% endfor %}
+
 </table>
+</div>
+{% endfor %}
 </div>
 
 </body>

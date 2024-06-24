@@ -46,7 +46,7 @@ def show_sorted_cross_play(name,matrices, legends, title="", remove_diag=False, 
     for matrix, legend in zip(matrices, legends):
         l = name.split('\\')
         auc_name = f"{l[1].split("_")[0]},{l[0]},{legend}"
-        auc_res = comp_area_under_curve(matrix,0.15)
+        auc_res = comp_area_under_curve(matrix,quantile)
         auc.append(f"{auc_name},{auc_res}")
         table = np.around(matrix, decimals=2)
         if remove_diag:
@@ -113,7 +113,7 @@ frame_stacking = {"chan":"channels",
 
 exp_names = ["R0","R1", "R2", "L0", "L1", "L2", "R0L0", "R1L1"]
 #eval_path = "..\\evaluation\\"
-eval_path = "C:\\Users\\PetraVysušilová\\DOCUME~1\\coding\\PPO\\OVERCO~1\\OVERCO~1\\src\\OVERCO~1\\DIVERS~1\\evaluation\\"
+eval_path = "C:/Users/PETRAV~1/PYCHAR~1/coding/PPO/OVERCO~1/OVERCO~1/src/OVERCO~1/DIVERS~1/evaluation/"
 
 def print_all(percentile=0.15):
     auc_all = []
@@ -128,7 +128,7 @@ def print_all(percentile=0.15):
                 print("nenalezeno")
                 continue
             for e in exp_names:
-                file = f"{eval_path}{layout}\\{s}_{layout}_{e}_X_{s}_{layout}_ref-30_ENVROP0.0"
+                file = f"{eval_path}{layout}/{s}_{layout}_{e}_X_{s}_{layout}_ref-30_ENVROP0.0"
                 try:
                     m = np.loadtxt(file)
                 except Exception as x:
@@ -145,10 +145,11 @@ def print_all(percentile=0.15):
             matrices.append(sp)
             labels.append("SP")
 
-            auc = show_sorted_cross_play(name=f"{layout}\\{s}_{layout}_quant15_all",matrices=matrices, legends=labels, title="Ordered evaluation results", remove_diag=False, quantile=percentile)
+            auc = show_sorted_cross_play(name=f"{layout}\\{s}_{layout}_quant{percentile}_all",matrices=matrices, legends=labels, title="Ordered evaluation results", remove_diag=False, quantile=percentile)
             auc_all.extend(auc)
     return auc_all
-def print_best_final():
+def print_best_final(percentile=0.15):
+    auc_best = []
     for layout in layouts_onions:
         for s in frame_stacking:
             matrices = []
@@ -177,17 +178,23 @@ def print_best_final():
             matrices.append(sp)
             labels.append("SP")
 
-            show_sorted_cross_play(name=f"{layout}\\{s}_{layout}_quant15_best",matrices=matrices, legends=labels, title="Ordered evaluation results", remove_diag=False)
-
+            auc = show_sorted_cross_play(name=f"{layout}\\{s}_{layout}_quant{percentile}_best",matrices=matrices, legends=labels, title="Ordered evaluation results", remove_diag=False, quantile=percentile)
+            auc_best.extend(auc)
+    return auc_best
 
 percentile = 0.30
 auc = print_all(percentile=percentile)
-#print_best_final()
+auc_best = print_best_final(percentile=percentile)
 
 metric_prefix = "../evaluation/"
 
 
 with open(f'{metric_prefix}metrics/auc_{percentile*100}.txt', 'w') as f:
     for a in auc:
+        print(a, file=f)
+print("end")
+
+with open(f'{metric_prefix}metrics/auc_best_{percentile*100}.txt', 'w') as f:
+    for a in auc_best:
         print(a, file=f)
 print("end")
