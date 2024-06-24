@@ -9,7 +9,8 @@ import matplotlib.pyplot as plt
 import scipy
 import scipy.cluster.hierarchy as sch
 #PATH_PREFIX = "/storage/plzen1/home/ayshi/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/evaluation/"
-PATH_PREFIX = "C:/Users/PetraVysušilová/DOCUME~1/coding/PPO/OVERCO~1/OVERCO~1/src/OVERCO~1/DIVERS~1/"
+#PATH_PREFIX = "C:/Users/PetraVysušilová/DOCUME~1/coding/PPO/OVERCO~1/OVERCO~1/src/OVERCO~1/DIVERS~1/"
+PATH_PREFIX = "../"
 
 def cluster_corr_logic(corr_array, inplace=False):
     pairwise_distances = sch.distance.pdist(corr_array)
@@ -51,19 +52,27 @@ def cluster_corr(corr_array, last_two=False, inplace=False):
             res,idx =  cluster_corr_logic(np.transpose(corr_array[idx,:]))
             return res[idx,:], [idx, idx0]
 
-def heat_map(file_path,layout_name, res_name):
+def heat_map(file_path,layout_name, res_name, x_ticks = None , y_ticks = None):
     """
     Visualises evaluated cross-play table as heat map
     """
     table = np.loadtxt(file_path)
+
+    if x_ticks is None:
+       x_ticks = np.arange(len(table[0]))
+    if y_ticks is None:
+        y_ticks = np.arange(len(table))
+
     print("zacinam s heat map")
     #print(table)
     #table = np.around(table, decimals=2)
     fig, ax = plt.subplots()
     im = ax.imshow(table)
 
-    ax.set_xticks(np.arange(len(table[0])))
-    ax.set_yticks(np.arange(len(table)))
+    ax.set_xticks(np.arange(len(table[0])),x_ticks)
+    ax.set_yticks(np.arange(len(table)),y_ticks)
+
+
 
     plt.xlabel("player 1 agent")
     plt.ylabel("player 2 agent")
@@ -128,7 +137,7 @@ def sp_exps():
                     #else:
                     reordered, idx_map = cluster_corr(a)
                     np.savetxt(path + "_reordered", reordered)
-                    heat_map(path + "_reordered", map, f"{prefix}{stack}_{map}_ref-30")
+                    heat_map(path + "_reordered", map, f"{prefix}{stack}_{map}_ref-30", idx_map[0], idx_map[1])
                     np.savetxt(
                         f"{PATH_PREFIX}evaluation/help_files/{prefix}{stack}_{map}_ref-30_reord_map",
                         idx_map)
