@@ -82,6 +82,7 @@ parser.add_argument("--input_file", default=None, type=str, help="path to file w
 parser.add_argument("--output_file", default=None, type=str, help="path to the result destination")
 parser.add_argument("--layout_name", default=None, type=str, help="layout name")
 parser.add_argument("--exp", default=None, type=str, help="for logging only")
+parser.add_argument("--generate_only", default=None, type=str, help="comma separated video indices to be generate. If used, no other videos will be generated." )
 args = parser.parse_args([] if "__file__" not in globals() else None)
 def save_map_pic(input, img_path):
     print("volam tvoreni obrazku")
@@ -169,18 +170,24 @@ if __name__ == "__main__":
     print(data[0])
     print(data[0]["action:"])
     eval_pair_order = 0
+    generating_this = False
     for i,d in enumerate(data):
         time = d["next_state"]["timestep"] - 1
         if time == 0:
             eval_pair_order = eval_pair_order + 1
-            pair_directory_path = path + "/" + str(eval_pair_order)
-            os.makedirs(pair_directory_path)
+            if (args.generate_only is None) or (eval_pair_order in args.generate_only):
+                pair_directory_path = path + "/" + str(eval_pair_order)
+                os.makedirs(pair_directory_path)
+                generating_this = True
+            else:
+                generating_this = False
         #if(i > 5 ):
         #    exit()
         #print(d["next_state"]["timestep"])
-        print("index is ", i)
-        args.output_file = pair_directory_path + "/" + str(i) + ".png"
-        save_map_pic(d, args.output_file)
+        if generating_this:
+        #print("index is ", i)
+            args.output_file = pair_directory_path + "/" + str(i) + ".png"
+            save_map_pic(d, args.output_file)
 
 
 
