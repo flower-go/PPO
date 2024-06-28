@@ -217,7 +217,7 @@ def print_best_POP(percentile=0.15):
                     print(file)
                     print(x)
                     continue
-                m = select_best_from_pop(m)
+                m = select_best_from_pop(m[3:])
                 m = scale_matrix(m) #pridelam body at mam hladkou primku
                 matrices.append(m)
                 labels.append(e)
@@ -251,7 +251,7 @@ def print_best_POP_best_SP(percentile=0.15):
                     print(file)
                     print(x)
                     continue
-                m = select_best_from_pop(m)
+                m = select_best_from_pop(m[3:])
                 m = scale_matrix(m) #pridelam body at mam hladkou primku
                 matrices.append(m)
                 labels.append(e)
@@ -341,5 +341,5 @@ def execute_best_popSP():
     print("end")
 
 #execute_best_and_all()
-#execute_best_pop()
+execute_best_pop()
 execute_best_popSP()

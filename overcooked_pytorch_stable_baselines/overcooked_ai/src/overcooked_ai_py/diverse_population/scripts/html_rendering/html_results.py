@@ -510,9 +510,9 @@ def population_avg_rank():
                                       group_names=group_names, bests = ["all", "_best"],
                                       ord_res=ord_res, ord_res_stack=ord_res_stack))
 
-#all_results()
+all_results()
 #sp_difficulty()
-sp_sort_basic()
+#sp_sort_basic()
 #sp_res_off_diag()
 #stack_influence()
 #population_avg_rank()
