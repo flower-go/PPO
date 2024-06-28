@@ -58,13 +58,13 @@
 </tr -->
 </table>
 
-<table>
+<table class="w3-tiny">
 {% for metric in metrics %}
 <tr><td colspan="{{sorted_maps[metric]|length}}" class="w3-black">{{metric}}</td> </tr>
 <tr>
 {% for map in sorted_maps[metric] %}
-<td> <img src="{{ res[map][stack]["heat"] }}"  width="60px"> <br>
-{{map[0:8]}}</td>
+<td> <img src="{{ res[map][stack]["heat"] }}"  width="80px"> <br>
+{{map[0:15]}}</td>
 {% endfor %}
 </tr>
 <tr>

@@ -12,7 +12,9 @@ import numpy as np
 
 # write_messages.py
 #CODE_PATH = "C:/Users/PetraVysušilová/Documents/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/"
-CODE_PATH = "C:/Users/PETRAV~1/PYCHAR~1/coding/PPO/OVERCO~1/OVERCO~1/src/OVERCO~1/DIVERS~1/"
+#CODE_PATH = "C:/Users/PETRAV~1/PYCHAR~1/coding/PPO/OVERCO~1/OVERCO~1/src/OVERCO~1/DIVERS~1/"
+CODE_PATH = "../../"
+CODE_PATH_res = "../../../"
 MDP_PATH = "C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/mdp/"
 heat_path = ("visualisation/")
 import win32api
@@ -87,7 +89,7 @@ for i in layouts_onions:
 
 def heat_maps():
     result = []
-    path = CODE_PATH + heat_path
+    path = CODE_PATH_res + heat_path
     for map in layouts_onions:
         for s in frame_stacking:
             file = f"{path}/{map}/{s}_{map}_ref-30_reordered.png"
@@ -95,7 +97,7 @@ def heat_maps():
             #result.append(file)
 
 def heat_steps():
-    path = CODE_PATH + heat_path
+    path = CODE_PATH_res + heat_path
     for map in layouts_onions:
         for s in frame_stacking:
             file = f"{path}/{map}/steps2754060_{s}_{map}_ref-30_reordered.png"
@@ -103,7 +105,7 @@ def heat_steps():
             file = f"{path}/{map}/steps1377030_{s}_{map}_ref-30_reordered.png"
             res_dict[map][frame_stacking[s]]["heat_s1"] = file
 def map_image():
-    path = CODE_PATH +  "visualisation/maps"
+    path = CODE_PATH_res +  "visualisation/maps"
     for map in layouts_onions:
         for s in frame_stacking:
             file = f"{path}/{map}.png"
@@ -126,7 +128,7 @@ def get_metrics():
             res_dict[map][stack][name] = round(float(value),2)
 
 def collect_R(r="R0"):
-    path = CODE_PATH + heat_path
+    path = CODE_PATH_res + heat_path
     for map in layouts_onions:
         for s in frame_stacking:
             file = f"{path}{map}/{s}_{map}_{r}_X_{s}_{map}_ref-30_ENVROP0.0.png"
@@ -136,7 +138,7 @@ def collect_R(r="R0"):
             res_dict[map][frame_stacking[s]][r] = file
 
 def get_quant(suffix):
-    path = CODE_PATH + heat_path
+    path = CODE_PATH_res + heat_path
     for map in layouts_onions:
         for s in frame_stacking:
             file = f"{path}{map}/{s}_{map}_quant15_{suffix}.png"
@@ -193,7 +195,7 @@ def all_results():
     for e in exp_names:
         collect_R(e)
 
-    for q in ["all", "best"]:
+    for q in ["all", "best","bestPOP", "bestPOPSP"]:
         get_quant(q)
     with open("./pages/all_results.html", mode="w", encoding="utf-8") as results:
         results.write(template.render(maps=layouts_onions, res = res_dict, exps = exp_names, metrics=metrics))
@@ -347,14 +349,13 @@ def get_index(stack, exp, layout):
 
 def get_rank_matrix(input_matrix):
     res = []
-    # TODO je treba osetrit cisla co chybi
     for i in range(len(input_matrix)):
         row = input_matrix[i]
         # ranks = np.argsort(row)
         ranks_order = sorted(np.array(range(0, 9)), key=lambda x: row[x], reverse=True)
         ranks = np.full(len(ranks_order), -1)
         for i in range(len(ranks_order)):
-            ranks[ranks_order[i]] = i
+            ranks[ranks_order[i]] = i + 1
         res.append(ranks)
     return np.array(res)
 
@@ -378,10 +379,16 @@ def remove_zeros(rank, zeros):
 
 
 def column_average(i_m):
+    s = np.zeros(len(i_m[0]))
+    for i in range(len(i_m)):
+        for j in range(len(i_m[0])):
+            s[j]+= i_m[i][j]
+    for s_j in range(len(s)):
+        s[s_j] = s[s_j]/len(i_m)
     return np.mean(i_m, axis=0)
 
 
-def eval_auc(filename):
+def eval_auc(filename, s_p=stacking, l_p =layouts_onions ,e_p = exp_type):
     res_matrix = np.zeros((len(stacking) * len(layouts_onions), len(exp_type)))
 
     with open(file=filename, mode='r') as res_file:
@@ -391,14 +398,14 @@ def eval_auc(filename):
                 stack = splitted[0]
                 layout = splitted[1]
                 e_type = splitted[2]
-                index = get_index(stack, e_type, layout)
-                res_matrix[index[0], index[1]] = splitted[3]
+                if (stack in s_p) and (layout in l_p) and (e_type in e_p):
+                    index = get_index(stack, e_type, layout)
+                    res_matrix[index[0], index[1]] = splitted[3]
 
     rank_matrix = get_rank_matrix(res_matrix)
     zero_rows = get_empy_rows(res_matrix)
     without_zeros = remove_zeros(rank_matrix, zero_rows)
     avg_rank = column_average(without_zeros)
-    # je to blbe - radi to od nejmensiho a jeste nevim jestli ty cisla jsou fakt poradi
     return res_matrix, rank_matrix, avg_rank, without_zeros, zero_rows
 
 def generate_names(zero_rows):
@@ -415,9 +422,9 @@ def population_avg_rank():
     input_dict= {}
     for perc in [15,30]:
         for best in ["","_best"]:
-
             res_mat, rank_mat, avg_rank,no_zeros, zero_rows = eval_auc(
                 f"C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/evaluation/metrics/auc{best}_{perc}.0.txt")
+
             sorted_avg_rank = get_rank(avg_rank)
             input_dict[f"{perc}_{best}"] = {}
             input_dict[f"{perc}_{best}"]["res_mat"] = res_mat
@@ -425,20 +432,90 @@ def population_avg_rank():
             input_dict[f"{perc}_{best}"]["avg_rank"] = np.round(avg_rank,2)
             input_dict[f"{perc}_{best}"]["sorted_avg_rank"] = sorted_avg_rank
 
+    perc = 15
+    stack_res = {}
+    for s in stacking:
+        stack_res[s] = {}
+        for best in ["all", "_best"]:
+            if best == "all":
+                b = ""
+            else:
+                b = best
+            stack_res[s][best] = list(eval_auc(
+                f"../../evaluation/metrics/auc{b}_{perc}.0.txt", s_p=[s]))
+            stack_res[s][best][2] = np.round(stack_res[s][best][2],2)
+            stack_res[s][best].append(get_rank(stack_res[s][best][2]))
+
+    # table by off diag groups <-- ale je to stejna skupina napric stackingy?
+    #zatim nemam skupiny ale napisu si kod na vytvareni podle skupin
+    perc = 15
+    group_res = {}
+    group_names = ["lame","good"]
+    groups = {"lame":["five_by_five","simple_o"],"good":["forced_coordination","cramped_room"]}
+    for group_name, group in groups.items():
+        group_res[group_name] = {}
+        for best in ["all", "_best"]:
+            if best == "all":
+                b = ""
+            else:
+                b = best
+            group_res[group_name][best] = list(eval_auc(
+                f"../../evaluation/metrics/auc{b}_{perc}.0.txt", l_p=group))
+            group_res[group_name][best][2] = np.round(group_res[group_name][best][2], 2)
+            group_res[group_name][best].append(get_rank(group_res[group_name][best][2]))
+
+    #table by agent training order
+    perc = 15
+    ord_res = {}
+    for i in range(3,12):
+        ord_res[i] = {}
+        for best in ["all"]:
+            if best == "all":
+                b = ""
+            else:
+                b = best
+            ord_res[i][best] = list(eval_auc(
+                f"../../evaluation/metrics/auc{b}_{i}_{perc}.0.txt"))
+            ord_res[i][best][2] = np.round(ord_res[i][best][2], 2)
+            ord_res[i][best].append(get_rank(ord_res[i][best][2]))
+
+    #table by agent order and stacking
+    ord_res_stack = {}
+    for s in stacking:
+        perc = 15
+        ord_res_stack[s] = {}  # TODO dodelat
+        for i in range(3, 12):
+            ord_res_stack[s][i] = {}
+            for best in ["all"]:
+                if best == "all":
+                    b = ""
+                else:
+                    b = best
+                ord_res_stack[s][i][best] = list(eval_auc(
+                    f"../../evaluation/metrics/auc{b}_{i}_{perc}.0.txt", s_p=[s]))
+                ord_res_stack[s][i][best][2] = np.round(ord_res_stack[s][i][best][2], 2)
+                ord_res_stack[s][i][best].append(get_rank(ord_res_stack[s][i][best][2]))
+
+
+
+
 
     environment = Environment(loader=FileSystemLoader(
         "C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/html_rendering/templates"))
     template = environment.get_template("pop_avg_rank.txt")
 
     with open(f"./pages/pop_avg_rank.html", mode="w", encoding="utf-8") as results:
-        #results.write(template.render(res_mat=res_mat,rank_mat=no_zeros,avg_rank=np.round(avg_rank,2), sorted_avg_rank = sorted_avg_rank, color_range=["Yellow","Light-Green","Green","Teal","Cyan","Blue","Indigo","Purple","Black"], exp_names = exp_type, names=generate_names(zero_rows)))
-        results.write(template.render(input_dict = input_dict, color_range=["yellow","orange","light-green","green","teal","cyan","blue","indigo","purple"], exp_names = exp_type, names=generate_names(zero_rows)))
+        results.write(template.render(input_dict = input_dict, color_range=["red","deep-orange", "orange", "amber", "khaki", "lime", "teal", "cyan", "indigo"], exp_names = exp_type,
+                                      names=generate_names(zero_rows), stack_res=stack_res, stacking = stacking, group_res=group_res,
+                                      group_names=group_names, bests = ["all", "_best"],
+                                      ord_res=ord_res, ord_res_stack=ord_res_stack))
 
 #all_results()
 #sp_difficulty()
-#sp_sort_basic()
+sp_sort_basic()
 #sp_res_off_diag()
 #stack_influence()
-population_avg_rank()
+#population_avg_rank()
+
 #update_menu()
 

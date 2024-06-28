@@ -100,7 +100,45 @@ There is one naother table with maxs and mins on diagonal:
 ![img_20.png](img_20.png)
 
 
-A. POP training analysis
+### skupny dle AVG out to diag
+channels
+![img_21.png](img_21.png)
+nostack
+![img_22.png](img_22.png)
+tuple
+![img_23.png](img_23.png)
+
+channels - skupiny
+off diag
+
+nostack - skupiny
+good everywhere
+- m_shaped_s
+- simple_o
+- asymmetric
+- scenario4
+- unident
+- scenario3
+- scenario2
+- coordination ring
+off diag
+- centre_objects
+- schelling
+- counter circuit
+- centre pots
+- foorced coordination
+- schelling_s
+- bottleneck
+- scenario1_s
+- five by five
+bad
+- large room
+- cramped room
+- pipeline??? podle jaké je to teda metriky? 
+
+
+
+B. POP training analysis
 =====================
 
 1\. Is population training better than SP?
@@ -123,6 +161,21 @@ good candidates for POP init agents?
 
 
 
+4\. map groups table of POP results
+-------------------------------------
+
+off_diag:
+- off_diag problem
+- good everywhere
+- bad everywhere
+
+stacking
+- tuple
+- nost
+- channels
+
+pořadí u pop
+- pořadí v populaci (4-12 tuším)
 
 List of all available results follows:
 

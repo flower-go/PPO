@@ -58,6 +58,142 @@
 {% endfor %}
 </tr>
 </table>
+
+<div class="container">
+<h2 class="w3-padding" > Average rank according to 15th and 30th quantile and best of two last agents vs. 4. - 12. agent </h2>
+{% for type,values in input_dict.items() %}
+<div class="w3-cell w3-padding">
+<br>
+<table class="w3-table w3-tiny">
+<tr><td colspan="10">Table for {{type}}</td></tr>
+<tr><td colspan="10">Avg rank (lower is better) of POP methods</td></tr>
+<tr>
+{% for exp in exp_names %}
+        <th>{{ exp }}</th>
+    {% endfor %}
+
+</tr>
+<tr>
+
+{% for a in values["avg_rank"] %}
+<td class="w3-{{ color_range[values["sorted_avg_rank"][loop.index0]] }}"> {{ a }}</td>
+{% endfor %}
+</tr>
+</table>
+</div>
+{% endfor %}
+</div>
+
+
+
+<div class="container">
+<h2 class="w3-padding">Average rank by stacking type</h2>
+{% for b in bests %}
+<div class="w3-cell w3-padding">
+<table class="w3-table w3-tiny">
+    <th colspan="10">{{ b }}</th>
+    <tr><td></td>
+         {% for exp in exp_names %}
+            <th>{{ exp }}</th>
+        {% endfor %}
+    </tr>
+
+    {% for stack in stacking %}
+    <tr>
+        <td>{{ stack }}</td>
+            {% for a in stack_res[stack][b][2] %}
+                <td class="w3-{{ color_range[stack_res[stack][b][5][loop.index0]] }}"> {{ a }}</td>
+            {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+</div>
+{% endfor %}
+</div>
+
+<div class="container">
+<h2 class="w3-padding">Average rank by map groups</h2>
+{% for b in bests %}
+<div class="w3-cell w3-padding">
+<table class="w3-table w3-tiny">
+    <th colspan="10">{{ b }}</th>
+    <tr><td></td>
+         {% for exp in exp_names %}
+            <th>{{ exp }}</th>
+        {% endfor %}
+    </tr>
+
+    {% for group_name in group_names %}
+    <tr>
+        <td>{{ group_name }}</td>
+            {% for a in group_res[group_name][b][2] %}
+                <td class="w3-{{ color_range[group_res[group_name][b][5][loop.index0]] }}"> {{ a }}</td>
+            {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+</div>
+{% endfor %}
+</div>
+
+<div class="container">
+<h2 class="w3-padding">Average rank by agent order</h2>
+{% for b in ['all'] %}
+<div class="w3-cell w3-padding">
+<table class="w3-table w3-tiny">
+    <th colspan="10">{{ b }}</th>
+    <tr><td></td>
+         {% for exp in exp_names %}
+            <th>{{ exp }}</th>
+        {% endfor %}
+    </tr>
+
+    {% for i in range(3,12) %}
+    <tr>
+        <td>{{ i }}</td>
+            {% for a in ord_res[i][b][2] %}
+                <td class="w3-{{ color_range[ord_res[i][b][5][loop.index0]] }}"> {{ a }}</td>
+            {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+</div>
+{% endfor %}
+</div>
+
+<div class="container">
+<h2 class="w3-padding">Average rank by agent order and stacking</h2>
+{% for s in stacking %}
+{% for b in ['all'] %}
+<div class="w3-cell w3-padding">
+<table class="w3-table w3-tiny">
+<th colspan="10">{{ s }}</th>
+    <th colspan="10">{{ b }}</th>
+    <tr><td></td>
+         {% for exp in exp_names %}
+            <th>{{ exp }}</th>
+        {% endfor %}
+    </tr>
+
+    {% for i in range(3,12) %}
+    <tr>
+        <td>{{ i }}</td>
+            {% for a in ord_res_stack[s][i][b][2] %}
+                <td class="w3-{{ color_range[ord_res_stack[s][i][b][5][loop.index0]] }}"> {{ a }}</td>
+            {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+</div>
+{% endfor %}
+{% endfor %}
+</div>
+
+
+
+
+
+
 <div class="container">
 {% for type,values in input_dict.items() %}
 {% set outer_loop = loop %}
@@ -90,7 +226,7 @@
     <td>{{ names[loop.index0] }}</td>
 {% endif %}
 {% for num in row %}
-    <td class="w3-{{ color_range[num] }}">
+    <td class="w3-{{ color_range[num-1] }}">
         {{ num }}
     </td>
 {% endfor %}

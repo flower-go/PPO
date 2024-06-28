@@ -288,14 +288,20 @@ def generate_image_generation(map_names = layouts_onions):
             #result = f'python diverse_population/visualisation/evaluation/eval_visualisation.py --input_file="./diverse_population/text_logs/{exp_name}/text_log.txt'
             result =  f'sh ./coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni walltime="03:50:00" exp="{exp_name}" file="./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/generate_pics.sh" input_file="./diverse_population/text_logs/{exp_name}/text_log.txt"'
             print(result)
+
+def gen_video_index(index, inp_path, out_path):
+    result = f'python make_video.py --img_directory="../../behav_pics/{inp_path}/{index}" --video_path="../../behav_videos/{out_path}" --video_name="{index}"'
+    print(result)
+
 #one_epoch_new()
 #gen_steps_nostack()
 #gen_obs()
 #gen_R(r = "R2")
 #gen_L(l = "R1L1")
 #gen_reeval_ref30()
-generate_image_generation()
-
+#generate_image_generation()
+for i in [7,40,69,70,100,116,130,131,156,160,241,250,284,370,382]:
+    gen_video_index(i, inp_path="tupl_forced_coordination_ref-30_ref30", out_path="tupl_forced_coordination_ref30")
 
 
 

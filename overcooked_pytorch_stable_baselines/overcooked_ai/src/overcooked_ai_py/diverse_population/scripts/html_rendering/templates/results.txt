@@ -80,7 +80,7 @@
 </tr>
 
 
-<!-- SUMMARIZATION QUNATILES -->
+<!-- SUMMARIZATION QuATILES -->
 <tr>
 <td class=" w3-large w3-cell-middle w3-border-right w3-amber w3-text-black" rowspan="1" >
             <p  style=" rotate: -90deg; min-height: 50px;">summary</p></td>
@@ -90,6 +90,10 @@
                 <td class="w3-cell-top w3-border-right">
                     <img src="{{ res[map][key]["qall"]}}"  width="200px">
                     <img src="{{ res[map][key]["qbest"]}}"  width="200px">
+                    <p>best POP agent, SP average</p>
+                    <img src="{{ res[map][key]["qbestPOP"]}}"  width="200px">
+                    <p>best POP agent, best SP agent</p>
+                     <img src="{{ res[map][key]["qbestPOPSP"]}}"  width="200px">
                 </td>
             {% endif %}
         {% endfor %}

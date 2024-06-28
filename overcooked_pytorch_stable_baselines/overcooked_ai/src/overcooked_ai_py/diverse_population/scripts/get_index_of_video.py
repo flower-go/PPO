@@ -9,3 +9,6 @@ for t in tuple_list:
     res_list.append(r_i)
 
 print(sorted(res_list))
+
+for i,value in enumerate(res_list):
+    print(f"{tuple_list[i]} : {value}")

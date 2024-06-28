@@ -161,7 +161,7 @@ def comp_sp_metrics():
                     try:
                         a = np.loadtxt(path)
                         comp1 = metrics_sp[m](a)
-                        res_string += f"{stack},{map},ref-30,{comp1}/n"
+                        res_string += f"{stack},{map},ref-30,{comp1}\n"
                     except Exception as e:
                         print("chyba")
                         print(e)
