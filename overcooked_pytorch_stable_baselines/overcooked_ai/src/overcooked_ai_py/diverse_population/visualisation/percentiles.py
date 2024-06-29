@@ -216,7 +216,7 @@ def load_best_by_auc_SP(percentile):
         for map in layouts_onions:
             ord_res[s][map] = {}
             for e in exp_type:
-                ord_res[s][map][e] = np.zeros(12)
+                ord_res[s][map][e] = np.zeros(30)
     for i in range(0, 30):
         filename = f"../evaluation/metrics/aucSP_{i}_{percentile * 100}.txt"
 
@@ -302,13 +302,13 @@ def print_best_POP_best_SP(percentile=0.15):
                     print(x)
                     continue
                 best_index = np.argmax(auc_table[s][layout][e])
-                m = m[best_index]
+                m = m[[best_index]]
                 m = scale_matrix(m) #pridelam body at mam hladkou primku
                 matrices.append(m)
                 labels.append(e)
             sp = remove_daigonal(sp)
             sp_best = np.argmax(auc_sp_table[s][layout][e])
-            sp = sp[sp_best]
+            sp = sp[[sp_best]]
             sp = scale_matrix(sp)
             matrices.append(sp)
             labels.append("SP")
@@ -345,7 +345,7 @@ def print_best_final_best_SP(percentile=0.15):
                 labels.append(e)
             sp = remove_daigonal(sp)
             sp_best = np.argmax(auc_sp_table[s][layout][e])
-            sp = sp[sp_best]
+            sp = sp[[sp_best]]
             sp = scale_matrix(sp)
             matrices.append(sp)
             labels.append("SP")
@@ -470,6 +470,6 @@ def execute_best_finalSP():
 
 #execute_best_and_all()
 #execute_best_pop()
-#execute_best_popSP()
-#execute_best_finalSP()
+execute_best_popSP()
+execute_best_finalSP()
 #execute_SP_percentile()

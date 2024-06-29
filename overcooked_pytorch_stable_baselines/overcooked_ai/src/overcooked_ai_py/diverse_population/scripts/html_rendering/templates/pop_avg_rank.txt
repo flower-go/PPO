@@ -111,9 +111,10 @@
 {% endfor %}
 </div>
 
+{% for s in stacking %}
 <div class="container">
-<h2 class="w3-padding">Average rank by map groups</h2>
-{% for b in bests %}
+<h2 class="w3-padding">map groups  -- {{ s }}</h2>
+{% for b in group_best_list %}
 <div class="w3-cell w3-padding">
 <table class="w3-table w3-tiny">
     <th colspan="10">{{ b }}</th>
@@ -126,8 +127,8 @@
     {% for group_name in group_names %}
     <tr>
         <td>{{ group_name }}</td>
-            {% for a in group_res[group_name][b][2] %}
-                <td class="w3-{{ color_range[group_res[group_name][b][5][loop.index0]] }}"> {{ a }}</td>
+            {% for a in group_res[s][group_name][b][2] %}
+                <td class="w3-{{ color_range[group_res[s][group_name][b][5][loop.index0]] }}"> {{ a }}</td>
             {% endfor %}
     </tr>
     {% endfor %}
@@ -135,6 +136,7 @@
 </div>
 {% endfor %}
 </div>
+{% endfor %}
 
 <div class="container">
 <h2 class="w3-padding">Average rank by agent order</h2>

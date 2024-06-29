@@ -274,7 +274,7 @@ def sp_res_off_diag():
 
 def get_pages():
     mypath = "./pages/"
-    files = [f for f in listdir(mypath) if isfile(join(mypath, f)) and f != "main_page.html"]
+    files = [f for f in listdir(mypath) if isfile(join(mypath, f)) and f != "main_page.html" and f[-5:] == ".html"]
     result = []
     for f in files:
         result.append((f,f"./{f}"))
@@ -418,6 +418,13 @@ def generate_names(zero_rows):
             i+=1
     return names
 
+def get_easy(exclude):
+    res = []
+    for map in layouts_onions:
+        if map not in exclude:
+            res.append(map)
+    return res
+
 def population_avg_rank():
     input_dict= {}
     for perc in [15,30]:
@@ -446,23 +453,42 @@ def population_avg_rank():
             stack_res[s][best][2] = np.round(stack_res[s][best][2],2)
             stack_res[s][best].append(get_rank(stack_res[s][best][2]))
 
-    # table by off diag groups <-- ale je to stejna skupina napric stackingy?
-    #zatim nemam skupiny ale napisu si kod na vytvareni podle skupin
+    #groups channels
     perc = 15
     group_res = {}
-    group_names = ["lame","good"]
-    groups = {"lame":["five_by_five","simple_o"],"good":["forced_coordination","cramped_room"]}
-    for group_name, group in groups.items():
-        group_res[group_name] = {}
-        for best in ["all", "_best"]:
-            if best == "all":
-                b = ""
-            else:
-                b = best
-            group_res[group_name][best] = list(eval_auc(
-                f"../../evaluation/metrics/auc{b}_{perc}.0.txt", l_p=group))
-            group_res[group_name][best][2] = np.round(group_res[group_name][best][2], 2)
-            group_res[group_name][best].append(get_rank(group_res[group_name][best][2]))
+    nonconverging = {}
+    nonconverging["chan"] = ["small_corridor","corridor","pipeline","scenario1_s","counter_circuit_o_1order","long_cook_time","forced_coordination","bottleneck","tutorial_0"]
+    nonconverging["tupl"] = ["small_corridor","corridor","long_cook_time","tutorial_0"]
+    nonconverging["nost"] = ["small_corridor","corridor","long_cook_time","tutorial_0"]
+
+    group_names = ["HardSP","OffDiag","Easy"]
+    groups = {}
+    groups["chan"] = {"HardSP":["centre_objects","unident","scenario3","schelling","large_room"],
+            "OffDiag": ["cramped_room","schelling_s","coordination_ring","scenario2_s"]}
+
+    groups["tupl"] = {"HardSP":["pipeline","five_by_five","counter_circuit_o_1order","schelling_s","large_room","centre_objects","schelling","cramped_room"],
+            "OffDiag": ["coordination_ring","scenario1_s","bottleneck","centre_pots","forced_coordination"]}
+
+    groups["nost"] = {"HardSP":["cramped_room","pipeline"],
+            "OffDiag": ["five_by_five","large_room","scenario1_s","bottleneck","schelling_s","forced_coordination","centre_pots","counter_circuit_o_1order","schelling","centre_objects"]}
+
+    for s in stacking:
+        groups[s]["Easy"] = get_easy(groups[s]["HardSP"] + groups[s]["OffDiag"] + nonconverging["chan"])
+
+    for s in stacking:
+        group_best_list = ["_best_POPSSP","_best_finalSP"]
+        group_res[s] = {}
+        for group_name, group in groups[s].items():
+            group_res[s][group_name] = {}
+            for best in group_best_list:
+                if best == "all":
+                    b = ""
+                else:
+                    b = best
+                group_res[s][group_name][best] = list(eval_auc(
+                    f"../../evaluation/metrics/auc{b}_{perc}.0.txt", l_p=group, s_p=[s]))
+                group_res[s][group_name][best][2] = np.round(group_res[s][group_name][best][2], 2)
+                group_res[s][group_name][best].append(get_rank(group_res[s][group_name][best][2]))
 
     #table by agent training order
     perc = 15
@@ -505,17 +531,17 @@ def population_avg_rank():
     template = environment.get_template("pop_avg_rank.txt")
 
     with open(f"./pages/pop_avg_rank.html", mode="w", encoding="utf-8") as results:
-        results.write(template.render(input_dict = input_dict, color_range=["red","deep-orange", "orange", "amber", "khaki", "lime", "teal", "cyan", "indigo"], exp_names = exp_type,
+        results.write(template.render(input_dict = input_dict, color_range=["red","deep-orange", "orange", "amber", "yellow", "lime", "teal", "cyan", "indigo"], exp_names = exp_type,
                                       names=generate_names(zero_rows), stack_res=stack_res, stacking = stacking, group_res=group_res,
                                       group_names=group_names, bests = ["all", "_best"],
-                                      ord_res=ord_res, ord_res_stack=ord_res_stack))
+                                      ord_res=ord_res, ord_res_stack=ord_res_stack, group_best_list=group_best_list))
 
-all_results()
+#all_results()
 #sp_difficulty()
 #sp_sort_basic()
 #sp_res_off_diag()
 #stack_influence()
-#population_avg_rank()
+population_avg_rank()
 
 #update_menu()
 
