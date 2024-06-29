@@ -184,6 +184,51 @@ def print_best_final(percentile=0.15):
             auc_best.extend(auc)
     return auc_best
 
+stacking = ["chan", "tupl", "nost"]
+exp_type = ["SP", "L0", "L1", "L2", "R0", "R1", "R2", "R0L0", "R1L1"]
+
+def load_best_by_auc( percentile):
+    ord_res = {}
+    for s in stacking:
+        ord_res[s] = {}
+        for map in layouts_onions:
+            ord_res[s][map] = {}
+            for e in exp_type:
+                ord_res[s][map][e] = np.zeros(12)
+    for i in range(3, 12):
+        filename = f"../evaluation/metrics/auc_{i}_{percentile*100}.txt"
+
+        with open(file=filename, mode='r') as res_file:
+            for line in res_file:
+                if len(line) > 0:
+                    splitted = line.split(",")
+                    stack = splitted[0]
+                    layout = splitted[1]
+                    e_type = splitted[2]
+                ord_res[stack][layout][e_type][i] = splitted[3]
+    return ord_res
+
+
+def load_best_by_auc_SP(percentile):
+    ord_res = {}
+    for s in stacking:
+        ord_res[s] = {}
+        for map in layouts_onions:
+            ord_res[s][map] = {}
+            for e in exp_type:
+                ord_res[s][map][e] = np.zeros(12)
+    for i in range(0, 30):
+        filename = f"../evaluation/metrics/aucSP_{i}_{percentile * 100}.txt"
+
+        with open(file=filename, mode='r') as res_file:
+            for line in res_file:
+                if len(line) > 0:
+                    splitted = line.split(",")
+                    stack = splitted[0]
+                    layout = splitted[1]
+                    e_type = splitted[2]
+                ord_res[stack][layout][e_type][i] = splitted[3]
+    return ord_res
 
 def select_best_from_pop(matrix):
     row_1 = matrix[[0]]
@@ -198,6 +243,7 @@ def select_best_from_pop(matrix):
 
 def print_best_POP(percentile=0.15):
     auc_best = []
+    auc_table = load_best_by_auc(percentile)
     for layout in layouts_onions:
         for s in frame_stacking:
             matrices = []
@@ -217,7 +263,9 @@ def print_best_POP(percentile=0.15):
                     print(file)
                     print(x)
                     continue
-                m = select_best_from_pop(m[3:])
+                #m = select_best_from_pop(m[3:])
+                best_index = np.argmax(auc_table[s][layout][e])
+                m = m[best_index]
                 m = scale_matrix(m) #pridelam body at mam hladkou primku
                 matrices.append(m)
                 labels.append(e)
@@ -232,6 +280,8 @@ def print_best_POP(percentile=0.15):
 
 def print_best_POP_best_SP(percentile=0.15):
     auc_best = []
+    auc_table = load_best_by_auc(percentile)
+    auc_sp_table = load_best_by_auc_SP(percentile)
     for layout in layouts_onions:
         for s in frame_stacking:
             matrices = []
@@ -251,17 +301,56 @@ def print_best_POP_best_SP(percentile=0.15):
                     print(file)
                     print(x)
                     continue
-                m = select_best_from_pop(m[3:])
+                best_index = np.argmax(auc_table[s][layout][e])
+                m = m[best_index]
                 m = scale_matrix(m) #pridelam body at mam hladkou primku
                 matrices.append(m)
                 labels.append(e)
             sp = remove_daigonal(sp)
-            sp = select_best_from_pop(sp)
+            sp_best = np.argmax(auc_sp_table[s][layout][e])
+            sp = sp[sp_best]
             sp = scale_matrix(sp)
             matrices.append(sp)
             labels.append("SP")
 
             auc = show_sorted_cross_play(name=f"{layout}\\{s}_{layout}_quant{int(percentile*100)}_bestPOPSP",matrices=matrices, legends=labels, title="Ordered evaluation results", remove_diag=False, quantile=percentile, draw=True)
+            auc_best.extend(auc)
+    return auc_best
+
+def print_best_final_best_SP(percentile=0.15):
+    auc_best = []
+    auc_sp_table = load_best_by_auc_SP(percentile)
+    for layout in layouts_onions:
+        for s in frame_stacking:
+            matrices = []
+            labels = []
+            try:
+                sp = np.loadtxt(f"{eval_path}{layout}\\{s}_{layout}_ref-30")
+                print("SP found")
+            except:
+                print(f"nenalezeno SP {s}{layout}")
+                continue
+            for e in exp_names:
+                file = f"{eval_path}{layout}\\{s}_{layout}_{e}_X_{s}_{layout}_ref-30_ENVROP0.0"
+                try:
+                    m = np.loadtxt(file)
+                except Exception as x:
+                    print(f"not found {layout}{s}{e}")
+                    print(file)
+                    print(x)
+                    continue
+                m =  get_sorted_pairwise_best(m[[11]], m[[12]])
+                m = scale_matrix(m) #pridelam body at mam hladkou primku
+                matrices.append(m)
+                labels.append(e)
+            sp = remove_daigonal(sp)
+            sp_best = np.argmax(auc_sp_table[s][layout][e])
+            sp = sp[sp_best]
+            sp = scale_matrix(sp)
+            matrices.append(sp)
+            labels.append("SP")
+
+            auc = show_sorted_cross_play(name=f"{layout}\\{s}_{layout}_quant{int(percentile*100)}_bestfinalSP",matrices=matrices, legends=labels, title="Ordered evaluation results", remove_diag=False, quantile=percentile, draw=True)
             auc_best.extend(auc)
     return auc_best
 
@@ -299,6 +388,30 @@ def print_agent_on_index(a_i,percentile=0.15):
             auc_best.extend(auc)
     return auc_best
 
+
+def print_SP_on_index(a_i,percentile=0.15):
+    auc_best = []
+    for layout in layouts_onions:
+        for s in frame_stacking:
+            matrices = []
+            labels = []
+            try:
+                sp = np.loadtxt(f"{eval_path}{layout}\\{s}_{layout}_ref-30")
+                print("SP found")
+            except:
+                print(f"nenalezeno SP {s}{layout}")
+                continue
+            sp = remove_daigonal(sp)
+            sp = sp[[a_i]]
+            sp = scale_matrix(sp)
+            matrices.append(sp)
+            labels.append("SP")
+
+            auc = show_sorted_cross_play(name=f"{layout}\\{s}_{layout}_quant{percentile}_SP{a_i}",matrices=matrices, legends=labels, title="Ordered evaluation results", remove_diag=False, quantile=percentile,draw=False)
+            auc_best.extend(auc)
+    return auc_best
+
+
 metric_prefix = "../evaluation/"
 percentile = 0.15
 
@@ -308,6 +421,14 @@ def execute_index_percentile():
         with open(f'{metric_prefix}metrics/auc_{a_i}_{percentile*100}.txt', 'w') as f:
            for a in auc_i:
                print(a, file=f)
+        print("end")
+
+def execute_SP_percentile():
+    for a_i in range(0, 30):
+        auc_i = print_SP_on_index(a_i, percentile)
+        with open(f'{metric_prefix}metrics/aucSP_{a_i}_{percentile * 100}.txt', 'w') as f:
+            for a in auc_i:
+                print(a, file=f)
         print("end")
 
 
@@ -340,6 +461,15 @@ def execute_best_popSP():
             print(a, file=f)
     print("end")
 
+def execute_best_finalSP():
+    auc_best = print_best_final_best_SP(percentile=percentile)
+    with open(f'{metric_prefix}metrics/auc_best_finalSP_{percentile*100}.txt', 'w') as f:
+        for a in auc_best:
+            print(a, file=f)
+    print("end")
+
 #execute_best_and_all()
-execute_best_pop()
-execute_best_popSP()
+#execute_best_pop()
+#execute_best_popSP()
+#execute_best_finalSP()
+#execute_SP_percentile()
