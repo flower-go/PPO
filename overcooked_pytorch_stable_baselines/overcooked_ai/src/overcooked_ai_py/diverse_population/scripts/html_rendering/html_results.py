@@ -388,7 +388,7 @@ def column_average(i_m):
     return np.mean(i_m, axis=0)
 
 
-def eval_auc(filename, s_p=stacking, l_p =layouts_onions ,e_p = exp_type):
+def eval_auc(filename, s_p=stacking + ["all"], l_p =layouts_onions ,e_p = exp_type):
     res_matrix = np.zeros((len(stacking) * len(layouts_onions), len(exp_type)))
 
     with open(file=filename, mode='r') as res_file:
@@ -426,17 +426,30 @@ def get_easy(exclude):
     return res
 
 def population_avg_rank():
-    input_dict= {}
-    for perc in [15,30]:
-        for best in ["","_best"]:
-            res_mat, rank_mat, avg_rank,no_zeros, zero_rows = eval_auc(
+    # input_dict= {}
+    # for perc in [15,30]:
+    #     for best in ["","_best"]:
+    #         res_mat, rank_mat, avg_rank,no_zeros, zero_rows = eval_auc(
+    #             f"C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/evaluation/metrics/auc{best}_{perc}.0.txt")
+    #
+    #         sorted_avg_rank = get_rank(avg_rank)
+    #         input_dict[f"{perc}_{best}"] = {}
+    #         input_dict[f"{perc}_{best}"]["res_mat"] = res_mat
+    #         input_dict[f"{perc}_{best}"]["rank_mat"] = no_zeros
+    #         input_dict[f"{perc}_{best}"]["avg_rank"] = np.round(avg_rank,2)
+    #         input_dict[f"{perc}_{best}"]["sorted_avg_rank"] = sorted_avg_rank
+    input_dict = {}
+    best_table_long = ["_best_POPSSP", "_best_finalSP"]
+    for perc in [15]:
+        for best in best_table_long :
+            res_mat, rank_mat, avg_rank, no_zeros, zero_rows = eval_auc(
                 f"C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/evaluation/metrics/auc{best}_{perc}.0.txt")
 
             sorted_avg_rank = get_rank(avg_rank)
             input_dict[f"{perc}_{best}"] = {}
             input_dict[f"{perc}_{best}"]["res_mat"] = res_mat
             input_dict[f"{perc}_{best}"]["rank_mat"] = no_zeros
-            input_dict[f"{perc}_{best}"]["avg_rank"] = np.round(avg_rank,2)
+            input_dict[f"{perc}_{best}"]["avg_rank"] = np.round(avg_rank, 2)
             input_dict[f"{perc}_{best}"]["sorted_avg_rank"] = sorted_avg_rank
 
     perc = 15
@@ -461,21 +474,40 @@ def population_avg_rank():
     nonconverging["tupl"] = ["small_corridor","corridor","long_cook_time","tutorial_0"]
     nonconverging["nost"] = ["small_corridor","corridor","long_cook_time","tutorial_0"]
 
-    group_names = ["HardSP","OffDiag","Easy"]
+    #group_names = ["HardSP","OffDiag","Easy"]
+    group_names = ["no offdiag", "solved_by_stacking", "off_diag"]
     groups = {}
-    groups["chan"] = {"HardSP":["centre_objects","unident","scenario3","schelling","large_room"],
-            "OffDiag": ["cramped_room","schelling_s","coordination_ring","scenario2_s"]}
+    # groups["chan"] = {"HardSP":["centre_objects","unident","scenario3","schelling","large_room"],
+    #         "OffDiag": ["cramped_room","schelling_s","coordination_ring","scenario2_s"]}
+    #
+    # groups["tupl"] = {"HardSP":["pipeline","five_by_five","counter_circuit_o_1order","schelling_s","large_room","centre_objects","schelling","cramped_room"],
+    #         "OffDiag": ["coordination_ring","scenario1_s","bottleneck","centre_pots","forced_coordination"]}
+    #
+    # groups["nost"] = {"HardSP":["cramped_room","pipeline"],
+    #         "OffDiag": ["five_by_five","large_room","scenario1_s","bottleneck","schelling_s","forced_coordination","centre_pots","counter_circuit_o_1order","schelling","centre_objects"]}
 
-    groups["tupl"] = {"HardSP":["pipeline","five_by_five","counter_circuit_o_1order","schelling_s","large_room","centre_objects","schelling","cramped_room"],
-            "OffDiag": ["coordination_ring","scenario1_s","bottleneck","centre_pots","forced_coordination"]}
+    groups["chan"] =  {"no offdiag": ["asymmetric_advantages","m_shaped_s","simple_o","scenario2"],
+                      "solved_by_stacking": ["pipeline","coordination_ring", "counter_circuit_o_1order", "unident","scenario2_s","scenario3","scenario4"],
+                      "off_diag": ["five_by_five","schelling","schelling_s","centre_pots","scenario1_s","large_room","schelling_s","coordination_ring","cramped_room","forced_coordination","centre_objects","bottleneck"]}
 
-    groups["nost"] = {"HardSP":["cramped_room","pipeline"],
-            "OffDiag": ["five_by_five","large_room","scenario1_s","bottleneck","schelling_s","forced_coordination","centre_pots","counter_circuit_o_1order","schelling","centre_objects"]}
+    groups["tupl"] = {"no offdiag": ["asymmetric_advantages", "m_shaped_s", "simple_o", "scenario2"],
+                      "solved_by_stacking": ["pipeline", "coordination_ring", "counter_circuit_o_1order", "unident",
+                                             "scenario2_s", "scenario3", "scenario4"],
+                      "off_diag": ["five_by_five", "schelling", "schelling_s", "centre_pots", "scenario1_s",
+                                   "large_room", "schelling_s", "coordination_ring", "cramped_room",
+                                   "forced_coordination", "centre_objects", "bottleneck"]}
+    groups["nost"] = {"no offdiag": ["asymmetric_advantages", "m_shaped_s", "simple_o", "scenario2"],
+                      "solved_by_stacking": ["pipeline", "coordination_ring", "counter_circuit_o_1order", "unident",
+                                             "scenario2_s", "scenario3", "scenario4"],
+                      "off_diag": ["five_by_five", "schelling", "schelling_s", "centre_pots", "scenario1_s",
+                                   "large_room", "schelling_s", "coordination_ring", "cramped_room",
+                                   "forced_coordination", "centre_objects", "bottleneck"]}
+
+    #for s in stacking:
+    #    groups[s]["Easy"] = get_easy(groups[s]["HardSP"] + groups[s]["OffDiag"] + nonconverging["chan"])
 
     for s in stacking:
-        groups[s]["Easy"] = get_easy(groups[s]["HardSP"] + groups[s]["OffDiag"] + nonconverging["chan"])
-
-    for s in stacking:
+    #for s in ["all"]:
         group_best_list = ["_best_POPSSP","_best_finalSP"]
         group_res[s] = {}
         for group_name, group in groups[s].items():
@@ -533,7 +565,7 @@ def population_avg_rank():
     with open(f"./pages/pop_avg_rank.html", mode="w", encoding="utf-8") as results:
         results.write(template.render(input_dict = input_dict, color_range=["red","deep-orange", "orange", "amber", "yellow", "lime", "teal", "cyan", "indigo"], exp_names = exp_type,
                                       names=generate_names(zero_rows), stack_res=stack_res, stacking = stacking, group_res=group_res,
-                                      group_names=group_names, bests = ["all", "_best"],
+                                      group_names=group_names, bests = ["all", "_best"], best_long=best_table_long,
                                       ord_res=ord_res, ord_res_stack=ord_res_stack, group_best_list=group_best_list))
 
 #all_results()

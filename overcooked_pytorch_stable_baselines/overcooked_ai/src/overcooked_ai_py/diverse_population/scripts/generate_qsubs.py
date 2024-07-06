@@ -289,9 +289,42 @@ def generate_image_generation(map_names = layouts_onions):
             result =  f'sh ./coding/PPO2/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni walltime="03:50:00" exp="{exp_name}" file="./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/generate_pics.sh" input_file="./diverse_population/text_logs/{exp_name}/text_log.txt"'
             print(result)
 
-def gen_video_index(index, inp_path, out_path):
-    result = f'python make_video.py --img_directory="../../behav_pics/{inp_path}/{index}" --video_path="../../behav_videos/{out_path}" --video_name="{index}"'
+def gen_images_selected(layout_name,stacking,selected):
+        exp_name = f"{stacking}_{layout_name}_ref-30"
+        # result = f'python diverse_population/visualisation/evaluation/eval_visualisation.py --input_file="./diverse_population/text_logs/{exp_name}/text_log.txt'
+        result = f'sh ./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/run_uni walltime="00:50:00" exp="{exp_name}" file="./coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/generate_pics.sh" input_file="./diverse_population/text_logs/{exp_name}/text_log.txt" generate_only="{selected}" mem="4gb"'
+        print(result)
+
+def gen_video_index(index, inp_path, out_path, tup):
+    result = f'python make_video.py --img_directory="../../behav_pics/{inp_path}/{index}" --video_path="../../behav_videos/{out_path}" --video_name="{tup}_{index}"'
     print(result)
+
+def get_index(input_a, input_b):
+    index = (input_a)*30 + input_b + 1
+    return index
+
+
+def get_indices(tuple_list):
+    res_list = []
+    for t in tuple_list:
+        r_i = get_index(t[0], t[1])
+        res_list.append(r_i)
+
+    for i,value in enumerate(res_list):
+        print(f"{tuple_list[i]} : {value}")
+    return res_list
+
+
+def gen_videos(layout,stack,tuples):
+    indices = get_indices(tuples)
+    input_indices = "_".join([str(i) for i in indices])
+    gen_images_selected(layout,stack, input_indices)
+    for index,i in enumerate(indices):
+        inp_path = f"{stack}_{layout}_ref-30_ref30"
+        out_path=f"{stack}_{layout}_ref30"
+        gen_video_index(i,inp_path,out_path,f"{tuples[index][0]}_{tuples[index][1]}")
+
+
 
 #one_epoch_new()
 #gen_steps_nostack()
@@ -300,9 +333,9 @@ def gen_video_index(index, inp_path, out_path):
 #gen_L(l = "R1L1")
 #gen_reeval_ref30()
 #generate_image_generation()
-for i in [7,40,69,70,100,116,130,131,156,160,241,250,284,370,382]:
-    gen_video_index(i, inp_path="tupl_forced_coordination_ref-30_ref30", out_path="tupl_forced_coordination_ref30")
-
+#for i in [7,40,69,70,100,116,130,131,156,160,241,250,284,370,382]:
+#    gen_video_index(i, inp_path="tupl_forced_coordination_ref-30_ref30", out_path="tupl_forced_coordination_ref30")
+gen_videos("pipeline","tupl",[(20,19),(6,26),(23,22)])
 
 
 

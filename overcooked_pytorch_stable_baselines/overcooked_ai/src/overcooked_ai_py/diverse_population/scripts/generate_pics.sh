@@ -32,7 +32,6 @@ echo $params
 
 params=$(echo $params | sed 's/^/--/g' | sed 's/ / --/g')
 python diverse_population/visualisation/evaluation/eval_visualisation.py $params > "$SCRATCHDIR"/out.txt 2> "$SCRATCHDIR"/err.txt
-
 echo "python dobehl"
 date_name=$(date +%m%d-%H%M)
 echo "job id"
