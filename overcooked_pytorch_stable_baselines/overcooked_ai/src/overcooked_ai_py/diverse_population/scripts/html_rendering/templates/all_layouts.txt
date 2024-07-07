@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Results</title>
+    <title>Results - Self play</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
     <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-white.css">
     <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-dark-green.css">
     <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-dark-grey.css">
@@ -25,52 +25,42 @@
         .w3-card {
             display: inline-block;}
 
-        .img {
-        margin: 5px;}
 
         body, html {height: 100%;}
         body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
         h1 {font-family: 'Roboto Condensed'; font-weight:100;}
         .menu {display: none}
+        table, th, td {
+  border: 0.5px solid;
+}
+
+.nostack{
+    color: orange
+}
+
+.tuple{
+    color: blue
+}
+
+.channel{
+    color:pink
+}
+
     </style>
 </head>
 
 <body>
-<div class="w3-display-topmiddle w3-large">
-<table class="w3-border w3-border-light-grey w3-striped">
-<tr><th>Pages</th></tr>
+    <table>
+    <tr>
+    {% for l,path in layouts.items() %}
+        <td><p>{{ l }}</p>
+        <img src="{{path}}" width="150px">
+        </td>
+        {% if  loop.index % 7 == 0 %}
+        </tr><tr>
+        {% endif %}
+    {% endfor %}
+    </table>
 
-
-<tr><td><a href="./all_layouts.html" target="_blank">all_layouts.html</a></td></tr>
-
-
-<tr><td><a href="./all_results.html" target="_blank">all_results.html</a></td></tr>
-
-
-<tr><td><a href="./main_page_summary.html" target="_blank">main_page_summary.html</a></td></tr>
-
-
-<tr><td><a href="./pop_avg_rank.html" target="_blank">pop_avg_rank.html</a></td></tr>
-
-
-<tr><td><a href="./results_off_diagchannels.html" target="_blank">results_off_diagchannels.html</a></td></tr>
-
-
-<tr><td><a href="./results_off_diagnostack.html" target="_blank">results_off_diagnostack.html</a></td></tr>
-
-
-<tr><td><a href="./results_off_diagtuple.html" target="_blank">results_off_diagtuple.html</a></td></tr>
-
-
-<tr><td><a href="./results_sort_basic_allstacks.html" target="_blank">results_sort_basic_allstacks.html</a></td></tr>
-
-
-<tr><td><a href="./results_tables.html" target="_blank">results_tables.html</a></td></tr>
-
-
-<tr><td><a href="./sorted_stack_np.html" target="_blank">sorted_stack_np.html</a></td></tr>
-
-</table>
-</div>
 </body>
 </html>

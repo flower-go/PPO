@@ -568,12 +568,29 @@ def population_avg_rank():
                                       group_names=group_names, bests = ["all", "_best"], best_long=best_table_long,
                                       ord_res=ord_res, ord_res_stack=ord_res_stack, group_best_list=group_best_list))
 
+
+def all_layouts():
+    layouts = {}
+    path = CODE_PATH_res + "visualisation/maps"
+    for map in layouts_onions:
+        for s in frame_stacking:
+            file = f"{path}/{map}.png"
+            layouts[map] = file
+
+
+    environment = Environment(loader=FileSystemLoader(
+        "C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/html_rendering/templates"))
+    template = environment.get_template("all_layouts.txt")
+
+    with open(f"./pages/all_layouts.html", mode="w", encoding="utf-8") as results:
+        results.write(template.render(layouts=layouts))
+
 #all_results()
 #sp_difficulty()
 #sp_sort_basic()
 #sp_res_off_diag()
 #stack_influence()
-population_avg_rank()
-
-#update_menu()
+#population_avg_rank()
+all_layouts()
+update_menu()
 
