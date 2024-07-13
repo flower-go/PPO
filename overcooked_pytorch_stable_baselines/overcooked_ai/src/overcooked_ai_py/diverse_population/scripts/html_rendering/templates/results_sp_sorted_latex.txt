@@ -1,22 +1,44 @@
 
-{% for stack,res in stacks.items() %}
+
 \begin{table}[t]
-\caption{ {{stack}} table }
+\caption{ Self-play performance }
 \begin{center}
-\begin{tabular}{|l|l|l|l|}
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|}
 \hline
-\textbf{Layout} & \multicolumn{3}{l}{\textbf{ {{stack}} }} \\
 
+{% for stack,res in stacks.items() %}
+    {% if loop.index0 > 0 %}
+    &
+    {% endif %}
+  \multicolumn{4}{l}{\textbf{ {{stack}} }}
+{% endfor %} \\
+
+{% for stack,res in stacks.items() %}
+{% set outer_loop = loop %}
+{% for m in ["layout","average","std error ","CoV"] %}
+    {% if outer_loop.index0 > 0 or loop.index0 > 0 %}
+    &
+    {% endif %}
+    {{m}}
+{%  endfor %} {%  endfor %} \\
+
+
+{% for i in range(25) %}
+
+{% for stack,res in stacks.items() %}
+{% if loop.index0 > 0 %}
 &
-{% for m in ["average","std error ","CoV"] %}
-    {{m}} &
-{%  endfor %} \\
-
+{% endif %}
   {% for map in res.keys() %}
+  {% if loop.index0 == i %}
         {{ map }}
         {% for m in ["average_diag","std_error_sp","CoV"]  %}
            &  {{ res[map][stack][m] }}
         {%  endfor %}
+  {% endif %}
+
+  {%  endfor %}
+{% endfor %}
 \\
 
 {% endfor %}
@@ -24,4 +46,4 @@
 \end{center}
 \label{T:mapgroups}
 \end{table}
-{% endfor %}
+
