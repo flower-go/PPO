@@ -1,0 +1,27 @@
+
+{% for stack,res in stacks.items() %}
+\begin{table}[t]
+\caption{ {{stack}} table }
+\begin{center}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Layout} & \multicolumn{3}{l}{\textbf{ {{stack}} }} \\
+
+&
+{% for m in ["average","std error ","CoV"] %}
+    {{m}} &
+{%  endfor %} \\
+
+  {% for map in res.keys() %}
+        {{ map }}
+        {% for m in ["average_diag","std_error_sp","CoV"]  %}
+           &  {{ res[map][stack][m] }}
+        {%  endfor %}
+\\
+
+{% endfor %}
+\end{tabular}
+\end{center}
+\label{T:mapgroups}
+\end{table}
+{% endfor %}
