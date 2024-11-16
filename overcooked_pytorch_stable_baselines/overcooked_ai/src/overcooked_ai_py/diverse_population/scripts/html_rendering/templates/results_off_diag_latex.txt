@@ -1,0 +1,38 @@
+\begin{table*}
+\caption{ Comparison of various off-diagonal metrics }
+\begin{center}
+\begin{tabular}{lllllllllllllllllllll}
+
+{% for metric in metrics %}
+\hline
+\multicolumn{ {{sorted_maps[metric]|length}} }{l}{ {{metric}} }\\ \hline
+
+
+    {% for map in sorted_maps[metric] %}
+    {% if loop.index0 >0 %}
+    &
+    {% endif %}
+    \includegraphics[width=30pt]{ {{ res[map][stack]["heat"] }} }
+    {% endfor %} \\
+
+
+    {% for map in sorted_maps[metric] %}
+    {% if loop.index0 >0 %}
+    &
+    {% endif %}
+    {{map[0:5]}}{{map[-1]}}
+    {% endfor %} \\
+
+    {% for map in sorted_maps[metric] %}
+    {% if loop.index0 >0 %}
+    &
+    {% endif %}
+    {{ res[map][stack][metric] }}
+    {% endfor %} \\
+
+{% endfor %}
+
+\end{tabular}
+\end{center}
+\label{T:offmetrics}
+\end{table*}

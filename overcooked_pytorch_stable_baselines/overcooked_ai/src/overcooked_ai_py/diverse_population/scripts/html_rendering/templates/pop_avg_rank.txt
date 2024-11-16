@@ -240,5 +240,24 @@
 {% endfor %}
 </div>
 
+
+<div class="container" style="overflow: scroll;">
+<table class="w3-table">
+{% for g,g_l in map_group_list.items() %}
+    <td colspan="28">{{g}}</td>
+    {% for key in g_l %}
+        <tr>
+        <td class="w3-amber">{{ key }}</td>
+        {% for v in sorted_by_layout[key] %}
+            <td>{{v}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+{% endfor %}
+
+
+</table>
+</div>
+
 </body>
 </html>

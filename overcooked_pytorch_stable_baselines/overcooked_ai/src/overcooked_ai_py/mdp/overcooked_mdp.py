@@ -2388,6 +2388,7 @@ class OvercookedGridworld(object):
     def lossless_state_encoding(
         self, overcooked_state, horizon=400, debug=False
     ):
+        #TODO pridat vrstvu na barvu
         """Featurizes a OvercookedState object into a stack of boolean masks that are easily readable by a CNN"""
         assert (
             self.num_players == 2

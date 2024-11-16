@@ -268,6 +268,44 @@ def remove_zeros(rank, zeros):
 def column_average(i_m):
     return np.mean(i_m,axis=0)
 
+def remove_diag(table):
+    return table[~np.eye(table.shape[0], dtype=bool)].reshape(table.shape[0], -1)
+def comp_sum_pop_results(filename):
+    res_sum = ""
+    res_average = ""
+    for layout in layouts_onions:
+        for s in stacking:
+            for e in exp_type:
+                if e == "SP":
+                    file =  f"./{layout}\\{s}_{layout}_ref-30"
+                else:
+                    file = f"./{layout}/{s}_{layout}_{e}_X_{s}_{layout}_ref-30_ENVROP0.0"
+                try:
+                    m = np.loadtxt(file)
+                except Exception as x:
+                    print(f"not found {layout}{s}{e}")
+                    print(f"{file}")
+                    print(x)
+                    continue
+                if e != "SP":
+                    m = m[3:]
+                else:
+                    m = remove_diag(m)
+                sum_rows = np.sum(m, axis=1)
+                best_i_sum = np.argmax(sum_rows)
+                best_v_sum = sum_rows[best_i_sum]
+                avg_rows = np.average(m, axis = 1)
+                best_i_average = np.argmax(avg_rows)
+                best_v_average = avg_rows[best_i_average]
+                res_sum+= f"{s},{layout},{e},{best_v_sum},{best_i_sum}\n"
+                res_average += f"{s},{layout},{e},{best_v_average},{best_i_average}\n"
+
+    with open(f'./metrics/average_POP_res.txt', 'w') as f:
+        print(res_average, file=f)
+    with open(f'./metrics/sum_POP_res.txt', 'w') as f:
+        print(res_sum, file=f)
+    print("end")
+
 def eval_auc(filename):
     res_matrix = np.zeros((len(stacking)*len(layouts_onions),len(exp_type)))
 
@@ -288,11 +326,11 @@ def eval_auc(filename):
 #je to blbe - radi to od nejmensiho a jeste nevim jestli ty cisla jsou fakt poradi
     return res_matrix, rank_matrix, avg_rank
 
-    
 
-comp_sp_metrics()
+#comp_sp_metrics()
 #comp_more_metrics()
 #res_mat, rank_mat, avg_rank = eval_auc("C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/evaluation/metrics/auc_15.txt")
 #print(res_mat)
 #print(rank_mat)
 #print(avg_rank)
+comp_sum_pop_results("sum_pop")

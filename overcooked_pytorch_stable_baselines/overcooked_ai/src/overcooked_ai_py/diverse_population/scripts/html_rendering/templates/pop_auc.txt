@@ -1,0 +1,24 @@
+\begin{table}[t]
+\caption{ Population training results for best agent from the population }
+\begin{center}
+\begin{tabular}{llllllllll}
+
+\textbf{layout}
+{% for e in exp_names%}
+    & \textbf{ {{ e }} }
+{% endfor %} \\ \hline
+
+{% for row in input %}
+        {{ names[loop.index0][5:] }}
+        {% for value in row %}
+           & {{ value }}
+        {% endfor %} \\
+{% endfor %}
+
+\multicolumn{10}{l}{$^{\mathrm{a}}$True values $ = \times 10^{2}$}
+\end{tabular}
+\end{center}
+\label{T:popresults}
+\end{table}
+
+

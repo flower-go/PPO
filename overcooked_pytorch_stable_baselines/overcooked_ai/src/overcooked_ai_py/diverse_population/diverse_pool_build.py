@@ -488,3 +488,6 @@ if __name__ == "__main__":
         wandb.log({"heat_map": wandb.Image(heat_map_file)})
         #wandb.log({"eval_table": eval_table})
         wandb.save(eval_file)
+
+#  poznámky
+actorcriticpolicy <-- tam se delat a sit a tam budu psat upravu vystupu

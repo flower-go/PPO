@@ -65,7 +65,7 @@ class NatureCNN(BaseFeaturesExtractor):
 
     def __init__(self, observation_space: gym.spaces.Box, features_dim: int = 32, frame_stacking = 0, frame_stacking_mode="tuple"):
         super().__init__(observation_space, features_dim, frame_stacking, frame_stacking_mode)
-
+        #TODO soucast observation space musi byt barva a tady ji poslu po cnn vrstvach do site
         # We assume CxHxW images (channels first)
         # Re-ordering will be done by pre-preprocessing or wrapper
 
@@ -151,7 +151,8 @@ class NatureCNN(BaseFeaturesExtractor):
 
 
             return self.linear(stacked_frames)
-        return self.linear(self.cnn(observations))
+        return self.linear(self.cnn(observations)) #TODO tady concat ty barvicky (n_falten + pocet barev) <-- udelat novy extraktor
+    #TODO vystup bude vetsi o ty onehot barvy a budu delat onehot nad dvěma částma
 
 
 def create_mlp(

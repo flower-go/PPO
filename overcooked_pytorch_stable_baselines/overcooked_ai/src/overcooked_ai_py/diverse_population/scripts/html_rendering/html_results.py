@@ -248,6 +248,31 @@ def sp_sort_basic():
         results.write(template.render(maps=list(stacks["nostack"].keys()), stacks = stacks, exps = exp_names, metrics=metrics_sp))
         print(f"... wrote {results}")
 
+
+def sp_sort_basic_latex():
+    heat_maps()
+    #chci jenom pro kazdou mapu average a odchylku a serazeno dle average
+    load_sp_metrics()
+    compute_cov()
+    stacks = {}
+    for s in frame_stacking:
+        stack = frame_stacking[s]
+
+        rs = dict(sorted(res_dict.items(), key=lambda item: item[1][stack]["average_diag"] if len(item[1][stack]) > 1 else 0, reverse=True ))
+        #[v[1]["nostack"]["average_diag"] if len(v[1]["nostack"]) > 0 else None for v in res_dict.items()]
+
+        rs.pop('scenario1_s',None)
+        stacks[stack] = rs
+
+    environment = Environment(loader=FileSystemLoader(
+        "C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/html_rendering/templates"))
+    template = environment.get_template("results_sp_sorted_latex.txt")
+
+
+    with open(f"./pages/results_sort_basic_allstacks.tex", mode="w", encoding="utf-8") as results:
+        results.write(template.render( stacks = stacks, exps = exp_names, metrics=metrics_sp))
+        print(f"... wrote {results}")
+
 #TODO blbe a empty list rika ty co nejsou prazdne
 def sp_res_off_diag():
     heat_maps()
@@ -271,6 +296,36 @@ def sp_res_off_diag():
             results.write(template.render(maps=list(rd.keys()), res=res_dict, exps=exp_names, metrics=metrics,
                                           sorted_maps=sorted_layouts, empty_list = empty_list,stack=stack))
             print(f"... wrote {results}")
+
+def sp_res_off_diag_latex():
+    heat_maps()
+    get_metrics()
+
+    hard_sp = ["pipeline", "bottleneck", "counter_circuit_o_1order", "schelling_s", "centre_pots", "schelling", "centre_objects","large_room", "cramped_room", "scenario1_s"]
+
+    for s in frame_stacking:
+        stack = frame_stacking[s]
+        empty_list = [k for k in res_dict.keys() if "SDAO" not in res_dict[k][stack].keys()]
+        rd = {key:res_dict[key] for key in sorted(res_dict.keys())}
+        sorted_layouts = {}
+        for metric in metrics:
+            sorted_layouts[metric] = remove_empty_maps(list(dict(sorted(res_dict.items(),
+                         key=lambda item: item[1][stack][metric] if len(item[1][stack]) > 1 else 0,
+                         reverse=True)).keys()))
+
+            sorted_layouts[metric] = [m for m in sorted_layouts[metric] if m not in hard_sp ]
+
+        environment = Environment(loader=FileSystemLoader(
+            "C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/html_rendering/templates"))
+        template = environment.get_template("results_off_diag_latex.txt")
+
+        with open(f"./pages/results_off_diag{stack}.tex", mode="w", encoding="utf-8") as results:
+            results.write(template.render(maps=list(rd.keys()), res=res_dict, exps=exp_names, metrics=metrics,
+                                          sorted_maps=sorted_layouts, empty_list = empty_list,stack=stack))
+            print(f"... wrote {results}")
+
+
+
 
 def get_pages():
     mypath = "./pages/"
@@ -425,6 +480,114 @@ def get_easy(exclude):
             res.append(map)
     return res
 
+def get_max(i_d):
+    m_v = 0
+    m_i = None
+    for k,i in i_d.items():
+        if i > m_v:
+            m_v = i
+            m_i = k
+    return m_i
+
+def pop_sum_latex(stack_input,s_p=stacking, l_p =layouts_onions ,e_p = exp_type):
+    input_dict = {}
+
+    for map in l_p:
+        input_dict[map] = {}
+
+    filename = f"C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/evaluation/metrics/sum_POP_res.txt"
+    with open(file=filename, mode='r') as res_file:
+        for line in res_file:
+            if len(line) > 0:
+                splitted = line.split(",")
+                stack = splitted[0]
+                layout = splitted[1]
+                e_type = splitted[2]
+                avg = float(splitted[3])
+                if (stack in s_p) and (layout in l_p) and (e_type in e_p):
+                    input_dict[layout][e_type] = round(avg,2)
+
+    zeros = []
+    for key, item in input_dict.items():
+        if len(item) == 0:
+            zeros.append(key)
+        else:
+            item["max_e"] = get_max(item)
+    zeros.append("scenario1_s")
+
+    for k in zeros:
+        input_dict.pop(k, None)
+
+    environment = Environment(loader=FileSystemLoader(
+        "C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/html_rendering/templates"))
+    template = environment.get_template("pop_avg.txt")
+
+    with open(f"./pages/pop_sum_{stack_input}.tex", mode="w", encoding="utf-8") as results:
+        results.write(template.render(input = input_dict, names = layouts_onions, exp_names=["SP"] + exp_names, stack = stack_input, metric = "sum"))
+
+def pop_avg_latex(stack_input,s_p=stacking, l_p =layouts_onions ,e_p = exp_type):
+    input_dict = {}
+
+    for map in l_p:
+        input_dict[map] = {}
+
+    filename = f"C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/evaluation/metrics/average_POP_res.txt"
+    with open(file=filename, mode='r') as res_file:
+        for line in res_file:
+            if len(line) > 0:
+                splitted = line.split(",")
+                stack = splitted[0]
+                layout = splitted[1]
+                e_type = splitted[2]
+                avg = float(splitted[3])
+                if (stack in s_p) and (layout in l_p) and (e_type in e_p):
+                    input_dict[layout][e_type] = round(avg,2)
+
+    zeros = []
+    for key, item in input_dict.items():
+        if len(item) == 0:
+            zeros.append(key)
+        else:
+            item["max_e"] = get_max(item)
+    zeros.append("scenario1_s")
+
+    for k in zeros:
+        input_dict.pop(k, None)
+
+    environment = Environment(loader=FileSystemLoader(
+        "C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/html_rendering/templates"))
+    template = environment.get_template("pop_avg.txt")
+
+    print("writing to:")
+    print(f"./pages/pop_avg_{stack_input}.tex")
+    with open(f"./pages/pop_avg_{stack_input}.tex", mode="w", encoding="utf-8") as results:
+        results.write(template.render(input = input_dict, names = layouts_onions, exp_names=["SP"] + exp_names, stack = stack_input, metric = "avg"))
+
+def pop_auc_latex():
+    input_dict = {}
+    best_table_long = ["_best_POPSSP", "_best_finalSP"]
+    for perc in [15]:
+        for best in best_table_long:
+            res_mat, rank_mat, avg_rank, no_zeros, zero_rows = eval_auc(
+                f"C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/evaluation/metrics/auc{best}_{perc}.0.txt",
+            s_p=["tupl"])
+
+            sorted_avg_rank = get_rank(avg_rank)
+            input_dict[f"{perc}_{best}"] = {}
+            input_dict[f"{perc}_{best}"]["res_mat"] = res_mat
+            input_dict[f"{perc}_{best}"]["rank_mat"] = no_zeros
+            input_dict[f"{perc}_{best}"]["avg_rank"] = np.round(avg_rank, 2)
+            input_dict[f"{perc}_{best}"]["sorted_avg_rank"] = sorted_avg_rank
+
+
+    input_mat = [np.round(r/100,0).astype(int) for i,r  in enumerate(input_dict["15__best_POPSSP"]["res_mat"]) if i not in zero_rows ]
+    environment = Environment(loader=FileSystemLoader(
+        "C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/html_rendering/templates"))
+    template = environment.get_template("pop_auc.txt")
+
+    with open(f"./pages/pop_auc.tex", mode="w", encoding="utf-8") as results:
+        results.write(template.render(input = input_mat, names = generate_names(zero_rows), exp_names=["SP"] + exp_names))
+
 def population_avg_rank():
     # input_dict= {}
     # for perc in [15,30]:
@@ -486,22 +649,19 @@ def population_avg_rank():
     # groups["nost"] = {"HardSP":["cramped_room","pipeline"],
     #         "OffDiag": ["five_by_five","large_room","scenario1_s","bottleneck","schelling_s","forced_coordination","centre_pots","counter_circuit_o_1order","schelling","centre_objects"]}
 
-    groups["chan"] =  {"no offdiag": ["asymmetric_advantages","m_shaped_s","simple_o","scenario2"],
-                      "solved_by_stacking": ["pipeline","coordination_ring", "counter_circuit_o_1order", "unident","scenario2_s","scenario3","scenario4"],
-                      "off_diag": ["five_by_five","schelling","schelling_s","centre_pots","scenario1_s","large_room","schelling_s","coordination_ring","cramped_room","forced_coordination","centre_objects","bottleneck"]}
+    stable= ["asymmetric_advantages","m_shaped_s","simple_o","scenario2"]
+    sensitive = ["pipeline","coordination_ring", "counter_circuit_o_1order", "unident","scenario2_s","scenario3","scenario4"]
+    off_diag = ["five_by_five","schelling","schelling_s","centre_pots","scenario1_s","large_room","schelling_s","coordination_ring","cramped_room","forced_coordination","centre_objects","bottleneck"]
+    groups["chan"] =  {"no offdiag": stable ,
+                      "solved_by_stacking": sensitive,
+                      "off_diag": off_diag}
 
-    groups["tupl"] = {"no offdiag": ["asymmetric_advantages", "m_shaped_s", "simple_o", "scenario2"],
-                      "solved_by_stacking": ["pipeline", "coordination_ring", "counter_circuit_o_1order", "unident",
-                                             "scenario2_s", "scenario3", "scenario4"],
-                      "off_diag": ["five_by_five", "schelling", "schelling_s", "centre_pots", "scenario1_s",
-                                   "large_room", "schelling_s", "coordination_ring", "cramped_room",
-                                   "forced_coordination", "centre_objects", "bottleneck"]}
-    groups["nost"] = {"no offdiag": ["asymmetric_advantages", "m_shaped_s", "simple_o", "scenario2"],
-                      "solved_by_stacking": ["pipeline", "coordination_ring", "counter_circuit_o_1order", "unident",
-                                             "scenario2_s", "scenario3", "scenario4"],
-                      "off_diag": ["five_by_five", "schelling", "schelling_s", "centre_pots", "scenario1_s",
-                                   "large_room", "schelling_s", "coordination_ring", "cramped_room",
-                                   "forced_coordination", "centre_objects", "bottleneck"]}
+    groups["tupl"] = {"no offdiag": stable,
+                      "solved_by_stacking": sensitive,
+                      "off_diag": off_diag}
+    groups["nost"] = {"no offdiag": stable,
+                      "solved_by_stacking": sensitive,
+                      "off_diag": off_diag}
 
     #for s in stacking:
     #    groups[s]["Easy"] = get_easy(groups[s]["HardSP"] + groups[s]["OffDiag"] + nonconverging["chan"])
@@ -537,6 +697,20 @@ def population_avg_rank():
             ord_res[i][best][2] = np.round(ord_res[i][best][2], 2)
             ord_res[i][best].append(get_rank(ord_res[i][best][2]))
 
+    list_by_layouts = {}
+    for l_i,l in enumerate(layouts_onions):
+        list_by_layouts[l] = []
+        for s_i,s in enumerate(stacking):
+            list_by_layouts[l] = list_by_layouts[l] + list(input_dict["15__best_POPSSP"]["res_mat"][l_i*3 + s_i])
+
+    names_by_layout =  []
+    for s in stacking:
+        for r in ["SP"] + exp_names:
+            names_by_layout.append(f"{s}_{r}")
+
+    sorted_by_layout = {}
+    for l in layouts_onions:
+        sorted_by_layout[l] = sorted(names_by_layout, key=lambda x: list_by_layouts[l][names_by_layout.index(x)], reverse=True)
     #table by agent order and stacking
     ord_res_stack = {}
     for s in stacking:
@@ -554,10 +728,6 @@ def population_avg_rank():
                 ord_res_stack[s][i][best][2] = np.round(ord_res_stack[s][i][best][2], 2)
                 ord_res_stack[s][i][best].append(get_rank(ord_res_stack[s][i][best][2]))
 
-
-
-
-
     environment = Environment(loader=FileSystemLoader(
         "C:/Users/PetraVysušilová/PycharmProjects/coding/PPO/overcooked_pytorch_stable_baselines/overcooked_ai/src/overcooked_ai_py/diverse_population/scripts/html_rendering/templates"))
     template = environment.get_template("pop_avg_rank.txt")
@@ -566,7 +736,8 @@ def population_avg_rank():
         results.write(template.render(input_dict = input_dict, color_range=["red","deep-orange", "orange", "amber", "yellow", "lime", "teal", "cyan", "indigo"], exp_names = exp_type,
                                       names=generate_names(zero_rows), stack_res=stack_res, stacking = stacking, group_res=group_res,
                                       group_names=group_names, bests = ["all", "_best"], best_long=best_table_long,
-                                      ord_res=ord_res, ord_res_stack=ord_res_stack, group_best_list=group_best_list))
+                                      ord_res=ord_res, ord_res_stack=ord_res_stack, group_best_list=group_best_list, sorted_by_layout=sorted_by_layout,
+                                      map_group_list={"stable":stable, "sensitive":sensitive,"off_diag":off_diag}))
 
 
 def all_layouts():
@@ -591,6 +762,12 @@ def all_layouts():
 #sp_res_off_diag()
 #stack_influence()
 #population_avg_rank()
-all_layouts()
-update_menu()
-
+#all_layouts()
+#sp_sort_basic_latex()
+#update_menu()
+#sp_res_off_diag_latex()
+#pop_auc_latex()
+#pop_avg_latex(s_p=["tupl"])
+for s in stacking:
+    pop_sum_latex(stack_input = s,s_p=[s])
+    pop_avg_latex(stack_input = s, s_p = [s])

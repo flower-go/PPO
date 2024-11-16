@@ -27,6 +27,8 @@ DEFAULT_ENV_PARAMS = {"horizon": 400}
 MAX_HORIZON = 1e10
 
 
+
+
 class OvercookedEnv(object):
     """
     An environment wrapper for the OvercookedGridworld Markov Decision Process.
@@ -768,6 +770,10 @@ class Overcooked(gym.Env):
 
 
     def step(self, action):
+
+        #TODO pri volani tam dat i tu barvu
+        #barvy vytahnout a pak zavolat tento puvodni step s tim zbytkem
+        #prilepime do next state jako both_agent_colors
         """
         action:
             (agent with index self.agent_idx action, other agent action)
@@ -912,6 +918,13 @@ class RewardShapingEnv(SubprocVecEnv):
 
 
 
+class OvercookedSemaphorEnv(Overcooked):
+    def step(self, action):
+
+
+
+
+
 def get_vectorized_gym_env(base_env, gym_env_name, agent_idx, featurize_fn=None, start_state_fn=None, args=None):
     """
     Create a one-player overcooked gym environment in which the other player is fixed (embedded in the environment)
@@ -931,3 +944,7 @@ def get_vectorized_gym_env(base_env, gym_env_name, agent_idx, featurize_fn=None,
 
     vectorized_gym_env = SubprocVecEnv([gym_env_fn] * args.num_workers, log_dir=args.log_dir)
     return vectorized_gym_env
+
+
+
+

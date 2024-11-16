@@ -595,7 +595,7 @@ class ActorCriticPolicy(BasePolicy):
         # Evaluate the values for the given observations
         values = self.value_net(latent_vf)
         distribution = self._get_action_dist_from_latent(latent_pi)
-        actions = distribution.get_actions(deterministic=deterministic)
+        actions = distribution.get_actions(deterministic=deterministic) #TODO upravit get action distribution from latent a pak tohle
         log_prob = distribution.log_prob(actions)
         actions = actions.reshape((-1,) + self.action_space.shape)
         return actions, values, log_prob

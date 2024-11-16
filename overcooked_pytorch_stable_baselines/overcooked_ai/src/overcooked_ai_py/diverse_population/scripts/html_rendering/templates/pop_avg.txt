@@ -1,0 +1,30 @@
+\begin{table*}[t]
+\caption{ stack = {{ stack }}, metric = {{metric}} }
+\begin{center}
+\begin{tabular}{llllllllll}
+
+\textbf{layout}
+{% for e in exp_names%}
+    & \textbf{ {{ e }} }
+{% endfor %} \\ \hline
+
+{% for layout,values in input.items() %}
+        {{ layout }}
+        {% for e in exp_names %}
+           &
+           {% if e == values["max_e"]%}
+            \textbf{ {% endif%}
+           {{values[e]}}
+           {% if e == values["max_e"]%}
+            } {% endif%}
+
+        {% endfor %} \\
+{% endfor %}
+
+\multicolumn{10}{l}{$^{\mathrm{a}}$True values $ = \times 10^{2}$}
+\end{tabular}
+\end{center}
+\label{T:popresults}
+\end{table*}
+
+

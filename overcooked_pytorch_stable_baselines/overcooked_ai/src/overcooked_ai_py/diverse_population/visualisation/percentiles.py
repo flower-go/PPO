@@ -303,13 +303,13 @@ def print_best_POP_best_SP(percentile=0.15):
                     continue
                 best_index = np.argmax(auc_table[s][layout][e])
                 m = m[[best_index]]
-                m = scale_matrix(m) #pridelam body at mam hladkou primku
+                #m = scale_matrix(m) #pridelam body at mam hladkou primku
                 matrices.append(m)
                 labels.append(e)
             sp = remove_daigonal(sp)
             sp_best = np.argmax(auc_sp_table[s][layout][e])
             sp = sp[[sp_best]]
-            sp = scale_matrix(sp)
+            #sp = scale_matrix(sp)
             matrices.append(sp)
             labels.append("SP")
 
@@ -470,6 +470,6 @@ def execute_best_finalSP():
 
 #execute_best_and_all()
 #execute_best_pop()
-execute_best_popSP()
-execute_best_finalSP()
+#execute_best_popSP()
+#execute_best_finalSP()
 #execute_SP_percentile()
